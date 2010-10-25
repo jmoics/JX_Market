@@ -9,7 +9,7 @@ public interface ContactoDAO {
 	public DTO_Contacto leeContacto(String uname);
 	public boolean eliminaContacto(String uname);
 	public boolean registraContacto(DTO_Contacto p);
-    public List<DTO_Contacto> getContactos(Integer institucion);
+    public List<DTO_Contacto> getContactos();
     public boolean cambiaPassword(String uname, String password);
     public DTO_Contacto cambiaTheme(String uname, String tema);
 }

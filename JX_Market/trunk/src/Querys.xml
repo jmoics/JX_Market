@@ -18,5 +18,31 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
      	WHERE
      		username = #username#
     </select>
+    
+    <select id ="getContactos" resultClass="DTO_Contacto">
+        SELECT
+        	username, pass, nombre
+       	FROM
+       		JX_CONTACTO
+     	ORDER BY
+      		username
+    </select>
+    
+    <insert id="insertContacto">
+        INSERT INTO
+        	JX_CONTACTO
+       			(username,pass,nombre)
+       		VALUES
+       			(#username#, #pass#, #nombre#)
+    </insert>
+    
+    <delete id="chgPass">
+        UPDATE
+        	JX_CONTACTO
+       	SET
+			pass = #password#
+		WHERE
+			username = #username#
+    </delete>
 
 </sqlMap>

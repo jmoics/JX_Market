@@ -39,10 +39,9 @@ public class ContactoDAOibatis extends SqlMapClientDaoSupport implements Contact
 		return false;
 	}
 	
-	public List<DTO_Contacto> getContactos(Integer institucion){
+	public List<DTO_Contacto> getContactos(){
 		HashMap mapa = new HashMap();
-        mapa.put("institucion", institucion);
-		return getSqlMapClientTemplate().queryForList("getContactos",mapa);
+		return getSqlMapClientTemplate().queryForList("getContactos");
 	}
 	
     public boolean cambiaPassword(String uname, String password) {
@@ -67,6 +66,6 @@ public class ContactoDAOibatis extends SqlMapClientDaoSupport implements Contact
 		mapa.put("tema", tema);
 		getSqlMapClientTemplate().update("chgTheme", mapa);
         return leeContacto(uname);
-}
+    }
 
 }
