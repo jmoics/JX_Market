@@ -61,19 +61,7 @@ public class Utility implements ServletContextListener {
      * @see ServletContextListener#contextDestroyed(ServletContextEvent)
      */
     public void contextDestroyed(ServletContextEvent sce) {
-        BusinessService service = getService(sce.getServletContext(), "switchService");
-		DTO_Input input = new DTO_Input();
-		input.setVerbo("SHUTDOWN_CONN");
-		
-		// desconectar del switch
-		DTO_Output output = service.execute(input);
-		if (output.getErrorCode() == Constantes.OK) {
-		logger.debug("Finalizó la conexión con el switch");
-		
-		} else {
-		logger.error("Error al finalizar la conexión con el switch");
-		
-		}
+
     }
     
     /**
