@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	<typeAlias alias="DTO_Contacto"
+		type="pe.com.jx_market.domain.DTO_Contacto" />
+	
+	<!-- MANTENIMIENTO DE CONTACTOS -->
+
+    <select id ="getContactoPorUsername" resultClass="DTO_Contacto">
+        SELECT
+        	username, pass, nombre
+       	FROM
+       		JX_CONTACTO
+     	WHERE
+     		username = #username#
+    </select>
+
+</sqlMap>

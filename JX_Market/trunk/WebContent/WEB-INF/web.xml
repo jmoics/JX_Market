@@ -45,4 +45,7 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>login.zul</welcome-file>
   </welcome-file-list>
+  <listener>
+    <listener-class>pe.com.jx_market.controller.Utility</listener-class>
+  </listener>
 </web-app>

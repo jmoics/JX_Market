@@ -3,14 +3,13 @@ package pe.com.jx_market.controller;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
-/*
+
 import pe.com.jx_market.domain.DTO_Contacto;
 import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
 
-*/
 
 public class PO_Login extends Window {
 	
@@ -23,7 +22,7 @@ public class PO_Login extends Window {
 		pass = (Textbox)getFellow("pass");
 		user.setFocus(true);
 	}
-	/*
+	
 	public void authenticate() {
 		DTO_Contacto usuario = new DTO_Contacto();
 		usuario.setUsername(user.getValue());
@@ -53,7 +52,7 @@ public class PO_Login extends Window {
 		}
 		
 		return usuario;
-	}*/
+	}
 	
 	public void prueba(){
 		user.setValue("ASDSAD");

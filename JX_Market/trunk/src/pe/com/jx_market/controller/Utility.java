@@ -19,7 +19,7 @@ import pe.com.jx_market.utilities.DTO_Output;
 import pe.com.jx_market.utilities.ServiceProvider;
 
 /**
- * Application Lifecycle Listener implementation class MochicaStarter
+ * Application Lifecycle Listener implementation class UtilityStarter
  *
  */
 public class Utility implements ServletContextListener {

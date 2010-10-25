@@ -43,10 +43,15 @@ public class AuthService implements BusinessService {
 		}
 	
 		if(encriptacion(password).equals(usr.getPass())) {
-				output.setObject(usr);
-				output.setErrorCode(Constantes.OK);
+			output.setObject(usr);
+			output.setErrorCode(Constantes.OK);
 			return output;
-		} else {
+		//por mientras ya que no hay encriptacion....
+		}else if(password.equals(usr.getPass())){ 
+			output.setObject(usr);
+			output.setErrorCode(Constantes.OK);
+			return output;
+		}else {
 			output.setErrorCode(Constantes.AUTH_ERROR);
 			return output;
 		}			

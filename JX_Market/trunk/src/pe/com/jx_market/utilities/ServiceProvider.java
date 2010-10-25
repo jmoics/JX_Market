@@ -18,7 +18,7 @@ public class ServiceProvider {
 	private ApplicationContext context;
 
 	private ServiceProvider() {
-		logger.info("Mochica 0.14 - Starting Spring");
+		logger.info("Utility - Starting Spring");
 		this.serviceMap = new HashMap();
 		if ((configurationMode & 0x1) == 1) {
 			this.context = new ClassPathXmlApplicationContext(

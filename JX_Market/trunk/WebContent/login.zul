@@ -56,7 +56,7 @@
 										Contraseña:
 									</label>
 									<textbox id="pass" type="password"
-										onOK="w.prueba()">
+										onOK="w.authenticate()">
 									</textbox>
 								</row>
 							</rows>
@@ -66,7 +66,7 @@
 					<html:p />
 					<div class="btndiv" align="center">
 						<button id="btn" height="38px" sclass="myBlack"
-							width="106px" onClick="w.prueba()"
+							width="106px" onClick="w.authenticate()"
 							style="font-family: sans-serif; font-weight:bold; color:#222222"
 							label="Ingresar" />
 					</div>
