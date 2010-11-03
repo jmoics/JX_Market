@@ -18,7 +18,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 
     <select id ="getClientePorCodigo" resultClass="DTO_Cliente">
         SELECT
-        	cl.usuario_n_codigo as codigo,
+        	cl.cliente_n_codigo as codigo,
         	cl.usuario_n_codigo as usuario,
         	cl.empresa_n_codigo as empresa, 
         	cl.cliente_v_nombre as nombre, 
@@ -32,7 +32,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         	cl.cliente_v_ciudad as ciudad, 
         	cl.cliente_v_region as region, 
         	cl.cliente_v_codpostal as codPostal,
-        	cl.cliente_n_activo as estado, 
+        	cl.cliente_n_activo as estado
        	FROM
        		T_NEG_CLIENTE cl,
        		T_SEG_USUARIO us,
@@ -42,26 +42,70 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
    		AND
    			us.empresa_n_codigo = em.empresa_n_codigo
      	AND
-     		us.usuario_n_codigo = #usuario_n_codigo#
+     		us.cliente_n_codigo = #cliente_n_codigo#
      	AND
      		us.empresa_n_codigo = #empresa_n_codigo#
     </select>
     
     <select id ="getClientes" resultClass="DTO_Cliente">
         SELECT
-        	username, pass, nombre
+        	cl.cliente_n_codigo as codigo,
+        	cl.usuario_n_codigo as usuario,
+        	cl.empresa_n_codigo as empresa, 
+        	cl.cliente_v_nombre as nombre, 
+        	cl.cliente_d_fechanac as fecNac,
+        	cl.cliente_v_apellido as apellido, 
+        	cl.cliente_n_dni as dni, 
+        	cl.cliente_v_direccion as direccion,
+        	cl.cliente_v_telefono as telefono, 
+        	cl.cliente_v_celular as celular, 
+        	cl.cliente_v_email as email,
+        	cl.cliente_v_ciudad as ciudad, 
+        	cl.cliente_v_region as region, 
+        	cl.cliente_v_codpostal as codPostal,
+        	cl.cliente_n_activo as estado 
        	FROM
-       		JX_CONTACTO
+       		T_NEG_CLIENTE cl
+       	WHERE
+       		cl.empresa_n_codigo = #empresa_n_codigo#
      	ORDER BY
-      		username
+      		cl.cliente_n_codigo
     </select>
     
     <insert id="insertCliente">
         INSERT INTO
-        	JX_CONTACTO
-       			(username,pass,nombre)
+        	T_NEG_CLIENTE
+       			(cliente_n_codigo,
+	        	usuario_n_codigo,
+	        	empresa_n_codigo, 
+	        	cliente_v_nombre, 
+	        	cliente_d_fechanac,
+	        	cliente_v_apellido, 
+	        	cliente_n_dni, 
+	        	cliente_v_direccion,
+	        	cliente_v_telefono, 
+	        	cliente_v_celular, 
+	        	cliente_v_email,
+	        	cliente_v_ciudad, 
+	        	cliente_v_region, 
+	        	cliente_v_codpostal,
+	        	cliente_n_activo)
        		VALUES
-       			(#username#, #pass#, #nombre#)
+       			(#cliente_n_codigo#,
+	        	#usuario_n_codigo#,
+	        	#empresa_n_codigo#, 
+	        	#cliente_v_nombre#, 
+	        	#cliente_d_fechanac#,
+	        	#cliente_v_apellido#, 
+	        	#cliente_n_dni#, 
+	        	#cliente_v_direccion#,
+	        	#cliente_v_telefono#, 
+	        	#cliente_v_celular#, 
+	        	#cliente_v_email#,
+	        	#cliente_v_ciudad#, 
+	        	#cliente_v_region#, 
+	        	#cliente_v_codpostal#,
+	        	#cliente_n_activo#)
     </insert>
 
 
@@ -69,34 +113,94 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 
     <select id ="getEmpleadoPorCodigo" resultClass="DTO_Cliente">
         SELECT
-        	us.usuario_n_codigo, us.usuario_v_contrasena, em.usuario_n_codigo,
-        	em.empleado_n_codigo, em.empleado_v_nombre, 
-        	em.empleado_v_apellido, empleado_n_dni
+        	emp.empleado_n_codigo as codigo,
+        	emp.usuario_n_codigo as usuario,
+        	emp.empresa_n_codigo as empresa, 
+        	emp.empleado_v_nombre as nombre, 
+        	emp.empleado_d_fechanac as fecNac,
+        	emp.empleado_v_apellido as apellido, 
+        	emp.empleado_n_dni as dni, 
+        	emp.empleado_v_direccion as direccion,
+        	emp.empleado_v_telefono as telefono, 
+        	emp.empleado_v_celular as celular, 
+        	emp.empleado_v_email as email,
+        	emp.empleado_v_ciudad as ciudad, 
+        	emp.empleado_v_region as region, 
+        	emp.empleado_v_codpostal as codPostal,
+        	emp.empleado_n_activo as estado
        	FROM
-       		T_NEG_EMPLEADO em
-       		T_SEG_USUARIO us
+       		T_EMP_EMPLEADO emp,
+       		T_SEG_USUARIO us,
+       		T_EMP_EMPRESA em
      	WHERE
-     		us.usuario_n_codigo = em.usuario_n_codigo
+     		us.usuario_n_codigo = cl.usuario_n_codigo
+   		AND
+   			us.empresa_n_codigo = em.empresa_n_codigo
      	AND
-     		us.usuario_n_codigo = #value#
-     		
+     		us.empleado_n_codigo = #empleado_n_codigo#
+     	AND
+     		us.empresa_n_codigo = #empresa_n_codigo#
     </select>
     
     <select id ="getEmpleados" resultClass="DTO_Empleado">
         SELECT
-        	username, pass, nombre
+        	emp.empleado_n_codigo as codigo,
+        	emp.usuario_n_codigo as usuario,
+        	emp.empresa_n_codigo as empresa, 
+        	emp.empleado_v_nombre as nombre, 
+        	emp.empleado_d_fechanac as fecNac,
+        	emp.empleado_v_apellido as apellido, 
+        	emp.empleado_n_dni as dni, 
+        	emp.empleado_v_direccion as direccion,
+        	emp.empleado_v_telefono as telefono, 
+        	emp.empleado_v_celular as celular, 
+        	emp.empleado_v_email as email,
+        	emp.empleado_v_ciudad as ciudad, 
+        	emp.empleado_v_region as region, 
+        	emp.empleado_v_codpostal as codPostal,
+        	emp.empleado_n_activo as estado 
        	FROM
-       		JX_CONTACTO
+       		T_EMP_EMPLEADO emp
+       	WHERE
+       		emp.empresa_n_codigo = #empresa_n_codigo#
      	ORDER BY
-      		username
+      		emp.empleado_n_codigo
     </select>
     
     <insert id="insertEmpleado">
         INSERT INTO
-        	JX_CONTACTO
-       			(username,pass,nombre)
+        	T_EMP_EMPLEADO
+       			(empleado_n_codigo,
+	        	usuario_n_codigo,
+	        	empresa_n_codigo, 
+	        	empleado_v_nombre, 
+	        	empleado_d_fechanac,
+	        	empleado_v_apellido, 
+	        	empleado_n_dni, 
+	        	empleado_v_direccion,
+	        	empleado_v_telefono, 
+	        	empleado_v_celular, 
+	        	empleado_v_email,
+	        	empleado_v_ciudad, 
+	        	empleado_v_region, 
+	        	empleado_v_codpostal,
+	        	empleado_n_activo)
        		VALUES
-       			(#username#, #pass#, #nombre#)
+       			(#empleado_n_codigo#,
+	        	#usuario_n_codigo#,
+	        	#empresa_n_codigo#, 
+	        	#empleado_v_nombre#, 
+	        	#empleado_d_fechanac#,
+	        	#empleado_v_apellido#, 
+	        	#empleado_n_dni#, 
+	        	#empleado_v_direccion#,
+	        	#empleado_v_telefono#, 
+	        	#empleado_v_celular#, 
+	        	#empleado_v_email#,
+	        	#empleado_v_ciudad#, 
+	        	#empleado_v_region#, 
+	        	#empleado_v_codpostal#,
+	        	#empleado_n_activo#)
     </insert>
     
     
@@ -140,7 +244,9 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
        	SET
 			usuario_v_contrasena = #usuario_v_contrasena#
 		WHERE
-			usuario_v_contrasena = #usuario_v_contrasena#
+			usuario_n_codigo = #usuario_n_codigo#
+		AND
+			empresa_n_codigo = #empresa_n_codigo#
     </delete>
     
 </sqlMap>
