@@ -2,8 +2,8 @@ package pe.com.jx_market.service;
 
 import org.apache.commons.logging.*;
 
-import pe.com.jx_market.dao.ContactoDAO;
-import pe.com.jx_market.domain.DTO_Contacto;
+import pe.com.jx_market.dao.UsuarioDAO;
+import pe.com.jx_market.domain.DTO_Usuario;
 import pe.com.jx_market.utilities.*;
 
 
@@ -15,7 +15,7 @@ import pe.com.jx_market.utilities.*;
 public class AuthService implements BusinessService {
 
 	static Log logger = LogFactory.getLog(AuthService.class);
-	private ContactoDAO dao;
+	private UsuarioDAO dao;
 	private BusinessService passwordHashService;
 	
 	/** El DTO_Input debe contener un objeto de tipo DTO_Login el cual contiene solo los atributos username y password.
@@ -25,13 +25,14 @@ public class AuthService implements BusinessService {
 	 */
 	public DTO_Output execute(DTO_Input input) {
 		DTO_Output output = new DTO_Output();
-		DTO_Contacto suposedUser = (DTO_Contacto) input.getObject();
-		String username = (String)suposedUser.getUsername();
-		String password = (String)suposedUser.getPass();
-		suposedUser.setPass("erased");
-		DTO_Contacto usr = dao.leeContacto(username);
+		DTO_Usuario suposedUser = (DTO_Usuario) input.getObject();
+		String username = (String)suposedUser.getCodigo();
+		String password = (String)suposedUser.getContrasena();
+		String empresa = suposedUser.getEmpresa();
+		suposedUser.setContrasena("erased");
+		DTO_Usuario us = dao.leeUsuario(username, empresa);
 		
-		if(usr == null) {
+		if(us == null) {
 			logger.error("No se proporciono usuario valido");
 			output.setErrorCode(Constantes.NOT_FOUND);
 			return output;
@@ -42,13 +43,13 @@ public class AuthService implements BusinessService {
 			return output;
 		}
 	
-		if(encriptacion(password).equals(usr.getPass())) {
-			output.setObject(usr);
+		if(encriptacion(password).equals(us.getContrasena())) {
+			output.setObject(us);
 			output.setErrorCode(Constantes.OK);
 			return output;
 		//por mientras ya que no hay encriptacion....
-		}else if(password.equals(usr.getPass())){ 
-			output.setObject(usr);
+		}else if(password.equals(us.getContrasena())){ 
+			output.setObject(us);
 			output.setErrorCode(Constantes.OK);
 			return output;
 		}else {
@@ -70,11 +71,11 @@ public class AuthService implements BusinessService {
 		return passEncriptada;
 	}
 	
-	public ContactoDAO getDao() {
+	public UsuarioDAO getDao() {
 		return dao;
 	}
 
-	public void setDao(ContactoDAO dao) {
+	public void setDao(UsuarioDAO dao) {
 		this.dao = dao;
 	}
 

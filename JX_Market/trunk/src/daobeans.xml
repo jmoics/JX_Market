@@ -7,8 +7,16 @@
                                 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
                                 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-     <bean id="contactoDAO" class="pe.com.jx_market.dao.ibatis.ContactoDAOibatis">
+     <bean id="clienteDAO" class="pe.com.jx_market.dao.ibatis.ClienteDAOibatis">
           <property name="sqlMapClient" ref="sqlMapClient"/>
-     </bean>		
+     </bean>
+     
+     <bean id="empleadoDAO" class="pe.com.jx_market.dao.ibatis.EmpleadoDAOibatis">
+          <property name="sqlMapClient" ref="sqlMapClient"/>
+     </bean>
+     
+     <bean id="usuarioDAO" class="pe.com.jx_market.dao.ibatis.UsuarioDAOibatis">
+          <property name="sqlMapClient" ref="sqlMapClient"/>
+     </bean>			
       
 </beans>

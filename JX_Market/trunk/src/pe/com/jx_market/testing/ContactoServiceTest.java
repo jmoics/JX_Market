@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import pe.com.jx_market.domain.DTO_Contacto;
+import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.*;
 
@@ -30,7 +30,7 @@ public class ContactoServiceTest {
 	public void registrarUsuarios() {
 		
 		// nuevo usuario
-		DTO_Contacto unew = new DTO_Contacto();
+		DTO_Cliente unew = new DTO_Cliente();
 		unew.setUsername("prueba");
 		unew.setPass(encriptacion("jocajoca"));
 		unew.setNombre("Panchita Vertiz");
@@ -49,7 +49,7 @@ public class ContactoServiceTest {
 		DTO_Output outputList = contactoService.execute(inputList);
 		assertEquals(Constantes.OK, outputList.getErrorCode());
 		
-		List<DTO_Contacto> ulist = outputList.getLista();
+		List<DTO_Cliente> ulist = outputList.getLista();
 		boolean hallado = false;
 		/*for(DTO_Contacto uOut : ulist) {
 			if(uOut.getE_mail().equals("pvertiz@scotia.com") &&

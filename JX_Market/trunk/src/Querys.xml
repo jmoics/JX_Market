@@ -5,21 +5,49 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap>
-	<typeAlias alias="DTO_Contacto"
-		type="pe.com.jx_market.domain.DTO_Contacto" />
+	<typeAlias alias="DTO_Cliente"
+		type="pe.com.jx_market.domain.DTO_Cliente" />
+		
+	<typeAlias alias="DTO_Empleado"
+		type="pe.com.jx_market.domain.DTO_Empleado" />
+		
+	<typeAlias alias="DTO_Usuario"
+		type="pe.com.jx_market.domain.DTO_Usuario" />
 	
-	<!-- MANTENIMIENTO DE CONTACTOS -->
+	<!-- MANTENIMIENTO DE CLIENTES -->
 
-    <select id ="getContactoPorUsername" resultClass="DTO_Contacto">
+    <select id ="getClientePorCodigo" resultClass="DTO_Cliente">
         SELECT
-        	username, pass, nombre
+        	cl.usuario_n_codigo as codigo,
+        	cl.usuario_n_codigo as usuario,
+        	cl.empresa_n_codigo as empresa, 
+        	cl.cliente_v_nombre as nombre, 
+        	cl.cliente_d_fechanac as fecNac,
+        	cl.cliente_v_apellido as apellido, 
+        	cl.cliente_n_dni as dni, 
+        	cl.cliente_v_direccion as direccion,
+        	cl.cliente_v_telefono as telefono, 
+        	cl.cliente_v_celular as celular, 
+        	cl.cliente_v_email as email,
+        	cl.cliente_v_ciudad as ciudad, 
+        	cl.cliente_v_region as region, 
+        	cl.cliente_v_codpostal as codPostal,
+        	cl.cliente_n_activo as estado, 
        	FROM
-       		JX_CONTACTO
+       		T_NEG_CLIENTE cl,
+       		T_SEG_USUARIO us,
+       		T_EMP_EMPRESA em
      	WHERE
-     		username = #username#
+     		us.usuario_n_codigo = cl.usuario_n_codigo
+   		AND
+   			us.empresa_n_codigo = em.empresa_n_codigo
+     	AND
+     		us.usuario_n_codigo = #usuario_n_codigo#
+     	AND
+     		us.empresa_n_codigo = #empresa_n_codigo#
     </select>
     
-    <select id ="getContactos" resultClass="DTO_Contacto">
+    <select id ="getClientes" resultClass="DTO_Cliente">
         SELECT
         	username, pass, nombre
        	FROM
@@ -28,7 +56,42 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
       		username
     </select>
     
-    <insert id="insertContacto">
+    <insert id="insertCliente">
+        INSERT INTO
+        	JX_CONTACTO
+       			(username,pass,nombre)
+       		VALUES
+       			(#username#, #pass#, #nombre#)
+    </insert>
+
+
+	<!-- MANTENIMIENTO DE EMPLEADOS -->
+
+    <select id ="getEmpleadoPorCodigo" resultClass="DTO_Cliente">
+        SELECT
+        	us.usuario_n_codigo, us.usuario_v_contrasena, em.usuario_n_codigo,
+        	em.empleado_n_codigo, em.empleado_v_nombre, 
+        	em.empleado_v_apellido, empleado_n_dni
+       	FROM
+       		T_NEG_EMPLEADO em
+       		T_SEG_USUARIO us
+     	WHERE
+     		us.usuario_n_codigo = em.usuario_n_codigo
+     	AND
+     		us.usuario_n_codigo = #value#
+     		
+    </select>
+    
+    <select id ="getEmpleados" resultClass="DTO_Empleado">
+        SELECT
+        	username, pass, nombre
+       	FROM
+       		JX_CONTACTO
+     	ORDER BY
+      		username
+    </select>
+    
+    <insert id="insertEmpleado">
         INSERT INTO
         	JX_CONTACTO
        			(username,pass,nombre)
@@ -36,13 +99,48 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
        			(#username#, #pass#, #nombre#)
     </insert>
     
+    
+    <!-- MANTENIMIENTO DE USUARIOS -->
+
+    <select id ="getUsuarioPorCodigo" resultClass="DTO_Usuario">
+        SELECT
+        	us.usuario_n_codigo as codigo,
+        	us.usuario_v_contrasena as contrasena, 
+        	us.empresa_n_codigo as empresa
+       	FROM
+       		T_SEG_USUARIO us
+     	WHERE
+     		us.usuario_n_codigo = #usuario_n_codigo#
+     	AND
+     		us.empresa_n_codigo = #empresa_n_codigo#
+    </select>
+    
+    <select id ="getUsuarios" resultClass="DTO_Usuario">
+        SELECT
+        	us.usuario_n_codigo as codigo,
+        	us.usuario_v_contrasena as contrasena, 
+        	us.empresa_n_codigo as empresa
+       	FROM
+       		T_SEG_USUARIO us
+     	ORDER BY
+      		us.usuario_n_codigo
+    </select>
+    
+    <insert id="insertUsuario">
+        INSERT INTO
+        	T_SEG_USUARIO
+       			(usuario_n_codigo,usuario_v_contrasena,empresa_n_codigo)
+       		VALUES
+       			(#usuario_n_codigo#, #usuario_v_contrasena#, #empresa_n_codigo#)
+    </insert>
+    
     <delete id="chgPass">
         UPDATE
-        	JX_CONTACTO
+        	T_SEG_USUARIO
        	SET
-			pass = #password#
+			usuario_v_contrasena = #usuario_v_contrasena#
 		WHERE
-			username = #username#
+			usuario_v_contrasena = #usuario_v_contrasena#
     </delete>
-
+    
 </sqlMap>

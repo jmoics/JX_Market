@@ -1,6 +1,19 @@
-<?page title="Auto Generated index.zul"?>
-<window title="Hello World!!" border="normal" width="200px">
-
-<label value="You are using: ${desktop.webApp.version}"/>
-
+<?page title="JX_MARKET"?>
+<window id="w_in" use="pe.com.jx_market.controller.PO_Index" title="Seleccion Empresa" border="normal" width="600px">
+	<grid>
+		<rows>
+			<row>
+				<label value="Cliente Externo"/>
+				<button label="Acceder" onClick="w_in.accedeExterno()"/>
+			</row>
+			<row>
+				<label value="Asociado"/>
+				<button label="Acceder" onClick="w_in.accedeAsociado()"/>
+			</row>
+			<row>
+				<label value="Empresa"/>
+				<button label="Acceder" onClick="w_in.accedeEmpresa()"/>
+			</row>
+		</rows>
+	</grid>
 </window>

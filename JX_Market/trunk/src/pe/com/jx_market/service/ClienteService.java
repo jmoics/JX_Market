@@ -2,8 +2,9 @@ package pe.com.jx_market.service;
 
 import java.util.HashSet;
 
-import pe.com.jx_market.dao.ContactoDAO;
-import pe.com.jx_market.domain.DTO_Contacto;
+import pe.com.jx_market.dao.ClienteDAO;
+import pe.com.jx_market.domain.DTO_Cliente;
+import pe.com.jx_market.domain.DTO_Usuario;
 
 import pe.com.jx_market.utilities.*;
 
@@ -13,12 +14,10 @@ import pe.com.jx_market.utilities.*;
  *
  */
 
-public class ContactoService implements BusinessService {
+public class ClienteService implements BusinessService {
 
-	private ContactoDAO dao;
+	private ClienteDAO dao;
 	private BusinessService parametroService;
-
-	
 
 	/**El DTO_Input contendrá como verbo un String: para realizar una consulta se usará el verbo "list" y un string con el
 	 * codigo de la institucion a la que pertenece el contacto, para ingresar o
@@ -36,20 +35,20 @@ public class ContactoService implements BusinessService {
         DTO_Output output = new DTO_Output();
         if("list".equals(input.getVerbo())) {
         	//Integer institucion = (Integer)input.getObject();
-        	output.setLista(dao.getContactos());
+        	output.setLista(dao.getClientes());
         	output.setErrorCode(Constantes.OK);
         	return output;
         } else if("register".equals(input.getVerbo())) {
-        	dao.registraContacto((DTO_Contacto)input.getObject());
+        	dao.registraCliente((DTO_Cliente)input.getObject());
         	output.setErrorCode(Constantes.OK);
         	return output;        	
         } else if("delete".equals(input.getVerbo())) {
-        	dao.eliminaContacto((String)input.getObject());
+        	dao.eliminaCliente((DTO_Cliente) input.getObject());
         	output.setErrorCode(Constantes.OK);
         	return output; 
-        } else if("chgpass".equals(input.getVerbo())) {
-            DTO_Contacto contacto = (DTO_Contacto)input.getObject();
-            String nuevoPassword = contacto.getPass();
+        } /*else if("chgpass".equals(input.getVerbo())) {
+            DTO_Usuario usuario = (DTO_Usuario)input.getObject();
+            String nuevoPassword = usuario.getContrasena();
             // aqui se puede aprovechar para hacer algunas validaciones
             if(nuevoPassword.length() < 6) {
                     output.setErrorCode(Constantes.BAD_PASS);
@@ -61,13 +60,13 @@ public class ContactoService implements BusinessService {
             }
             // encriptar el password...
 
-            if(dao.cambiaPassword(contacto.getUsername(), nuevoPassword)) {
+            if(dao.cambiaPassword(usuario)) {
             	output.setErrorCode(Constantes.OK);
             	return output;
             } else {
                 throw new RuntimeException("Ocurrio un error al intentar guardar el nuevo tema");
             }
-        } else {
+        } */else {
         	throw new RuntimeException("No se especifico verbo adecuado");        
     	}
     }
@@ -83,11 +82,11 @@ public class ContactoService implements BusinessService {
         return true;
     }
 
-	public ContactoDAO getDao() {
+	public ClienteDAO getDao() {
 		return dao;
 	}
 
-	public void setDao(ContactoDAO dao) {
+	public void setDao(ClienteDAO dao) {
 		this.dao = dao;
 	}
     

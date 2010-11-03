@@ -4,7 +4,9 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Contacto;
+import pe.com.jx_market.domain.DTO_Cliente;
+import pe.com.jx_market.domain.DTO_Empresa;
+import pe.com.jx_market.domain.DTO_Usuario;
 import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
@@ -24,10 +26,12 @@ public class PO_Login extends Window {
 	}
 	
 	public void authenticate() {
-		DTO_Contacto usuario = new DTO_Contacto();
-		usuario.setUsername(user.getValue());
-		usuario.setPass(pass.getValue());
-		DTO_Contacto validado=(DTO_Contacto)getUsuario(usuario);
+		DTO_Usuario usuario = new DTO_Usuario();
+		usuario.setCodigo(user.getValue());
+		usuario.setContrasena(pass.getValue());
+		usuario.setEmpresa("1");
+		
+		DTO_Usuario validado = (DTO_Usuario)getUsuario(usuario);
 		if(validado!=null) {
 			getDesktop().getSession().setAttribute("login", validado);
 			Executions.sendRedirect("menu.zul");
@@ -39,16 +43,16 @@ public class PO_Login extends Window {
 		}
 	}
 	
-	public DTO_Contacto getUsuario(DTO_Contacto C){
-		DTO_Contacto usuario;
+	public DTO_Usuario getUsuario(DTO_Usuario C){
+		DTO_Usuario usuario;
 		BusinessService authService = Utility.getService(this, "authService");
 		DTO_Input input = new DTO_Input(C);
 		
 		DTO_Output output = authService.execute(input);
 		if (output.getErrorCode() == Constantes.OK) {
-			usuario=(DTO_Contacto)output.getObject();
+			usuario = (DTO_Usuario)output.getObject();
 		} else {
-			usuario=null;
+			usuario = null;
 		}
 		
 		return usuario;

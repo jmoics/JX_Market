@@ -13,12 +13,16 @@
     <!-- SERVICIOS -->
     
    	<bean id="authService" class="pe.com.jx_market.service.AuthService">
-		<property name="dao" ref="contactoDAO"/>
+		<property name="dao" ref="usuarioDAO"/>
 		<property name="passwordHashService" ref="passwordHashService"/>
 	</bean>
 	
-	<bean id="contactoService" class="pe.com.jx_market.service.ContactoService">
-		<property name="dao" ref="contactoDAO"/>
+	<bean id="clienteService" class="pe.com.jx_market.service.ClienteService">
+		<property name="dao" ref="clienteDAO"/>
+	</bean>
+	
+	<bean id="empleadoService" class="pe.com.jx_market.service.EmpleadoService">
+		<property name="dao" ref="empleadoDAO"/>
 	</bean>
 	
 	<bean id="passwordHashService" class="pe.com.jx_market.service.PasswordHashService"/>
