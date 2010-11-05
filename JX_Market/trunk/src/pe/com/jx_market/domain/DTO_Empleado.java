@@ -5,9 +5,9 @@ import java.util.Date;
 public class DTO_Empleado implements java.io.Serializable {
 
 	private String codigo;
-	private DTO_Perfil perfil;
-	private DTO_Usuario usuario;
-	private DTO_Empresa empresa;
+	private Integer perfil;
+	private String usuario;
+	private Integer empresa;
 	private String nombre;
 	private String apellido;
 	private Date fecNac;
@@ -26,22 +26,22 @@ public class DTO_Empleado implements java.io.Serializable {
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
-	public DTO_Perfil getPerfil() {
+	public Integer getPerfil() {
 		return perfil;
 	}
-	public void setPerfil(DTO_Perfil perfil) {
+	public void setPerfil(Integer perfil) {
 		this.perfil = perfil;
 	}
-	public DTO_Usuario getUsuario() {
+	public String getUsuario() {
 		return usuario;
 	}
-	public void setUsuario(DTO_Usuario usuario) {
+	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
-	public DTO_Empresa getEmpresa() {
+	public Integer getEmpresa() {
 		return empresa;
 	}
-	public void setEmpresa(DTO_Empresa empresa) {
+	public void setEmpresa(Integer empresa) {
 		this.empresa = empresa;
 	}
 	public String getNombre() {

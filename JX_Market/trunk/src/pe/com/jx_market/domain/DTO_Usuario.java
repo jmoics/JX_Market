@@ -3,7 +3,7 @@ package pe.com.jx_market.domain;
 public class DTO_Usuario implements java.io.Serializable {
 
 	private String codigo;
-	private String empresa;
+	private Integer empresa;
 	private String contrasena;
 	
 	public String getCodigo() {
@@ -12,10 +12,10 @@ public class DTO_Usuario implements java.io.Serializable {
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
-	public String getEmpresa() {
+	public Integer getEmpresa() {
 		return empresa;
 	}
-	public void setEmpresa(String empresa) {
+	public void setEmpresa(Integer empresa) {
 		this.empresa = empresa;
 	}
 	public String getContrasena() {

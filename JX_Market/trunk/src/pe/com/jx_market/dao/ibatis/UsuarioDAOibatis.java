@@ -34,7 +34,7 @@ public class UsuarioDAOibatis extends SqlMapClientDaoSupport implements UsuarioD
     }
 	
 	@Override
-	public DTO_Usuario leeUsuario(String codigo, String empresa){
+	public DTO_Usuario leeUsuario(String codigo, Integer empresa){
 		HashMap mapa = new HashMap();
         mapa.put("usuario_n_codigo", codigo);
         mapa.put("empresa_n_codigo", empresa);
@@ -53,9 +53,10 @@ public class UsuarioDAOibatis extends SqlMapClientDaoSupport implements UsuarioD
 	}
 	
 	@Override
-	public List<DTO_Usuario> getUsuarios(){
+	public List<DTO_Usuario> getUsuarios(Integer empresa){
 		HashMap mapa = new HashMap();
-		return getSqlMapClientTemplate().queryForList("getUsuarios");
+		mapa.put("empresa_n_codigo", empresa);
+		return getSqlMapClientTemplate().queryForList("getUsuarios", mapa);
 	}
 	
 	@Override
@@ -63,12 +64,13 @@ public class UsuarioDAOibatis extends SqlMapClientDaoSupport implements UsuarioD
     	
         DTO_Usuario c = leeUsuario(usuario.getCodigo(), usuario.getEmpresa());
         if(c == null) {
-                throw new RuntimeException("No se pudo hallar usuario " + usuario.getCodigo() + " en tabla");
+            throw new RuntimeException("No se pudo hallar usuario " + usuario.getCodigo() + " en tabla");
         }
         HashMap mapa = new HashMap();
 		mapa.put("usuario_n_codigo", usuario.getCodigo());
 		mapa.put("usuario_v_contrasena", usuario.getContrasena());
 		mapa.put("empresa_n_codigo", usuario.getEmpresa());
+		//hacer alguna validacion con el password anterior, aunque creo q seria mejor en el servicio
 		getSqlMapClientTemplate().update("chgPass", mapa);
         return true;
     }

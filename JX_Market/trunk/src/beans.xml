@@ -25,6 +25,11 @@
 		<property name="dao" ref="empleadoDAO"/>
 	</bean>
 	
+	<bean id="usuarioService" class="pe.com.jx_market.service.UsuarioService">
+		<property name="dao" ref="usuarioDAO"/>
+		<property name="passwordHashService" ref="passwordHashService"/>
+	</bean>
+	
 	<bean id="passwordHashService" class="pe.com.jx_market.service.PasswordHashService"/>
     
 </beans>

@@ -29,7 +29,7 @@ public class PO_Login extends Window {
 		DTO_Usuario usuario = new DTO_Usuario();
 		usuario.setCodigo(user.getValue());
 		usuario.setContrasena(pass.getValue());
-		usuario.setEmpresa("1");
+		usuario.setEmpresa(1);
 		
 		DTO_Usuario validado = (DTO_Usuario)getUsuario(usuario);
 		if(validado!=null) {

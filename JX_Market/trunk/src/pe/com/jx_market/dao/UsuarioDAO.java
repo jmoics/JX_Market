@@ -7,9 +7,9 @@ import pe.com.jx_market.domain.DTO_Usuario;
 
 public interface UsuarioDAO {
 
-	public DTO_Usuario leeUsuario(String codigo, String empresa);
+	public DTO_Usuario leeUsuario(String codigo, Integer empresa);
 	public boolean eliminaUsuario(DTO_Usuario cliente);
 	public boolean registraUsuario(DTO_Usuario p);
-    public List<DTO_Usuario> getUsuarios();
+    public List<DTO_Usuario> getUsuarios(Integer empresa);
     public boolean cambiaPassword(DTO_Usuario usuario);
 }

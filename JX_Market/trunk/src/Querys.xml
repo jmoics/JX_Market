@@ -226,6 +226,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         	us.empresa_n_codigo as empresa
        	FROM
        		T_SEG_USUARIO us
+       	WHERE
+       		us.empresa_n_codigo = #empresa_n_codigo#
      	ORDER BY
       		us.usuario_n_codigo
     </select>

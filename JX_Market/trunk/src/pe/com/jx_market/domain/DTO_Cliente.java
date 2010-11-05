@@ -5,7 +5,7 @@ import java.util.Date;
 public class DTO_Cliente implements java.io.Serializable {
 
 	private String codigo;
-	private String empresa;
+	private Integer empresa;
 	private String usuario;
 	private String nombre;
 	private String apellido;
@@ -26,10 +26,10 @@ public class DTO_Cliente implements java.io.Serializable {
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
-	public String getEmpresa() {
+	public Integer getEmpresa() {
 		return empresa;
 	}
-	public void setEmpresa(String empresa) {
+	public void setEmpresa(Integer empresa) {
 		this.empresa = empresa;
 	}
 	public String getUsuario() {
