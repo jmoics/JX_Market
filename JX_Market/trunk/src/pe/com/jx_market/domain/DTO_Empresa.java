@@ -3,9 +3,9 @@ package pe.com.jx_market.domain;
 public class DTO_Empresa {
 
     private String codigo;
-    private String nombre;
+    private String razonsocial;
     private Integer estado;
-    private Integer ruc;
+    private String ruc;
 
     public String getCodigo () {
         return codigo;
@@ -15,12 +15,12 @@ public class DTO_Empresa {
         this.codigo = codigo;
     }
 
-    public String getNombre () {
-        return nombre;
+    public String getRazonsocial () {
+        return razonsocial;
     }
 
-    public void setNombre (String nombre) {
-        this.nombre = nombre;
+    public void setRazonSocial (String razonsocial) {
+        this.razonsocial = razonsocial;
     }
 
     public Integer getEstado () {
@@ -31,11 +31,11 @@ public class DTO_Empresa {
         this.estado = estado;
     }
 
-    public Integer getRuc () {
+    public String getRuc () {
         return ruc;
     }
 
-    public void setRuc (Integer razonSocial) {
-        this.ruc = razonSocial;
+    public void setRuc (String ruc) {
+        this.ruc = ruc;
     }
 }

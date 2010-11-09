@@ -29,7 +29,7 @@ public class AuthService implements BusinessService {
     public DTO_Output execute (DTO_Input input) {
         DTO_Output output = new DTO_Output();
         DTO_Usuario suposedUser = (DTO_Usuario) input.getObject();
-        String username = (String) suposedUser.getCodigo();
+        String username = (String) suposedUser.getUsername();
         String password = (String) suposedUser.getContrasena();
         Integer empresa = suposedUser.getEmpresa();
         suposedUser.setContrasena("erased");

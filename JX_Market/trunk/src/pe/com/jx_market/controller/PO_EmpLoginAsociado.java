@@ -33,7 +33,7 @@ public class PO_EmpLoginAsociado extends Window {
 
     public void authenticate () {
         DTO_Usuario usuario = new DTO_Usuario();
-        usuario.setCodigo(txtUser.getValue());
+        usuario.setUsername(txtUser.getValue());
         usuario.setContrasena(txtPass.getValue());
         usuario.setEmpresa(1);
 
@@ -60,7 +60,7 @@ public class PO_EmpLoginAsociado extends Window {
             empresas = (List<DTO_Empresa>) output.getLista();
             for (DTO_Empresa emp : empresas) {
                 Comboitem item = new Comboitem();
-                item.setLabel(emp.getNombre());
+                item.setLabel(emp.getRazonsocial());
                 item.setAttribute("empresa", emp);
                 cmbEmp.appendChild(item);
             }

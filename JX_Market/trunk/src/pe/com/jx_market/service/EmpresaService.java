@@ -28,11 +28,11 @@ public class EmpresaService implements BusinessService {
         DTO_Output output = new DTO_Output();
         if ("list".equals(input.getVerbo())) {
             String nombre = null;
-            Integer ruc = null;
+            String ruc = null;
             if (input.getMapa() != null) {
                 Map mapa = input.getMapa();
-                nombre = (String)mapa.get("nombre");
-                ruc = (Integer)mapa.get("ruc");
+                nombre = mapa.containsKey("nombre") ? (String)mapa.get("nombre") : null;
+                ruc = mapa.containsKey("ruc") ? (String)mapa.get("ruc") : null;
             }
             output.setLista(dao.getEmpresas(nombre, ruc));
             output.setErrorCode(Constantes.OK);

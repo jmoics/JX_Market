@@ -16,15 +16,16 @@ public class UsuarioDAOibatis extends SqlMapClientDaoSupport implements UsuarioD
     @Override
     public boolean registraUsuario (DTO_Usuario us) {
         HashMap mapa = new HashMap();
-        mapa.put("usuario_n_codigo", us.getCodigo());
-        mapa.put("empresa_n_codigo", us.getEmpresa());
-        mapa.put("usuario_v_contrasena", us.getContrasena());
+        mapa.put("codigo", us.getCodigo());
+        mapa.put("username", us.getUsername());
+        mapa.put("empresa", us.getEmpresa());
+        mapa.put("contrasena", us.getContrasena());
 
         DTO_Usuario usuario = (DTO_Usuario) getSqlMapClientTemplate().queryForObject(
-                "getUsuarioPorCodigo", mapa);
+                "getUsuarioPorUsername", mapa);
 
         if (usuario == null) {
-            getSqlMapClientTemplate().insert("insertUsuario", mapa);
+            getSqlMapClientTemplate().insert("insertUsuario", us);
             return true;
         } else {
             getSqlMapClientTemplate().update("updateUsuario", mapa);
@@ -33,19 +34,19 @@ public class UsuarioDAOibatis extends SqlMapClientDaoSupport implements UsuarioD
     }
 
     @Override
-    public DTO_Usuario leeUsuario (String codigo, Integer empresa) {
+    public DTO_Usuario leeUsuario (String username, Integer empresa) {
         HashMap mapa = new HashMap();
-        mapa.put("usuario_n_codigo", codigo);
+        mapa.put("usuario_v_username", username);
         mapa.put("empresa_n_codigo", empresa);
-        return (DTO_Usuario) getSqlMapClientTemplate().queryForObject("getUsuarioPorCodigo", mapa);
+        return (DTO_Usuario) getSqlMapClientTemplate().queryForObject("getUsuarioPorUsername", mapa);
 
     }
 
     @Override
-    public boolean eliminaUsuario (DTO_Usuario cliente) {
+    public boolean eliminaUsuario (DTO_Usuario usuario) {
         HashMap mapa = new HashMap();
-        mapa.put("cliente_n_codigo", cliente.getCodigo());
-        mapa.put("empresa_n_codigo", cliente.getEmpresa());
+        mapa.put("usuario_v_username", usuario.getUsername());
+        mapa.put("empresa_n_codigo", usuario.getEmpresa());
         getSqlMapClientTemplate().delete("delUsuario", mapa);
         // eliminar usuario
         return false;
@@ -60,13 +61,13 @@ public class UsuarioDAOibatis extends SqlMapClientDaoSupport implements UsuarioD
 
     @Override
     public boolean cambiaPassword (DTO_Usuario usuario) {
-        DTO_Usuario c = leeUsuario(usuario.getCodigo(), usuario.getEmpresa());
+        DTO_Usuario c = leeUsuario(usuario.getUsername(), usuario.getEmpresa());
         if (c == null) {
             throw new RuntimeException("No se pudo hallar usuario " + usuario.getCodigo()
                     + " en tabla");
         }
         HashMap mapa = new HashMap();
-        mapa.put("usuario_n_codigo", usuario.getCodigo());
+        mapa.put("usuario_v_username", usuario.getUsername());
         mapa.put("usuario_v_contrasena", usuario.getContrasena());
         mapa.put("empresa_n_codigo", usuario.getEmpresa());
         // hacer alguna validacion con el password anterior, aunque creo q seria

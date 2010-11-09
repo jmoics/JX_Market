@@ -6,7 +6,7 @@ public class DTO_Empleado implements java.io.Serializable {
 
     private String codigo;
     private Integer perfil;
-    private String usuario;
+    private Integer usuario;
     private Integer empresa;
     private String nombre;
     private String apellido;
@@ -36,11 +36,11 @@ public class DTO_Empleado implements java.io.Serializable {
         this.perfil = perfil;
     }
 
-    public String getUsuario () {
+    public Integer getUsuario () {
         return usuario;
     }
 
-    public void setUsuario (String usuario) {
+    public void setUsuario (Integer usuario) {
         this.usuario = usuario;
     }
 

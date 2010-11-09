@@ -205,15 +205,15 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 
     <!-- MANTENIMIENTO DE USUARIOS -->
 
-    <select id="getUsuarioPorCodigo" resultClass="DTO_Usuario">
+    <select id="getUsuarioPorUsername" resultClass="DTO_Usuario">
         SELECT
-            us.usuario_n_codigo as codigo,
+            us.usuario_v_username as username,
             us.usuario_v_contrasena as contrasena,
             us.empresa_n_codigo as empresa
         FROM
             T_SEG_USUARIO us
         WHERE
-            us.usuario_n_codigo = #usuario_n_codigo#
+            us.usuario_v_username = #usuario_v_username#
         AND
             us.empresa_n_codigo = #empresa_n_codigo#
     </select>
@@ -221,6 +221,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     <select id="getUsuarios" resultClass="DTO_Usuario">
         SELECT
             us.usuario_n_codigo as codigo,
+            us.usuario_v_username as username,
             us.usuario_v_contrasena as contrasena,
             us.empresa_n_codigo as empresa
         FROM
@@ -231,11 +232,14 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             us.usuario_n_codigo
     </select>
 
-    <insert id="insertUsuario">
+    <insert id="insertUsuario" parameterClass="DTO_Usuario">
+        <selectKey keyProperty="codigo" resultClass="int">
+            SELECT seq_T_SEG_USUARIO.NEXTVAL FROM DUAL
+        </selectKey>
         INSERT INTO T_SEG_USUARIO
-            (usuario_n_codigo,usuario_v_contrasena,empresa_n_codigo)
+            (usuario_n_codigo,usuario_v_username,usuario_v_contrasena,empresa_n_codigo)
         VALUES
-            (#usuario_n_codigo#, #usuario_v_contrasena#, #empresa_n_codigo#)
+            (#codigo#, #username#, #contrasena#, #empresa#)
     </insert>
 
     <update id="chgPass">
@@ -243,7 +247,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         SET
             usuario_v_contrasena = #usuario_v_contrasena#
         WHERE
-            usuario_n_codigo = #usuario_n_codigo#
+            usuario_v_username = #usuario_v_username#
         AND
             empresa_n_codigo = #empresa_n_codigo#
     </update>
@@ -265,22 +269,29 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     <select id="getEmpresas" resultClass="DTO_Empresa">
         SELECT
             emp.empresa_n_codigo as codigo,
-            emp.empresa_v_nombre as nombre,
+            emp.empresa_v_razonsocial as razonsocial,
             emp.empresa_n_activo as estado,
-            emp.empresa_n_razonsocial as ruc
+            emp.empresa_n_ruc as ruc
         FROM
             T_EMP_EMPRESA emp
         WHERE
-            <isNotNull property="empresa_n_razonsocial">
-               emp.empresa_v_nombre = #empresa_v_nombre#
+            emp.empresa_n_activo = 1
+            <isNotNull prepend="AND" property="empresa_v_razonsocial">
+               emp.empresa_v_razonsocial LIKE #empresa_v_razonsocial#
+            </isNotNull>
+            <isNotNull prepend="OR" property="empresa_n_ruc">
+               emp.empresa_n_ruc LIKE #empresa_n_ruc#
             </isNotNull>
     </select>
 
-    <insert id="insertEmpresa">
+    <insert id="insertEmpresa" parameterClass="DTO_Empresa">
+        <selectKey keyProperty="codigo" resultClass="int">
+            SELECT seq_T_EMP_EMPRESA.NEXTVAL FROM DUAL
+        </selectKey>
         INSERT INTO T_EMP_EMPRESA
             (empresa_n_codigo,empresa_v_nombre,empresa_n_activo,empresa_n_razonsocial)
         VALUES
-            (#empresa_n_codigo#,#empresa_v_nombre#,#empresa_n_activo#,#empresa_n_razonsocial#)
+            (#codigo#,#razonsocial#,#estado#,#ruc#)
     </insert>
     
     <update id="updateEmpresa">

@@ -34,8 +34,8 @@ public class UsuarioServiceTest {
 
         // nuevo usuario
         DTO_Usuario unew = new DTO_Usuario();
-        unew.setCodigo("mdiaz");
-        unew.setContrasena("mdiaz");
+        unew.setUsername("jmoics");
+        unew.setContrasena("jmoics");
         unew.setEmpresa(1);
 
         DTO_Input input = new DTO_Input(unew);
@@ -57,7 +57,11 @@ public class UsuarioServiceTest {
             }
         }
         assertEquals(true, hallado);
-
+    }
+    
+    @Test
+    public void registraCSeq (){
+        
     }
 
     @Test
@@ -65,7 +69,7 @@ public class UsuarioServiceTest {
 
         // nuevo usuario
         DTO_Usuario unew = new DTO_Usuario();
-        unew.setCodigo("mdiaz");
+        unew.setUsername("mdiaz");
         unew.setContrasena("mdiaz");
         unew.setEmpresa(1);
 
@@ -79,13 +83,13 @@ public class UsuarioServiceTest {
     public void cambiaPassword () {
 
         DTO_Usuario user = new DTO_Usuario();
-        user.setCodigo("mdiaz");
+        user.setUsername("jmoics");
         user.setContrasena("xyz");
         user.setEmpresa(1);
         DTO_Input input = new DTO_Input(user);
         input.setVerbo("chgpass");
         Map<String, String> mapa = new HashMap<String, String>();
-        mapa.put("oldPass", "mdiaz");
+        mapa.put("oldPass", "jmoics");
         input.setMapa(mapa);
         DTO_Output output = usuarioService.execute(input);
         // password muy debil

@@ -97,7 +97,7 @@ public class UsuarioService implements BusinessService {
     }
 
     private boolean checkPasswordAnterior (DTO_Usuario us, String pass) {
-        DTO_Usuario usuario = dao.leeUsuario(us.getCodigo(), us.getEmpresa());
+        DTO_Usuario usuario = dao.leeUsuario(us.getUsername(), us.getEmpresa());
         String passEncriptado;
         // encriptar password enviado
         DTO_Output output = passwordHashService.execute(new DTO_Input(pass));

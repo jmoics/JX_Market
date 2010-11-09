@@ -6,7 +6,7 @@ public class DTO_Cliente implements java.io.Serializable {
 
     private String codigo;
     private Integer empresa;
-    private String usuario;
+    private Integer usuario;
     private String nombre;
     private String apellido;
     private Date fecNac;
@@ -36,11 +36,11 @@ public class DTO_Cliente implements java.io.Serializable {
         this.empresa = empresa;
     }
 
-    public String getUsuario () {
+    public Integer getUsuario () {
         return usuario;
     }
 
-    public void setUsuario (String usuario) {
+    public void setUsuario (Integer usuario) {
         this.usuario = usuario;
     }
 

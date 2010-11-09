@@ -37,5 +37,5 @@ public interface EmpresaDAO {
     /**
      * @return
      */
-    public List<DTO_Empresa> getEmpresas (String nombre, Integer ruc);
+    public List<DTO_Empresa> getEmpresas (String razonsocial, String ruc);
 }
