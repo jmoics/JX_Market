@@ -1,0 +1,206 @@
+<?page id="menup" title="JX_Market" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+   <div align="center">
+      <borderlayout height="600px" width="995px" id="bl"
+         use="pe.com.jx_market.controller.PO_EmpMenuPrincAsociado">
+         <north border="0">
+            <div align="center">
+               <hbox spacing="0">
+                  <image src="media/jxmarket.jpg" />
+                  <image src="media/salir.jpg"
+                     onClick='' style="cursor:pointer" />
+               </hbox>
+               <div>
+                  <include id="inch" src="empHeaderAsociado.zul" />
+               </div>
+            </div>
+         </north>
+         <west width="180px" title="Menu" flex="true"
+            margins="0,7,7,0" collapsible="true" border="0" autoscroll="true">
+
+            <vbox width="170px">
+               <html:p />
+               <div align="right" width="180px">
+
+                  <div align="left">
+                     <label zclass="z-south-header"
+                        style="background:transparent; font-family: sans-serif; font-weight:normal; font-size:14px">
+                        &#160;Operaciones:
+                     </label>
+                  </div>
+                  <html:p />
+                  <menubar style="text-align:left" width="175px"
+                     orient="vertical" autodrop="true">
+                     <menuitem src="/media/filenew.png"
+                        label="Pedidos" onClick='inc.setSrc(null);bl.incluir("nuevoReclamo.zul")'
+                        id="id_option_newrecl" />
+                     <menu src="/media/logviewer.png"
+                        label="Productos" id="id_option_anarecl">
+                        <menupopup>
+                           <menuitem src="/media/edit-find.png"
+                              label="Ingresar Producto"
+                              onClick='bl.incluir("")' />
+                           <menuitem src="/media/viewmag.png"
+                              label="Consulta de Productos"
+                              onClick='bl.incluir("")' />
+                           <menuitem src="/media/viewmag.png"
+                              label="Inventario"
+                              onClick='bl.incluir("")' />
+                        </menupopup>
+                     </menu>
+                     <menu src="/media/halfencrypted.png"
+                        label="Ventas" id="id_option_bloqueo_electron">
+                        <menupopup>
+                           <menuitem src="/media/filenew.png"
+                              label="Consulta de Ventas"
+                              onClick='bl.incluir("bloqueoElectron.zul")'
+                              id="" />
+                           <menuitem
+                              src="/media/configure_shortcuts.png"
+                              label="Validar Pedido"
+                              onClick='bl.incluir("")'
+                              id="" />
+                           <menuitem src="/media/contents.png"
+                              label="Algo mas"
+                              onClick='bl.incluir("")'
+                              id="" />
+                           <menuitem
+                              src="/media/report_icon.gif" label="Estadística de Ventas"
+                              onClick='bl.incluir("")'
+                              id="" />
+                        </menupopup>
+                     </menu>
+                     <menu src="/media/search.png"
+                        label="Clientes" id="id_option_busqueda_sicf">
+                        <menupopup>
+                           <menuitem
+                              src="/media/search.png" label="Consulta Clientes"
+                              onClick='bl.incluir("")'
+                              id="" />
+                           <menuitem
+                              src="/media/search.png" label="Clientes Frecuentes"
+                              onClick='bl.incluir("")'
+                              id="" />
+                           <menuitem
+                              src="/media/search2.png"
+                              label="Clientes no aceptados"
+                              onClick='bl.incluir("")'
+                              id="" />
+                        </menupopup>
+                     </menu>
+                  </menubar>
+                  <html:p />
+                  <div align="left">
+                     <label zclass="z-south-header"
+                        style="background:transparent; font-family: sans-serif; font-weight:normal; font-size:14px ">
+                        &#160;Administración:
+                     </label>
+                  </div>
+                  <html:p />
+                  <menubar style="text-align:left" width="175px"
+                     orient="vertical" autodrop="true">
+                     <menuitem src="/media/gtk-edit.png"
+                        label="Reporte Gerencial"
+                        onClick='bl.incluir("")'
+                        id="" />
+                     <menu src="/media/configure.png"
+                        label="Administrar..." id="">
+                        <menupopup>
+                           <menuitem
+                              src="/media/icon_users.png" label="Contactos"
+                              onClick='bl.incluir("administracion_contactos.zul")'
+                              id="id_option_admusr" />
+                           <menuitem src="/media/perfiles.png"
+                              label="Perfiles"
+                              onClick='bl.incluir("administrarPerfiles.zul")'
+                              id="id_option_admperf" />
+                           <menuitem src="/media/recursos.png"
+                              label="Recursos"
+                              onClick='bl.incluir("administrarRecursos.zul")'
+                              id="id_option_admrec" />
+                           <menuitem src="/media/perfiles.png"
+                              label="Recursos por Perfil"
+                              onClick='bl.incluir("administrarPerfilRecurso.zul")'
+                              id="id_option_adm_perfil_recurso" />
+                           <menuitem
+                              src="/media/configure_shortcuts.png" label="Parámetros"
+                              onClick='bl.incluir("administracion_parametros.zul")'
+                              id="id_option_adm_param" />
+                           <menuitem src="/media/contents.png"
+                              label=" Estados Resultantes"
+                              onClick='bl.incluir("administrarEstadosResultantes.zul")'
+                              id="id_option_adm_estado" />
+                           <menuitem
+                              src="/media/view_multicolumn.png" label="Tipos de Campo"
+                              onClick='bl.incluir("administrarTipoCampo.zul")'
+                              id="id_option_adm_tipcampo" />
+                           <menuitem src="/media/history.png"
+                              label="Tipos de Evento"
+                              onClick='bl.incluir("administrarTipoEvento.zul")'
+                              id="id_option_adm_tipevent" />
+                           <menuitem
+                              src="/media/view_fit_window.png" label="Datos Admisibles"
+                              onClick='bl.incluir("administrarDatoAdmisible.zul")'
+                              id="id_option_adm_datos_admis" />
+                           <menuitem src="/media/gear.png"
+                              label="Acciones Admisibles"
+                              onClick='bl.incluir("administrarAccionAdmisible.zul")'
+                              id="id_option_adm_acciones_admis" />
+                           <menuitem src="/media/suspend.png"
+                              label="Bloqueos por Bin"
+                              onClick='bl.incluir("administrarBloqueoBin.zul")'
+                              id="id_option_adm_bloqueo_bin" />
+
+                        </menupopup>
+                     </menu>
+                     <menuitem src="/media/keys.png"
+                        label="Cambiar su contraseña"
+                        onClick='bl.incluir("cambiarContrasenia.zul")'
+                        id="id_option_chgpass" />
+                     <menuitem src="/media/paint.png"
+                        label="Cambiar su tema" onClick='bl.incluir("cambiarTema.zul")'
+                        id="id_option_chgtheme" />
+                  </menubar>
+                  <html:p />
+
+                  <div align="left">
+                     <label zclass="z-south-header"
+                        style="background:transparent; font-family: sans-serif; font-weight:normal; font-size:14px">
+                        &#160;Reportes:
+                     </label>
+                  </div>
+                  <html:p />
+                  <menubar style="text-align:left" width="175px"
+                     orient="vertical">
+                     <menuitem width="200px"
+                        src="/media/report_icon.gif" label="Ventas vs Pedidos"
+                        onClick='bl.incluir("reporteReclamos.zul")'
+                        id="id_option_repReclam" />
+                     <menuitem src="/media/icon_transaction.gif"
+                        label="Transacciones"
+                        onClick='bl.incluir("reporteReclamoTransaccion.zul")'
+                        id="id_option_repReclamTrans" />
+                     <menuitem src="/media/events.png"
+                        label="Eventos del Sistema" onClick='bl.incluir("eventos.zul")'
+                        id="id_option_consEvento" />
+                  </menubar>
+               </div>
+            </vbox>
+         </west>
+         <center autoscroll="true" border="0" flex="true">
+            <include id="inc" />
+         </center>
+         <east margins="0,3,4,0" collapsible="true" border="0">
+         </east>
+         <south size="34px" border="0" zclass="z-border-layout"
+            style="visibility:visible;">
+            <toolbar mold="panel" align="center">
+               <label zclass="z-south-header"
+                  style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:14px; font-weight:normal ">
+                  JX_Market S.A.
+               </label>
+            </toolbar>
+         </south>
+      </borderlayout>
+   </div>
+</zk>

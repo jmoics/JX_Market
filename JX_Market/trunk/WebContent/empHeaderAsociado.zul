@@ -1,0 +1,27 @@
+<?page id="headerpage" title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+
+   <window zclass="z-border-layout" style="visibility:visible;" id="wh"
+      use="">
+      <hbox width="100%">
+         <div align="left">
+            &#160;
+            <toolbarbutton
+               style="background:transparent;font-family: sans-serif; border-bottom:0; font-size:12px; font-weight:normal;
+                    padding: 5px 3px 4px 5px; line-height: 15px; zoom: 1"
+               id="alertas" onClick="wh.saltar()" />
+         </div>
+         <div align="right">
+            <label zclass="z-south-header"
+               style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:12px; font-weight:normal "
+               value="Usted es:" />
+            <label zclass="z-south-header"
+               style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:12px; font-weight:normal "
+               id="userdata" />
+
+         </div>
+      </hbox>
+   </window>
+
+
+</zk>

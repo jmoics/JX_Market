@@ -18,12 +18,15 @@ import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
 
-public class PO_EmpLoginAsociado extends Window {
+public class PO_EmpLoginAsociado
+    extends Window
+{
 
     private Textbox txtUser, txtPass;
     private Combobox cmbEmp;
 
-    public void onCreate () {
+    public void onCreate()
+    {
         txtUser = (Textbox) getFellow("txtUser");
         txtPass = (Textbox) getFellow("txtPass");
         cmbEmp = (Combobox) getFellow("cmbEmp");
@@ -31,7 +34,8 @@ public class PO_EmpLoginAsociado extends Window {
         txtUser.setFocus(true);
     }
 
-    public void authenticate () {
+    public void authenticate()
+    {
         DTO_Usuario usuario = new DTO_Usuario();
         usuario.setUsername(txtUser.getValue());
         usuario.setContrasena(txtPass.getValue());
@@ -40,7 +44,7 @@ public class PO_EmpLoginAsociado extends Window {
         DTO_Usuario validado = (DTO_Usuario) getUsuario(usuario);
         if (validado != null) {
             getDesktop().getSession().setAttribute("login", validado);
-            Executions.sendRedirect("menu.zul");
+            Executions.sendRedirect("empMenuPrincAsociado.zul");
         } else {
             txtUser.setText("");
             txtUser.setFocus(true);
@@ -48,13 +52,14 @@ public class PO_EmpLoginAsociado extends Window {
             getFellow("badauth").setVisible(true);
         }
     }
-    
-    public void obtenerEmpresas () {
+
+    public void obtenerEmpresas()
+    {
         List<DTO_Empresa> empresas;
         BusinessService empresaService = Utility.getService(this, "empresaService");
         DTO_Input input = new DTO_Input();
         input.setVerbo("list");
-        
+
         DTO_Output output = empresaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             empresas = (List<DTO_Empresa>) output.getLista();
@@ -69,7 +74,8 @@ public class PO_EmpLoginAsociado extends Window {
         }
     }
 
-    public DTO_Usuario getUsuario (DTO_Usuario C) {
+    public DTO_Usuario getUsuario(DTO_Usuario C)
+    {
         DTO_Usuario usuario;
         BusinessService authService = Utility.getService(this, "authService");
         DTO_Input input = new DTO_Input(C);
