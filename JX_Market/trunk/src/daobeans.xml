@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:context="http://www.springframework.org/schema/context"
-                xmlns:tx="http://www.springframework.org/schema/tx"
-                xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                                 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
                                 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-     <bean id="clienteDAO" class="pe.com.jx_market.dao.ibatis.ClienteDAOibatis">
-          <property name="sqlMapClient" ref="sqlMapClient"/>
-     </bean>
-     
-     <bean id="empleadoDAO" class="pe.com.jx_market.dao.ibatis.EmpleadoDAOibatis">
-          <property name="sqlMapClient" ref="sqlMapClient"/>
-     </bean>
-     
-     <bean id="usuarioDAO" class="pe.com.jx_market.dao.ibatis.UsuarioDAOibatis">
-          <property name="sqlMapClient" ref="sqlMapClient"/>
-     </bean>			
-      
+    <bean id="clienteDAO" class="pe.com.jx_market.dao.ibatis.ClienteDAOibatis">
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="empleadoDAO" class="pe.com.jx_market.dao.ibatis.EmpleadoDAOibatis">
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="usuarioDAO" class="pe.com.jx_market.dao.ibatis.UsuarioDAOibatis">
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+    
+    <bean id="empresaDAO" class="pe.com.jx_market.dao.ibatis.EmpresaDAOibatis">
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
 </beans>

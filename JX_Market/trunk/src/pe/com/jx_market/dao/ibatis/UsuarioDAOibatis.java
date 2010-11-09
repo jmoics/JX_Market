@@ -13,18 +13,17 @@ import pe.com.jx_market.service.Constantes;
 
 public class UsuarioDAOibatis extends SqlMapClientDaoSupport implements UsuarioDAO {
 
-	@Override
-	public boolean registraUsuario(DTO_Usuario us) {
+    @Override
+    public boolean registraUsuario (DTO_Usuario us) {
         HashMap mapa = new HashMap();
         mapa.put("usuario_n_codigo", us.getCodigo());
-		mapa.put("empresa_n_codigo", us.getEmpresa());
-		mapa.put("usuario_v_contrasena", us.getContrasena());
+        mapa.put("empresa_n_codigo", us.getEmpresa());
+        mapa.put("usuario_v_contrasena", us.getContrasena());
 
-        
-        DTO_Usuario usuario = (DTO_Usuario)getSqlMapClientTemplate().
-                queryForObject("getUsuarioPorCodigo", mapa);
-        
-        if(usuario == null) {
+        DTO_Usuario usuario = (DTO_Usuario) getSqlMapClientTemplate().queryForObject(
+                "getUsuarioPorCodigo", mapa);
+
+        if (usuario == null) {
             getSqlMapClientTemplate().insert("insertUsuario", mapa);
             return true;
         } else {
@@ -32,46 +31,47 @@ public class UsuarioDAOibatis extends SqlMapClientDaoSupport implements UsuarioD
             return true;
         }
     }
-	
-	@Override
-	public DTO_Usuario leeUsuario(String codigo, Integer empresa){
-		HashMap mapa = new HashMap();
+
+    @Override
+    public DTO_Usuario leeUsuario (String codigo, Integer empresa) {
+        HashMap mapa = new HashMap();
         mapa.put("usuario_n_codigo", codigo);
         mapa.put("empresa_n_codigo", empresa);
-		return (DTO_Usuario)getSqlMapClientTemplate().queryForObject("getUsuarioPorCodigo", mapa);
-		
-	}
-	
-	@Override
-	public boolean eliminaUsuario(DTO_Usuario cliente){
-		HashMap mapa = new HashMap();
-		mapa.put("cliente_n_codigo", cliente.getCodigo());
-		mapa.put("empresa_n_codigo", cliente.getEmpresa());
-		getSqlMapClientTemplate().delete("delUsuario", mapa);
-		//eliminar usuario
-		return false;
-	}
-	
-	@Override
-	public List<DTO_Usuario> getUsuarios(Integer empresa){
-		HashMap mapa = new HashMap();
-		mapa.put("empresa_n_codigo", empresa);
-		return getSqlMapClientTemplate().queryForList("getUsuarios", mapa);
-	}
-	
-	@Override
-    public boolean cambiaPassword(DTO_Usuario usuario) {
-    	
+        return (DTO_Usuario) getSqlMapClientTemplate().queryForObject("getUsuarioPorCodigo", mapa);
+
+    }
+
+    @Override
+    public boolean eliminaUsuario (DTO_Usuario cliente) {
+        HashMap mapa = new HashMap();
+        mapa.put("cliente_n_codigo", cliente.getCodigo());
+        mapa.put("empresa_n_codigo", cliente.getEmpresa());
+        getSqlMapClientTemplate().delete("delUsuario", mapa);
+        // eliminar usuario
+        return false;
+    }
+
+    @Override
+    public List<DTO_Usuario> getUsuarios (Integer empresa) {
+        HashMap mapa = new HashMap();
+        mapa.put("empresa_n_codigo", empresa);
+        return getSqlMapClientTemplate().queryForList("getUsuarios", mapa);
+    }
+
+    @Override
+    public boolean cambiaPassword (DTO_Usuario usuario) {
         DTO_Usuario c = leeUsuario(usuario.getCodigo(), usuario.getEmpresa());
-        if(c == null) {
-            throw new RuntimeException("No se pudo hallar usuario " + usuario.getCodigo() + " en tabla");
+        if (c == null) {
+            throw new RuntimeException("No se pudo hallar usuario " + usuario.getCodigo()
+                    + " en tabla");
         }
         HashMap mapa = new HashMap();
-		mapa.put("usuario_n_codigo", usuario.getCodigo());
-		mapa.put("usuario_v_contrasena", usuario.getContrasena());
-		mapa.put("empresa_n_codigo", usuario.getEmpresa());
-		//hacer alguna validacion con el password anterior, aunque creo q seria mejor en el servicio
-		getSqlMapClientTemplate().update("chgPass", mapa);
+        mapa.put("usuario_n_codigo", usuario.getCodigo());
+        mapa.put("usuario_v_contrasena", usuario.getContrasena());
+        mapa.put("empresa_n_codigo", usuario.getEmpresa());
+        // hacer alguna validacion con el password anterior, aunque creo q seria
+        // mejor en el servicio
+        getSqlMapClientTemplate().update("chgPass", mapa);
         return true;
     }
 }

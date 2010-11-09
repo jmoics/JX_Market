@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:context="http://www.springframework.org/schema/context"
-                xmlns:tx="http://www.springframework.org/schema/tx"
-                xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                                 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
                                 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
     <!-- PERSISTENCIA -->
-    <import resource="daobeans.xml"/>
+    <import resource="daobeans.xml" />
 
     <!-- SERVICIOS -->
+
+    <bean id="authService" class="pe.com.jx_market.service.AuthService">
+        <property name="dao" ref="usuarioDAO" />
+        <property name="passwordHashService" ref="passwordHashService" />
+    </bean>
     
-   	<bean id="authService" class="pe.com.jx_market.service.AuthService">
-		<property name="dao" ref="usuarioDAO"/>
-		<property name="passwordHashService" ref="passwordHashService"/>
-	</bean>
-	
-	<bean id="clienteService" class="pe.com.jx_market.service.ClienteService">
-		<property name="dao" ref="clienteDAO"/>
-	</bean>
-	
-	<bean id="empleadoService" class="pe.com.jx_market.service.EmpleadoService">
-		<property name="dao" ref="empleadoDAO"/>
-	</bean>
-	
-	<bean id="usuarioService" class="pe.com.jx_market.service.UsuarioService">
-		<property name="dao" ref="usuarioDAO"/>
-		<property name="passwordHashService" ref="passwordHashService"/>
-	</bean>
-	
-	<bean id="passwordHashService" class="pe.com.jx_market.service.PasswordHashService"/>
-    
+    <bean id="empresaService" class="pe.com.jx_market.service.EmpresaService">
+        <property name="dao" ref="empresaDAO" />
+    </bean>
+
+    <bean id="clienteService" class="pe.com.jx_market.service.ClienteService">
+        <property name="dao" ref="clienteDAO" />
+    </bean>
+
+    <bean id="empleadoService" class="pe.com.jx_market.service.EmpleadoService">
+        <property name="dao" ref="empleadoDAO" />
+    </bean>
+
+    <bean id="usuarioService" class="pe.com.jx_market.service.UsuarioService">
+        <property name="dao" ref="usuarioDAO" />
+        <property name="passwordHashService" ref="passwordHashService" />
+    </bean>
+
+    <bean id="passwordHashService" class="pe.com.jx_market.service.PasswordHashService" />
+
 </beans>

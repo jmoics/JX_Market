@@ -5,5 +5,5 @@
     "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
 
 <sqlMapConfig>
-  <sqlMap resource="Querys.xml"/>
+    <sqlMap resource="Querys.xml" />
 </sqlMapConfig>

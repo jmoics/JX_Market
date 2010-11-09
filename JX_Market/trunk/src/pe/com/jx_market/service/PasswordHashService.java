@@ -1,6 +1,5 @@
 /*
- * (C) 2010 JX_MARKET
- * TODOS LOS DERECHOS RESERVADOS
+ * (C) 2010 JX_MARKET TODOS LOS DERECHOS RESERVADOS
  */
 
 package pe.com.jx_market.service;
@@ -11,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import org.apache.commons.logging.*;
 
 /**
- *
+ * 
  * @author jorge
  */
 public class PasswordHashService implements BusinessService {
@@ -19,8 +18,8 @@ public class PasswordHashService implements BusinessService {
     static Log logger = LogFactory.getLog(PasswordHashService.class);
     private MessageDigest algorithm = null;
 
-    public PasswordHashService() {
-         try {
+    public PasswordHashService () {
+        try {
             algorithm = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException nsae) {
             logger.error("Cannot find digest algorithm MD5");
@@ -28,7 +27,7 @@ public class PasswordHashService implements BusinessService {
         }
     }
 
-    public DTO_Output execute(DTO_Input e) {
+    public DTO_Output execute (DTO_Input e) {
         String arg = (String) e.getObject();
         byte[] defaultBytes = arg.getBytes();
         algorithm.reset();
@@ -44,7 +43,7 @@ public class PasswordHashService implements BusinessService {
         }
         String answer = hexString.toString();
         DTO_Output output = new DTO_Output();
-        output.setObject(answer.substring(0,32));
+        output.setObject(answer.substring(0, 32));
         output.setErrorCode(Constantes.OK);
         return output;
     }
