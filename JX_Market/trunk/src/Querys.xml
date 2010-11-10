@@ -271,7 +271,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             emp.empresa_n_codigo as codigo,
             emp.empresa_v_razonsocial as razonsocial,
             emp.empresa_n_activo as estado,
-            emp.empresa_n_ruc as ruc
+            emp.empresa_v_ruc as ruc
         FROM
             T_EMP_EMPRESA emp
         WHERE
@@ -279,8 +279,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             <isNotNull prepend="AND" property="empresa_v_razonsocial">
                emp.empresa_v_razonsocial LIKE #empresa_v_razonsocial#
             </isNotNull>
-            <isNotNull prepend="OR" property="empresa_n_ruc">
-               emp.empresa_n_ruc LIKE #empresa_n_ruc#
+            <isNotNull prepend="OR" property="empresa_v_ruc">
+               emp.empresa_v_ruc LIKE #empresa_v_ruc#
             </isNotNull>
     </select>
 
