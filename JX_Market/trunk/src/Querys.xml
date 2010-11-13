@@ -233,13 +233,10 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     </select>
 
     <insert id="insertUsuario" parameterClass="DTO_Usuario">
-        <selectKey keyProperty="codigo" resultClass="int">
-            SELECT seq_T_SEG_USUARIO.NEXTVAL FROM DUAL
-        </selectKey>
         INSERT INTO T_SEG_USUARIO
-            (usuario_n_codigo,usuario_v_username,usuario_v_contrasena,empresa_n_codigo)
+            (usuario_v_username,usuario_v_contrasena,empresa_n_codigo)
         VALUES
-            (#codigo#, #username#, #contrasena#, #empresa#)
+            (#username#, #contrasena#, #empresa#)
     </insert>
 
     <update id="chgPass">

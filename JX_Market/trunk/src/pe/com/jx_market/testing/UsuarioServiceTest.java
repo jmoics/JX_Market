@@ -52,7 +52,7 @@ public class UsuarioServiceTest {
         List<DTO_Usuario> ulist = outputList.getLista();
         boolean hallado = false;
         for (DTO_Usuario uOut : ulist) {
-            if (uOut.getCodigo().equals("mdiaz")) {
+            if (uOut.getCodigo().equals("jmoics")) {
                 hallado = true;
             }
         }
