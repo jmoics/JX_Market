@@ -26,7 +26,7 @@ public class PO_EAMenuPrinc extends Borderlayout
         incluir("fondo.zul");
         DTO_Usuario usuario = (DTO_Usuario) getDesktop().getSession().getAttribute("login");
         DTO_Empresa empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
-        imaLogo.setSrc("Service/"+empresa.getDominio()+"/"+empresa.getDominio()+".gif");
+        imaLogo.setSrc("Service/"+empresa.getDominio().toUpperCase()+"/"+empresa.getDominio()+".png");
         if (usuario == null) {
             throw new RuntimeException("La sesion se perdio, vuelva a ingresar por favor");
         }
@@ -59,8 +59,9 @@ public class PO_EAMenuPrinc extends Borderlayout
     {
         getDesktop().getSession().removeAttribute("login");
         getDesktop().getSession().removeAttribute("actualizar");
+        getDesktop().getSession().removeAttribute("empresa");
         // getDesktop().getSession().removeAttribute("paginaActual");
-        Executions.sendRedirect("login.zul");
+        Executions.sendRedirect("eAlogin.zul");
     }
 
 }

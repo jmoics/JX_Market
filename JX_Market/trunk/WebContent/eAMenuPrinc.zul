@@ -8,7 +8,7 @@
                <hbox spacing="780px">
                   <image id="imaLogo" />
                   <image src="media/salir.gif"
-                     onClick='' style="cursor:pointer" />
+                     onClick='bl.salir()' style="cursor:pointer" />
                </hbox>
                <div width="100%">
                   <include id="inch" src="eAHeader.zul" />

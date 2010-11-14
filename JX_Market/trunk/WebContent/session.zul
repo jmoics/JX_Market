@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+   <window width="380px" border="normal" mode="modal">
+      <vbox>
+         <div align="center" width="340px" style="padding:10pt">
+            <label id="error"/>
+         </div>
+         <div align="center" style="margin-bottom:8pt">
+            <toolbarbutton visible="true" id="continuar" label="Regresar a la página principal"
+               href="eALogin.zul"/>
+         </div>
+      </vbox>
+      <zscript>
+         //
+         import org.apache.commons.logging.*;
+         org.apache.commons.logging.Log logger = org.apache.commons.logging.LogFactory.getLog(this.getClass());
+         //org.zkoss.util.logging.Log.lookup("Fatal").log(
+         Throwable t = (Throwable) requestScope.get("javax.servlet.error.exception");
+         if (t != null) {
+           logger.error("Excepcion capturada:", t);
+           error.setValue("Ocurrió un problema. Por favor contacte al administrador. Detalle del error: " + t.getMessage());
+           //t.printStackTrace();
+         } else {
+           String ecode = "" + requestScope.get("javax.servlet.error.status_code");
+           logger.error("codigo de error HTTP capturada:" + ecode);
+         }
+      </zscript>
+   </window>
+</zk>
