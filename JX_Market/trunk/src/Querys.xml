@@ -252,9 +252,10 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     <select id="getEmpresaPorCodigo" resultClass="DTO_Empresa">
         SELECT
             emp.empresa_n_codigo as codigo,
-            emp.empresa_v_nombre as nombre,
+            emp.empresa_v_razonsocial as razonsocial,
             emp.empresa_n_activo as estado,
-            emp.empresa_n_razonsocial as ruc
+            emp.empresa_v_ruc as ruc,
+            emp.empresa_v_dominio as dominio
         FROM
             T_EMP_EMPRESA emp
         WHERE
@@ -266,7 +267,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             emp.empresa_n_codigo as codigo,
             emp.empresa_v_razonsocial as razonsocial,
             emp.empresa_n_activo as estado,
-            emp.empresa_v_ruc as ruc
+            emp.empresa_v_ruc as ruc,
+            emp.empresa_v_dominio as dominio
         FROM
             T_EMP_EMPRESA emp
         WHERE
@@ -281,18 +283,18 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 
     <insert id="insertEmpresa" parameterClass="DTO_Empresa">
         INSERT INTO T_EMP_EMPRESA
-            (empresa_v_nombre,empresa_n_activo,empresa_n_razonsocial)
+            (empresa_v_razonsocial,empresa_n_activo,empresa_v_ruc,empresa_v_dominio)
         VALUES
-            (#razonsocial#,#estado#,#ruc#)
+            (#razonsocial#,#estado#,#ruc#,#dominio#)
     </insert>
     
     <update id="updateEmpresa">
         UPDATE T_EMP_EMPRESA
         SET
-            empresa_n_codigo = #empresa_n_codigo#,
-            empresa_v_nombre = #empresa_v_nombre#,
+            empresa_v_razonsocial = #empresa_v_razonsocial#,
             empresa_n_activo = #empresa_n_activo#,
-            empresa_n_razonsocial = #empresa_n_razonsocial#
+            empresa_v_ruc = #empresa_v_ruc#,
+            empresa_v_dominio = #empresa_v_dominio#
         WHERE
             empresa_n_codigo = #empresa_n_codigo#
     </update>

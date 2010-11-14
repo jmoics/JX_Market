@@ -69,6 +69,7 @@ public class PO_EALogin
                 DTO_Usuario validado = (DTO_Usuario) getUsuario(usuario);
                 if (validado != null) {
                     getDesktop().getSession().setAttribute("login", validado);
+                    getDesktop().getSession().setAttribute("empresa", empresa);
                     Executions.sendRedirect("eAMenuPrinc.zul");
                 } else {
                     txtUser.setText("");

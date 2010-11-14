@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window title="Error ${requestScope['javax.servlet.error.status_code']}"
+    width="400px" border="normal" mode="modal">
+        <vbox>
+            <label>
+            Se encontró un error imprevisto:
+            ${requestScope['javax.servlet.error.message']}.
+            Por favor reporte al administrador para darle solución.
+            </label>
+            <hbox style="margin-left:auto; margin-right:auto">
+                <button label="Continue" href="/login.zul">
+                </button>
+            </hbox>
+        </vbox>
+        <zscript>
+        //import org.apache.commons.logging.*;
+        org.apache.commons.logging.Log logger = org.apache.commons.logging.LogFactory.getLog(this.getClass());
+        
+        //org.zkoss.util.logging.Log.lookup("Fatal").log(        
+        Throwable t = (Throwable)requestScope.get("javax.servlet.error.exception");
+        if(t != null) {
+          logger.error("Excepcion capturada:" , t);
+          //t.printStackTrace();
+        } else {      
+          String ecode = "" + requestScope.get("javax.servlet.error.status_code");
+          logger.error("codigo de error HTTP capturada:" + ecode);        
+      }
+        </zscript>
+    </window>
+</zk>
