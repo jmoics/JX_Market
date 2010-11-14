@@ -2,16 +2,16 @@ package pe.com.jx_market.domain;
 
 public class DTO_Empresa {
 
-    private String codigo;
+    private Integer codigo;
     private String razonsocial;
     private Integer estado;
     private String ruc;
 
-    public String getCodigo () {
+    public Integer getCodigo () {
         return codigo;
     }
 
-    public void setCodigo (String codigo) {
+    public void setCodigo (Integer codigo) {
         this.codigo = codigo;
     }
 

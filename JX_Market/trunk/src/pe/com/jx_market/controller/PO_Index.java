@@ -14,7 +14,7 @@ public class PO_Index
 
     public void accedeAsociado()
     {
-        Executions.sendRedirect("empLoginAsociado.zul");
+        Executions.sendRedirect("eALogin.zul");
     }
 
     public void accedeEmpresa()

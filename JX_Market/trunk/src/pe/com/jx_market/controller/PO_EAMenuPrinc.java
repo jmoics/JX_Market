@@ -10,7 +10,7 @@ import org.zkoss.zul.Borderlayout;
  * @author George
  *
  */
-public class PO_EmpMenuPrincAsociado extends Borderlayout
+public class PO_EAMenuPrinc extends Borderlayout
 {
     
     public void onCreate()

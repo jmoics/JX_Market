@@ -1,0 +1,59 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+<div align="center">
+<window id="winEACP" width="720px" use="pe.com.jx_market.controller.PO_EAConsultaProducto">
+   <div align="center">
+      <vbox>
+         <html:p />
+         <div align="center">
+            <label zclass="z-south-header"
+               style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+               Consulta de Productos
+            </label>
+         </div>
+         <html:p />
+         <groupbox mold="3d" width="720px" id="grpBusq">
+            <caption label="Busqueda de Productos"/>
+            <div align="center">
+               <html:p />
+               <grid fixedLayout="false" width="670px">
+                  <rows>
+                     <row>
+                        <label value="Categoria"/>
+                        <combobox id="cmbCat" width="150px"/>
+                        <label value="Nombre Producto"/>
+                        <textbox id="txtNomProd" width="150px"/>
+                     </row>
+                     <row>
+                        <label value="Estado"/>
+                        <combobox id="cmbEstad" width="150px"/>
+                        <label value="Marca"/>
+                        <textbox id="txtMarc" width="150px"/>
+                     </row>
+                  </rows>
+               </grid>
+               <html:p />
+               <button label="Buscar" onClick=""/>
+               <button label="Limpiar" onClick=""/>
+               <html:p />
+            </div>
+         </groupbox>
+         <groupbox mold="3d" id="grpCons" width="720px">
+            <caption label="Productos"/>
+            <listbox>
+               <listhead>
+                  <listheader label="Categoria"/>
+                  <listheader label="Nombre"/>
+                  <listheader label="Marca"/>
+                  <listheader label="Precio"/>
+                  <listheader label="Estado"/>
+               </listhead>
+            </listbox>
+            <html:p />
+            <button label="Cancelar" onClick="" />
+         </groupbox>
+      </vbox>
+   </div>
+</window>
+</div>
+</zk>

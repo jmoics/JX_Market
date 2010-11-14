@@ -7,7 +7,6 @@ import java.util.Map;
 
 import pe.com.jx_market.dao.EmpresaDAO;
 import pe.com.jx_market.domain.DTO_Empresa;
-import pe.com.jx_market.domain.DTO_Usuario;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;

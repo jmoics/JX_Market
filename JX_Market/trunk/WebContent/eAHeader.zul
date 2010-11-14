@@ -1,0 +1,14 @@
+<?page id="headerpage" title="" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+
+   <window id="wh" use="">
+      <div width="100%" align="right">
+         <label zclass="z-south-header"
+            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:12px; font-weight:normal "
+            value="Usted es:" />
+         <label zclass="z-south-header"
+            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:12px; font-weight:normal "
+            id="userdata" />
+      </div>
+   </window>
+</zk>

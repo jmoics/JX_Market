@@ -2,7 +2,9 @@ package pe.com.jx_market.domain;
 
 import java.util.Date;
 
-public class DTO_Cliente implements java.io.Serializable {
+public class DTO_Cliente
+    implements java.io.Serializable
+{
 
     private String codigo;
     private Integer empresa;
@@ -20,123 +22,153 @@ public class DTO_Cliente implements java.io.Serializable {
     private Integer codPostal;
     private Integer estado;
 
-    public String getCodigo () {
+    public String getCodigo()
+    {
         return codigo;
     }
 
-    public void setCodigo (String codigo) {
+    public void setCodigo(String codigo)
+    {
         this.codigo = codigo;
     }
 
-    public Integer getEmpresa () {
+    public Integer getEmpresa()
+    {
         return empresa;
     }
 
-    public void setEmpresa (Integer empresa) {
+    public void setEmpresa(Integer empresa)
+    {
         this.empresa = empresa;
     }
 
-    public Integer getUsuario () {
+    public Integer getUsuario()
+    {
         return usuario;
     }
 
-    public void setUsuario (Integer usuario) {
+    public void setUsuario(Integer usuario)
+    {
         this.usuario = usuario;
     }
 
-    public String getNombre () {
+    public String getNombre()
+    {
         return nombre;
     }
 
-    public void setNombre (String nombre) {
+    public void setNombre(String nombre)
+    {
         this.nombre = nombre;
     }
 
-    public String getApellido () {
+    public String getApellido()
+    {
         return apellido;
     }
 
-    public void setApellido (String apellido) {
+    public void setApellido(String apellido)
+    {
         this.apellido = apellido;
     }
 
-    public Date getFecNac () {
+    public Date getFecNac()
+    {
         return fecNac;
     }
 
-    public void setFecNac (Date fecNac) {
+    public void setFecNac(Date fecNac)
+    {
         this.fecNac = fecNac;
     }
 
-    public Integer getDni () {
+    public Integer getDni()
+    {
         return dni;
     }
 
-    public void setDni (Integer dni) {
+    public void setDni(Integer dni)
+    {
         this.dni = dni;
     }
 
-    public String getDireccion () {
+    public String getDireccion()
+    {
         return direccion;
     }
 
-    public void setDireccion (String direccion) {
+    public void setDireccion(String direccion)
+    {
         this.direccion = direccion;
     }
 
-    public String getTelefono () {
+    public String getTelefono()
+    {
         return telefono;
     }
 
-    public void setTelefono (String telefono) {
+    public void setTelefono(String telefono)
+    {
         this.telefono = telefono;
     }
 
-    public String getCelular () {
+    public String getCelular()
+    {
         return celular;
     }
 
-    public void setCelular (String celular) {
+    public void setCelular(String celular)
+    {
         this.celular = celular;
     }
 
-    public String getEmail () {
+    public String getEmail()
+    {
         return email;
     }
 
-    public void setEmail (String email) {
+    public void setEmail(String email)
+    {
         this.email = email;
     }
 
-    public String getCiudad () {
+    public String getCiudad()
+    {
         return ciudad;
     }
 
-    public void setCiudad (String ciudad) {
+    public void setCiudad(String ciudad)
+    {
         this.ciudad = ciudad;
     }
 
-    public String getRegion () {
+    public String getRegion()
+    {
         return region;
     }
 
-    public void setRegion (String region) {
+    public void setRegion(String region)
+    {
         this.region = region;
     }
 
-    public Integer getCodPostal () {
+    public Integer getCodPostal()
+    {
         return codPostal;
     }
 
-    public void setCodPostal (Integer codPostal) {
+    public void setCodPostal(Integer codPostal)
+    {
         this.codPostal = codPostal;
     }
 
-    public Integer getEstado () {
+    public Integer getEstado()
+    {
         return estado;
     }
 
-    public void setEstado (Integer estado) {
+    public void setEstado(Integer estado)
+    {
         this.estado = estado;
     }
 }

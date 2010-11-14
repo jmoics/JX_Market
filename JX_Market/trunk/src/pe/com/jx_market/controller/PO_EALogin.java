@@ -3,10 +3,12 @@ package pe.com.jx_market.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
@@ -18,10 +20,9 @@ import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
 
-public class PO_EmpLoginAsociado
+public class PO_EALogin
     extends Window
 {
-
     private Textbox txtUser, txtPass;
     private Combobox cmbEmp;
 
@@ -33,26 +34,7 @@ public class PO_EmpLoginAsociado
         obtenerEmpresas();
         txtUser.setFocus(true);
     }
-
-    public void authenticate()
-    {
-        DTO_Usuario usuario = new DTO_Usuario();
-        usuario.setUsername(txtUser.getValue());
-        usuario.setContrasena(txtPass.getValue());
-        usuario.setEmpresa(1);
-
-        DTO_Usuario validado = (DTO_Usuario) getUsuario(usuario);
-        if (validado != null) {
-            getDesktop().getSession().setAttribute("login", validado);
-            Executions.sendRedirect("empMenuPrincAsociado.zul");
-        } else {
-            txtUser.setText("");
-            txtUser.setFocus(true);
-            txtPass.setText("");
-            getFellow("badauth").setVisible(true);
-        }
-    }
-
+    
     public void obtenerEmpresas()
     {
         List<DTO_Empresa> empresas;
@@ -71,6 +53,34 @@ public class PO_EmpLoginAsociado
             }
         } else {
             empresas = null;
+        }
+    }
+
+    public void authenticate() throws InterruptedException
+    {
+        DTO_Usuario usuario = new DTO_Usuario();
+        usuario.setUsername(txtUser.getValue());
+        usuario.setContrasena(txtPass.getValue());
+        if (cmbEmp.getSelectedItem() != null) {
+            DTO_Empresa empresa = (DTO_Empresa)cmbEmp.getSelectedItem().getAttribute("empresa");
+            if (empresa != null) {
+                usuario.setEmpresa(empresa.getCodigo());
+    
+                DTO_Usuario validado = (DTO_Usuario) getUsuario(usuario);
+                if (validado != null) {
+                    getDesktop().getSession().setAttribute("login", validado);
+                    Executions.sendRedirect("eAMenuPrinc.zul");
+                } else {
+                    txtUser.setText("");
+                    txtUser.setFocus(true);
+                    txtPass.setText("");
+                    getFellow("badauth").setVisible(true);
+                }
+            } else {
+                Messagebox.show("No se cargo la empresa", "JX_Market" , Messagebox.OK, Messagebox.INFORMATION);
+            }
+        } else {
+            Messagebox.show("Debe seleccionar una empresa", "JX_Market" , Messagebox.OK, Messagebox.INFORMATION);
         }
     }
 

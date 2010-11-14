@@ -3,7 +3,8 @@
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
    <div align="center">
       <style>
-         .desc { color:#545454;font-weight:bold;font-family:Sans-serif; } .btndiv .z-button-cr,
+         .desc { color:#545454;font-weight:bold;font-family:Sans-serif; } 
+         .btndiv .z-button-cr,
          .btndiv .z-button-cl, .btndiv .z-button-bl, .btndiv .z-button-bm, .btndiv .z-button-br,
          .btndiv .z-button-tl, .btndiv .z-button-tm, .btndiv .z-button-tr { background-image:none; }
          .btndiv .z-button-cm { background : transparent url('') no-repeat 0 0 ; } .myBlack
@@ -13,7 +14,7 @@
       </style>
       <image src="media/jx_market.gif" />
       <html:p />
-      <window id="w" width="770px" use="pe.com.jx_market.controller.PO_EmpLoginAsociado">
+      <window id="w" width="770px" use="pe.com.jx_market.controller.PO_EALogin">
          <div align="left">
             <vbox width="770px">
                <html:p />

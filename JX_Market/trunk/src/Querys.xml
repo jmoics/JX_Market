@@ -6,12 +6,10 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 
 <sqlMap>
     <typeAlias alias="DTO_Cliente" type="pe.com.jx_market.domain.DTO_Cliente" />
-
     <typeAlias alias="DTO_Empleado" type="pe.com.jx_market.domain.DTO_Empleado" />
-
     <typeAlias alias="DTO_Usuario" type="pe.com.jx_market.domain.DTO_Usuario" />
-    
     <typeAlias alias="DTO_Empresa" type="pe.com.jx_market.domain.DTO_Empresa" />
+    <typeAlias alias="DTO_Articulo" type="pe.com.jx_market.domain.DTO_Articulo" />
 
     <!-- MANTENIMIENTO DE CLIENTES -->
 
@@ -282,13 +280,10 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     </select>
 
     <insert id="insertEmpresa" parameterClass="DTO_Empresa">
-        <selectKey keyProperty="codigo" resultClass="int">
-            SELECT seq_T_EMP_EMPRESA.NEXTVAL FROM DUAL
-        </selectKey>
         INSERT INTO T_EMP_EMPRESA
-            (empresa_n_codigo,empresa_v_nombre,empresa_n_activo,empresa_n_razonsocial)
+            (empresa_v_nombre,empresa_n_activo,empresa_n_razonsocial)
         VALUES
-            (#codigo#,#razonsocial#,#estado#,#ruc#)
+            (#razonsocial#,#estado#,#ruc#)
     </insert>
     
     <update id="updateEmpresa">
@@ -308,4 +303,98 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
       WHERE
          empresa_n_codigo = #value#
 	</delete>
+   
+   
+    <!-- MANTENIMIENTO DE PRODUCTOS -->
+
+    <select id="getArticulos" resultClass="DTO_Articulo" parameterClass="DTO_Articulo">
+        SELECT
+            art.articulo_n_codigo as codigo,
+            art.empresa_n_codigo as empresa,
+            art.categoria_n_codigo as categoria,
+            art.articulo_v_nombre as nombre,
+            art.articulo_v_marca as marca,
+            art.articulo_v_descripcion as descripcion,
+            art.articulo_n_precio as precio,
+            art.articulo_n_stock as stock,
+            art.articulo_n_activo as activo
+        FROM
+            T_NEG_ARTICULO art,
+        WHERE
+            art.empresa_n_codigo = #empresa#
+            <isNotNull prepend="AND" property="categoria">
+               art.categoria_n_codigo = #categoria#
+            </isNotNull>
+            <isNotNull prepend="AND" property="nombre">
+               art.articulo_v_nombre = #nombre#
+            </isNotNull>
+            <isNotNull prepend="AND" property="marca">
+               art.articulo_v_marca = #marca#
+            </isNotNull>
+            <isNotNull prepend="AND" property="activo">
+               art.articulo_n_activo = #activo#
+            </isNotNull>
+    </select>
+
+    <select id="getArticuloXCodigo" resultClass="DTO_Articulo" parameterClass="DTO_Articulo">
+        SELECT
+            art.articulo_n_codigo as codigo,
+            art.empresa_n_codigo as empresa,
+            art.categoria_n_codigo as categoria,
+            art.articulo_v_nombre as nombre,
+            art.articulo_v_marca as marca,
+            art.articulo_v_descripcion as descripcion,
+            art.articulo_n_precio as precio,
+            art.articulo_n_stock as stock,
+            art.articulo_n_activo as activo
+        FROM
+            T_NEG_ARTICULO art
+        WHERE
+            art.empresa_n_codigo = #empresa#
+        AND
+            art.articulo_n_codigo = #codigo#
+    </select>
+
+    <insert id="insertArticulo" parameterClass="DTO_Articulo">
+        INSERT INTO T_NEG_ARTICULO
+            (empresa_n_codigo,categoria_n_codigo,articulo_v_nombre,
+            articulo_v_marca,articulo_v_descripcion,articulo_n_precio,
+            articulo_n_stock,articulo_n_activo)
+        VALUES
+            (#empresa#,#categoria#,#nombre#,
+            #marca#,#descripcion#,#precio#,
+            #stock#,#activo#)
+    </insert>
+    
+    <update id="updateStock" parameterClass="DTO_Articulo">
+        UPDATE T_NEG_ARTICULO
+        SET
+            articulo_n_stock = #stock#
+        WHERE
+            empresa_n_codigo = #empresa#
+        AND
+            articulo_n_codigo = #codigo#
+    </update>
+    
+    <update id="updateArticulo" parameterClass="DTO_Articulo">
+        UPDATE T_NEG_ARTICULO
+        SET
+            categoria_n_codigo = #categoria#,
+            articulo_v_nombre = #nombre#,
+            articulo_v_marca = #marca#,
+            articulo_v_descripcion = #descripcion#,
+            articulo_n_precio = #precio#,
+            articulo_n_activo = #activo#
+        WHERE
+            articulo_n_codigo = #codigo#
+        AND
+            empresa_n_codigo = #empresa#
+    </update>
+
+   <delete id="deleteArticulo">
+      DELETE FROM
+         T_NEG_ARTICULO
+      WHERE
+         articulo_n_codigo = #value#
+   </delete>
 </sqlMap>

@@ -1,0 +1,52 @@
+<?page title="JX_Market" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+<div align="center">
+   <window id="winEAIP" use="">
+      <vbox>
+         <html:p />
+         <div align="center">
+            <label zclass="z-south-header"
+               style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+               Ingreso de Productos
+            </label>
+         </div>
+         <html:p />
+         <groupbox mold="3d" width="720px">
+            <caption label="Nuevo Producto"/>
+            <div align="center">
+               <html:p />
+               <grid width="600px" fixedLayout="false">
+                  <columns>
+                     <column width="100px"/>
+                     <column/>
+                     <column width="100px"/>
+                     <column/>
+                  </columns>
+                  <rows>
+                     <row>
+                        <label value="Categoria"/>
+                        <combobox id="cmbCateg" width="170px"/>
+                        <label value="Nombre"/>
+                        <textbox id="txtNombre" width="170px"/>
+                     </row>
+                     <row spans="1,3">
+                        <label value="Descripcion"/>
+                        <textbox id="txtDesc" width="465px" multiline="true" rows="3"/>
+                     </row>
+                     <row>
+                        <label value="Marca"/>
+                        <textbox id="txtMarca" width="170px"/>
+                        <label value="Precio"/>
+                        <decimalbox id="decPrec" width="170px"/>
+                     </row>
+                  </rows>
+               </grid>
+               <html:p />
+               <button label="Crear" onClick=""/>
+               <button label="Limpiar" onClick=""/>
+            </div>
+         </groupbox>
+      </vbox>
+   </window>
+</div>
+</zk>

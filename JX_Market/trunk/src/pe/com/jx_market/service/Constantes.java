@@ -43,82 +43,19 @@ public class Constantes {
     public static final int INSTITUCION_JX_MARKET = 99;
 
     /*
-     * Constantes arbitrarias para estados del reclamo y transacciones
+     * Constantes para verbos
      */
-
-    /** Estado de Reclamo: ABIERTO */
-    public static final String ABIERTO = "A";
-    /** Estado de Reclamo: CERRADO */
-    public static final String CERRADO = "C";
-
-    /** Tipo de autenticacion local */
-    public static final String AUTH_LOCAL = "L";
-    /** Tipo de autenticacion corporativa */
-    public static final String AUTH_CORPORATIVA = "C";
-
-    /**
-     * Perfil contacto en banco
-     */
-    public static final String PERFIL_CONTACTO_BANCO = "CB";
-    /**
-     * Perfil supervisor de reclamos
-     */
-    public static final String PERFIL_SUPERVISOR_RECLAMOS = "OR";
+    public static final String V_REGISTER = "register";
+    public static final String V_GET = "get";
+    public static final String V_LIST = "list";
+    public static final String V_USTOCK = "upStock";
 
     /*
-     * Constantes para Asignacion de reclamos a un contacto
+     * Constantes para estados
      */
-
-    /** Se puede seleccionar solo una transaccion a la vez" */
-    public static final String CONTACTO_RECL_ASSIGN = "S";
-    /** Se pueden seleccionar mas una transaccion */
-    public static final String CONTACTO_NO_RECL_ASSIGN = "N";
-
-    /**
-     * Identificador de accion estandar sin comportamiento programatico
-     * adicional
-     */
-    public static final String IDENTIFICADOR_ACCION_ESTANDAR = "STD";
-
-    /**
-     * Identificador de accion de tipo cierre automatico (background)
-     */
-    public static final String IDENTIFICADOR_ACCION_CIERRE_AUTOMATICO = "CIE_AUT";
-
-    /**
-     * Identificador de accion de tipo asociacion de transaccion a reclamo
-     */
-    public static final String IDENTIFICADOR_ACCION_REGISTRO_TX = "REG_TX";
-
-    /**
-     * Identificador de accion de tipo cierre manual
-     */
-    public static final String IDENTIFICADOR_ACCION_CIERRE_MANUAL = "CIE_MAN";
-
-    /**
-     * Identificador de accion contracargo incoming visa
-     */
-    public static final String IDENTIFICADOR_ACCION_CONT_INC_VISA = "CIV";
-
-    /**
-     * Identificador de accion representacion incoming visa
-     */
-    public static final String IDENTIFICADOR_ACCION_REP_INC_VISA = "RIV";
-
-    /**
-     * Identificador de accion contracargo outgoing visa
-     */
-    public static final String IDENTIFICADOR_ACCION_CONT_OUT_VISA = "COV";
-
-    /**
-     * Identificador de accion representacion outgoing visa
-     */
-    public static final String IDENTIFICADOR_ACCION_REP_OUT_VISA = "ROV";
-
-    /**
-     * Identificador de accion pre cierre automatico
-     */
-    public static final String IDENTIFICADOR_ACCION_PRE_CIERRE_AUTOMATICO = "PCA";
+    public static final int ST_ACTIVO = 1;
+    public static final int ST_INACTIVO = 2;
+    public static final int ST_CANCELADO = 3;
 
     /*
      * Temas configurables

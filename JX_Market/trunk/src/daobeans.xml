@@ -18,6 +18,10 @@
         <property name="sqlMapClient" ref="sqlMapClient" />
     </bean>
     
+    <bean id="articuloDAO" class="pe.com.jx_market.dao.ibatis.ArticuloDAOibatis">
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+    
     <bean id="empresaDAO" class="pe.com.jx_market.dao.ibatis.EmpresaDAOibatis">
         <property name="sqlMapClient" ref="sqlMapClient" />
     </bean>
