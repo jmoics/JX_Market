@@ -1,8 +1,5 @@
-/*
- * Author:          jx_market
- * Revision:        $Rev: 1 $
- * Last Changed:    $Date: 2010-11-11 10:53:13 -0500 (jue, 11 nov 2010) $
- * Last Changed By: $Author: Jorge Cueva $
+/**
+ *
  */
 package pe.com.jx_market.controller;
 
