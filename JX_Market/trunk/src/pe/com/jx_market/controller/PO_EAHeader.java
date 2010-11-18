@@ -9,7 +9,7 @@ import org.zkoss.zul.Window;
 import pe.com.jx_market.domain.DTO_Usuario;
 
 /**
- * @author George
+ * @author <._.> 
  *
  */
 public class PO_EAHeader extends Window

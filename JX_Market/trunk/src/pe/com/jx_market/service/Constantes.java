@@ -40,7 +40,7 @@ public class Constantes {
      * 
      * Este valor se asume que siempre esta en la base de datos del SICF
      */
-    public static final int INSTITUCION_JX_MARKET = 99;
+    public static final int INSTITUCION_JX_MARKET = 1;
 
     /*
      * Constantes para verbos
@@ -48,6 +48,7 @@ public class Constantes {
     public static final String V_REGISTER = "register";
     public static final String V_GET = "get";
     public static final String V_LIST = "list";
+    public static final String V_DELETE = "delete";
     public static final String V_USTOCK = "upStock";
 
     /*

@@ -1,7 +1,7 @@
 <?page title="JX_Market" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
 <div align="center">
-   <window id="winEAIP" use="">
+   <window id="winEAIP" use="pe.com.jx_market.controller.PO_EAIngresaProducto">
       <vbox>
          <html:p />
          <div align="center">
@@ -25,7 +25,7 @@
                   <rows>
                      <row>
                         <label value="Categoria"/>
-                        <combobox id="cmbCateg" width="170px"/>
+                        <combobox id="cmbCateg" width="170px" autodrop="true"/>
                         <label value="Nombre"/>
                         <textbox id="txtNombre" width="170px"/>
                      </row>
@@ -42,8 +42,8 @@
                   </rows>
                </grid>
                <html:p />
-               <button label="Crear" onClick=""/>
-               <button label="Limpiar" onClick=""/>
+               <button label="Crear Producto" onClick="winEAIP.crearProducto()"/>
+               <button label="Limpiar" onClick="winEAIP.limpiarCampos()"/>
             </div>
          </groupbox>
       </vbox>

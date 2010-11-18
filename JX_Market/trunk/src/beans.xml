@@ -37,4 +37,8 @@
     </bean>
     
     <bean id="passwordHashService" class="pe.com.jx_market.service.PasswordHashService" />
+    
+    <bean id="categoriaService" class="pe.com.jx_market.service.CategoriaService">
+        <property name="dao" ref="categoriaDAO" />
+    </bean>
 </beans>

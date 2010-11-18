@@ -31,7 +31,7 @@
                   <menubar style="text-align:left" width="175px"
                      orient="vertical" autodrop="true">
                      <menuitem src="/media/filenew.png"
-                        label="Pedidos" onClick='inc.setSrc(null);bl.incluir("nuevoReclamo.zul")'
+                        label="Pedidos" onClick=''
                         id="id_option_newrecl" />
                      <menu src="/media/logviewer.png"
                         label="Productos" id="id_option_anarecl">
