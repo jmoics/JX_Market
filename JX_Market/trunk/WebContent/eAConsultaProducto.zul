@@ -33,14 +33,14 @@
                   </rows>
                </grid>
                <html:p />
-               <button label="Buscar" onClick=""/>
-               <button label="Limpiar" onClick=""/>
+               <button label="Buscar" onClick="winEACP.buscarProductos()"/>
+               <button label="Limpiar" onClick="winEACP.limpiarConsulta()"/>
                <html:p />
             </div>
          </groupbox>
          <groupbox mold="3d" id="grpCons" width="720px">
             <caption label="Productos"/>
-            <listbox>
+            <listbox id="lstProd">
                <listhead>
                   <listheader label="Categoria"/>
                   <listheader label="Nombre"/>

@@ -329,10 +329,10 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
                art.categoria_n_codigo = #categoria#
             </isNotNull>
             <isNotNull prepend="AND" property="nombre">
-               art.articulo_v_nombre = #nombre#
+               art.articulo_v_nombre LIKE #nombre#
             </isNotNull>
             <isNotNull prepend="AND" property="marca">
-               art.articulo_v_marca = #marca#
+               art.articulo_v_marca LIKE #marca#
             </isNotNull>
             <isNotNull prepend="AND" property="activo">
                art.articulo_n_activo = #activo#
@@ -424,8 +424,6 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         FROM
             T_NEG_CATEGORIA cat
         WHERE
-            cat.empresa_n_codigo = #empresa#
-        AND
             cat.categoria_n_codigo = #codigo#
     </select>
 
