@@ -34,9 +34,9 @@ public class UsuarioServiceTest {
 
         // nuevo usuario
         DTO_Usuario unew = new DTO_Usuario();
-        unew.setUsername("jmoics");
-        unew.setContrasena("jmoics");
-        unew.setEmpresa(1);
+        unew.setUsername("jcueva");
+        unew.setContrasena("jcueva");
+        unew.setEmpresa(3);
 
         DTO_Input input = new DTO_Input(unew);
         input.setVerbo("register");

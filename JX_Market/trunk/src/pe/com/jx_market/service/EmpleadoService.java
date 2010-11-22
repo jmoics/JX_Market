@@ -2,8 +2,9 @@ package pe.com.jx_market.service;
 
 import java.util.HashSet;
 
-import pe.com.jx_market.dao.ClienteDAO;
+import pe.com.jx_market.dao.EmpleadoDAO;
 import pe.com.jx_market.domain.DTO_Cliente;
+import pe.com.jx_market.domain.DTO_Empleado;
 import pe.com.jx_market.domain.DTO_Usuario;
 
 import pe.com.jx_market.utilities.*;
@@ -17,8 +18,7 @@ import pe.com.jx_market.utilities.*;
 
 public class EmpleadoService implements BusinessService {
 
-    private ClienteDAO dao;
-    private BusinessService parametroService;
+    private EmpleadoDAO dao;
 
     /**
      * El DTO_Input contendrá como verbo un String: para realizar una consulta
@@ -38,64 +38,35 @@ public class EmpleadoService implements BusinessService {
     public DTO_Output execute (DTO_Input input) {
 
         DTO_Output output = new DTO_Output();
-        if ("list".equals(input.getVerbo())) {
-            // Integer institucion = (Integer)input.getObject();
-            output.setLista(dao.getClientes());
+        if (Constantes.V_LIST.equals(input.getVerbo())) {
+            DTO_Empleado empleado = (DTO_Empleado) input.getObject();
+            output.setLista(dao.getEmpleados(empleado));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if ("register".equals(input.getVerbo())) {
-            dao.registraCliente((DTO_Cliente) input.getObject());
+        } else if (Constantes.V_GET.equals(input.getVerbo())) {
+            DTO_Empleado empleado = (DTO_Empleado) input.getObject();
+            output.setObject(dao.leeEmpleado(empleado));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if ("delete".equals(input.getVerbo())) {
-            dao.eliminaCliente((DTO_Cliente) input.getObject());
+        }else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
+            dao.registraEmpleado((DTO_Empleado) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
-        }/*
-          * else if("chgpass".equals(input.getVerbo())) { DTO_Usuario usuario =
-          * (DTO_Usuario)input.getObject(); String nuevoPassword =
-          * usuario.getContrasena(); // aqui se puede aprovechar para hacer
-          * algunas validaciones if(nuevoPassword.length() < 6) {
-          * output.setErrorCode(Constantes.BAD_PASS); return output; }
-          * if(!checkRepeticiones(nuevoPassword)) {
-          * output.setErrorCode(Constantes.BAD_PASS); return output; } //
-          * encriptar el password...
-          * 
-          * if(dao.cambiaPassword(usuario.getCodigo(), nuevoPassword,
-          * usuario.getEmpresa())) { output.setErrorCode(Constantes.OK); return
-          * output; } else { throw new
-          * RuntimeException("Ocurrio un error al intentar guardar el nuevo tema"
-          * ); } }
-          */else {
+        } else if (Constantes.V_DELETE.equals(input.getVerbo())) {
+            dao.eliminaEmpleado((DTO_Empleado) input.getObject());
+            output.setErrorCode(Constantes.OK);
+            return output;
+        } else {
             throw new RuntimeException("No se especifico verbo adecuado");
         }
     }
 
-    private boolean checkRepeticiones (String pass) {
-        HashSet<Character> letras = new HashSet<Character>();
-        for (int z = 0; z < pass.length(); z++) {
-            letras.add(pass.charAt(z));
-        }
-        if (letras.size() < 4) {
-            return false;
-        }
-        return true;
-    }
-
-    public ClienteDAO getDao () {
+    public EmpleadoDAO getDao () {
         return dao;
     }
 
-    public void setDao (ClienteDAO dao) {
+    public void setDao (EmpleadoDAO dao) {
         this.dao = dao;
-    }
-
-    public BusinessService getParametroService () {
-        return parametroService;
-    }
-
-    public void setParametroService (BusinessService parametroService) {
-        this.parametroService = parametroService;
     }
 
 }

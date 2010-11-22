@@ -109,7 +109,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 
     <!-- MANTENIMIENTO DE EMPLEADOS -->
 
-    <select id="getEmpleadoPorCodigo" resultClass="DTO_Cliente">
+    <select id="getEmpleados" parameterClass="DTO_Empleado" resultClass="DTO_Empleado">
         SELECT
             emp.empleado_n_codigo as codigo,
             emp.usuario_n_codigo as usuario,
@@ -124,83 +124,65 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             emp.empleado_v_email as email,
             emp.empleado_v_ciudad as ciudad,
             emp.empleado_v_region as region,
-            emp.empleado_v_codpostal as codPostal,
-            emp.empleado_n_activo as estado
-        FROM
-            T_EMP_EMPLEADO emp,
-            T_SEG_USUARIO us,
-            T_EMP_EMPRESA em
-        WHERE
-            us.usuario_n_codigo = cl.usuario_n_codigo
-        AND
-            us.empresa_n_codigo = em.empresa_n_codigo
-        AND
-            us.empleado_n_codigo = #empleado_n_codigo#
-        AND
-            us.empresa_n_codigo = #empresa_n_codigo#
-    </select>
-
-    <select id="getEmpleados" resultClass="DTO_Empleado">
-        SELECT
-            emp.empleado_n_codigo as codigo,
-            emp.usuario_n_codigo as usuario,
-            emp.empresa_n_codigo as empresa,
-            emp.empleado_v_nombre as nombre,
-            emp.empleado_d_fechanac as fecNac,
-            emp.empleado_v_apellido as apellido,
-            emp.empleado_n_dni as dni,
-            emp.empleado_v_direccion as direccion,
-            emp.empleado_v_telefono as telefono,
-            emp.empleado_v_celular as celular,
-            emp.empleado_v_email as email,
-            emp.empleado_v_ciudad as ciudad,
-            emp.empleado_v_region as region,
-            emp.empleado_v_codpostal as codPostal,
             emp.empleado_n_activo as estado
         FROM
             T_EMP_EMPLEADO emp
         WHERE
-            emp.empresa_n_codigo = #empresa_n_codigo#
-        ORDER BY
-            emp.empleado_n_codigo
+            us.empresa_n_codigo = #empresa#
+        <isNotNull prepend="AND" property="usuario">
+            us.usuario_n_codigo = #usuario#
+        </isNotNull>
+        <isNotNull prepend="AND" property="empleado">
+            us.empleado_n_codigo = #empleado#
+        </isNotNull>
     </select>
 
-    <insert id="insertEmpleado">
+    <insert id="insertEmpleado" parameterClass="DTO_Empleado">
         INSERT INTO
         T_EMP_EMPLEADO
-            (empleado_n_codigo,
-            usuario_n_codigo,
-            empresa_n_codigo,
-            empleado_v_nombre,
-            empleado_d_fechanac,
-            empleado_v_apellido,
-            empleado_n_dni,
-            empleado_v_direccion,
-            empleado_v_telefono,
-            empleado_v_celular,
-            empleado_v_email,
-            empleado_v_ciudad,
-            empleado_v_region,
-            empleado_v_codpostal,
-            empleado_n_activo)
+            (usuario_n_codigo, empresa_n_codigo,
+            empleado_v_nombre, empleado_d_fechanac, empleado_v_apellido,
+            empleado_n_dni, empleado_v_direccion, empleado_v_telefono,
+            empleado_v_celular, empleado_v_email, empleado_v_ciudad,
+            empleado_v_region, empleado_n_activo)
         VALUES
-            (#empleado_n_codigo#,
-            #usuario_n_codigo#,
-            #empresa_n_codigo#,
-            #empleado_v_nombre#,
-            #empleado_d_fechanac#,
-            #empleado_v_apellido#,
-            #empleado_n_dni#,
-            #empleado_v_direccion#,
-            #empleado_v_telefono#,
-            #empleado_v_celular#,
-            #empleado_v_email#,
-            #empleado_v_ciudad#,
-            #empleado_v_region#,
-            #empleado_v_codpostal#,
-            #empleado_n_activo#)
+            (#usuario#, #empresa#,
+            #nombre#, #fechanac#, #apellido#,
+            #dni#, #direccion#, #telefono#,
+            #celular#, #email#, #ciudad#,
+            #region#, #activo#)
     </insert>
-
+    
+    <update id="updateEmpleado" parameterClass="DTO_Empleado">
+        UPDATE T_EMP_EMPLEADO
+        SET
+            usuario_n_codigo = #usuario#,
+            empresa_n_codigo = #empresa#,
+            empleado_v_nombre = #nombre#,
+            empleado_d_fechanac = #fecNac#,
+            empleado_v_apellido = #apellido#,
+            empleado_n_dni = #dni#,
+            empleado_v_direccion = #direccion#,
+            empleado_v_telefono = #telefono#,
+            empleado_v_celular = #celular#,
+            empleado_v_email = #email#,
+            empleado_v_ciudad = #ciudad#,
+            empleado_v_region = #region#,
+            empleado_n_activo = #estado#
+        WHERE
+            empleado_n_codigo = #codigo#
+        AND
+            empresa_n_codigo = #empresa#
+    </update>
+    
+    <delete id="deleteEmpleado" parameterClass="DTO_Empleado">
+      DELETE FROM
+         T_EMP_EMPLEADO
+      WHERE
+         empresa_n_codigo = #empresa#
+      AND
+         empleado_n_codigo = #codigo#
+    </delete>
 
     <!-- MANTENIMIENTO DE USUARIOS -->
 

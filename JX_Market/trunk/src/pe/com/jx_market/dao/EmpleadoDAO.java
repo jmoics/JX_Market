@@ -3,18 +3,15 @@ package pe.com.jx_market.dao;
 import java.util.List;
 
 import pe.com.jx_market.domain.DTO_Cliente;
+import pe.com.jx_market.domain.DTO_Empleado;
 
 public interface EmpleadoDAO {
 
-    public DTO_Cliente leeCliente (String uname);
+    public DTO_Empleado leeEmpleado (DTO_Empleado empleado);
 
-    public boolean eliminaCliente (String uname);
+    public boolean eliminaEmpleado (DTO_Empleado empleado);
 
-    public boolean registraCliente (DTO_Cliente p);
+    public boolean registraEmpleado (DTO_Empleado empleado);
 
-    public List<DTO_Cliente> getClientes ();
-
-    public boolean cambiaPassword (String uname, String password);
-
-    public DTO_Cliente cambiaTheme (String uname, String tema);
+    public List<DTO_Empleado> getEmpleados (DTO_Empleado empleado);
 }
