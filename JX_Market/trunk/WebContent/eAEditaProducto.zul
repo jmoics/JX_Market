@@ -1,7 +1,7 @@
 <?page title="JX_Market" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
 <div align="center">
-   <window id="winEAEP" use="">
+   <window id="winEAEP" use="pe.com.jx_market.controller.PO_EAEditaProducto">
       <vbox>
          <html:p />
          <div align="center">
@@ -15,41 +15,47 @@
             <caption label="Modificar Producto"/>
             <div align="center">
                <html:p />
-               <grid width="600px" fixedLayout="false">
+               <grid width="500px" fixedLayout="false">
                   <columns>
-                     <column width="100px"/>
-                     <column/>
-                     <column width="100px"/>
+                     <column width="220px"/>
+                     <column width="220px"/>
                      <column/>
                   </columns>
                   <rows>
                      <row>
                         <label value="Categoria"/>
-                        <combobox id="cmbCateg" width="170px"/>
+                        <combobox id="cmbCateg" width="170px" autodrop="true"/>
+                        <cell rowspan="5">
+                           <image src="/media/imagProd.gif" id="imgFoto" width="100px" height="110px"/>
+                           <button label="Cargar Imagen" upload="true" onUpload="winEAEP.cargaFoto(this.event)"/>
+                        </cell>
+                     </row>
+                     <row>
                         <label value="Nombre"/>
                         <textbox id="txtNombre" width="170px"/>
-                     </row>
-                     <row spans="1,3">
-                        <label value="Descripcion"/>
-                        <textbox id="txtDesc" width="465px" multiline="true" rows="3"/>
                      </row>
                      <row>
                         <label value="Marca"/>
                         <textbox id="txtMarca" width="170px"/>
+                     </row>
+                     <row>
                         <label value="Precio"/>
                         <decimalbox id="decPrec" width="170px"/>
                      </row>
                      <row>
                         <label value="Estado"/>
-                        <combobox id="cmbEstado" width="170px"/>
-                        <label/>
-                        <label/>
+                        <combobox id="cmbEstado" width="170px" autodrop="true"/>
                      </row>
+                     <row spans="1,2">
+                        <label value="Descripcion"/>
+                        <textbox id="txtDesc" width="300px" multiline="true" rows="3"/>
+                     </row>
+                     
                   </rows>
                </grid>
                <html:p />
-               <button label="Crear" onClick=""/>
-               <button label="Limpiar" onClick=""/>
+               <button label="Volver" onClick="winEAEP.volverConsulta()"/>
+               <button label="Editar" onClick="winEAEP.editarProducto()"/>
             </div>
          </groupbox>
       </vbox>

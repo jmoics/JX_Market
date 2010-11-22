@@ -3,14 +3,18 @@
  */
 package pe.com.jx_market.controller;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.zkoss.image.AImage;
+import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Decimalbox;
+import org.zkoss.zul.Image;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
@@ -34,11 +38,14 @@ public class PO_EAIngresaProducto
     private Combobox cmbCateg;
     private Textbox txtNombre, txtDesc, txtMarca;
     private Decimalbox decPrec;
+    private Image imgFoto;
     private BusinessService articuloService, categoriaService;
     private DTO_Empresa empresa;
+    private byte[] imgProducto;
 
     public void onCreate()
     {
+        imgFoto = (Image) getFellow("imgFoto");
         cmbCateg = (Combobox) getFellow("cmbCateg");
         txtNombre = (Textbox) getFellow("txtNombre");
         txtDesc = (Textbox) getFellow("txtDesc");
@@ -67,6 +74,9 @@ public class PO_EAIngresaProducto
             articulo.setMarca(txtMarca.getValue());
             articulo.setNombre(txtNombre.getValue());
             articulo.setPrecio(decPrec.getValue());
+            if(imgProducto != null) {
+                articulo.setImagen(imgProducto);
+            }
             DTO_Input input = new DTO_Input(articulo);
             input.setVerbo(Constantes.V_REGISTER);
             DTO_Output output = articuloService.execute(input);
@@ -103,6 +113,46 @@ public class PO_EAIngresaProducto
             alertaError("Error inesperado, por favor contacte al administrador", "Error cargando categorias", null);
         }
     }
+    
+    private void setGraficoFoto() {
+        if(imgProducto != null) {
+            try {
+                imgFoto.setContent(new AImage("foto", imgProducto));
+                return;
+            } catch(IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        imgFoto.setSrc("/media/silueta.gif");
+    }
+    
+    public void cargaFoto(UploadEvent event) throws Exception{
+        org.zkoss.util.media.Media media;
+        try {
+            media = event.getMedia();
+            if(media == null) {
+                return;
+            }
+        } catch(Exception ex) {
+            Messagebox.show("Hubo un problema con el archivo proporcionado.", empresa.getRazonsocial(), Messagebox.OK, Messagebox.ERROR);
+            return;         
+        }
+        System.out.println(media.getName());
+        if (media instanceof org.zkoss.image.Image) {
+            if(media.getByteData().length > 102400) {
+                Messagebox.show("El archivo seleccionado es muy grande. Maximo permitido = 100k", empresa.getRazonsocial(), Messagebox.OK, Messagebox.ERROR);
+                return;
+            }
+            imgProducto = media.getByteData();
+            setGraficoFoto();
+            
+            //imgFoto.setContent((org.zkoss.image.Image)media);
+            
+        } else {
+            Messagebox.show("El archivo seleccionado "+media + " no es una imagen", empresa.getRazonsocial(), Messagebox.OK, Messagebox.ERROR);
+            return;
+        }
+    }
 
     public void limpiarCampos()
     {
@@ -112,6 +162,8 @@ public class PO_EAIngresaProducto
         txtDesc.setValue("");
         txtMarca.setValue("");
         decPrec.setValue(BigDecimal.ZERO);
+        imgProducto = null;
+        setGraficoFoto();
     }
 
     public void alertaInfo(String txt,

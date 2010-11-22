@@ -21,6 +21,26 @@ public class DTO_Articulo implements Serializable
     private BigDecimal precio;
     private Integer stock;
     private Integer activo;
+    private byte[] imagen;
+    private String nomimg;
+    
+    
+    public String getNomimg()
+    {
+        return nomimg;
+    }
+    public void setNomimg(String nomImg)
+    {
+        this.nomimg = nomImg;
+    }
+    public byte[] getImagen()
+    {
+        return imagen;
+    }
+    public void setImagen(byte[] imagen)
+    {
+        this.imagen = imagen;
+    }
     public Integer getCodigo()
     {
         return codigo;

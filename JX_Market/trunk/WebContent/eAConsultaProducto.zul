@@ -16,7 +16,7 @@
             <caption label="Busqueda de Productos"/>
             <div align="center">
                <html:p />
-               <grid fixedLayout="false" width="670px">
+               <grid fixedLayout="false" width="670px" visible="true">
                   <rows>
                      <row>
                         <label value="Categoria"/>
@@ -38,19 +38,22 @@
                <html:p />
             </div>
          </groupbox>
-         <groupbox mold="3d" id="grpCons" width="720px">
+         <groupbox mold="3d" id="grpCons" width="720px" visible="false">
             <caption label="Productos"/>
-            <listbox id="lstProd">
-               <listhead>
-                  <listheader label="Categoria"/>
-                  <listheader label="Nombre"/>
-                  <listheader label="Marca"/>
-                  <listheader label="Precio"/>
-                  <listheader label="Estado"/>
-               </listhead>
-            </listbox>
-            <html:p />
-            <button label="Cancelar" onClick="" />
+            <div align="center">
+               <html:p/>
+               <listbox id="lstProd" width="670px">
+                  <listhead>
+                     <listheader label="Categoria"/>
+                     <listheader label="Nombre" sort="auto"/>
+                     <listheader label="Marca" sort="auto"/>
+                     <listheader label="Precio" sort="auto"/>
+                     <listheader label="Estado" sort="auto"/>
+                  </listhead>
+               </listbox>
+               <html:p />
+               <button label="Cancelar" onClick="winEACP.cancelarBusqueda()" />
+            </div>
          </groupbox>
       </vbox>
    </div>

@@ -320,7 +320,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             art.articulo_v_descripcion as descripcion,
             art.articulo_n_precio as precio,
             art.articulo_n_stock as stock,
-            art.articulo_n_activo as activo
+            art.articulo_n_activo as activo,
+            art.articulo_v_imagen as nomimg
         FROM
             T_NEG_ARTICULO art
         WHERE
@@ -349,7 +350,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             art.articulo_v_descripcion as descripcion,
             art.articulo_n_precio as precio,
             art.articulo_n_stock as stock,
-            art.articulo_n_activo as activo
+            art.articulo_n_activo as activo,
+            art.articulo_v_imagen as nomimg
         FROM
             T_NEG_ARTICULO art
         WHERE
@@ -362,11 +364,11 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         INSERT INTO T_NEG_ARTICULO
             (empresa_n_codigo,categoria_n_codigo,articulo_v_nombre,
             articulo_v_marca,articulo_v_descripcion,articulo_n_precio,
-            articulo_n_stock,articulo_n_activo)
+            articulo_n_stock,articulo_n_activo,articulo_v_imagen)
         VALUES
             (#empresa#,#categoria#,#nombre#,
             #marca#,#descripcion#,#precio#,
-            #stock#,#activo#)
+            #stock#,#activo#,#nomimg#)
     </insert>
     
     <update id="updateStock" parameterClass="DTO_Articulo">
@@ -387,7 +389,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             articulo_v_marca = #marca#,
             articulo_v_descripcion = #descripcion#,
             articulo_n_precio = #precio#,
-            articulo_n_activo = #activo#
+            articulo_n_activo = #activo#,
+            articulo_v_imagen = #nomimg#
         WHERE
             articulo_n_codigo = #codigo#
         AND

@@ -3,23 +3,24 @@
  */
 package pe.com.jx_market.controller;
 
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.zkoss.zk.ui.Executions;
+import org.zkoss.image.AImage;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Groupbox;
+import org.zkoss.zul.Image;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
@@ -42,7 +43,7 @@ public class PO_EAConsultaProducto
     private NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
     private Textbox txtNomProd, txtMarc;
     private Combobox cmbCat, cmbEstad;
-    private Groupbox grpCons;
+    private Groupbox grpCons, grpBusq;
     private Listbox lstProd;
     private BusinessService articuloService, categoriaService;
     private DTO_Empresa empresa;
@@ -54,6 +55,7 @@ public class PO_EAConsultaProducto
         cmbCat = (Combobox) getFellow("cmbCat");
         cmbEstad = (Combobox) getFellow("cmbEstad");
         grpCons = (Groupbox) getFellow("grpCons");
+        grpBusq = (Groupbox) getFellow("grpBusq");
         lstProd = (Listbox) getFellow("lstProd");
 
         articuloService = Utility.getService(this, "articuloService");
@@ -135,9 +137,11 @@ public class PO_EAConsultaProducto
                     cell = new Listcell("Inactivo");
                 }
                 item.appendChild(cell);
+                item.setAttribute("producto", art);
                 item.addEventListener("onClick",
                                 new org.zkoss.zk.ui.event.EventListener() {
                     public void onEvent(Event e) throws UiException {
+                        getDesktop().getSession().setAttribute("producto", e.getTarget().getAttribute("producto"));
                         incluir("eAEditaProducto.zul");
                     }
                 });
@@ -146,6 +150,8 @@ public class PO_EAConsultaProducto
         } else {
             
         }
+        grpCons.setVisible(true);
+        grpBusq.setVisible(false);
     }
     
     private String getCategoria(Integer codCat) {
@@ -169,7 +175,19 @@ public class PO_EAConsultaProducto
     }
     
     public void limpiarConsulta(){
-        incluir("eAEditaProducto.zul");
+        txtNomProd.setValue("");
+        txtMarc.setValue("");
+        cmbCat.setValue("");
+        cmbCat.setSelectedItem(null);
+        cmbEstad.setValue("");
+        cmbEstad.setSelectedItem(null);
+        grpCons.setVisible(false);
+        grpBusq.setVisible(true);
+    }
+    
+    public void cancelarBusqueda(){
+        lstProd.getItems().clear();
+        limpiarConsulta();
     }
 
     public void alertaInfo(String txt,

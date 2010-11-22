@@ -50,6 +50,7 @@ public class Constantes {
     public static final String V_LIST = "list";
     public static final String V_DELETE = "delete";
     public static final String V_USTOCK = "upStock";
+    public static final String V_GETIMG = "getimg";
 
     /*
      * Constantes para estados
@@ -73,4 +74,8 @@ public class Constantes {
     public static final String TEMA_CELESTE = "celeste";
     public static final String TEMA_NEGRO = "negro";
 
+    /*
+     * imagenes
+     */
+    public static final String RUTA_IMAGENES = "/home/george/imagenesJXMarket";
 }
