@@ -32,7 +32,7 @@ import pe.com.jx_market.utilities.DTO_Output;
  * 
  */
 public class PO_EAEditaProducto
-    extends Window
+extends Window
 {
     static Log logger = LogFactory.getLog(PO_EAEditaProducto.class);
     private Combobox cmbCateg, cmbEstado;
@@ -61,13 +61,13 @@ public class PO_EAEditaProducto
         empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
 
         articulo = (DTO_Articulo) getDesktop().getSession().getAttribute("producto");
-        DTO_Input input = new DTO_Input(articulo);
+        final DTO_Input input = new DTO_Input(articulo);
         input.setVerbo(Constantes.V_GETIMG);
-        DTO_Output output = articuloService.execute(input);
+        final DTO_Output output = articuloService.execute(input);
         if(output.getErrorCode() != Constantes.OK) {
             alertaInfo("", "El articulo" + articulo.getNombre() + "no posee imagen", null);
         }
-        
+
         if (articulo == null) {
             alertaInfo("", "No se encontro producto, retornando a busqueda", null);
             incluir("eAConsultaProducto.zul");
@@ -76,7 +76,7 @@ public class PO_EAEditaProducto
             cargarDatos();
         }
     }
-    
+
     public void editarProducto() {
         if (cmbCateg.getSelectedItem() != null && cmbEstado.getSelectedItem() != null && !txtNombre.getValue().equals("")
                         && !txtDesc.getValue().equals("") && !txtMarca.getValue().equals("")
@@ -92,9 +92,9 @@ public class PO_EAEditaProducto
                 articulo.setImagen(imgProducto);
                 articulo.setNomimg(null);
             }
-            DTO_Input input = new DTO_Input(articulo);
+            final DTO_Input input = new DTO_Input(articulo);
             input.setVerbo(Constantes.V_REGISTER);
-            DTO_Output output = articuloService.execute(input);
+            final DTO_Output output = articuloService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 alertaInfo("Los datos del producto se actualizaron correctamente",
                                 "Los datos del producto se actualizaron correctamente", null);
@@ -106,7 +106,7 @@ public class PO_EAEditaProducto
             alertaInfo("Debe ingresar datos en todos los campos", "No se ingreso data en todos los campos", null);
         }
     }
-    
+
     public void volverConsulta(){
         incluir("eAConsultaProducto.zul");
     }
@@ -129,25 +129,25 @@ public class PO_EAEditaProducto
             try {
                 imgFoto.setContent(new AImage("foto", imgProducto));
                 return;
-            } catch (IOException ex) {
+            } catch (final IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
         imgFoto.setSrc("/media/imagProd.gif");
     }
-    
-    public void cargaFoto(UploadEvent event) throws Exception{
+
+    public void cargaFoto(final UploadEvent event) throws Exception{
         org.zkoss.util.media.Media media;
         try {
             media = event.getMedia();
             if(media == null) {
                 return;
             }
-        } catch(Exception ex) {
+        } catch(final Exception ex) {
             Messagebox.show("Hubo un problema con el archivo proporcionado.", empresa.getRazonsocial(), Messagebox.OK, Messagebox.ERROR);
-            return;         
+            return;
         }
-        System.out.println(media.getName());
+        //System.out.println(media.getName());
         if (media instanceof org.zkoss.image.Image) {
             if(media.getByteData().length > 102400) {
                 Messagebox.show("El archivo seleccionado es muy grande. Maximo permitido = 100k", empresa.getRazonsocial(), Messagebox.OK, Messagebox.ERROR);
@@ -155,9 +155,9 @@ public class PO_EAEditaProducto
             }
             imgProducto = media.getByteData();
             setGraficoFoto();
-            
+
             //imgFoto.setContent((org.zkoss.image.Image)media);
-            
+
         } else {
             Messagebox.show("El archivo seleccionado "+media + " no es una imagen", empresa.getRazonsocial(), Messagebox.OK, Messagebox.ERROR);
             return;
@@ -166,16 +166,16 @@ public class PO_EAEditaProducto
 
     private void listarCategorias()
     {
-        DTO_Categoria cat = new DTO_Categoria();
+        final DTO_Categoria cat = new DTO_Categoria();
         cat.setEmpresa(empresa.getCodigo());
-        DTO_Input input = new DTO_Input(cat);
+        final DTO_Input input = new DTO_Input(cat);
         input.setVerbo(Constantes.V_LIST);
-        DTO_Output output = categoriaService.execute(input);
+        final DTO_Output output = categoriaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("", "Exito al cargar categorias", null);
-            List<DTO_Categoria> lstCat = (List<DTO_Categoria>) output.getLista();
-            for (DTO_Categoria categ : lstCat) {
-                Comboitem item = new Comboitem();
+            final List<DTO_Categoria> lstCat = output.getLista();
+            for (final DTO_Categoria categ : lstCat) {
+                final Comboitem item = new Comboitem();
                 item.setLabel(categ.getNombre());
                 item.setAttribute("categoria", categ);
                 cmbCateg.appendChild(item);
@@ -187,7 +187,7 @@ public class PO_EAEditaProducto
             alertaError("Error inesperado, por favor contacte al administrador", "Error cargando categorias", null);
         }
     }
-    
+
     private void listarEstados()
     {
         Comboitem item = new Comboitem();
@@ -213,9 +213,9 @@ public class PO_EAEditaProducto
         Utility.saltar(this, txt);
     }
 
-    public void alertaInfo(String txt,
-                           String txt2,
-                           Throwable t)
+    public void alertaInfo(final String txt,
+                           final String txt2,
+                           final Throwable t)
     {
         try {
             if (txt.length() > 0)
@@ -225,13 +225,13 @@ public class PO_EAEditaProducto
             } else {
                 logger.info(txt2);
             }
-        } catch (InterruptedException ex) {
+        } catch (final InterruptedException ex) {
         }
     }
 
-    public void alertaError(String txt,
-                            String txt2,
-                            Throwable t)
+    public void alertaError(final String txt,
+                            final String txt2,
+                            final Throwable t)
     {
         try {
             if (txt.length() > 0)
@@ -241,7 +241,7 @@ public class PO_EAEditaProducto
             } else {
                 logger.error(txt2);
             }
-        } catch (InterruptedException ex) {
+        } catch (final InterruptedException ex) {
         }
 
     }

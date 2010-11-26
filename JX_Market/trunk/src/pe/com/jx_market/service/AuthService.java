@@ -1,17 +1,22 @@
 package pe.com.jx_market.service;
 
-import org.apache.commons.logging.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import pe.com.jx_market.dao.UsuarioDAO;
 import pe.com.jx_market.domain.DTO_Usuario;
-import pe.com.jx_market.utilities.*;
+import pe.com.jx_market.utilities.BusinessService;
+import pe.com.jx_market.utilities.DTO_Input;
+import pe.com.jx_market.utilities.DTO_Output;
 
 /**
  * Servicio de Autenticacion de Usuarios.
  * 
  */
 
-public class AuthService implements BusinessService {
+public class AuthService
+    implements BusinessService
+{
 
     static Log logger = LogFactory.getLog(AuthService.class);
     private UsuarioDAO dao;
@@ -22,18 +27,17 @@ public class AuthService implements BusinessService {
      * solo los atributos username y password. En caso de autenticacion
      * positiva, el DTO_Output tiene codigo de error OK
      * 
-     * @param Objeto
-     *            estandar de entrada
+     * @param Objeto estandar de entrada
      * @return Objeto estandar de salida
      */
-    public DTO_Output execute (DTO_Input input) {
-        DTO_Output output = new DTO_Output();
-        DTO_Usuario suposedUser = (DTO_Usuario) input.getObject();
-        String username = (String) suposedUser.getUsername();
-        String password = (String) suposedUser.getContrasena();
-        Integer empresa = suposedUser.getEmpresa();
+    @Override
+    public DTO_Output execute(final DTO_Input input)
+    {
+        final DTO_Output output = new DTO_Output();
+        final DTO_Usuario suposedUser = (DTO_Usuario) input.getObject();
+        final String password = suposedUser.getContrasena();
         suposedUser.setContrasena("erased");
-        DTO_Usuario us = dao.leeUsuario(username, empresa);
+        final DTO_Usuario us = dao.leeUsuario(suposedUser);
 
         if (us == null) {
             logger.error("No se proporciono usuario valido");
@@ -61,7 +65,8 @@ public class AuthService implements BusinessService {
         }
     }
 
-    private String encriptacion (String pass) {
+    private String encriptacion(final String pass)
+    {
         String passEncriptada = "";
         DTO_Output output;
 
@@ -74,19 +79,23 @@ public class AuthService implements BusinessService {
         return passEncriptada;
     }
 
-    public UsuarioDAO getDao () {
+    public UsuarioDAO getDao()
+    {
         return dao;
     }
 
-    public void setDao (UsuarioDAO dao) {
+    public void setDao(final UsuarioDAO dao)
+    {
         this.dao = dao;
     }
 
-    public BusinessService getPasswordHashService () {
+    public BusinessService getPasswordHashService()
+    {
         return passwordHashService;
     }
 
-    public void setPasswordHashService (BusinessService passwordHashService) {
+    public void setPasswordHashService(final BusinessService passwordHashService)
+    {
         this.passwordHashService = passwordHashService;
     }
 

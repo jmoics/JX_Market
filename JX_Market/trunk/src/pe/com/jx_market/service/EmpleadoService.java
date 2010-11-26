@@ -1,13 +1,16 @@
 package pe.com.jx_market.service;
 
-import java.util.HashSet;
+import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import pe.com.jx_market.dao.EmpleadoDAO;
-import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.domain.DTO_Empleado;
 import pe.com.jx_market.domain.DTO_Usuario;
-
-import pe.com.jx_market.utilities.*;
+import pe.com.jx_market.utilities.BusinessService;
+import pe.com.jx_market.utilities.DTO_Input;
+import pe.com.jx_market.utilities.DTO_Output;
 
 /**
  * Servicio de Administracion de Contactos
@@ -18,7 +21,9 @@ import pe.com.jx_market.utilities.*;
 
 public class EmpleadoService implements BusinessService {
 
+    static Log logger = LogFactory.getLog(EmpleadoService.class);
     private EmpleadoDAO dao;
+    private BusinessService usuarioService;
 
     /**
      * El DTO_Input contendrá como verbo un String: para realizar una consulta
@@ -31,25 +36,46 @@ public class EmpleadoService implements BusinessService {
      * contendra una lista de objetos DTO_Contacto con todos los campos leidos
      * de la Base de Datos.
      * 
-     * @param Objeto
-     *            estandar de entrada
+     * @param Objeto estandar de entrada
      * @return Objeto estandar de salida
      */
-    public DTO_Output execute (DTO_Input input) {
+    @Override
+    public DTO_Output execute (final DTO_Input input) {
 
-        DTO_Output output = new DTO_Output();
+        final DTO_Output output = new DTO_Output();
         if (Constantes.V_LIST.equals(input.getVerbo())) {
-            DTO_Empleado empleado = (DTO_Empleado) input.getObject();
+            final DTO_Empleado empleado = (DTO_Empleado) input.getObject();
             output.setLista(dao.getEmpleados(empleado));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getVerbo())) {
-            DTO_Empleado empleado = (DTO_Empleado) input.getObject();
+            final DTO_Empleado empleado = (DTO_Empleado) input.getObject();
             output.setObject(dao.leeEmpleado(empleado));
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
-            dao.registraEmpleado((DTO_Empleado) input.getObject());
+            final Map map = input.getMapa();
+            final DTO_Empleado empleado = (DTO_Empleado) map.get("empleado");
+            DTO_Usuario usuario = (DTO_Usuario) map.get("usuario");
+            final DTO_Input inp = new DTO_Input(usuario);
+            if (usuario.getCodigo() == null) {
+                inp.setVerbo(Constantes.V_REGISTER);
+                final DTO_Output out = usuarioService.execute(inp);
+                if (out.getErrorCode() == Constantes.OK) {
+                    usuario = getUsuario(usuario);
+                    empleado.setUsuario(usuario.getCodigo());
+                }
+            } else {
+                inp.setVerbo("chgpass");
+                final DTO_Output out = usuarioService.execute(inp);
+                if (out.getErrorCode() == Constantes.OK) {
+                    logger.info("El password fue cambiado correctamente");
+                } else {
+                    logger.error("Error al cambiar el password");
+                    return output;
+                }
+            }
+            dao.registraEmpleado(empleado);
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_DELETE.equals(input.getVerbo())) {
@@ -60,12 +86,33 @@ public class EmpleadoService implements BusinessService {
             throw new RuntimeException("No se especifico verbo adecuado");
         }
     }
+    
+    private DTO_Usuario getUsuario(final DTO_Usuario user) {
+        final DTO_Input inp = new DTO_Input(user);
+        inp.setVerbo(Constantes.V_GET);
+        final DTO_Output out = usuarioService.execute(inp);
+        if(out.getErrorCode() == Constantes.OK) {
+            return (DTO_Usuario) out.getObject();
+        } else {
+            return null;
+        }
+    }
+    
+    public BusinessService getUsuarioService()
+    {
+        return usuarioService;
+    }
+
+    public void setUsuarioService(final BusinessService usuarioService)
+    {
+        this.usuarioService = usuarioService;
+    }
 
     public EmpleadoDAO getDao () {
         return dao;
     }
 
-    public void setDao (EmpleadoDAO dao) {
+    public void setDao (final EmpleadoDAO dao) {
         this.dao = dao;
     }
 

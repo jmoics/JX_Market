@@ -58,6 +58,13 @@ public class Constantes {
     public static final int ST_ACTIVO = 1;
     public static final int ST_INACTIVO = 2;
     public static final int ST_CANCELADO = 3;
+    
+    /*
+     * Strings para estados
+     */
+    public static final String STATUS_ACTIVO = "Activo";
+    public static final String STATUS_INACTIVO = "Inactivo";
+    public static final String STATUS_CANCELADO = "Cancelado";
 
     /*
      * Temas configurables

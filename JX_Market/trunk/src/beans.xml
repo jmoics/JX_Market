@@ -29,6 +29,7 @@
 
     <bean id="empleadoService" class="pe.com.jx_market.service.EmpleadoService">
         <property name="dao" ref="empleadoDAO" />
+        <property name="usuarioService" ref="usuarioService"/>
     </bean>
 
     <bean id="usuarioService" class="pe.com.jx_market.service.UsuarioService">
@@ -40,5 +41,9 @@
     
     <bean id="categoriaService" class="pe.com.jx_market.service.CategoriaService">
         <property name="dao" ref="categoriaDAO" />
+    </bean>
+    
+    <bean id="perfilService" class="pe.com.jx_market.service.PerfilService">
+        <property name="dao" ref="perfilDAO" />
     </bean>
 </beans>

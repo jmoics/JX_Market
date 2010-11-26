@@ -106,8 +106,8 @@
                         label="Administrar..." id="">
                         <menupopup>
                            <menuitem
-                              src="/media/icon_users.png" label="Contactos"
-                              onClick='bl.incluir("administracion_contactos.zul")'
+                              src="/media/icon_users.png" label="Empleados"
+                              onClick='bl.incluir("eAAdministraEmpleado.zul")'
                               id="id_option_admusr" />
                            <menuitem src="/media/perfiles.png"
                               label="Perfiles"

@@ -1,0 +1,232 @@
+<?page title="Seguridad y Servicio al Cliente" contentType="text/html;charset=UTF-8"?>
+
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+   <div align="center">
+      <html:p />
+      <window width="700px"
+         use="pe.com.jx_market.controller.PO_EAAdministraEmpleado"
+         id="winEAAE">
+
+         <div align="center">
+            <vbox width="700px">
+               <html:p />
+               <div align="center">
+                  <label zclass="z-south-header"
+                     style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                     Administración de Empleados
+                  </label>
+               </div>
+               <html:p />
+               <groupbox id="grpEmpleados" visible="true" mold="3d"
+                  width="695px">
+                  <caption label="" id="capNombre" />
+                  <html:p />
+                  <grid fixedLayout="true" id="grdEmp"
+                     width="680px">
+                     <columns>
+                        <column label="Nombres" />
+                        <column label="Apellidos" />
+                        <column label="Usuario" />
+                        <column label="Perfil" />
+                        <column label="Ver Detalles" width="80px" />
+                        <column label="Editar" width="60px" />
+                        <column label="Eliminar" width="60px" />
+                     </columns>
+                     <rows></rows>
+                  </grid>
+                  <popup id="popDetails" width="400px">
+                     <div align="center">
+                        <label
+                           style="font-family: sans-serif; font-weight:normal; color:#473C8B;font-size:14px">
+                           Detalle de Empleado
+                        </label>
+                     </div>
+                     <html:p />
+                     <grid>
+                        <columns>
+                           <column label="Campo" width="100px" />
+                           <column label="Contenido" width="250px" />
+                        </columns>
+                        <rows>
+                           <row>
+                              <label value="Usuario" />
+                              <label id="lblUsuario" value="" />
+                           </row>
+                           <row>
+                              <label value="Nombre" />
+                              <label id="lblNombre" value="" />
+                           </row>
+                           <row>
+                              <label value="Apellidos" />
+                              <label id="lblApellidos" value="" />
+                           </row>
+                           <row>
+                              <label value="DNI" />
+                              <label id="lblDNI" value="" />
+                           </row>
+                           <row>
+                              <label value="Perfil" />
+                              <label id="lblPerfil" value="" />
+                           </row>
+                           <row>
+                              <label value="Teléfonos" />
+                              <label id="lblTelefono" value="" />
+                           </row>
+                           <row>
+                              <label value="E-mail" />
+                              <label id="lblMail" value="" />
+                           </row>
+                           <row>
+                              <label value="Ciudad" />
+                              <label id="lblCiudad" value="" />
+                           </row>
+                           <row>
+                              <label value="Estado" />
+                              <label id="lblEstado" />
+                           </row>
+                        </rows>
+                     </grid>
+                     <div align="center">
+                        <toolbarbutton label="Cerrar"
+                           onClick="popDetails.close()">
+                        </toolbarbutton>
+                     </div>
+                  </popup>
+                  <html:p />
+                  <groupbox mold="3d" width="420px">
+                     <caption label="Nuevo Empleado" id="capInfo" />
+                     <div width="400px" align="center">
+                        <grid fixedLayout="true" width="380px">
+                           <rows>
+                              <row>
+                                 <label style="font-size:small">
+                                    (*) Usuario:
+                                 </label>
+                                 <textbox id="txtUsuario" value=""
+                                    constraint="/^[a-zA-Z0-9_]*$/: Username es inválido"
+                                    maxlength="20">
+                                 </textbox>
+                              </row>
+                              <row id="row_pass">
+                                 <label style="font-size:small">
+                                    (*) Contraseña:
+                                 </label>
+                                 <textbox type="password" id="txtPass"
+                                    value="" maxlength="32">
+                                 </textbox>
+                              </row>
+                              <row>
+                                 <label style="font-size:small">
+                                    (*) Nombre:
+                                 </label>
+                                 <textbox id="txtNombre" value="">
+                                 </textbox>
+                              </row>
+                              <row>
+                                 <label style="font-size:small">
+                                    (*) Apellidos:
+                                 </label>
+                                 <textbox id="txtApellidos" value="">
+                                 </textbox>
+                              </row>
+                              <row>
+                                 <label style="font-size:small">
+                                    (*) DNI:
+                                 </label>
+                                 <textbox id="txtDNI" value="">
+                                 </textbox>
+                              </row>
+                              <row>
+                                 <label style="font-size:small">
+                                    (*) Perfil:
+                                 </label>
+                                 <combobox id="cmbPerfil" readonly="true"
+                                    width="150px">
+                                 </combobox>
+                              </row>
+                              <row>
+                                 <label style="font-size:small">
+                                    Teléfonos:
+                                 </label>
+                                 <textbox id="txtTelefono" value="">
+                                 </textbox>
+                              </row>
+                              <row>
+                                 <label style="font-size:small">
+                                    Celular:
+                                 </label>
+                                 <textbox id="txtCelular" value="">
+                                 </textbox>
+                              </row>
+                              <row>
+                                 <label style="font-size:small">
+                                    E-mail:
+                                 </label>
+                                 <textbox id="txtMail" value="">
+                                 </textbox>
+                              </row>
+                              <row>
+                                 <label style="font-size:small">
+                                    Direccion:
+                                 </label>
+                                 <textbox id="txtDireccion" value="">
+                                 </textbox>
+                              </row>
+                              <row>
+                                 <label style="font-size:small">
+                                    Ciudad:
+                                 </label>
+                                 <textbox id="txtCiudad" value="">
+                                 </textbox>
+                              </row>
+                              <row>
+                                 <label style="font-size:small">
+                                    Region:
+                                 </label>
+                                 <textbox id="txtRegion" value="">
+                                 </textbox>
+                              </row>
+                              <row>
+                                 <label style="font-size:small">
+                                    Fecha de Nacimiento:
+                                 </label>
+                                 <datebox id="datNac" >
+                                 </datebox>
+                              </row>
+                              <row>
+                                 <label style="font-size:small">
+                                    (*) Estado:
+                                 </label>
+                                 <combobox id="cmbEstado" width="100px"
+                                    readonly="true">
+                                    <comboitem label="Activo" value="1"/>
+                                    <comboitem label="Inactivo" value="2"/>
+                                 </combobox>
+                              </row>  
+                           </rows>
+                        </grid>
+                        <html:p />
+                        <div align="center">
+                           <button label="Crear" id="btnCrear"
+                              onClick="winEAAE.crear()">
+                           </button>
+                           <button label="Actualizar" id="btnInfo"
+                              visible="false"
+                              onClick="winEAAE.actualizar()">
+                           </button>
+                           <button label="Cancelar" visible="false"
+                              id="btnCancel"
+                              onClick='winEAAE.cancelar();winEAAE.limpiarCrear();btnInfo.setVisible(false);
+                                       capInfo.setLabel("Nuevo Contacto");btnCrear.setVisible(true);
+                                       btnCancel.setVisible(false)'>
+                           </button>
+                        </div>
+                     </div>
+                  </groupbox>
+                  <html:p />
+               </groupbox>
+            </vbox>
+         </div>
+      </window>
+   </div>
+</zk>

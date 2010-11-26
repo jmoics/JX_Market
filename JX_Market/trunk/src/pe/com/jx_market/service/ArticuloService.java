@@ -30,17 +30,17 @@ public class ArticuloService implements BusinessService
     static Log logger = LogFactory.getLog(ArticuloService.class);
     private ArticuloDAO dao;
     @Override
-    public DTO_Output execute(DTO_Input input)
+    public DTO_Output execute(final DTO_Input input)
     {
-        DTO_Output output = new DTO_Output();
+        final DTO_Output output = new DTO_Output();
         if (Constantes.V_LIST.equals(input.getVerbo())) {
             output.setLista(dao.getArticulos((DTO_Articulo)input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
-            DTO_Articulo arti = (DTO_Articulo) input.getObject();
+            final DTO_Articulo arti = (DTO_Articulo) input.getObject();
             if(arti.getNomimg() == null) {
-                arti.setNomimg(arti.getEmpresa() + "." + arti.getCategoria() + "." + 
+                arti.setNomimg(arti.getEmpresa() + "." + arti.getCategoria() + "." +
                                 arti.getNombre().trim() + "." + generarNombreAleatorio());
                 savePhoto(arti);
             }
@@ -48,7 +48,7 @@ public class ArticuloService implements BusinessService
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getVerbo())) {
-            DTO_Articulo art = dao.getArticuloXCodigo((DTO_Articulo) input.getObject());
+            final DTO_Articulo art = dao.getArticuloXCodigo((DTO_Articulo) input.getObject());
             loadPhoto(art);
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
@@ -58,7 +58,7 @@ public class ArticuloService implements BusinessService
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_GETIMG.equals(input.getVerbo())) {
-            DTO_Articulo art = (DTO_Articulo) input.getObject();
+            final DTO_Articulo art = (DTO_Articulo) input.getObject();
             loadPhoto(art);
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
@@ -67,37 +67,37 @@ public class ArticuloService implements BusinessService
             throw new RuntimeException("No se especifico verbo adecuado");
         }
     }
-    
+
     private String generarNombreAleatorio() {
-        Random rnd = new Random();
-        Integer nomImg = ((int)(rnd.nextDouble() * 1000000.0));
+        final Random rnd = new Random();
+        final Integer nomImg = ((int)(rnd.nextDouble() * 1000000.0));
         return nomImg.toString();
     }
-    
-    private File getPhotoFile(DTO_Articulo art) {
-        String ruta = Constantes.RUTA_IMAGENES + File.separator + art.getNomimg();
+
+    private File getPhotoFile(final DTO_Articulo art) {
+        final String ruta = Constantes.RUTA_IMAGENES + File.separator + art.getNomimg();
         return new File(ruta);
     }
-    
-    private void savePhoto(DTO_Articulo art) {
-        File photo = getPhotoFile(art);
+
+    private void savePhoto(final DTO_Articulo art) {
+        final File photo = getPhotoFile(art);
         if(art.getImagen() == null) {
             if(photo.exists()) {
                 photo.delete();
             }
         } else {
             try {
-                BufferedOutputStream bof = new BufferedOutputStream(new FileOutputStream(photo));
+                final BufferedOutputStream bof = new BufferedOutputStream(new FileOutputStream(photo));
                 bof.write(art.getImagen());
                 bof.close();
-            } catch(IOException ex) {
+            } catch(final IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
     }
-    
-    private void loadPhoto(DTO_Articulo art) {
-        File photo = getPhotoFile(art);
+
+    private void loadPhoto(final DTO_Articulo art) {
+        final File photo = getPhotoFile(art);
         if(!photo.exists()) {
             if(logger.isDebugEnabled()) {
                 logger.debug("No existe archivo de foto " + photo.getName());
@@ -109,8 +109,8 @@ public class ArticuloService implements BusinessService
             logger.debug("Existe archivo de foto " + photo.getName());
         }
         try {
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(photo));
-            ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
+            final BufferedInputStream bis = new BufferedInputStream(new FileInputStream(photo));
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             int n;
             while((n = bis.read()) != -1) {
                 baos.write(n);
@@ -121,16 +121,16 @@ public class ArticuloService implements BusinessService
             if(logger.isDebugEnabled()) {
                 logger.debug("Cargamos bytes en foto "+ art.getImagen().length);
             }
-        } catch(IOException ex) {
+        } catch(final IOException ex) {
             throw new RuntimeException(ex);
         }
     }
-    
+
     public ArticuloDAO getDao () {
         return dao;
     }
 
-    public void setDao (ArticuloDAO dao) {
+    public void setDao (final ArticuloDAO dao) {
         this.dao = dao;
     }
 

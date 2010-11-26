@@ -9,9 +9,9 @@ import pe.com.jx_market.domain.DTO_Empleado;
 
 public class EmpleadoDAOibatis extends SqlMapClientDaoSupport implements EmpleadoDAO {
 
-    public boolean registraEmpleado (DTO_Empleado empleado) {
-        DTO_Empleado emp = (DTO_Empleado) getSqlMapClientTemplate().queryForObject(
-                "getEmpleados", empleado);
+    @Override
+    public boolean registraEmpleado (final DTO_Empleado empleado) {
+        final DTO_Empleado emp = (DTO_Empleado) getSqlMapClientTemplate().queryForObject("getEmpleados", empleado);
 
         if (emp == null) {
             getSqlMapClientTemplate().insert("insertEmpleado", empleado);
@@ -22,17 +22,20 @@ public class EmpleadoDAOibatis extends SqlMapClientDaoSupport implements Emplead
         }
     }
 
-    public DTO_Empleado leeEmpleado (DTO_Empleado empleado) {
+    @Override
+    public DTO_Empleado leeEmpleado (final DTO_Empleado empleado) {
         return (DTO_Empleado) getSqlMapClientTemplate().queryForObject("getEmpleados", empleado);
 
     }
 
-    public boolean eliminaEmpleado (DTO_Empleado empleado) {
+    @Override
+    public boolean eliminaEmpleado (final DTO_Empleado empleado) {
         getSqlMapClientTemplate().delete("deleteEmpleado", empleado);
         return false;
     }
 
-    public List<DTO_Empleado> getEmpleados (DTO_Empleado empleado) {
+    @Override
+    public List<DTO_Empleado> getEmpleados (final DTO_Empleado empleado) {
         return getSqlMapClientTemplate().queryForList("getEmpleados", empleado);
     }
 }

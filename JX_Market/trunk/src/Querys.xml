@@ -7,6 +7,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 <sqlMap>
     <typeAlias alias="DTO_Cliente" type="pe.com.jx_market.domain.DTO_Cliente" />
     <typeAlias alias="DTO_Empleado" type="pe.com.jx_market.domain.DTO_Empleado" />
+    <typeAlias alias="DTO_Perfil" type="pe.com.jx_market.domain.DTO_Perfil" />
     <typeAlias alias="DTO_Usuario" type="pe.com.jx_market.domain.DTO_Usuario" />
     <typeAlias alias="DTO_Empresa" type="pe.com.jx_market.domain.DTO_Empresa" />
     <typeAlias alias="DTO_Articulo" type="pe.com.jx_market.domain.DTO_Articulo" />
@@ -114,10 +115,11 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             emp.empleado_n_codigo as codigo,
             emp.usuario_n_codigo as usuario,
             emp.empresa_n_codigo as empresa,
+            emp.perfil_n_codigo as perfil,
             emp.empleado_v_nombre as nombre,
-            emp.empleado_d_fechanac as fecNac,
+            emp.empleado_d_fechnac as fecNac,
             emp.empleado_v_apellido as apellido,
-            emp.empleado_n_dni as dni,
+            emp.empleado_v_dni as dni,
             emp.empleado_v_direccion as direccion,
             emp.empleado_v_telefono as telefono,
             emp.empleado_v_celular as celular,
@@ -128,29 +130,29 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         FROM
             T_EMP_EMPLEADO emp
         WHERE
-            us.empresa_n_codigo = #empresa#
+            emp.empresa_n_codigo = #empresa#
         <isNotNull prepend="AND" property="usuario">
-            us.usuario_n_codigo = #usuario#
+            emp.usuario_n_codigo = #usuario#
         </isNotNull>
-        <isNotNull prepend="AND" property="empleado">
-            us.empleado_n_codigo = #empleado#
+        <isNotNull prepend="AND" property="codigo">
+            emp.empleado_n_codigo = #codigo#
         </isNotNull>
     </select>
 
     <insert id="insertEmpleado" parameterClass="DTO_Empleado">
         INSERT INTO
         T_EMP_EMPLEADO
-            (usuario_n_codigo, empresa_n_codigo,
-            empleado_v_nombre, empleado_d_fechanac, empleado_v_apellido,
-            empleado_n_dni, empleado_v_direccion, empleado_v_telefono,
+            (usuario_n_codigo, empresa_n_codigo, perfil_n_codigo,
+            empleado_v_nombre, empleado_d_fechnac, empleado_v_apellido,
+            empleado_v_dni, empleado_v_direccion, empleado_v_telefono,
             empleado_v_celular, empleado_v_email, empleado_v_ciudad,
             empleado_v_region, empleado_n_activo)
         VALUES
-            (#usuario#, #empresa#,
-            #nombre#, #fechanac#, #apellido#,
+            (#usuario#, #empresa#, #perfil#,
+            #nombre#, #fecNac#, #apellido#,
             #dni#, #direccion#, #telefono#,
             #celular#, #email#, #ciudad#,
-            #region#, #activo#)
+            #region#, #estado#)
     </insert>
     
     <update id="updateEmpleado" parameterClass="DTO_Empleado">
@@ -158,10 +160,11 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         SET
             usuario_n_codigo = #usuario#,
             empresa_n_codigo = #empresa#,
+            perfil_n_codigo = #perfil#,
             empleado_v_nombre = #nombre#,
-            empleado_d_fechanac = #fecNac#,
+            empleado_d_fechnac = #fecNac#,
             empleado_v_apellido = #apellido#,
-            empleado_n_dni = #dni#,
+            empleado_v_dni = #dni#,
             empleado_v_direccion = #direccion#,
             empleado_v_telefono = #telefono#,
             empleado_v_celular = #celular#,
@@ -186,20 +189,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 
     <!-- MANTENIMIENTO DE USUARIOS -->
 
-    <select id="getUsuarioPorUsername" resultClass="DTO_Usuario">
-        SELECT
-            us.usuario_v_username as username,
-            us.usuario_v_contrasena as contrasena,
-            us.empresa_n_codigo as empresa
-        FROM
-            T_SEG_USUARIO us
-        WHERE
-            us.usuario_v_username = #usuario_v_username#
-        AND
-            us.empresa_n_codigo = #empresa_n_codigo#
-    </select>
-
-    <select id="getUsuarios" resultClass="DTO_Usuario">
+    <select id="getUsuarioPorUsername" parameterClass="DTO_Usuario" resultClass="DTO_Usuario">
         SELECT
             us.usuario_n_codigo as codigo,
             us.usuario_v_username as username,
@@ -208,7 +198,23 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         FROM
             T_SEG_USUARIO us
         WHERE
-            us.empresa_n_codigo = #empresa_n_codigo#
+            us.usuario_v_username = #username#
+        AND
+            us.empresa_n_codigo = #empresa#
+    </select>
+
+    <select id="getUsuarios" parameterClass="DTO_Usuario" resultClass="DTO_Usuario">
+        SELECT
+            us.usuario_n_codigo as codigo,
+            us.usuario_v_username as username,
+            us.empresa_n_codigo as empresa
+        FROM
+            T_SEG_USUARIO us
+        WHERE
+            us.empresa_n_codigo = #empresa#
+        <isNotNull prepend="AND" property="codigo">
+            us.usuario_n_codigo = #codigo#
+        </isNotNull>
         ORDER BY
             us.usuario_n_codigo
     </select>
@@ -219,15 +225,74 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         VALUES
             (#username#, #contrasena#, #empresa#)
     </insert>
+    
+    <update id="updateUsuario" parameterClass="DTO_Usuario">
+        UPDATE T_SEG_USUARIO
+        SET
+            usuario_v_username = #username#
+        WHERE
+            usuario_n_codigo = #codigo#
+        AND
+            empresa_n_codigo = #empresa#
+    </update>
 
     <update id="chgPass">
         UPDATE T_SEG_USUARIO
         SET
-            usuario_v_contrasena = #usuario_v_contrasena#
+            usuario_v_contrasena = #contrasena#
         WHERE
-            usuario_v_username = #usuario_v_username#
+            usuario_v_username = #username#
         AND
-            empresa_n_codigo = #empresa_n_codigo#
+            empresa_n_codigo = #empresa#
+    </update>
+
+    <!-- MANTENIMIENTO DE PERFILES -->
+
+    <select id="getPerfiles" resultClass="DTO_Perfil">
+        SELECT
+            per.perfil_n_codigo as codigo,
+            per.perfil_v_funcion as funcion,
+            per.perfil_v_descripcion as descripcion,
+            per.area_n_codigo as area,
+            per.empresa_n_codigo as empresa
+        FROM
+            T_SEG_PERFIL per
+        WHERE
+            per.empresa_n_codigo = #empresa#
+    </select>
+    
+    <select id="getPerfilXCodigo" resultClass="DTO_Perfil">
+        SELECT
+            per.perfil_n_codigo as codigo,
+            per.perfil_v_funcion as funcion,
+            per.perfil_v_descripcion as descripcion,
+            per.area_n_codigo as area,
+            per.empresa_n_codigo as empresa
+        FROM
+            T_SEG_PERFIL per
+        WHERE
+            per.empresa_n_codigo = #empresa#
+        AND
+            per.perfil_n_codigo = #codigo#
+    </select>
+
+    <insert id="insertPerfil" parameterClass="DTO_Perfil">
+        INSERT INTO T_SEG_PERFIL
+            (perfil_v_funcion, perfil_v_descripcion, area_n_codigo, empresa_n_codigo)
+        VALUES
+            (#funcion#, #descripcion#, #area#, #empresa#)
+    </insert>
+    
+    <update id="updatePerfil" parameterClass="DTO_Perfil">
+        UPDATE T_SEG_PERFIL
+        SET
+            perfil_v_funcion = #funcion#, 
+            perfil_v_descripcion = #descripcion#, 
+            area_n_codigo = #area#
+        WHERE
+            per.perfil_n_codigo = #codigo#
+        AND
+            per.empresa_n_codigo = #empresa#
     </update>
 
     <!-- MANTENIMIENTO DE EMPRESAS -->
@@ -287,7 +352,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
          T_EMP_EMPRESA
       WHERE
          empresa_n_codigo = #value#
-	</delete>
+    </delete>
    
    
     <!-- MANTENIMIENTO DE PRODUCTOS -->
