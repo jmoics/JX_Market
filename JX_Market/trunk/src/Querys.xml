@@ -158,8 +158,6 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     <update id="updateEmpleado" parameterClass="DTO_Empleado">
         UPDATE T_EMP_EMPLEADO
         SET
-            usuario_n_codigo = #usuario#,
-            empresa_n_codigo = #empresa#,
             perfil_n_codigo = #perfil#,
             empleado_v_nombre = #nombre#,
             empleado_d_fechnac = #fecNac#,

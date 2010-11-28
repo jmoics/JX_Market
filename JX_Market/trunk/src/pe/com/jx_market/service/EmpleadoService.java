@@ -58,21 +58,23 @@ public class EmpleadoService implements BusinessService {
             final DTO_Empleado empleado = (DTO_Empleado) map.get("empleado");
             DTO_Usuario usuario = (DTO_Usuario) map.get("usuario");
             final DTO_Input inp = new DTO_Input(usuario);
-            if (usuario.getCodigo() == null) {
-                inp.setVerbo(Constantes.V_REGISTER);
-                final DTO_Output out = usuarioService.execute(inp);
-                if (out.getErrorCode() == Constantes.OK) {
-                    usuario = getUsuario(usuario);
-                    empleado.setUsuario(usuario.getCodigo());
-                }
-            } else {
-                inp.setVerbo("chgpass");
-                final DTO_Output out = usuarioService.execute(inp);
-                if (out.getErrorCode() == Constantes.OK) {
-                    logger.info("El password fue cambiado correctamente");
+            if(usuario != null) {
+                if (usuario.getCodigo() == null) {
+                    inp.setVerbo(Constantes.V_REGISTER);
+                    final DTO_Output out = usuarioService.execute(inp);
+                    if (out.getErrorCode() == Constantes.OK) {
+                        usuario = getUsuario(usuario);
+                        empleado.setUsuario(usuario.getCodigo());
+                    }
                 } else {
-                    logger.error("Error al cambiar el password");
-                    return output;
+                    inp.setVerbo("chgpass");
+                    final DTO_Output out = usuarioService.execute(inp);
+                    if (out.getErrorCode() == Constantes.OK) {
+                        logger.info("El password fue cambiado correctamente");
+                    } else {
+                        logger.error("Error al cambiar el password");
+                        return output;
+                    }
                 }
             }
             dao.registraEmpleado(empleado);

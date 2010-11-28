@@ -96,10 +96,10 @@ public class PO_EAAdministraEmpleado
         CargarTabla();
     }
 
-    public void elimina(final DTO_Empleado user)
+    public void elimina(final DTO_Empleado empleado)
     {
 
-        final DTO_Input input = new DTO_Input(user);
+        final DTO_Input input = new DTO_Input(empleado);
         input.setVerbo("delete");
         final DTO_Output output = empleadoService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
@@ -153,7 +153,7 @@ public class PO_EAAdministraEmpleado
             map.put("usuario", usuario);
         } else if (emp != null && pass != null && pass.length() != 0) {
             //para cambiar pass
-            empleado.setUsuario(emp.getUsuario());
+            empleado.setCodigo(emp.getCodigo());
             final DTO_Usuario usuario = new DTO_Usuario();
             usuario.setCodigo(emp.getUsuario());
             usuario.setUsername(username);
@@ -161,6 +161,8 @@ public class PO_EAAdministraEmpleado
             usuario.setEmpresa(empresa.getCodigo());
             
             map.put("usuario", usuario);
+        } else {
+            empleado.setCodigo(emp.getCodigo());
         }
         input.setVerbo(Constantes.V_REGISTER);
         input.setMapa(map);
@@ -227,58 +229,58 @@ public class PO_EAAdministraEmpleado
         txtMail.setValue("");
         txtUsuario.setValue("");
         txtPass.setValue("");
-        cmbEstado.setValue("");
-        cmbPerfil.setValue("");
+        cmbEstado.setSelectedItem(null);
+        cmbPerfil.setSelectedItem(null);
     }
 
     @SuppressWarnings("unchecked")
-    public void cargarInformacionContacto(final DTO_Empleado user)
+    public void cargarInformacionContacto(final DTO_Empleado empleado)
     {
         capInfo.setLabel("Información del Contacto");
         btnCrear.setVisible(false);
-        txtUsuario.setAttribute("usuario", user);
+        txtUsuario.setAttribute("usuario", empleado);
         txtUsuario.setReadonly(true);
-        txtUsuario.setValue((getUsuario(user.getUsuario())).getUsername());
-        txtNombre.setValue(user.getNombre());
-        txtApellidos.setValue(user.getApellido());
-        txtDNI.setValue(user.getDni());
-        txtDireccion.setValue(user.getDireccion() != null ? user.getDireccion() : "");
-        txtCelular.setValue(user.getCelular() != null ? user.getCelular() : "");
-        txtCiudad.setValue(user.getCiudad() != null ? user.getCiudad() : "");
-        txtRegion.setValue(user.getRegion() != null ? user.getRegion() : "");
-        txtTelefono.setValue(user.getTelefono() != null ? user.getTelefono() : "");
-        txtMail.setValue(user.getEmail());
+        txtUsuario.setValue((getUsuario(empleado.getUsuario())).getUsername());
+        txtNombre.setValue(empleado.getNombre());
+        txtApellidos.setValue(empleado.getApellido());
+        txtDNI.setValue(empleado.getDni());
+        txtDireccion.setValue(empleado.getDireccion() != null ? empleado.getDireccion() : "");
+        txtCelular.setValue(empleado.getCelular() != null ? empleado.getCelular() : "");
+        txtCiudad.setValue(empleado.getCiudad() != null ? empleado.getCiudad() : "");
+        txtRegion.setValue(empleado.getRegion() != null ? empleado.getRegion() : "");
+        txtTelefono.setValue(empleado.getTelefono() != null ? empleado.getTelefono() : "");
+        txtMail.setValue(empleado.getEmail());
         txtPass.setValue("");
         
         final List<Comboitem> perfiles = cmbPerfil.getItems();
         for(final Comboitem item : perfiles) {
             final DTO_Perfil perfil = (DTO_Perfil) item.getAttribute("perfil");
-            if(perfil.getCodigo().equals(user.getPerfil())) {
+            if(perfil.getCodigo().equals(empleado.getPerfil())) {
                 cmbPerfil.setSelectedItem(item);
             }
         }
         final List<Comboitem> estados = cmbEstado.getItems();
         for(final Comboitem item : estados) {
             final Integer stat = Integer.parseInt((String) item.getValue());
-            if(stat.equals(user.getEstado())) {
+            if(stat.equals(empleado.getEstado())) {
                 cmbEstado.setSelectedItem(item);
             }
         }
     }
     
-    public void cargarPop(final DTO_Empleado user)
+    public void cargarPop(final DTO_Empleado empleado)
     {
-        lblUsuario.setValue((getUsuario(user.getUsuario())).getUsername());
-        lblNombre.setValue(user.getNombre());
-        lblApellidos.setValue(user.getApellido());
-        lblPerfil.setValue((getPerfil(user.getPerfil()).getFuncion()));
-        lblCiudad.setValue(user.getCiudad());
-        lblDNI.setValue(user.getDni());
-        final String estado = (String) (user.getEstado().equals(Constantes.ST_ACTIVO ) ? Constantes.STATUS_ACTIVO
+        lblUsuario.setValue((getUsuario(empleado.getUsuario())).getUsername());
+        lblNombre.setValue(empleado.getNombre());
+        lblApellidos.setValue(empleado.getApellido());
+        lblPerfil.setValue((getPerfil(empleado.getPerfil()).getFuncion()));
+        lblCiudad.setValue(empleado.getCiudad());
+        lblDNI.setValue(empleado.getDni());
+        final String estado = (String) (empleado.getEstado().equals(Constantes.ST_ACTIVO ) ? Constantes.STATUS_ACTIVO
                                                                                      : Constantes.ST_INACTIVO);
         lblEstado.setValue(estado);
-        lblMail.setValue(user.getEmail());
-        lblTelefono.setValue(user.getTelefono());
+        lblMail.setValue(empleado.getEmail());
+        lblTelefono.setValue(empleado.getTelefono());
     }
 
     public void CargarTabla()
@@ -316,7 +318,7 @@ public class PO_EAAdministraEmpleado
                                         throws UiException
                                     {
                                          cargarPop((DTO_Empleado) ((Row)
-                                         e.getTarget().getParent()).getAttribute("user"));
+                                         e.getTarget().getParent()).getAttribute("empleado"));
                                          
                                     }
                                 });
@@ -366,7 +368,7 @@ public class PO_EAAdministraEmpleado
 
                                         cargarInformacionContacto((DTO_Empleado) ((Row) e
                                         .getTarget().getParent().getParent())
-                                        .getAttribute("user"));
+                                        .getAttribute("empleado"));
                                     }
                                 });
 
