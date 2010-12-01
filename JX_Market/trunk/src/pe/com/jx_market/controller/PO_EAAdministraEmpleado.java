@@ -50,8 +50,7 @@ public class PO_EAAdministraEmpleado
     private Popup popDetails;
     private Combobox cmbPerfil, cmbEstado;
     private DTO_Empresa empresa;
-    private BusinessService empleadoService, empresaService, perfilService,
-                    passwordHashService, usuarioService;
+    private BusinessService empleadoService, perfilService, usuarioService;
 
     public void onCreate()
     {
@@ -86,9 +85,7 @@ public class PO_EAAdministraEmpleado
         capInfo = (Caption) getFellow("capInfo");
         popDetails = (Popup) getFellow("popDetails");
         empleadoService = Utility.getService(this, "empleadoService");
-        empresaService = Utility.getService(this, "empresaService");
         perfilService = Utility.getService(this, "perfilService");
-        passwordHashService = Utility.getService(this, "passwordHashService");
         usuarioService = Utility.getService(this, "usuarioService");
 
         empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");

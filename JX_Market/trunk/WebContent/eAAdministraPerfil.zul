@@ -1,0 +1,69 @@
+<?page title="Seguridad y Servicio al Cliente" contentType="text/html;charset=UTF-8"?>
+
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+    <div align="center">
+        <html:p />
+        <window width="700px" id="eaAP"
+            use="pe.com.jx_market.controller.PO_EAAdministraPerfil">
+            <div align="center">
+                <vbox width="700px">
+                    <html:p />
+                    <div align="center">
+                        <label zclass="z-south-header"
+                            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                            Administrador de Perfiles
+                        </label>
+                        <html:p />
+                        <groupbox mold="3d" width="650px">
+                            <caption label="Perfiles Registrados" />
+                            <div align="center">
+                                <html:p />
+                                <grid id="grdPerfil" width="600px">
+                                    <columns>
+                                       <column label="Area" width="120px" />
+                                       <column label="Funcion" width="130px" />
+                                       <column label="Descripción" width="250px" />
+                                       <column label="Editar" width="50px" />
+                                       <column label="Eliminar" width="50px" />
+                                    </columns>
+                                    <rows></rows>
+                                </grid>
+                                <html:p />
+                                <html:p />
+
+                                <groupbox mold="3d" width="420px"
+                                    id="grpNuevo">
+                                    <caption label="Nuevo Perfil" />
+                                    <div width="400px" align="center">
+                                        <grid fixedLayout="true" width="380px">
+                                           <rows>
+                                              <row>
+                                                 <label style="font-size:small" value="Area" />
+                                                 <combobox id="cmbArea" />
+                                              </row>
+                                              <row>
+                                                 <label style="font-size:small" value="Funcion" />
+                                                 <textbox id="txtFuncion" />
+                                              </row>
+                                              <row>
+                                                 <label style="font-size:small" value="Descripción" />
+                                                 <textbox id="txtDescripcion" maxlength="255" />
+                                              </row>
+                                           </rows>
+                                        </grid>
+                                        <html:p />
+                                        <div align="center">
+                                            <button label="Crear" onClick="eaAP.crearNuevoPerfil()">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </groupbox>
+                            </div>
+                            <html:p />
+                        </groupbox>
+                    </div>
+                </vbox>
+            </div>
+        </window>
+    </div>
+</zk>

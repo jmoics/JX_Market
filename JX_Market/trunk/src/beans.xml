@@ -46,4 +46,8 @@
     <bean id="perfilService" class="pe.com.jx_market.service.PerfilService">
         <property name="dao" ref="perfilDAO" />
     </bean>
+    
+    <bean id="areaService" class="pe.com.jx_market.service.AreaService">
+        <property name="dao" ref="areaDAO" />
+    </bean>
 </beans>

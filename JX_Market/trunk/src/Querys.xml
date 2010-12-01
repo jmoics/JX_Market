@@ -12,6 +12,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     <typeAlias alias="DTO_Empresa" type="pe.com.jx_market.domain.DTO_Empresa" />
     <typeAlias alias="DTO_Articulo" type="pe.com.jx_market.domain.DTO_Articulo" />
     <typeAlias alias="DTO_Categoria" type="pe.com.jx_market.domain.DTO_Categoria" />
+    <typeAlias alias="DTO_Area" type="pe.com.jx_market.domain.DTO_Area" />
 
     <!-- MANTENIMIENTO DE CLIENTES -->
 
@@ -288,10 +289,71 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             perfil_v_descripcion = #descripcion#, 
             area_n_codigo = #area#
         WHERE
-            per.perfil_n_codigo = #codigo#
+            perfil_n_codigo = #codigo#
         AND
-            per.empresa_n_codigo = #empresa#
+            empresa_n_codigo = #empresa#
     </update>
+    
+    <delete id="deletePerfil">
+      DELETE FROM
+         T_SEG_PERFIL
+      WHERE
+            perfil_n_codigo = #codigo#
+        AND
+            empresa_n_codigo = #empresa#
+    </delete>
+    
+    <!-- MANTENIMIENTO DE AREAS -->
+
+    <select id="getAreas" resultClass="DTO_Area">
+        SELECT
+            area.area_n_codigo as codigo,
+            area.area_v_nombre as nombre,
+            area.empresa_n_codigo as empresa
+        FROM
+            T_EMP_AREA area
+        WHERE
+            area.empresa_n_codigo = #empresa#
+    </select>
+    
+    <select id="getAreaXCodigo" resultClass="DTO_Area">
+        SELECT
+            area.area_n_codigo as codigo,
+            area.area_v_nombre as nombre,
+            area.empresa_n_codigo as empresa
+        FROM
+            T_EMP_AREA area
+        WHERE
+            area.empresa_n_codigo = #empresa#
+        AND
+            area.area_n_codigo = #codigo#
+    </select>
+
+    <insert id="insertArea" parameterClass="DTO_Area">
+        INSERT INTO T_EMP_AREA
+            (area_v_nombre, empresa_n_codigo)
+        VALUES
+            (#nombre#, #empresa#)
+    </insert>
+    
+    <update id="updateArea" parameterClass="DTO_Area">
+        UPDATE T_EMP_AREA
+        SET
+            area_v_nombre = #nombre#, 
+        WHERE
+            area_n_codigo = #codigo#
+        AND
+            empresa_n_codigo = #empresa#
+    </update>
+    
+    <delete id="deleteArea">
+      DELETE FROM
+         T_EMP_AREA
+      WHERE
+            area_n_codigo = #codigo#
+        AND
+            empresa_n_codigo = #empresa#
+    </delete>
 
     <!-- MANTENIMIENTO DE EMPRESAS -->
 

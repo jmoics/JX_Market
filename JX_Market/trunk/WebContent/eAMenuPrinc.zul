@@ -111,7 +111,7 @@
                               id="id_option_admusr" />
                            <menuitem src="/media/perfiles.png"
                               label="Perfiles"
-                              onClick='bl.incluir("administrarPerfiles.zul")'
+                              onClick='bl.incluir("eAAdministraPerfil.zul")'
                               id="id_option_admperf" />
                            <menuitem src="/media/recursos.png"
                               label="Recursos"
@@ -121,35 +121,6 @@
                               label="Recursos por Perfil"
                               onClick='bl.incluir("administrarPerfilRecurso.zul")'
                               id="id_option_adm_perfil_recurso" />
-                           <menuitem
-                              src="/media/configure_shortcuts.png" label="Parámetros"
-                              onClick='bl.incluir("administracion_parametros.zul")'
-                              id="id_option_adm_param" />
-                           <menuitem src="/media/contents.png"
-                              label=" Estados Resultantes"
-                              onClick='bl.incluir("administrarEstadosResultantes.zul")'
-                              id="id_option_adm_estado" />
-                           <menuitem
-                              src="/media/view_multicolumn.png" label="Tipos de Campo"
-                              onClick='bl.incluir("administrarTipoCampo.zul")'
-                              id="id_option_adm_tipcampo" />
-                           <menuitem src="/media/history.png"
-                              label="Tipos de Evento"
-                              onClick='bl.incluir("administrarTipoEvento.zul")'
-                              id="id_option_adm_tipevent" />
-                           <menuitem
-                              src="/media/view_fit_window.png" label="Datos Admisibles"
-                              onClick='bl.incluir("administrarDatoAdmisible.zul")'
-                              id="id_option_adm_datos_admis" />
-                           <menuitem src="/media/gear.png"
-                              label="Acciones Admisibles"
-                              onClick='bl.incluir("administrarAccionAdmisible.zul")'
-                              id="id_option_adm_acciones_admis" />
-                           <menuitem src="/media/suspend.png"
-                              label="Bloqueos por Bin"
-                              onClick='bl.incluir("administrarBloqueoBin.zul")'
-                              id="id_option_adm_bloqueo_bin" />
-
                         </menupopup>
                      </menu>
                      <menuitem src="/media/keys.png"
