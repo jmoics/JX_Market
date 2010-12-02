@@ -8,6 +8,9 @@
       <timeout-uri>/timeout.zul</timeout-uri><!-- An empty URL can cause the browser to reload the same 
          URL -->
    </device-config>
+   <system-config>
+       <disable-event-thread>false</disable-event-thread>
+   </system-config>
    <session-config>
       <session-timeout>3600</session-timeout>
    </session-config>
