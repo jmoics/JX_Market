@@ -339,7 +339,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     <update id="updateArea" parameterClass="DTO_Area">
         UPDATE T_EMP_AREA
         SET
-            area_v_nombre = #nombre#, 
+            area_v_nombre = #nombre#
         WHERE
             area_n_codigo = #codigo#
         AND

@@ -105,21 +105,20 @@
                      <menu src="/media/configure.png"
                         label="Administrar..." id="">
                         <menupopup>
-                           <menuitem
-                              src="/media/icon_users.png" label="Empleados"
+                           <menuitem src="/media/history.png" label="Areas"
+                              onClick='bl.incluir("eAAdministraArea.zul")'
+                              id="id_option_adm_areas" />
+                           <menuitem src="/media/icon_users.png" label="Empleados"
                               onClick='bl.incluir("eAAdministraEmpleado.zul")'
-                              id="id_option_admusr" />
-                           <menuitem src="/media/perfiles.png"
-                              label="Perfiles"
+                              id="id_option_adm_emp" />
+                           <menuitem src="/media/perfiles.png" label="Perfiles"
                               onClick='bl.incluir("eAAdministraPerfil.zul")'
-                              id="id_option_admperf" />
-                           <menuitem src="/media/recursos.png"
-                              label="Recursos"
+                              id="id_option_adm_perf" />
+                           <menuitem src="/media/recursos.png" label="Recursos"
                               onClick='bl.incluir("administrarRecursos.zul")'
-                              id="id_option_admrec" />
-                           <menuitem src="/media/perfiles.png"
-                              label="Recursos por Perfil"
-                              onClick='bl.incluir("administrarPerfilRecurso.zul")'
+                              id="id_option_adm_rec" />
+                           <menuitem src="/media/perfiles.png" label="Recursos por Perfil"
+                              onClick='bl.incluir("")'
                               id="id_option_adm_perfil_recurso" />
                         </menupopup>
                      </menu>

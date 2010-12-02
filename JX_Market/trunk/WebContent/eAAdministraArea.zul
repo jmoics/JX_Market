@@ -1,0 +1,67 @@
+<?page title="Seguridad y Servicio al Cliente" contentType="text/html;charset=UTF-8"?>
+
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+    <div align="center">
+        <html:p />
+        <window width="700px" id="eaAA"
+            use="pe.com.jx_market.controller.PO_EAAdministraArea">
+            <div align="center">
+                <vbox width="700px">
+                    <html:p />
+                    <div align="center">
+                        <label zclass="z-south-header"
+                            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                            Administrador de Areas
+                        </label>
+                        <html:p />
+                        <groupbox mold="3d" width="600px">
+                            <caption label="Areas Registrados" />
+                            <div align="center">
+                                <html:p />
+                                <grid id="grdArea" width="400px">
+                                    <columns>
+                                       <column label="Nombre" width="200px" />
+                                       <column label="Ver Empleados" width="90px" />
+                                       <column label="Editar" width="55px" />
+                                       <column label="Eliminar" width="55px" />
+                                    </columns>
+                                    <rows></rows>
+                                </grid>
+                                <html:p />
+                                <html:p />
+
+                                <groupbox mold="3d" width="420px"
+                                    id="grpNuevo">
+                                    <caption label="Nueva Area" />
+                                    <div width="400px" align="center">
+                                        <grid fixedLayout="true" width="380px">
+                                           <rows>
+                                              <row>
+                                                 <label style="font-size:small" value="Nombre de Area" />
+                                                 <textbox id="txtNombre" />
+                                              </row>
+                                           </rows>
+                                        </grid>
+                                        <html:p />
+                                        <div align="center">
+                                            <button label="Crear" onClick="eaAA.crearNuevaArea()">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </groupbox>
+                            </div>
+                            <html:p />
+                        </groupbox>
+                    </div>
+                </vbox>
+            </div>
+            <popup id="popEmpleados" width="400px">
+                <div align="center">
+                   <toolbarbutton label="Cerrar"
+                     onClick="popEmpleados.close()">
+                   </toolbarbutton>
+                </div>
+            </popup>
+        </window>
+     </div>
+</zk>

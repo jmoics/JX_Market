@@ -7,13 +7,12 @@ import org.apache.commons.logging.LogFactory;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Popup;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
@@ -21,117 +20,77 @@ import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Area;
 import pe.com.jx_market.domain.DTO_Empresa;
-import pe.com.jx_market.domain.DTO_Perfil;
 import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
 
-public class PO_EAAdministraPerfil extends Window
+public class PO_EAAdministraArea extends Window
 {
-    static Log logger = LogFactory.getLog(PO_EAAdministraPerfil.class);
-    private Textbox txtFuncion, txtDescripcion;
-    private Combobox cmbArea;
+    static Log logger = LogFactory.getLog(PO_EAAdministraArea.class);
+    private Textbox txtNombre;
     private Groupbox grpNuevo;
-    private Grid grdPerfil;
+    private Grid grdArea;
     private DTO_Empresa empresa;
-    private BusinessService areaService, perfilService;
+    private BusinessService areaService;
+    private Popup popEmpleados;
     
     public void onCreate(){
-        txtFuncion = (Textbox) getFellow("txtFuncion");
-        txtDescripcion = (Textbox) getFellow("txtDescripcion");
-        cmbArea = (Combobox) getFellow("cmbArea");
+        txtNombre = (Textbox) getFellow("txtNombre");
         grpNuevo = (Groupbox) getFellow("grpNuevo");
-        grdPerfil = (Grid) getFellow("grdPerfil");
+        grdArea = (Grid) getFellow("grdArea");
         areaService = Utility.getService(this, "areaService");
-        perfilService = Utility.getService(this, "perfilService");
-        
+        popEmpleados = (Popup) getFellow("popEmpleados");
         empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
-        cargarAreas(cmbArea);
-        mostrarPerfiles();
+        mostrarAreas();
     }
     
-    public void crearNuevoPerfil(){
+    public void crearNuevaArea(){
         //row1.setVisible(true);
         
-        if(!txtDescripcion.getValue().isEmpty() && !txtFuncion.getValue().isEmpty() && cmbArea.getSelectedItem() != null){
-            final DTO_Perfil unew = new DTO_Perfil();
+        if(!txtNombre.getValue().isEmpty()){
+            final DTO_Area unew = new DTO_Area();
             
-            unew.setDescripcion(txtDescripcion.getValue());
-            unew.setFuncion(txtFuncion.getValue());
-            unew.setArea(((DTO_Area)cmbArea.getSelectedItem().getAttribute("area")).getCodigo());
+            unew.setNombre(txtNombre.getValue());
             unew.setEmpresa(empresa.getCodigo());
 
             final DTO_Input input = new DTO_Input(unew);
             input.setVerbo(Constantes.V_REGISTER);
-            final DTO_Output output = perfilService.execute(input);
+            final DTO_Output output = areaService.execute(input);
             if(output.getErrorCode() == Constantes.OK){
-                alertaInfo("","perfil creado correctamente", null);
+                alertaInfo("","area creada correctamente", null);
                 onLimpiar();
-                mostrarPerfiles();
+                mostrarAreas();
             }else{
-                alertaError("Error al crear perfil", "error al crear perfil", null);
+                alertaError("Error al crear area", "error al crear area", null);
             }
         }else{
             alertaInfo("Todos los campos deben ser llenados", "No se ingresaron datos para codigo y descripcion", null);
         }
     }
     
-    public void mostrarPerfiles(){
-        final DTO_Perfil perf = new DTO_Perfil();
-        perf.setEmpresa(empresa.getCodigo());
-        final DTO_Input input = new DTO_Input(perf);
-        
+    public void mostrarAreas(){
+        final DTO_Area are = new DTO_Area();
+        are.setEmpresa(empresa.getCodigo());
+        final DTO_Input input = new DTO_Input(are);
         input.setVerbo(Constantes.V_LIST);
-        final DTO_Output output = perfilService.execute(input);
+        final DTO_Output output = areaService.execute(input);
         if(output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Perfil> ulist = output.getLista();
+            final List<DTO_Area> ulist = output.getLista();
     
-            for(final DTO_Perfil sOut : ulist){
+            for(final DTO_Area sOut : ulist){
                 agregarFila(sOut);
             }
         } else {
-            alertaError("Error al cargar perfiles", "Error al cargar perfiles", null);
+            alertaError("Error al cargar areas", "Error al cargar areas", null);
         }
     }
     
-    public void agregarFila(final DTO_Perfil perf){
+    public void agregarFila(final DTO_Area are){
         final Row fila = new Row();
-        fila.setAttribute("perfil", perf);
+        fila.setAttribute("area", are);
 
-        final Combobox combo = new Combobox();
-        combo.setWidth("110px");
-        cargarAreas(combo);
-        for(final Comboitem item : (List<Comboitem>)combo.getItems()){
-            if(perf.getArea().equals(((DTO_Area)item.getAttribute("area")).getCodigo())){
-                combo.setSelectedItem(item);
-            }
-        }
-        combo.setDisabled(true);
-        fila.appendChild(combo);
-        
-        Textbox txt = new Textbox(perf.getFuncion());
-        txt.setWidth("100px");
-        txt.setReadonly(true);
-        txt.addEventListener(Events.ON_CANCEL,
-                new org.zkoss.zk.ui.event.EventListener() {
-                    @Override
-                    public void onEvent(final Event e) throws UiException {
-                        ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                .getChildren().get(3))).getChildren().get(0))
-                                .setVisible(true);
-                        ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                .getChildren().get(3))).getChildren().get(1))
-                                .setVisible(false);
-                        ((Textbox) e.getTarget()).setReadonly(true);
-                        grpNuevo.setOpen(true);
-                        onLimpiar();
-                        mostrarPerfiles();
-                    }
-                });
-        fila.appendChild(txt);
-
-        txt = new Textbox(perf.getDescripcion());
+        final Textbox txt = new Textbox(are.getNombre());
         txt.setWidth("180px");
         txt.setReadonly(true);
         txt.addEventListener(Events.ON_CANCEL,
@@ -139,20 +98,35 @@ public class PO_EAAdministraPerfil extends Window
                     @Override
                     public void onEvent(final Event e) throws UiException {
                         ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                .getChildren().get(3))).getChildren().get(0))
+                                .getChildren().get(2))).getChildren().get(0))
                                 .setVisible(true);
                         ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                .getChildren().get(3))).getChildren().get(1))
+                                .getChildren().get(2))).getChildren().get(1))
                                 .setVisible(false);
                         ((Textbox) e.getTarget()).setReadonly(true);
                         grpNuevo.setOpen(true);
                         onLimpiar();
-                        mostrarPerfiles();
+                        mostrarAreas();
                     }
                 });
         fila.appendChild(txt);
         
-                
+        final Image ImDetalles = new Image("media/details.png");
+        ImDetalles.setStyle("cursor:pointer");
+        ImDetalles.setPopup(popEmpleados);
+        ImDetalles.addEventListener("onClick",
+                        new org.zkoss.zk.ui.event.EventListener() {
+                            @Override
+                            public void onEvent(final Event e)
+                                throws UiException
+                            {
+                                 /*cargarPop((DTO_Empleado) ((Row)
+                                 e.getTarget().getParent()).getAttribute("empleado"));*/
+                                 
+                            }
+                        });
+        fila.appendChild(ImDetalles);
+               
         final Image imgEditar = new Image("media/edit.png");
         imgEditar.setStyle("cursor: pointer");
         imgEditar.addEventListener(Events.ON_CLICK,
@@ -162,7 +136,17 @@ public class PO_EAAdministraPerfil extends Window
                         ((Image) e.getTarget()).setVisible(false);
                         ((Image) ((Div) e.getTarget().getParent())
                                 .getChildren().get(1)).setVisible(true);
-                        for (int i = 0; i < grdPerfil.getRows().getChildren().size(); i++) {
+                        for (int i = 0; i < grdArea.getRows().getChildren().size(); i++) {
+                            ((Image) ((Div) (((Row) (((Rows) e.getTarget()
+                                    .getParent().getParent().getParent())
+                                    .getChildren().get(i))).getChildren()
+                                    .get(2))).getChildren().get(0))
+                                    .setVisible(false);
+                            ((Image) ((Div) (((Row) (((Rows) e.getTarget()
+                                    .getParent().getParent().getParent())
+                                    .getChildren().get(i))).getChildren()
+                                    .get(2))).getChildren().get(2))
+                                    .setVisible(true);
                             ((Image) ((Div) (((Row) (((Rows) e.getTarget()
                                     .getParent().getParent().getParent())
                                     .getChildren().get(i))).getChildren()
@@ -171,32 +155,18 @@ public class PO_EAAdministraPerfil extends Window
                             ((Image) ((Div) (((Row) (((Rows) e.getTarget()
                                     .getParent().getParent().getParent())
                                     .getChildren().get(i))).getChildren()
-                                    .get(3))).getChildren().get(2))
-                                    .setVisible(true);
-                            ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                    .getParent().getParent().getParent())
-                                    .getChildren().get(i))).getChildren()
-                                    .get(4))).getChildren().get(0))
-                                    .setVisible(false);
-                            ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                    .getParent().getParent().getParent())
-                                    .getChildren().get(i))).getChildren()
-                                    .get(4))).getChildren().get(1))
+                                    .get(3))).getChildren().get(1))
                                     .setVisible(true);
                         }
-                        ((Combobox) ((Row) e.getTarget().getParent().getParent())
-                                .getChildren().get(0)).setDisabled(false);
                         ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                .getChildren().get(1)).setReadonly(false);
+                                .getChildren().get(0)).setReadonly(false);
                         ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                .getChildren().get(1)).setFocus(true);
-                        ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                .getChildren().get(2)).setReadonly(false);
+                                .getChildren().get(0)).setFocus(true);
                         ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                .getParent()).getChildren().get(3)))
+                                .getParent()).getChildren().get(2)))
                                 .getChildren().get(0)).setVisible(false);
                         ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                .getParent()).getChildren().get(3)))
+                                .getParent()).getChildren().get(2)))
                                 .getChildren().get(1)).setVisible(true);
                         grpNuevo.setOpen(false);
                     }
@@ -211,20 +181,26 @@ public class PO_EAAdministraPerfil extends Window
                         ((Image) e.getTarget()).setVisible(false);
                         ((Image) ((Div) e.getTarget().getParent())
                                         .getChildren().get(0)).setVisible(true);
-                        ((Combobox) ((Row) e.getTarget().getParent().getParent())
-                                .getChildren().get(0)).setDisabled(true);
                         ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                .getChildren().get(1)).setReadonly(true);
-                        ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                .getChildren().get(2)).setReadonly(true);
+                                .getChildren().get(0)).setReadonly(true);
                         ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                .getParent()).getChildren().get(3)))
+                                .getParent()).getChildren().get(2)))
                                 .getChildren().get(0)).setVisible(true);
                         ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                .getParent()).getChildren().get(3)))
+                                .getParent()).getChildren().get(2)))
                                 .getChildren().get(1)).setVisible(false);
                         grpNuevo.setOpen(true);
-                        for (int i = 0; i < grdPerfil.getRows().getChildren().size(); i++) {
+                        for (int i = 0; i < grdArea.getRows().getChildren().size(); i++) {
+                            ((Image) ((Div) (((Row) (((Rows) e.getTarget()
+                                    .getParent().getParent().getParent())
+                                    .getChildren().get(i))).getChildren()
+                                    .get(2))).getChildren().get(0))
+                                    .setVisible(true);
+                            ((Image) ((Div) (((Row) (((Rows) e.getTarget()
+                                    .getParent().getParent().getParent())
+                                    .getChildren().get(i))).getChildren()
+                                    .get(2))).getChildren().get(2))
+                                    .setVisible(false);
                             ((Image) ((Div) (((Row) (((Rows) e.getTarget()
                                     .getParent().getParent().getParent())
                                     .getChildren().get(i))).getChildren()
@@ -233,28 +209,14 @@ public class PO_EAAdministraPerfil extends Window
                             ((Image) ((Div) (((Row) (((Rows) e.getTarget()
                                     .getParent().getParent().getParent())
                                     .getChildren().get(i))).getChildren()
-                                    .get(3))).getChildren().get(2))
-                                    .setVisible(false);
-                            ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                    .getParent().getParent().getParent())
-                                    .getChildren().get(i))).getChildren()
-                                    .get(4))).getChildren().get(0))
-                                    .setVisible(true);
-                            ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                    .getParent().getParent().getParent())
-                                    .getChildren().get(i))).getChildren()
-                                    .get(4))).getChildren().get(1))
+                                    .get(3))).getChildren().get(1))
                                     .setVisible(false);
                         }
-                        ((Row) e.getTarget().getParent().getParent()).getAttribute("perfil");
-                                        perf.setFuncion(((Textbox)
-                        ((Row) e.getTarget().getParent().getParent()).getChildren().get(1)).getValue());
-                                        perf.setDescripcion(((Textbox)
-                        ((Row) e.getTarget().getParent().getParent()).getChildren().get(2)).getValue());
-                                        perf.setArea(((DTO_Area)((Combobox)
-                        ((Row) e.getTarget().getParent().getParent()).getChildren().get(0))
-                                                .getSelectedItem().getAttribute("area")).getCodigo());
-                        actualizaPerfil(perf);
+                        ((Row) e.getTarget().getParent().getParent()).getAttribute("area");
+                        are.setNombre(((Textbox)
+                                        ((Row) e.getTarget().getParent().getParent()).getChildren().get(0)).getValue());
+                                        
+                        actualizaArea(are);
                     }
                 });
         
@@ -268,7 +230,7 @@ public class PO_EAAdministraPerfil extends Window
                         ((Image) ((Div) e.getTarget().getParent()).getChildren().get(0)).setVisible(false);
                         grpNuevo.setOpen(true);
                         onLimpiar();
-                        mostrarPerfiles();
+                        mostrarAreas();
                     }
                 });
         imgEditarDisab.setVisible(false);
@@ -288,9 +250,12 @@ public class PO_EAAdministraPerfil extends Window
                     @Override
                     public void onEvent(final Event e) throws UiException {
                         try {
-                            final int msg = Messagebox.show("¿Está seguro de eliminar el perfil?", empresa.getRazonsocial(), Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
+                            int msg = 0;
+                            msg = Messagebox.show("¿Está seguro de eliminar el area?",
+                                    empresa.getRazonsocial(), Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
                             if(msg == Messagebox.YES){
-                                eliminaFila((DTO_Perfil) ((Row) e.getTarget().getParent().getParent()).getAttribute("perfil"));
+                                eliminaFila((DTO_Area) ((Row) e.getTarget().getParent().getParent())
+                                                                                            .getAttribute("area"));
                             }
                         } catch (final InterruptedException e1) {
                             e1.printStackTrace();
@@ -305,77 +270,40 @@ public class PO_EAAdministraPerfil extends Window
         divEliminar.appendChild(imgEliminar);
         divEliminar.appendChild(imgEliminarDisab);
         fila.appendChild(divEliminar);
-        grdPerfil.getRows().appendChild(fila);
+        grdArea.getRows().appendChild(fila);
     }
     
-    public void actualizaPerfil(final DTO_Perfil perf){
-        final DTO_Input input = new DTO_Input(perf);
+    public void actualizaArea(final DTO_Area are){
+        final DTO_Input input = new DTO_Input(are);
         input.setVerbo(Constantes.V_REGISTER);
         
-        final DTO_Output output = perfilService.execute(input);
+        final DTO_Output output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("","El perfil se actualizo correctamente", null);
+            alertaInfo("","El area se actualizo correctamente", null);
         } else {
-            alertaError("Error al actualizar el perfil", "Error al actualizar el perfil", null);
+            alertaError("Error al actualizar el area", "Error al actualizar el area", null);
         }
         
         //onLimpiar();
         //mostrarTBloqueos();
     }
     
-    public void eliminaFila(final DTO_Perfil perf) throws UiException{
-        final DTO_Input input = new DTO_Input(perf.getCodigo());
-        input.setVerbo("delete");
-        final DTO_Output output = perfilService.execute(input);
+    public void eliminaFila(final DTO_Area are) throws UiException{
+        final DTO_Input input = new DTO_Input(are);
+        input.setVerbo(Constantes.V_DELETE);
+        final DTO_Output output = areaService.execute(input);
         if(output.getErrorCode() == Constantes.OK){
-            alertaInfo("","El perfil se elimino correctamente", null);
+            alertaInfo("","El area se elimino correctamente", null);
             onLimpiar();
-            mostrarPerfiles();
+            mostrarAreas();
         }else{
-            alertaError("Error al eliminar el perfil", "Error al eliminar el perfil", null);
-        }
-    }
-    
-    private void cargarAreas(final Combobox combo)
-    {
-        final DTO_Area ar = new DTO_Area();
-        ar.setEmpresa(empresa.getCodigo());
-        final DTO_Input input = new DTO_Input(ar);
-        input.setVerbo(Constantes.V_LIST);
-        final DTO_Output output = areaService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Area> listado = output.getLista();
-            for (final DTO_Area area : listado) {
-                final Comboitem item = new Comboitem(area.getNombre());
-                item.setAttribute("area", area);
-                combo.appendChild(item);
-            }
-        } else {
-            alertaError("Error en la carga de areas",
-                            "error al cargar los areas", null);
-        }
-    }
-    
-    private DTO_Area getArea(final Integer codigo)
-    {
-        final DTO_Area area = new DTO_Area();
-        area.setCodigo(codigo);
-        area.setEmpresa(empresa.getCodigo());
-        final DTO_Input input = new DTO_Input(area);
-        input.setVerbo(Constantes.V_GET);
-        final DTO_Output output = areaService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            return (DTO_Area) output.getObject();
-        } else {
-            return null;
+            alertaError("Error al eliminar el area", "Error al eliminar el area", null);
         }
     }
     
     public void onLimpiar(){
-        grdPerfil.getRows().getChildren().clear();
-        txtDescripcion.setValue("");
-        txtFuncion.setValue("");
-        cmbArea.setSelectedItem(null);
+        grdArea.getRows().getChildren().clear();
+        txtNombre.setValue("");
     }
 
     public void alertaInfo(final String txt,
