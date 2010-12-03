@@ -37,5 +37,13 @@
     <bean id="areaDAO" class="pe.com.jx_market.dao.ibatis.AreaDAOibatis">
         <property name="sqlMapClient" ref="sqlMapClient" />
     </bean>
+    
+    <bean id="moduloDAO" class="pe.com.jx_market.dao.ibatis.ModuloDAOibatis">
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+    
+    <bean id="perfilModuloDAO" class="pe.com.jx_market.dao.ibatis.PerfilModuloDAOibatis">
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
 
 </beans>

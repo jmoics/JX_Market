@@ -5,18 +5,29 @@ import java.io.Serializable;
 public class DTO_Modulo
     implements Serializable
 {
-    private Integer modulo;
+    private Integer codigo;
     private Integer empresa;
     private String descripcion;
+    private String recurso;
 
-    public Integer getModulo()
+    public Integer getCodigo()
     {
-        return modulo;
+        return codigo;
     }
 
-    public void setModulo(final Integer modulo)
+    public void setCodigo(final Integer codigo)
     {
-        this.modulo = modulo;
+        this.codigo = codigo;
+    }
+
+    public String getRecurso()
+    {
+        return recurso;
+    }
+
+    public void setRecurso(final String recurso)
+    {
+        this.recurso = recurso;
     }
 
     public Integer getEmpresa()

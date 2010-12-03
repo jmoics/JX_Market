@@ -13,6 +13,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     <typeAlias alias="DTO_Articulo" type="pe.com.jx_market.domain.DTO_Articulo" />
     <typeAlias alias="DTO_Categoria" type="pe.com.jx_market.domain.DTO_Categoria" />
     <typeAlias alias="DTO_Area" type="pe.com.jx_market.domain.DTO_Area" />
+    <typeAlias alias="DTO_Modulo" type="pe.com.jx_market.domain.DTO_Modulo" />
+    <typeAlias alias="DTO_PerfilModulo" type="pe.com.jx_market.domain.DTO_PerfilModulo" />
 
     <!-- MANTENIMIENTO DE CLIENTES -->
 
@@ -247,7 +249,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 
     <!-- MANTENIMIENTO DE PERFILES -->
 
-    <select id="getPerfiles" resultClass="DTO_Perfil">
+    <select id="getPerfiles" parameterClass="DTO_Perfil" resultClass="DTO_Perfil">
         SELECT
             per.perfil_n_codigo as codigo,
             per.perfil_v_funcion as funcion,
@@ -260,7 +262,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             per.empresa_n_codigo = #empresa#
     </select>
     
-    <select id="getPerfilXCodigo" resultClass="DTO_Perfil">
+    <select id="getPerfilXCodigo" parameterClass="DTO_Perfil" resultClass="DTO_Perfil">
         SELECT
             per.perfil_n_codigo as codigo,
             per.perfil_v_funcion as funcion,
@@ -294,7 +296,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             empresa_n_codigo = #empresa#
     </update>
     
-    <delete id="deletePerfil">
+    <delete id="deletePerfil" parameterClass="DTO_Perfil">
       DELETE FROM
          T_SEG_PERFIL
       WHERE
@@ -305,7 +307,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     
     <!-- MANTENIMIENTO DE AREAS -->
 
-    <select id="getAreas" resultClass="DTO_Area">
+    <select id="getAreas" parameterClass="DTO_Area" resultClass="DTO_Area">
         SELECT
             area.area_n_codigo as codigo,
             area.area_v_nombre as nombre,
@@ -316,7 +318,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             area.empresa_n_codigo = #empresa#
     </select>
     
-    <select id="getAreaXCodigo" resultClass="DTO_Area">
+    <select id="getAreaXCodigo" parameterClass="DTO_Area" resultClass="DTO_Area">
         SELECT
             area.area_n_codigo as codigo,
             area.area_v_nombre as nombre,
@@ -346,13 +348,95 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             empresa_n_codigo = #empresa#
     </update>
     
-    <delete id="deleteArea">
+    <delete id="deleteArea" parameterClass="DTO_Area">
       DELETE FROM
          T_EMP_AREA
       WHERE
             area_n_codigo = #codigo#
         AND
             empresa_n_codigo = #empresa#
+    </delete>
+    
+    <!-- MANTENIMIENTO DE MODULOS -->
+
+    <select id="getModulos" parameterClass="DTO_Modulo" resultClass="DTO_Modulo">
+        SELECT
+            modu.modulo_n_codigo as codigo,
+            modu.modulo_v_desc as descripcion,
+            modu.modulo_v_recurso as recurso,
+            modu.empresa_n_codigo as empresa
+        FROM
+            T_SEG_MODULO modu
+        WHERE
+            modu.empresa_n_codigo = #empresa#
+    </select>
+    
+    <select id="getModuloXCodigo" parameterClass="DTO_Modulo" resultClass="DTO_Modulo">
+        SELECT
+            modu.modulo_n_codigo as codigo,
+            modu.modulo_v_desc as descripcion,
+            modu.modulo_v_recurso as recurso,
+            modu.empresa_n_codigo as empresa
+        FROM
+            T_SEG_MODULO modu
+        WHERE
+            modu.empresa_n_codigo = #empresa#
+        AND
+            modu.modulo_n_codigo = #codigo#
+    </select>
+
+    <insert id="insertModulo" parameterClass="DTO_Modulo">
+        INSERT INTO T_SEG_MODULO
+            (modulo_v_desc, modulo_v_recurso, empresa_n_codigo)
+        VALUES
+            (#descripcion#, #recurso#, #empresa#)
+    </insert>
+    
+    <update id="updateModulo" parameterClass="DTO_Modulo">
+        UPDATE T_SEG_MODULO
+        SET
+            modulo_v_desc = #descripcion#,
+            modulo_v_recurso = #recurso#
+        WHERE
+            modulo_n_codigo = #codigo#
+        AND
+            empresa_n_codigo = #empresa#
+    </update>
+    
+    <delete id="deleteModulo" parameterClass="DTO_Modulo">
+      DELETE FROM
+         T_SEG_MODULO
+      WHERE
+            modulo_n_codigo = #codigo#
+        AND
+            empresa_n_codigo = #empresa#
+    </delete>
+    
+    <!-- MANTENIMIENTOD DE MODULOS POR PERFIL -->
+
+    <select id ="getModuloXPerfil" parameterClass="DTO_Perfil" resultClass="Integer">
+        SELECT
+            modulo_n_codigo
+        FROM
+            T_SEG_MOD_DET
+        WHERE
+            perfil_n_codigo = #codigo#
+    </select>
+
+    <insert id="insertModuloPerfil" parameterClass="DTO_PerfilModulo">
+        INSERT INTO
+            T_SEG_MOD_DET
+                (perfil_n_codigo, modulo_n_codigo, moddet_n_habilitado)
+            VALUES
+                (#perfil#, #modulo#, #estado#)
+       
+    </insert>
+   
+    <delete id="delModuloPerfil" parameterClass="DTO_Perfil">
+        DELETE FROM
+            T_SEG_MOD_DET
+        WHERE
+            perfil_n_codigo = #codigo#
     </delete>
 
     <!-- MANTENIMIENTO DE EMPRESAS -->

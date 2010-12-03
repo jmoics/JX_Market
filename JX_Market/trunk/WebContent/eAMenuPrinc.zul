@@ -52,7 +52,7 @@
                         <menupopup>
                            <menuitem src="/media/filenew.png"
                               label="Consulta de Ventas"
-                              onClick='bl.incluir("bloqueoElectron.zul")'
+                              onClick='bl.incluir("")'
                               id="" />
                            <menuitem
                               src="/media/configure_shortcuts.png"
@@ -114,12 +114,12 @@
                            <menuitem src="/media/perfiles.png" label="Perfiles"
                               onClick='bl.incluir("eAAdministraPerfil.zul")'
                               id="id_option_adm_perf" />
-                           <menuitem src="/media/recursos.png" label="Recursos"
-                              onClick='bl.incluir("administrarRecursos.zul")'
-                              id="id_option_adm_rec" />
-                           <menuitem src="/media/perfiles.png" label="Recursos por Perfil"
-                              onClick='bl.incluir("")'
-                              id="id_option_adm_perfil_recurso" />
+                           <menuitem src="/media/recursos.png" label="Modulos"
+                              onClick='bl.incluir("eAAdministraModulo.zul")'
+                              id="id_option_adm_mod" />
+                           <menuitem src="/media/perfiles.png" label="Modulos por Perfil"
+                              onClick='bl.incluir("eAAdministraPerfilModulo.zul")'
+                              id="id_option_adm_perfi_modulo" />
                         </menupopup>
                      </menu>
                      <menuitem src="/media/keys.png"

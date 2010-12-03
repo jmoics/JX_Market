@@ -212,7 +212,6 @@ public class PO_EAAdministraArea extends Window
                                     .get(3))).getChildren().get(1))
                                     .setVisible(false);
                         }
-                        ((Row) e.getTarget().getParent().getParent()).getAttribute("area");
                         are.setNombre(((Textbox)
                                         ((Row) e.getTarget().getParent().getParent()).getChildren().get(0)).getValue());
                                         

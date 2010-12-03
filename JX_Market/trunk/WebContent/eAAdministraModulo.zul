@@ -1,0 +1,74 @@
+<?page title="Seguridad y Servicio al Cliente" contentType="text/html;charset=UTF-8"?>
+
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+    <div align="center">
+        <html:p />
+        <window width="700px" id="eaAM"
+            use="pe.com.jx_market.controller.PO_EAAdministraModulo">
+            <div align="center">
+                <vbox width="700px">
+                    <html:p />
+                    <div align="center">
+                        <label zclass="z-south-header"
+                            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                            Administrador de Modulos
+                        </label>
+                        <html:p />
+                        <groupbox mold="3d" width="620px">
+                            <caption label="Modulos Registrados" />
+                            <div align="center">
+                                <html:p />
+                                <grid id="grdModulo" mold="paging" pageSize="10"
+                                    fixedLayout="true" width="600px">
+                                    <columns>
+                                        <column label="Recurso"
+                                            width="200px" />
+                                        <column label="Descripción"
+                                            width="295px" />
+                                        <column label="Editar"
+                                            width="45px" />
+                                        <column label="Eliminar"
+                                            width="50px" />
+                                    </columns>
+                                    <rows></rows>
+                                </grid>
+                                <html:p />
+                                <html:p />
+
+                                <groupbox mold="3d" width="440px"
+                                    id="grpModulo">
+                                    <caption label="Nuevo Modulo" />
+                                    <div width="420px" align="center">
+                                        <grid fixedLayout="false"
+                                            width="420px">
+                                            <columns>
+                                                <column width="120px" />
+                                                <column />
+                                            </columns>
+                                            <rows>
+                                                <row>
+                                                    <label style="font-size:small" value="Recurso" />
+                                                    <textbox constraint="/^[a-zA-Z0-9_]*$/: Recurso es inválido" maxlength="16"
+                                                        id="txtRecurso" width="250px" />
+                                                </row>
+                                                <row>
+                                                    <label style="font-size:small" value="Descripción" />
+                                                    <textbox id="txtDescripcion" width="300px" />
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                        <html:p />
+                                        <div align="center">
+                                            <button label="Crear" onClick="eaAM.crearNuevoModulo()"/>
+                                        </div>
+                                    </div>
+                                </groupbox>
+                            </div>
+                            <html:p />
+                        </groupbox>
+                    </div>
+                </vbox>
+            </div>
+        </window>
+    </div>
+</zk>
