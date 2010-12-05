@@ -85,4 +85,5 @@ public class Constantes {
      * imagenes
      */
     public static final String RUTA_IMAGENES = "/home/george/imagenesJXMarket";
+    public static final String RUTA_IMAGENES_WINDOWS = "C:/Users/Mondragon/Documents/imagenesJXMarket";
 }

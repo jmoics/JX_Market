@@ -75,7 +75,12 @@ public class ArticuloService implements BusinessService
     }
 
     private File getPhotoFile(final DTO_Articulo art) {
-        final String ruta = Constantes.RUTA_IMAGENES + File.separator + art.getNomimg();
+    	String ruta;
+    	if(System.getProperty("os.name").contains("Windows")){
+    		ruta = Constantes.RUTA_IMAGENES_WINDOWS + File.separator + art.getNomimg();
+    	} else{
+    		ruta = Constantes.RUTA_IMAGENES + File.separator + art.getNomimg();
+    	}
         return new File(ruta);
     }
 
