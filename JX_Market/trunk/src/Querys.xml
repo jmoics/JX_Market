@@ -422,6 +422,18 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         WHERE
             perfil_n_codigo = #codigo#
     </select>
+    
+    <select id ="getModuloStringXPerfil" parameterClass="DTO_Perfil" resultClass="String">
+        SELECT
+            modu.modulo_v_recurso
+        FROM
+            T_SEG_MOD_DET modDet,
+            T_SEG_MODULO modu
+        WHERE
+            modDet.modulo_n_codigo = modu.modulo_n_codigo
+        AND
+            modDet.perfil_n_codigo = #codigo#
+    </select>
 
     <insert id="insertModuloPerfil" parameterClass="DTO_PerfilModulo">
         INSERT INTO

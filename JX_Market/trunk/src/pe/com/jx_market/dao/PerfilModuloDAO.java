@@ -7,8 +7,11 @@ import pe.com.jx_market.domain.DTO_PerfilModulo;
 
 public interface PerfilModuloDAO {
 
-    // obtiene los recursos asociados a un perfil
+    // obtiene los id de los modulos asociados a un perfil
     public Set<Integer> listaPorPerfil(DTO_Perfil perfil);
+
+    // obtiene el bean modulo asociados a un perfil
+    public Set<String> listaModulosPorPerfil(DTO_Perfil perfil);
 
     // elimina todos los recursos asociados a un perfil
     public void eliminaPorPerfil(DTO_Perfil perfil);

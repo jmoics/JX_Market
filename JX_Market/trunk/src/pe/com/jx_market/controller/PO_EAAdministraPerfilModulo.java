@@ -88,7 +88,7 @@ public class PO_EAAdministraPerfilModulo
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes" })
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void CargarTabla()
     {
         gr_recursos.getFoot().getChildren().clear();
@@ -172,18 +172,9 @@ public class PO_EAAdministraPerfilModulo
                 F.appendChild(todos);
                 f_buttons.appendChild(F);
                 gr_recursos.getColumns().appendChild(columna);
-
             }
         } else {
-
-        }
-    }
-
-    public void alerta(final String txt)
-    {
-        try {
-            Messagebox.show(txt, empresa.getRazonsocial(), Messagebox.OK, Messagebox.NONE);
-        } catch (final InterruptedException ex) {
+            alertaError("Error al cargar los modulos por perfil", "Error al cargar los modulos por perfil", null);
         }
     }
 
@@ -221,11 +212,42 @@ public class PO_EAAdministraPerfilModulo
             b_info.setVisible(false);
             b_cancel.setVisible(false);
             logger.info("Recursos registrados correctamente");
-            alerta("Los cambios se guardaron correctamente");
+            alertaInfo("", "Los cambios se guardaron correctamente", null);
         } else {
             logger.error("Error al registrar bloqueos");
         }
+    }
 
+    public void alertaInfo(final String txt,
+                           final String txt2,
+                           final Throwable t)
+    {
+        try {
+            if (txt.length() > 0)
+                Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.INFORMATION);
+            if (t != null) {
+                logger.info(txt2, t);
+            } else {
+                logger.info(txt2);
+            }
+        } catch (final InterruptedException ex) {
+        }
+    }
+
+    public void alertaError(final String txt,
+                            final String txt2,
+                            final Throwable t)
+    {
+        try {
+            if (txt.length() > 0)
+                Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
+            if (t != null) {
+                logger.error(txt2, t);
+            } else {
+                logger.error(txt2);
+            }
+        } catch (final InterruptedException ex) {
+        }
     }
 
     /*

@@ -48,7 +48,7 @@
                                             <rows>
                                                 <row>
                                                     <label style="font-size:small" value="Recurso" />
-                                                    <textbox constraint="/^[a-zA-Z0-9_]*$/: Recurso es inválido" maxlength="16"
+                                                    <textbox constraint="/^[a-zA-Z0-9_]*$/: Recurso es inválido" maxlength="30"
                                                         id="txtRecurso" width="250px" />
                                                 </row>
                                                 <row>

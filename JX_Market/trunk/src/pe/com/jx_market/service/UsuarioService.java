@@ -11,9 +11,9 @@ import pe.com.jx_market.utilities.DTO_Output;
 
 /**
  * Servicio de Administracion de Contactos
- * 
+ *
  * @author jorge
- * 
+ *
  */
 
 public class UsuarioService
@@ -33,7 +33,7 @@ public class UsuarioService
      * DTO_Output tiene codigo de error OK; y si el verbo es "list" contendra
      * una lista de objetos DTO_Contacto con todos los campos leidos de la Base
      * de Datos.
-     * 
+     *
      * @param Objeto estandar de entrada
      * @return Objeto estandar de salida
      */
@@ -70,6 +70,11 @@ public class UsuarioService
             final String nuevoPassword = usuario.getContrasena();
             final Map map = input.getMapa();
             final String oldPass = (String) map.get("oldPass");
+            String nonPass = null;
+            if(map.containsKey("nonPass")){
+                nonPass = (String) map.get("nonPass");
+            }
+
             // aqui se puede aprovechar para hacer algunas validaciones
             if (nuevoPassword.length() < 6) {
                 output.setErrorCode(Constantes.BAD_PASS);
@@ -79,7 +84,7 @@ public class UsuarioService
                 output.setErrorCode(Constantes.BAD_PASS);
                 return output;
             }
-            if (!checkPasswordAnterior(usuario, oldPass)) {
+            if (nonPass == null && !checkPasswordAnterior(usuario, oldPass)) {
                 output.setErrorCode(Constantes.BAD_PASS);
                 return output;
             }

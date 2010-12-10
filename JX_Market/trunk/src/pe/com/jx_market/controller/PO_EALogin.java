@@ -1,9 +1,6 @@
 package pe.com.jx_market.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Combobox;
@@ -12,7 +9,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Cliente;
+import pe.com.jx_market.domain.DTO_Empleado;
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.domain.DTO_Usuario;
 import pe.com.jx_market.service.Constantes;
@@ -34,19 +31,19 @@ public class PO_EALogin
         obtenerEmpresas();
         txtUser.setFocus(true);
     }
-    
+
     public void obtenerEmpresas()
     {
         List<DTO_Empresa> empresas;
-        BusinessService empresaService = Utility.getService(this, "empresaService");
-        DTO_Input input = new DTO_Input();
+        final BusinessService empresaService = Utility.getService(this, "empresaService");
+        final DTO_Input input = new DTO_Input();
         input.setVerbo("list");
 
-        DTO_Output output = empresaService.execute(input);
+        final DTO_Output output = empresaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            empresas = (List<DTO_Empresa>) output.getLista();
-            for (DTO_Empresa emp : empresas) {
-                Comboitem item = new Comboitem();
+            empresas = output.getLista();
+            for (final DTO_Empresa emp : empresas) {
+                final Comboitem item = new Comboitem();
                 item.setLabel(emp.getRazonsocial());
                 item.setAttribute("empresa", emp);
                 cmbEmp.appendChild(item);
@@ -58,16 +55,18 @@ public class PO_EALogin
 
     public void authenticate() throws InterruptedException
     {
-        DTO_Usuario usuario = new DTO_Usuario();
+        final DTO_Usuario usuario = new DTO_Usuario();
         usuario.setUsername(txtUser.getValue());
         usuario.setContrasena(txtPass.getValue());
         if (cmbEmp.getSelectedItem() != null) {
-            DTO_Empresa empresa = (DTO_Empresa)cmbEmp.getSelectedItem().getAttribute("empresa");
+            final DTO_Empresa empresa = (DTO_Empresa)cmbEmp.getSelectedItem().getAttribute("empresa");
             if (empresa != null) {
                 usuario.setEmpresa(empresa.getCodigo());
-    
-                DTO_Usuario validado = (DTO_Usuario) getUsuario(usuario);
+
+                final DTO_Usuario validado = getUsuario(usuario);
                 if (validado != null) {
+                    final DTO_Empleado empleado = getEmpleado(validado);
+                    getDesktop().getSession().setAttribute("empleado", empleado);
                     getDesktop().getSession().setAttribute("login", validado);
                     getDesktop().getSession().setAttribute("empresa", empresa);
                     Executions.sendRedirect("eAMenuPrinc.zul");
@@ -85,13 +84,13 @@ public class PO_EALogin
         }
     }
 
-    public DTO_Usuario getUsuario(DTO_Usuario C)
+    public DTO_Usuario getUsuario(final DTO_Usuario C)
     {
         DTO_Usuario usuario;
-        BusinessService authService = Utility.getService(this, "authService");
-        DTO_Input input = new DTO_Input(C);
+        final BusinessService authService = Utility.getService(this, "authService");
+        final DTO_Input input = new DTO_Input(C);
 
-        DTO_Output output = authService.execute(input);
+        final DTO_Output output = authService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             usuario = (DTO_Usuario) output.getObject();
         } else {
@@ -99,5 +98,21 @@ public class PO_EALogin
         }
 
         return usuario;
+    }
+
+    public DTO_Empleado getEmpleado(final DTO_Usuario usu)
+    {
+        final BusinessService empleadoService = Utility.getService(this, "empleadoService");
+        final DTO_Empleado emp = new DTO_Empleado();
+        emp.setEmpresa(usu.getEmpresa());
+        emp.setUsuario(usu.getCodigo());
+        final DTO_Input input = new DTO_Input(emp);
+        input.setVerbo(Constantes.V_GET);
+        final DTO_Output output = empleadoService.execute(input);
+        if (output.getErrorCode() == Constantes.OK) {
+            return (DTO_Empleado) output.getObject();
+        } else {
+            return null;
+        }
     }
 }

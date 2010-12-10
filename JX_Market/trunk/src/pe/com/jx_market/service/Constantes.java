@@ -2,12 +2,12 @@ package pe.com.jx_market.service;
 
 /**
  * Constantes a utilizar
- * 
+ *
  */
 public class Constantes {
 
     /*
-     * 
+     *
      * CONSTANTES RETORNADAS POR LOS SERVICIOS: ERROR_CODES
      */
 
@@ -37,7 +37,7 @@ public class Constantes {
 
     /**
      * Institucion Jx-Market
-     * 
+     *
      * Este valor se asume que siempre esta en la base de datos del SICF
      */
     public static final int INSTITUCION_JX_MARKET = 1;
@@ -58,7 +58,7 @@ public class Constantes {
     public static final int ST_ACTIVO = 1;
     public static final int ST_INACTIVO = 2;
     public static final int ST_CANCELADO = 3;
-    
+
     /*
      * Strings para estados
      */
@@ -84,6 +84,23 @@ public class Constantes {
     /*
      * imagenes
      */
-    public static final String RUTA_IMAGENES = "/home/george/imagenesJXMarket";
-    public static final String RUTA_IMAGENES_WINDOWS = "C:/Users/Mondragon/Documents/imagenesJXMarket";
+    public static final String RUTA_IMAGENES = "/home/imagenesJXMarket";
+    public static final String RUTA_IMAGENES_WINDOWS = "C:/imagenesJXMarket";
+
+    /*
+     * Modulos para accesos
+     */
+    public static final String MODULO_PRODUCTOS = "MODULO_PRODUCTOS";
+    public static final String MODULO_PROD_INGRESO = "MODULO_PROD_INGRESO";
+    public static final String MODULO_PROD_CONSULTA = "MODULO_PROD_CONSULTA";
+    public static final String MODULO_PROD_EDICION = "MODULO_PROD_EDICION";
+    public static final String MODULO_PROD_INVENTARIO = "MODULO_PROD_INVENTARIO";
+
+    public static final String MODULO_ADMINISTRACION = "MODULO_ADMINISTRACION";
+    public static final String MODULO_ADM_PERFIL = "MODULO_ADM_PERFIL";
+    public static final String MODULO_ADM_AREA = "MODULO_ADM_AREA";
+    public static final String MODULO_ADM_EMPLEADO = "MODULO_ADM_EMPLEADO";
+    public static final String MODULO_ADM_MODULO = "MODULO_ADM_MODULO";
+    public static final String MODULO_ADM_PERFILMODULO = "MODULO_ADM_PERFILMODULO";
+
 }

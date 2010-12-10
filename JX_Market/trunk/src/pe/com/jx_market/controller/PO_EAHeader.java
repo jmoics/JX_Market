@@ -1,30 +1,29 @@
 /**
- * 
+ *
  */
 package pe.com.jx_market.controller;
 
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Usuario;
+import pe.com.jx_market.domain.DTO_Empleado;
 
 /**
- * @author <._.> 
+ * @author <._.>
  *
  */
 public class PO_EAHeader extends Window
 {
     private Label userdata;
-    
+
     public void onCreate ()
     {
         userdata = (Label) getFellow("userdata");
 
-        DTO_Usuario usuario = (DTO_Usuario) getDesktop().getSession().getAttribute("login");
-        if (usuario == null) {
+        final DTO_Empleado empleado = (DTO_Empleado) getDesktop().getSession().getAttribute("empleado");
+        if (empleado == null) {
             throw new RuntimeException("La sesion se perdio, vuelva a ingresar por favor");
         }
-        //Aqui debo jalar al empleado
-        userdata.setValue(usuario.getUsername());
+        userdata.setValue(empleado.getApellido() + " " + empleado.getNombre());
     }
 }

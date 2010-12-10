@@ -39,7 +39,7 @@ public class PerfilModuloService implements BusinessService {
             final Map<String, Object> map = input.getMapa();
             final DTO_Perfil perfil = (DTO_Perfil) map.get("perfil");
             final DTO_Modulo modulo = (DTO_Modulo) map.get("modulo");
-            
+
             final List<DTO_Perfil> perfiles = perfilDAO.getPerfiles(perfil);
             final HashMap <DTO_Perfil, Set<Integer>> perfXMod = new HashMap<DTO_Perfil, Set<Integer>>();
             for(final DTO_Perfil perf : perfiles) {
@@ -66,14 +66,14 @@ public class PerfilModuloService implements BusinessService {
             output.setErrorCode(Constantes.OK);
             return output;
         }
-        
+
         throw new RuntimeException("Verbo incorrecto");
     }
 
     public ModuloDAO getModuloDAO() {
         return moduloDAO;
     }
-    
+
     public void setModuloDAO(final ModuloDAO moduloDAO)
     {
         this.moduloDAO = moduloDAO;
@@ -96,5 +96,5 @@ public class PerfilModuloService implements BusinessService {
     public void setPerfilDAO(final PerfilDAO perfilDAO) {
         this.perfilDAO = perfilDAO;
     }
-    
+
 }

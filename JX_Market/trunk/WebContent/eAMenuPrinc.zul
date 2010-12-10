@@ -34,15 +34,15 @@
                         label="Pedidos" onClick=''
                         id="id_option_newrecl" />
                      <menu src="/media/logviewer.png"
-                        label="Productos" id="id_option_anarecl">
+                        label="Productos" id="id_option_productos">
                         <menupopup>
-                           <menuitem src="/media/edit-find.png"
+                           <menuitem src="/media/edit-find.png" id="id_option_prod_ingreso"
                               label="Ingresar Producto"
                               onClick='bl.incluir("eAIngresaProducto.zul")' />
-                           <menuitem src="/media/viewmag.png"
+                           <menuitem src="/media/viewmag.png" id="id_option_prod_consulta"
                               label="Consulta de Productos"
                               onClick='bl.incluir("eAConsultaProducto.zul")' />
-                           <menuitem src="/media/viewmag.png"
+                           <menuitem src="/media/viewmag.png" id="id_option_prod_inventario"
                               label="Inventario"
                               onClick='bl.incluir("")' />
                         </menupopup>
@@ -103,7 +103,7 @@
                         onClick='bl.incluir("")'
                         id="" />
                      <menu src="/media/configure.png"
-                        label="Administrar..." id="">
+                        label="Administrar..." id="id_option_administracion">
                         <menupopup>
                            <menuitem src="/media/history.png" label="Areas"
                               onClick='bl.incluir("eAAdministraArea.zul")'
@@ -126,9 +126,9 @@
                         label="Cambiar su contraseña"
                         onClick='bl.incluir("cambiarContrasenia.zul")'
                         id="id_option_chgpass" />
-                     <menuitem src="/media/paint.png"
+                     <!--<menuitem src="/media/paint.png"
                         label="Cambiar su tema" onClick='bl.incluir("cambiarTema.zul")'
-                        id="id_option_chgtheme" />
+                        id="id_option_chgtheme" />-->
                   </menubar>
                   <html:p />
 

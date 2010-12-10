@@ -1,5 +1,6 @@
 package pe.com.jx_market.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -14,9 +15,9 @@ import pe.com.jx_market.utilities.DTO_Output;
 
 /**
  * Servicio de Administracion de Contactos
- * 
+ *
  * @author jorge
- * 
+ *
  */
 
 public class EmpleadoService implements BusinessService {
@@ -35,7 +36,7 @@ public class EmpleadoService implements BusinessService {
      * eliminar. El DTO_Output tiene codigo de error OK; y si el verbo es "list"
      * contendra una lista de objetos DTO_Contacto con todos los campos leidos
      * de la Base de Datos.
-     * 
+     *
      * @param Objeto estandar de entrada
      * @return Objeto estandar de salida
      */
@@ -67,6 +68,11 @@ public class EmpleadoService implements BusinessService {
                         empleado.setUsuario(usuario.getCodigo());
                     }
                 } else {
+                    usuario = getUsuario(usuario);
+                    final Map<String, String> map2 = new HashMap<String, String>();
+                    map2.put("nonPass", "nonPass");
+                    map2.put("oldPass", null);
+                    inp.setMapa(map2);
                     inp.setVerbo("chgpass");
                     final DTO_Output out = usuarioService.execute(inp);
                     if (out.getErrorCode() == Constantes.OK) {
@@ -88,7 +94,7 @@ public class EmpleadoService implements BusinessService {
             throw new RuntimeException("No se especifico verbo adecuado");
         }
     }
-    
+
     private DTO_Usuario getUsuario(final DTO_Usuario user) {
         final DTO_Input inp = new DTO_Input(user);
         inp.setVerbo(Constantes.V_GET);
@@ -99,7 +105,7 @@ public class EmpleadoService implements BusinessService {
             return null;
         }
     }
-    
+
     public BusinessService getUsuarioService()
     {
         return usuarioService;
