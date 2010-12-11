@@ -37,6 +37,7 @@ public class UsuarioService
      * @param Objeto estandar de entrada
      * @return Objeto estandar de salida
      */
+    @SuppressWarnings("rawtypes")
     @Override
     public DTO_Output execute(final DTO_Input input)
     {
@@ -69,9 +70,9 @@ public class UsuarioService
             final DTO_Usuario usuario = (DTO_Usuario) input.getObject();
             final String nuevoPassword = usuario.getContrasena();
             final Map map = input.getMapa();
-            final String oldPass = (String) map.get("oldPass");
+            //final String oldPass = (String) map.get("oldPass");
             String nonPass = null;
-            if(map.containsKey("nonPass")){
+            if(map != null && map.containsKey("nonPass")){
                 nonPass = (String) map.get("nonPass");
             }
 
@@ -84,10 +85,10 @@ public class UsuarioService
                 output.setErrorCode(Constantes.BAD_PASS);
                 return output;
             }
-            if (nonPass == null && !checkPasswordAnterior(usuario, oldPass)) {
+            /*if (nonPass == null && !checkPasswordAnterior(usuario, oldPass)) {
                 output.setErrorCode(Constantes.BAD_PASS);
                 return output;
-            }
+            }*/
             // encriptar el password..
             usuario.setContrasena(encriptaPass(nuevoPassword));
 

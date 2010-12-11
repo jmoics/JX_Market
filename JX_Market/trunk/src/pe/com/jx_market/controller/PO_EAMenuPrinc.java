@@ -63,6 +63,7 @@ public class PO_EAMenuPrinc extends Borderlayout
         setVisibilityByResource("id_option_adm_mod", Constantes.MODULO_ADM_MODULO, empleado);
         setVisibilityByResource("id_option_adm_perf", Constantes.MODULO_ADM_PERFIL, empleado);
         setVisibilityByResource("id_option_adm_perfi_modulo", Constantes.MODULO_ADM_PERFILMODULO, empleado);
+        setVisibilityByResource("id_option_chgpass", Constantes.MODULO_CHANGE_PASS, empleado);
     }
 
     private void setVisibilityByResource(final String widget,
@@ -94,7 +95,7 @@ public class PO_EAMenuPrinc extends Borderlayout
         getDesktop().getSession().removeAttribute("empresa");
         getDesktop().getSession().removeAttribute("empleado");
         // getDesktop().getSession().removeAttribute("paginaActual");
-        Executions.sendRedirect("eAlogin.zul");
+        Executions.sendRedirect("eALogin.zul");
     }
 
 }

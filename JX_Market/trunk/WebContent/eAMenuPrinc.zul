@@ -124,7 +124,7 @@
                      </menu>
                      <menuitem src="/media/keys.png"
                         label="Cambiar su contraseña"
-                        onClick='bl.incluir("cambiarContrasenia.zul")'
+                        onClick='bl.incluir("eACambiarContrasenia.zul")'
                         id="id_option_chgpass" />
                      <!--<menuitem src="/media/paint.png"
                         label="Cambiar su tema" onClick='bl.incluir("cambiarTema.zul")'
@@ -143,14 +143,14 @@
                      orient="vertical">
                      <menuitem width="200px"
                         src="/media/report_icon.gif" label="Ventas vs Pedidos"
-                        onClick='bl.incluir("reporteReclamos.zul")'
+                        onClick='bl.incluir("")'
                         id="id_option_repReclam" />
                      <menuitem src="/media/icon_transaction.gif"
                         label="Transacciones"
-                        onClick='bl.incluir("reporteReclamoTransaccion.zul")'
+                        onClick='bl.incluir("")'
                         id="id_option_repReclamTrans" />
                      <menuitem src="/media/events.png"
-                        label="Eventos del Sistema" onClick='bl.incluir("eventos.zul")'
+                        label="Eventos del Sistema" onClick='bl.incluir("")'
                         id="id_option_consEvento" />
                   </menubar>
                </div>

@@ -53,13 +53,14 @@ public class PO_EALogin
         }
     }
 
-    public void authenticate() throws InterruptedException
+    public void authenticate()
+        throws InterruptedException
     {
         final DTO_Usuario usuario = new DTO_Usuario();
         usuario.setUsername(txtUser.getValue());
         usuario.setContrasena(txtPass.getValue());
         if (cmbEmp.getSelectedItem() != null) {
-            final DTO_Empresa empresa = (DTO_Empresa)cmbEmp.getSelectedItem().getAttribute("empresa");
+            final DTO_Empresa empresa = (DTO_Empresa) cmbEmp.getSelectedItem().getAttribute("empresa");
             if (empresa != null) {
                 usuario.setEmpresa(empresa.getCodigo());
 
@@ -77,10 +78,10 @@ public class PO_EALogin
                     getFellow("badauth").setVisible(true);
                 }
             } else {
-                Messagebox.show("No se cargo la empresa", "JX_Market" , Messagebox.OK, Messagebox.INFORMATION);
+                Messagebox.show("No se cargo la empresa", "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
             }
         } else {
-            Messagebox.show("Debe seleccionar una empresa", "JX_Market" , Messagebox.OK, Messagebox.INFORMATION);
+            Messagebox.show("Debe seleccionar una empresa", "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
         }
     }
 

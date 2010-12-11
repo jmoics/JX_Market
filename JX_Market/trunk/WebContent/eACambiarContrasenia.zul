@@ -1,0 +1,40 @@
+<?page title="Seguridad y Servicio al Cliente" contentType="text/html;charset=UTF-8"?>
+
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+    <div align="center">
+        <html:p />
+        <window width="700px" id="c_c" use="pe.com.jx_market.controller.PO_EACambiarContrasenia">
+            <div align="center">
+                <label zclass="z-south-header"
+                    style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                    Cambio de Contraseña
+                </label>
+                <html:p />
+                <groupbox mold="3d">
+                    <caption label="Cambiar Contraseña" />
+                    <div align="center">
+                        <grid width="350px">
+                            <rows>
+                                <row>
+                                    <label value="Ingresar Contraseña Actual" />
+                                    <textbox id="txtPassActual" type="password" />
+                                </row>
+                                <row>
+                                    <label value="Ingresar Contraseña Nueva" />
+                                    <textbox id="txtPassNew1" type="password" />
+                                </row>
+                                <row>
+                                    <label value="Repetir Contraseña Nueva" />
+                                    <textbox id="txtPassNew2" type="password" />
+                                </row>
+                            </rows>
+                        </grid>
+                        <html:p />
+                        <button label="Cambiar Contraseña" onClick="c_c.cambiarContrasenia()" />
+                        <button label="Limpiar" onClick="c_c.onLimpiar()" />
+                    </div>
+                </groupbox>
+            </div>
+        </window>
+    </div>
+</zk>
