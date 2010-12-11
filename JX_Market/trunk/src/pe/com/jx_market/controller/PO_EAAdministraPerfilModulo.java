@@ -14,6 +14,8 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Foot;
 import org.zkoss.zul.Footer;
 import org.zkoss.zul.Grid;
@@ -22,6 +24,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Window;
 
+import pe.com.jx_market.domain.DTO_Area;
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.domain.DTO_Modulo;
 import pe.com.jx_market.domain.DTO_Perfil;
@@ -35,11 +38,12 @@ public class PO_EAAdministraPerfilModulo
     extends Window
 {
     static Log logger = LogFactory.getLog(PO_EAAdministraPerfilModulo.class);
-    Grid gr_recursos;
-    Button b_info, b_cancel, b_edit;
-    Foot f_buttons;
+    private Grid gr_recursos;
+    private Button b_info, b_cancel, b_edit;
+    private Foot f_buttons;
+    private Combobox cmbArea;
 
-    private BusinessService perfilModuloService;
+    private BusinessService perfilModuloService, areaService;
     private DTO_Empresa empresa;
 
     public void onCreate()
@@ -49,9 +53,12 @@ public class PO_EAAdministraPerfilModulo
         b_edit = (Button) getFellow("b_edit");
         b_cancel = (Button) getFellow("b_cancel");
         f_buttons = (Foot) getFellow("f_buttons");
+        cmbArea = (Combobox) getFellow("cmbArea");
         perfilModuloService = Utility.getService(this, "perfilModuloService");
+        areaService = Utility.getService(this, "areaService");
         empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
-        CargarTabla();
+        cargarAreas(cmbArea);
+        //CargarTabla();
     }
 
     public void editar()
@@ -96,7 +103,7 @@ public class PO_EAAdministraPerfilModulo
         gr_recursos.getColumns().getChildren().clear();
 
         Column columna = new Column();
-        columna.appendChild(new Label("Recursos"));
+        columna.appendChild(new Label("Modulos"));
 
         Footer F = new Footer();
         F.appendChild(new Label(""));
@@ -135,43 +142,45 @@ public class PO_EAAdministraPerfilModulo
 
             while (perfilIterator.hasNext()) {
                 final DTO_Perfil perfil = (DTO_Perfil) perfilIterator.next();
-                columna = new Column();
-                columna.setAttribute("perfil", perfil);
-                columna.appendChild(new Label(perfil.getFuncion()));
-                columna.setAlign("center");
+                if(perfil.getArea().equals(((DTO_Area)cmbArea.getSelectedItem().getAttribute("area")).getCodigo())) {
+                    columna = new Column();
+                    columna.setAttribute("perfil", perfil);
+                    columna.appendChild(new Label(perfil.getFuncion()));
+                    columna.setAlign("center");
 
-                final Set perfMod = mapa.get(perfil);
-                // verificar para todos los tipos de bloqueo:
-                int i = 0;
-                for (final DTO_Modulo dto : listaMod) {
-                    final Checkbox C = new Checkbox();
-                    C.setDisabled(true);
-                    C.setAttribute("perfil", perfil);
-                    if (perfMod.contains(dto.getCodigo())) {
-                        C.setChecked(true);
+                    final Set perfMod = mapa.get(perfil);
+                    // verificar para todos los tipos de bloqueo:
+                    int i = 0;
+                    for (final DTO_Modulo dto : listaMod) {
+                        final Checkbox C = new Checkbox();
+                        C.setDisabled(true);
+                        C.setAttribute("perfil", perfil);
+                        if (perfMod.contains(dto.getCodigo())) {
+                            C.setChecked(true);
+                        }
+                        ((Row) gr_recursos.getRows().getChildren().get(i)).appendChild(C);
+                        // columna.appendChild(C);
+                        i++;
                     }
-                    ((Row) gr_recursos.getRows().getChildren().get(i)).appendChild(C);
-                    // columna.appendChild(C);
-                    i++;
-                }
-                F = new Footer();
+                    F = new Footer();
 
-                final Button todos = new Button("Todos");
-                todos.addEventListener("onClick",
-                                new org.zkoss.zk.ui.event.EventListener() {
-                                    @Override
-                                    public void onEvent(final Event e)
-                                        throws UiException
-                                    {
-                                        final DTO_Perfil codigo = (DTO_Perfil) e.getTarget().getAttribute("perfil");
-                                        pintarColumna(codigo);
-                                    }
-                                });
-                todos.setDisabled(true);
-                todos.setAttribute("perfil", perfil);
-                F.appendChild(todos);
-                f_buttons.appendChild(F);
-                gr_recursos.getColumns().appendChild(columna);
+                    final Button todos = new Button("Todos");
+                    todos.addEventListener("onClick",
+                                    new org.zkoss.zk.ui.event.EventListener() {
+                                        @Override
+                                        public void onEvent(final Event e)
+                                            throws UiException
+                                        {
+                                            final DTO_Perfil codigo = (DTO_Perfil) e.getTarget().getAttribute("perfil");
+                                            pintarColumna(codigo);
+                                        }
+                                    });
+                    todos.setDisabled(true);
+                    todos.setAttribute("perfil", perfil);
+                    F.appendChild(todos);
+                    f_buttons.appendChild(F);
+                    gr_recursos.getColumns().appendChild(columna);
+                }
             }
         } else {
             alertaError("Error al cargar los modulos por perfil", "Error al cargar los modulos por perfil", null);
@@ -215,6 +224,26 @@ public class PO_EAAdministraPerfilModulo
             alertaInfo("", "Los cambios se guardaron correctamente", null);
         } else {
             logger.error("Error al registrar bloqueos");
+        }
+    }
+
+    private void cargarAreas(final Combobox combo)
+    {
+        final DTO_Area ar = new DTO_Area();
+        ar.setEmpresa(empresa.getCodigo());
+        final DTO_Input input = new DTO_Input(ar);
+        input.setVerbo(Constantes.V_LIST);
+        final DTO_Output output = areaService.execute(input);
+        if (output.getErrorCode() == Constantes.OK) {
+            final List<DTO_Area> listado = output.getLista();
+            for (final DTO_Area area : listado) {
+                final Comboitem item = new Comboitem(area.getNombre());
+                item.setAttribute("area", area);
+                combo.appendChild(item);
+            }
+        } else {
+            alertaError("Error en la carga de areas",
+                            "error al cargar los areas", null);
         }
     }
 

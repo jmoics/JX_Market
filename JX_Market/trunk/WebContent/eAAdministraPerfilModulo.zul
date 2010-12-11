@@ -16,10 +16,12 @@
                     <html:p />
                     <groupbox id="g_recursos" visible="true" mold="3d" width="695px">
                         <html:p />
+                        <combobox id="cmbArea" onSelect="w_perfil_recurso.CargarTabla()"/>
+                        <html:p />
                         <div align="center">
                             <grid fixedLayout="true" id="gr_recursos" mold="paging" pageSize="10">
                                 <columns>
-                                    <column label="Recursos" width="150px" />
+                                    <column label="Recursos" />
                                 </columns>
                                 <rows>
                                 </rows>
