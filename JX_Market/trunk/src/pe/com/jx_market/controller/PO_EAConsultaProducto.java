@@ -19,7 +19,6 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Categoria;
@@ -31,10 +30,10 @@ import pe.com.jx_market.utilities.DTO_Output;
 
 /**
  * @author George
- * 
+ *
  */
 public class PO_EAConsultaProducto
-    extends Window
+    extends SecuredWindow
 {
     static Log logger = LogFactory.getLog(PO_EAConsultaProducto.class);
     private NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
@@ -45,7 +44,8 @@ public class PO_EAConsultaProducto
     private BusinessService articuloService, categoriaService;
     private DTO_Empresa empresa;
 
-    public void onCreate()
+    @Override
+    public void realOnCreate()
     {
         txtNomProd = (Textbox) getFellow("txtNomProd");
         txtMarc = (Textbox) getFellow("txtMarc");
@@ -223,5 +223,11 @@ public class PO_EAConsultaProducto
             }
         } catch (final InterruptedException ex) {
         }
+    }
+
+    @Override
+    String[] requiredResources()
+    {
+        return new String[] { Constantes.MODULO_PROD_CONSULTA };
     }
 }

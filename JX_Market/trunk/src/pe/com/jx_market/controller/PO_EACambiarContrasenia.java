@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.domain.DTO_Usuario;
@@ -14,7 +13,7 @@ import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
 
 public class PO_EACambiarContrasenia
-    extends Window
+    extends SecuredWindow
 {
 
     static Log logger = LogFactory.getLog(PO_EACambiarContrasenia.class);
@@ -22,7 +21,8 @@ public class PO_EACambiarContrasenia
     private BusinessService usuarioService, passwordHashService;
     private DTO_Empresa empresa;
 
-    public void onCreate()
+    @Override
+    public void realOnCreate()
     {
         txtPassActual = (Textbox) getFellow("txtPassActual");
         txtPassNew1 = (Textbox) getFellow("txtPassNew1");
@@ -122,10 +122,9 @@ public class PO_EACambiarContrasenia
 
     }
 
-    /*@Override
+    @Override
     String[] requiredResources()
     {
-        // return null; -> Cualquiera puede acceder
-        return new String[] { Constantes.RESOURCE_CHGPASS };
-    }*/
+        return new String[] { Constantes.MODULO_CHANGE_PASS };
+    }
 }

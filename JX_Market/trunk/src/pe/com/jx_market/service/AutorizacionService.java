@@ -38,7 +38,7 @@ public class AutorizacionService
         final DTO_Perfil perfil = new DTO_Perfil();
         perfil.setCodigo(empleado.getPerfil());
         String[] modulos;
-        if (input.getMapa().get("modulo") != null) {
+        if (input.getMapa().containsKey("modulo")) {
             final String modulo = (String) input.getMapa().get("modulo");
             modulos = new String[1];
             modulos[0] = modulo;
@@ -46,14 +46,8 @@ public class AutorizacionService
             modulos = (String[]) input.getMapa().get("modulo-array");
         }
         final Set<String> modulosDelPerfil = dao.listaModulosPorPerfil(perfil);
-        /*
-         * for(String rper : recursosDelPerfil) {
-         * System.out.println("RECURSO DE PERFIL:" + rper); }
-         */
         // debemos validar que todos los recursos solicitados estan en el array
         for (int z = 0; z < modulos.length; z++) {
-            // System.out.println("Viendo si " + recursos[z] +
-            // " esta contenido en recursos_de_perfil");
             if (!modulosDelPerfil.contains(modulos[z])) {
                 output.setErrorCode(Constantes.AUTH_ERROR);
                 return output;

@@ -23,7 +23,6 @@ import org.zkoss.zul.Popup;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Empleado;
 import pe.com.jx_market.domain.DTO_Empresa;
@@ -35,7 +34,7 @@ import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
 
 public class PO_EAAdministraEmpleado
-    extends Window
+    extends SecuredWindow
 {
 
     static Log logger = LogFactory.getLog(PO_EAAdministraEmpleado.class);
@@ -52,7 +51,8 @@ public class PO_EAAdministraEmpleado
     private DTO_Empresa empresa;
     private BusinessService empleadoService, perfilService, usuarioService;
 
-    public void onCreate()
+    @Override
+    public void realOnCreate()
     {
         grdEmp = (Grid) getFellow("grdEmp");
         txtUsuario = (Textbox) getFellow("txtUsuario");
@@ -146,7 +146,7 @@ public class PO_EAAdministraEmpleado
             usuario.setUsername(username);
             usuario.setContrasena(pass);
             usuario.setEmpresa(empresa.getCodigo());
-            
+
             map.put("usuario", usuario);
         } else if (emp != null && pass != null && pass.length() != 0) {
             //para cambiar pass
@@ -156,7 +156,7 @@ public class PO_EAAdministraEmpleado
             usuario.setUsername(username);
             usuario.setContrasena(pass);
             usuario.setEmpresa(empresa.getCodigo());
-            
+
             map.put("usuario", usuario);
         } else {
             empleado.setCodigo(emp.getCodigo());
@@ -182,7 +182,7 @@ public class PO_EAAdministraEmpleado
         if (!txtUsuario.getValue().equals("") && !txtNombre.getValue().equals("") &&
                         !txtApellidos.getValue().equals("") && !txtDNI.getValue().equals("") &&
                         cmbPerfil.getSelectedItem() != null && cmbEstado.getSelectedItem() != null) {
-            
+
             editar((DTO_Empleado) txtUsuario.getAttribute("usuario"), txtUsuario.getValue(),
                             txtPass.getValue(), txtNombre.getValue(), txtApellidos.getValue(),
                             txtDNI.getValue(), txtTelefono.getValue(), txtMail.getValue(),
@@ -200,7 +200,7 @@ public class PO_EAAdministraEmpleado
             alertaInfo("Faltan llenar algunos campos", "No se llenaron los campos obligatorios", null);
         }
     }
-    
+
     public void crear()
     {
         if (!txtPass.getValue().equals("") && !txtUsuario.getValue().equals("") && !txtNombre.getValue().equals("") &&
@@ -248,7 +248,7 @@ public class PO_EAAdministraEmpleado
         txtTelefono.setValue(empleado.getTelefono() != null ? empleado.getTelefono() : "");
         txtMail.setValue(empleado.getEmail());
         txtPass.setValue("");
-        
+
         final List<Comboitem> perfiles = cmbPerfil.getItems();
         for(final Comboitem item : perfiles) {
             final DTO_Perfil perfil = (DTO_Perfil) item.getAttribute("perfil");
@@ -264,7 +264,7 @@ public class PO_EAAdministraEmpleado
             }
         }
     }
-    
+
     public void cargarPop(final DTO_Empleado empleado)
     {
         lblUsuario.setValue((getUsuario(empleado.getUsuario())).getUsername());
@@ -316,7 +316,7 @@ public class PO_EAAdministraEmpleado
                                     {
                                          cargarPop((DTO_Empleado) ((Row)
                                          e.getTarget().getParent()).getAttribute("empleado"));
-                                         
+
                                     }
                                 });
                 fila.appendChild(ImDetalles);
@@ -428,7 +428,7 @@ public class PO_EAAdministraEmpleado
             return null;
         }
     }
-    
+
     private DTO_Perfil getPerfil(final Integer codigo)
     {
         final DTO_Perfil perfil = new DTO_Perfil();
@@ -496,8 +496,9 @@ public class PO_EAAdministraEmpleado
         }
     }
 
-    /*
-     * @Override String[] requiredResources() { // return null; -> Cualquiera
-     * puede acceder return new String[] { Constantes.RESOURCE_ADUSR }; }
-     */
+    @Override
+    String[] requiredResources()
+    {
+        return new String[]{Constantes.MODULO_ADM_EMPLEADO };
+    }
 }

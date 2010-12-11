@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package pe.com.jx_market.controller;
 
@@ -17,7 +17,6 @@ import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Categoria;
@@ -29,10 +28,10 @@ import pe.com.jx_market.utilities.DTO_Output;
 
 /**
  * @author George
- * 
+ *
  */
 public class PO_EAEditaProducto
-extends Window
+    extends SecuredWindow
 {
     static Log logger = LogFactory.getLog(PO_EAEditaProducto.class);
     private Combobox cmbCateg, cmbEstado;
@@ -44,7 +43,8 @@ extends Window
     private DTO_Empresa empresa;
     private DTO_Articulo articulo;
 
-    public void onCreate()
+    @Override
+    public void realOnCreate()
     {
         imgFoto = (Image) getFellow("imgFoto");
         cmbCateg = (Combobox) getFellow("cmbCateg");
@@ -64,7 +64,7 @@ extends Window
         final DTO_Input input = new DTO_Input(articulo);
         input.setVerbo(Constantes.V_GETIMG);
         final DTO_Output output = articuloService.execute(input);
-        if(output.getErrorCode() != Constantes.OK) {
+        if (output.getErrorCode() != Constantes.OK) {
             alertaInfo("", "El articulo" + articulo.getNombre() + "no posee imagen", null);
         }
 
@@ -77,7 +77,8 @@ extends Window
         }
     }
 
-    public void editarProducto() {
+    public void editarProducto()
+    {
         if (cmbCateg.getSelectedItem() != null && cmbEstado.getSelectedItem() != null && !txtNombre.getValue().equals("")
                         && !txtDesc.getValue().equals("") && !txtMarca.getValue().equals("")
                         && decPrec.getValue() != null && decPrec.getValue() != BigDecimal.ZERO) {
@@ -88,7 +89,7 @@ extends Window
             articulo.setMarca(txtMarca.getValue());
             articulo.setNombre(txtNombre.getValue());
             articulo.setPrecio(decPrec.getValue());
-            if(imgProducto != null && !imgProducto.equals(articulo.getImagen())) {
+            if (imgProducto != null && !imgProducto.equals(articulo.getImagen())) {
                 articulo.setImagen(imgProducto);
                 articulo.setNomimg(null);
             }
@@ -107,7 +108,8 @@ extends Window
         }
     }
 
-    public void volverConsulta(){
+    public void volverConsulta()
+    {
         incluir("eAConsultaProducto.zul");
     }
 
@@ -136,30 +138,34 @@ extends Window
         imgFoto.setSrc("/media/imagProd.gif");
     }
 
-    public void cargaFoto(final UploadEvent event) throws Exception{
+    public void cargaFoto(final UploadEvent event)
+        throws Exception
+    {
         org.zkoss.util.media.Media media;
         try {
             media = event.getMedia();
-            if(media == null) {
+            if (media == null) {
                 return;
             }
-        } catch(final Exception ex) {
+        } catch (final Exception ex) {
             Messagebox.show("Hubo un problema con el archivo proporcionado.", empresa.getRazonsocial(), Messagebox.OK, Messagebox.ERROR);
             return;
         }
-        //System.out.println(media.getName());
+        // System.out.println(media.getName());
         if (media instanceof org.zkoss.image.Image) {
-            if(media.getByteData().length > 102400) {
-                Messagebox.show("El archivo seleccionado es muy grande. Maximo permitido = 100k", empresa.getRazonsocial(), Messagebox.OK, Messagebox.ERROR);
+            if (media.getByteData().length > 102400) {
+                Messagebox.show("El archivo seleccionado es muy grande. Maximo permitido = 100k", empresa.getRazonsocial(), Messagebox.OK,
+                                Messagebox.ERROR);
                 return;
             }
             imgProducto = media.getByteData();
             setGraficoFoto();
 
-            //imgFoto.setContent((org.zkoss.image.Image)media);
+            // imgFoto.setContent((org.zkoss.image.Image)media);
 
         } else {
-            Messagebox.show("El archivo seleccionado "+media + " no es una imagen", empresa.getRazonsocial(), Messagebox.OK, Messagebox.ERROR);
+            Messagebox.show("El archivo seleccionado " + media + " no es una imagen", empresa.getRazonsocial(), Messagebox.OK,
+                            Messagebox.ERROR);
             return;
         }
     }
@@ -179,7 +185,7 @@ extends Window
                 item.setLabel(categ.getNombre());
                 item.setAttribute("categoria", categ);
                 cmbCateg.appendChild(item);
-                if(articulo.getCategoria().equals(categ.getCodigo())) {
+                if (articulo.getCategoria().equals(categ.getCodigo())) {
                     cmbCateg.setSelectedItem(item);
                 }
             }
@@ -244,5 +250,11 @@ extends Window
         } catch (final InterruptedException ex) {
         }
 
+    }
+
+    @Override
+    String[] requiredResources()
+    {
+        return new String[] { Constantes.MODULO_PROD_EDICION };
     }
 }

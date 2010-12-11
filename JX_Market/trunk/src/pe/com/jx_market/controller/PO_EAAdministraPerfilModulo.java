@@ -22,7 +22,6 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
-import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Area;
 import pe.com.jx_market.domain.DTO_Empresa;
@@ -35,7 +34,7 @@ import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
 
 public class PO_EAAdministraPerfilModulo
-    extends Window
+    extends SecuredWindow
 {
     static Log logger = LogFactory.getLog(PO_EAAdministraPerfilModulo.class);
     private Grid gr_recursos;
@@ -46,7 +45,8 @@ public class PO_EAAdministraPerfilModulo
     private BusinessService perfilModuloService, areaService;
     private DTO_Empresa empresa;
 
-    public void onCreate()
+    @Override
+    public void realOnCreate()
     {
         gr_recursos = (Grid) getFellow("gr_recursos");
         b_info = (Button) getFellow("b_info");
@@ -279,8 +279,9 @@ public class PO_EAAdministraPerfilModulo
         }
     }
 
-    /*
-     * @Override String[] requiredResources() { // return null; -> Cualquiera
-     * puede acceder return new String[]{Constantes.RESOURCE_ADPRE }; }
-     */
+    @Override
+    String[] requiredResources()
+    {
+        return new String[]{Constantes.MODULO_ADM_PERFILMODULO };
+    }
 }
