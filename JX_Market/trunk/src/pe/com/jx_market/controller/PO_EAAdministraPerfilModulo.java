@@ -98,6 +98,15 @@ public class PO_EAAdministraPerfilModulo
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void CargarTabla()
     {
+        if(gr_recursos.getPageCount() > 1) {
+            gr_recursos.getPagingChild().getTotalSize();
+            gr_recursos.getPagingChild().getPageCount();
+            gr_recursos.getPagingChild().getPageIncrement();
+            gr_recursos.getPagingChild().getPageSize();
+            gr_recursos.getPagingChild().getActivePage();
+            gr_recursos.getPagingChild().getChildren().clear();
+        }
+        gr_recursos.setActivePage(0);
         gr_recursos.getFoot().getChildren().clear();
         gr_recursos.getRows().getChildren().clear();
         gr_recursos.getColumns().getChildren().clear();

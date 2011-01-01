@@ -527,20 +527,29 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             art.articulo_v_imagen as nomimg
         FROM
             T_NEG_ARTICULO art
-        WHERE
-            art.empresa_n_codigo = #empresa#
+        <isNotNull property="empresa">
+            WHERE
+                art.empresa_n_codigo = #empresa#
             <isNotNull prepend="AND" property="categoria">
-               art.categoria_n_codigo = #categoria#
+                art.categoria_n_codigo = #categoria#
             </isNotNull>
             <isNotNull prepend="AND" property="nombre">
-               art.articulo_v_nombre LIKE #nombre#
+                art.articulo_v_nombre LIKE #nombre#
             </isNotNull>
             <isNotNull prepend="AND" property="marca">
-               art.articulo_v_marca LIKE #marca#
+                art.articulo_v_marca LIKE #marca#
             </isNotNull>
             <isNotNull prepend="AND" property="activo">
-               art.articulo_n_activo = #activo#
+                art.articulo_n_activo = #activo#
             </isNotNull>
+        </isNotNull>
+        <isNull property="empresa">
+            <isNotNull property="categoria">
+            WHERE
+                art.categoria_n_codigo = #categoria#
+            </isNotNull>
+        </isNull>
+        
     </select>
 
     <select id="getArticuloXCodigo" resultClass="DTO_Articulo" parameterClass="DTO_Articulo">
@@ -616,10 +625,13 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             cat.categoria_v_nombre as nombre
         FROM
             T_NEG_CATEGORIA cat
+        <isNotNull property="empresa">
         WHERE
-            cat.empresa_n_codigo = #empresa#
-        OR
             cat.empresa_n_codigo = 1
+        </isNotNull>
+        <isNotNull prepend="OR" property="empresa">
+            cat.empresa_n_codigo = #empresa#
+        </isNotNull>
     </select>
 
     <select id="getCategoriaXCodigo" resultClass="DTO_Categoria" parameterClass="DTO_Categoria">

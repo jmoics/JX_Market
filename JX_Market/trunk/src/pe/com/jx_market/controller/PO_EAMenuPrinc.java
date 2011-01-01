@@ -29,7 +29,7 @@ public class PO_EAMenuPrinc extends Borderlayout
     {
         imaLogo = (Image) getFellow("imaLogo");
         autorizacionService = Utility.getService(this, "autorizacionService");
-        incluir("fondo.zul");
+        incluir("eAFondo.zul");
         final DTO_Empleado empleado = (DTO_Empleado) getDesktop().getSession().getAttribute("empleado");
         final DTO_Empresa empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
         imaLogo.setSrc("Service/"+empresa.getDominio().toUpperCase()+"/"+empresa.getDominio()+".png");
@@ -38,7 +38,7 @@ public class PO_EAMenuPrinc extends Borderlayout
         }
 
         if(getDesktop().getSession().getAttribute("actualizar") == null){
-            incluir("fondo.zul");
+            incluir("eAFondo.zul");
         }
 
         getPage().addEventListener(Events.ON_BOOKMARK_CHANGE,
@@ -48,7 +48,7 @@ public class PO_EAMenuPrinc extends Borderlayout
                         try {
                             incluir(getDesktop().getBookmark());
                         } catch (final org.zkoss.zk.ui.ComponentNotFoundException ex) {
-                            incluir("fondo.zul");
+                            incluir("eAFondo.zul");
                         }
                     }
               });
