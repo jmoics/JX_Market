@@ -217,17 +217,17 @@ background:url(media/images/menu_divider.gif) no-repeat center;
 }
 
 a.nav1:link, a.nav1:visited {
-display:block; float:left; padding:0px 8px 0px 22px; margin:0 14px 0 14px;height:50px;text-decoration:none; background:url(media/images/home.png) no-repeat left; color:#676d77;}
+display:block; float:left; padding:0px 8px 0px 21px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/home.png) no-repeat left; color:#676d77;}
 a.nav2:link, a.nav2:visited {
-display:block; float:left; padding:0px 8px 0px 22px; margin:0 14px 0 14px;height:50px;text-decoration:none; background:url(media/images/services.png) no-repeat left; color:#676d77;}
+display:block; float:left; padding:0px 8px 0px 21px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/services.png) no-repeat left; color:#676d77;}
 a.nav3:link, a.nav3:visited {
-display:block; float:left; padding:0px 8px 0px 22px; margin:0 14px 0 14px;height:50px;text-decoration:none; background:url(media/images/favs.png) no-repeat left; color:#676d77;}
+display:block; float:left; padding:0px 8px 0px 21px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/favs.png) no-repeat left; color:#676d77;}
 a.nav4:link, a.nav4:visited {
-display:block; float:left; padding:0px 8px 0px 22px; margin:0 14px 0 14px;height:50px;text-decoration:none; background:url(media/images/user_add.png) no-repeat left; color:#676d77;}
+display:block; float:left; padding:0px 8px 0px 21px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/user_add.png) no-repeat left; color:#676d77;}
 a.nav5:link, a.nav5:visited {
-display:block; float:left; padding:0px 8px 0px 22px; margin:0 14px 0 14px;height:50px;text-decoration:none; background:url(media/images/car.png) no-repeat left; color:#676d77;}
+display:block; float:left; padding:0px 8px 0px 21px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/car.png) no-repeat left; color:#676d77;}
 a.nav6:link, a.nav6:visited {
-display:block; float:left; padding:0px 8px 0px 22px; margin:0 14px 0 14px;height:50px;text-decoration:none; background:url(media/images/contact-new.png) no-repeat left; color:#676d77;}
+display:block; float:left; padding:0px 8px 0px 21px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/contact-new.png) no-repeat left; color:#676d77;}
 
 a.nav1:hover, a.nav2:hover, a.nav3:hover, a.nav4:hover, a.nav5:hover, a.nav6:hover {
 color:#333333;}
@@ -359,7 +359,7 @@ text-align:center;
 padding:10px 0 10px 0;
 }
 
-/*center content--------------------------*/
+/*----------------------center content--------------------------*/
 .center_content{
 width:585px;
 float:left;
@@ -370,7 +370,7 @@ width:520px;
 height:33px;
 float:left;
 padding:0 0 0 40px;
-margin:0 0 0 12px;
+margin:0 0 10px 12px;
 _margin:0 0 0 6px;
 line-height:33px;
 font-size:12px;

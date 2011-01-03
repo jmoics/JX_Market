@@ -4,38 +4,7 @@
         <style id="sT" src="style.css"/>
         <h:script type="text/javascript" src="media/js/boxOver.js"></h:script>
         <listbox width="585px" id="lstProds" mold="paging" zclass="null" pageSize="6">
-            <listitem zclass="null" class="prod_box">
-                <listcell>
-                <div class="top_prod_box"></div>
-                <div class="center_prod_box">
-                    <div class="product_title">
-                        <h:a href="details.html">Motorola 156 MX-VL</h:a>
-                    </div>
-                    <div class="product_img">
-                        <h:a href="details.html">
-                            <h:img src="media/images/laptop.gif" alt="" title="" border="0" />
-                        </h:a>
-                    </div>
-                    <div class="prod_price">
-                        <h:span class="reduce">350$</h:span>
-                        <h:span class="price">270$</h:span>
-                    </div>
-                </div>
-                <div class="bottom_prod_box"></div>
-                <div class="prod_details_tab">
-                    <h:a href="#" title="header=[Add to cart] fade=[on]">
-                        <h:img src="media/images/cart.gif" alt="" title="" border="0" class="left_bt" />
-                    </h:a>
-                    <h:a href="#" title="header=[Specials] fade=[on]">
-                        <h:img src="media/images/favs.gif" alt="" title="" border="0" class="left_bt" />
-                    </h:a>
-                    <h:a href="#" title="header=[Gifts] fade=[on]">
-                        <h:img src="media/images/favorites.gif" alt="" title="" border="0" class="left_bt" />
-                    </h:a>
-                    <h:a href="details.html" class="prod_details">details</h:a>
-                </div>
-                </listcell>
-            </listitem>
+            
         </listbox>
     </window>
 </zk>

@@ -66,6 +66,14 @@ public class UsuarioService
             dao.eliminaUsuario((DTO_Usuario) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
+        } else if ("consultaSiEstaDisponible".equals(input.getVerbo())) {
+            final DTO_Usuario us = dao.leeUsuario((DTO_Usuario) input.getObject());
+            if (us == null) {
+                output.setErrorCode(Constantes.OK);
+            } else {
+                output.setErrorCode(Constantes.ALREADY_USED);
+            }
+            return output;
         } else if ("chgpass".equals(input.getVerbo())) {
             final DTO_Usuario usuario = (DTO_Usuario) input.getObject();
             final String nuevoPassword = usuario.getContrasena();

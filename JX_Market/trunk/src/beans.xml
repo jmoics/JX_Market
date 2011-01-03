@@ -25,6 +25,7 @@
 
     <bean id="clienteService" class="pe.com.jx_market.service.ClienteService">
         <property name="dao" ref="clienteDAO" />
+        <property name="usuarioService" ref="usuarioService"/>
     </bean>
 
     <bean id="empleadoService" class="pe.com.jx_market.service.EmpleadoService">
@@ -64,4 +65,11 @@
     <bean id="autorizacionService" class="pe.com.jx_market.service.AutorizacionService">
         <property name="dao" ref="perfilModuloDAO" />
     </bean>
+    
+    <bean id="validationService" class="pe.com.jx_market.service.ValidationService">
+        <property name="registraCliente" ref="registraCliente"/>
+    </bean>
+    
+    <!-- validadores -->
+    <bean id="registraCliente" class="pe.com.jx_market.validacion.spring.ValidaRegistroCliente"/>
 </beans>

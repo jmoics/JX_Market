@@ -1,6 +1,6 @@
 <?page id="menup" title="JX_Market" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:zk="http://www.zkoss.org/2005/zk">
-<div id="w_in" use="pe.com.jx_market.controller.PO_Index">
+<div id="d_cERC" use="pe.com.jx_market.controller.PO_CERegistroCliente">
     <style id="sT" src="style.css"/>
     <h:script type="text/javascript" src="js/boxOver.js"></h:script>
 
@@ -67,11 +67,11 @@
                 <h:div class="left_menu_corner"></h:div>
                 <h:ul class="menu">
                     <h:li>
-                        <h:a href="index.html" class="nav1">Inicio</h:a>
+                        <h:a href="index.zul" class="nav1">Inicio</h:a>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <h:a href="#" class="nav2">Productos</h:a>
+                        <h:a href="index.zul" class="nav2">Productos</h:a>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
@@ -87,7 +87,7 @@
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <h:a href="cERegistroCliente.zul" class="nav5">Registrese</h:a>
+                        <h:a href="" class="nav5">Registrese</h:a>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
@@ -113,122 +113,99 @@
             </h:div>
 
 
-            <h:div class="left_content">
-                <h:div class="title_box">Categorias</h:div>
-                <h:ul id="ulCategorias">
-                </h:ul>
-
-
-                <h:div class="title_box">Special Products</h:div>
-                <h:div class="border_box">
-                    <h:div class="product_title">
-                        <h:a href="details.html">Motorola 156 MX-VL</h:a>
-                    </h:div>
-                    <h:div class="product_img">
-                        <h:a href="details.html">
-                            <h:img src="media/images/laptop.png" alt="" title="" border="0" />
-                        </h:a>
-                    </h:div>
-                    <h:div class="prod_price">
-                        <h:span class="reduce">350$</h:span>
-                        <h:span class="price">270$</h:span>
-                    </h:div>
-                </h:div>
-
-
-                <h:div class="title_box">Newsletter</h:div>
-                <h:div class="border_box">
-                    <h:input type="text" name="newsletter" class="newsletter_input" value="your email" />
-                    <h:a href="#" class="join">join</h:a>
-                </h:div>
-                <h:div class="banner_adds">
-                    <h:a href="#">
-                        <h:img src="media/images/bann2.jpg" alt="" title="" border="0" />
-                    </h:a>
-                </h:div>
-
-
-            </h:div><!-- end of left content -->
-
-
             <div class="center_content">
-                <div class="center_title_bar">Latest Products</div>
-                <include id="inc" src="cEProductos.zul"/>
+                <div class="center_title_bar">Crear una cuenta en JX_Market</div>
+                <grid width="700px" align="left" zclass="null"
+                    style="margin-bottom:10pt; border:0pt">
+                    <columns>
+                        <column width="120px" />
+                        <column width="10px" />
+                        <column width="210px" />
+                        <column width="120px" />
+                        <column width="10px" />
+                        <column />
+                    </columns>
+                    <rows>
+                        <row style="border:0pt">
+                            <label value="Nº de Documento" sclass="post-normal-text" />
+                            <label value="*" sclass="post-asterisco-text" />
+                            <intbox id="intNumDoc" width="150px" maxlength="${d_p.maxUsrDni}" />
+                            <label value="Ciudad" sclass="post-normal-text" />
+                            <label value="*" sclass="post-asterisco-text" />
+                            <textbox id="txtCiudad" width="180px" />
+                        </row>
+                        <row style="border:0pt">
+                            <label value="Apellidos" sclass="post-normal-text" />
+                            <label value="*" sclass="post-asterisco-text" />
+                            <textbox id="txtApellidos" width="150px" maxlength="20" />
+                            <label value="Nombres" sclass="post-normal-text" />
+                            <label value="*" sclass="post-asterisco-text" />
+                            <textbox id="txtNombres" width="180px" maxlength="30" />
+                        </row>
+                        <row style="border:0pt">
+                            <label value="Direccion" sclass="post-normal-text" />
+                            <label value="*" sclass="post-asterisco-text" />
+                            <textbox id="txtDireccion" width="180px" rows="2" maxlength="30" />
+                            <label value="Fecha de Nacimiento" sclass="post-normal-text" />
+                            <label value="*" sclass="post-asterisco-text" />
+                            <datebox id="datFecNacim" width="100px" />
+                        </row>
+                        <row style="border:0pt">
+                            <vbox>
+                                <label value="Contraseña" sclass="post-normal-text" />
+                                <label value="(min. 4 caracteres)" 
+                                    style="font-family: sans-serif; font-size:7pt; color:#0f3b82; font-style:italic"/>
+                            </vbox>
+                            <label value="*" sclass="post-asterisco-text" />
+                            <textbox id="txtPass" type="password" width="150px" />
+                            <label value="Repetir Contraseña" sclass="post-normal-text" />
+                            <label value="*" sclass="post-asterisco-text" />
+                            <textbox id="txtRepPass" type="password" width="150px" />
+                        </row>
+                        <row style="border:0pt">
+                            <label value="Teléfono Casa" sclass="post-normal-text" />
+                            <label value="*" sclass="post-asterisco-text" />
+                            <textbox id="txtTelef" width="100px" maxlength="10" />
+                            <label value="Teléfono Celular" sclass="post-normal-text" />
+                            <label value="" sclass="post-asterisco-text" />
+                            <textbox id="txtCelu" width="100px" maxlength="${d_p.maxTelefono}" />
+                        </row>
+                        <row style="border:0pt">
+                            <label value="Email" sclass="post-normal-text" />
+                            <label value="*" sclass="post-asterisco-text" />
+                            <textbox id="txtMail" width="180px" maxlength="${d_p.maxEmail}" />
+                            <label />
+                            <label />
+                            <label />
+                        </row>
+                    </rows>
+                </grid>
+                <div width="700px" align="left"
+                    style="margin-top:15px; margin-bottom:15px">
+                    <hbox>
+                        <hbox>
+                            <bw.captcha id="cpa" length="4"
+                                    width="120px" height="45px" onClick="cpa.randomValue()"
+                                    style="cursor:pointer" />
+                        </hbox>
+                        <vbox width="230px">
+                            <label value="Ingrese el texto que se visualiza en la imagen"
+                                style="font-family: sans-serif; font-weight:bold;color:#0f3b82; font-style:italic" />
+                            <label
+                                value="(Click para regenerar texto)"
+                                style="font-family: sans-serif; font-size:7pt; color:#0f3b82; font-style:italic" />
+                        </vbox>
+                        <textbox  id="txtCaptcha" width="100px" />
+                        <div align="right" style="margin-left:10px">
+                            <button id="s" image="media/filesave.png"
+                                label="Registrar " dir="reverse"
+                                zk:onClick="d_cERC.registrarCliente()" />
+                        </div>
+                    </hbox>
+                </div>
             </div><!-- end of center content -->
 
-            <h:div class="right_content">
-                <h:div class="shopping_cart">
-                    <h:div class="cart_title">Shopping cart</h:div>
-
-                    <h:div class="cart_details">
-                        3 items
-                        <h:br />
-                        <h:span class="border_cart"></h:span>
-                        Total:
-                        <h:span class="price">350$</h:span>
-                    </h:div>
-
-                    <h:div class="cart_icon">
-                        <h:a href="#" title="header=[Checkout] fade=[on]">
-                            <h:img src="media/images/shoppingcart.png" alt="" title="" width="48" height="48" border="0" />
-                        </h:a>
-                    </h:div>
-                </h:div>
-
-
-                <h:div class="title_box">Whats new</h:div>
-                <h:div class="border_box">
-                    <h:div class="product_title">
-                        <h:a href="details.html">Motorola 156 MX-VL</h:a>
-                    </h:div>
-                    <h:div class="product_img">
-                        <h:a href="details.html">
-                            <h:img src="media/images/p2.gif" alt="" title="" border="0" />
-                        </h:a>
-                    </h:div>
-                    <h:div class="prod_price">
-                        <h:span class="reduce">350$</h:span>
-                        <h:span class="price">270$</h:span>
-                    </h:div>
-                </h:div>
-
-
-                <h:div class="title_box">Manufacturers</h:div>
-                <h:ul class="left_menu">
-                    <h:li class="odd">
-                        <h:a href="services.html">Sony</h:a>
-                    </h:li>
-                    <h:li class="even">
-                        <h:a href="services.html">Samsung</h:a>
-                    </h:li>
-                    <h:li class="odd">
-                        <h:a href="services.html">Daewoo</h:a>
-                    </h:li>
-                    <h:li class="even">
-                        <h:a href="services.html">LG</h:a>
-                    </h:li>
-                    <h:li class="odd">
-                        <h:a href="services.html">Fujitsu Siemens</h:a>
-                    </h:li>
-                    <h:li class="even">
-                        <h:a href="services.html">Motorola</h:a>
-                    </h:li>
-                    <h:li class="odd">
-                        <h:a href="services.html">Phillips</h:a>
-                    </h:li>
-                    <h:li class="even">
-                        <h:a href="services.html">Beko</h:a>
-                    </h:li>
-                </h:ul>
-
-                <h:div class="banner_adds">
-                    <h:a href="#">
-                        <h:img src="media/images/bann1.jpg" alt="" title="" border="0" />
-                    </h:a>
-                </h:div>
-            </h:div><!-- end of right content -->
-
-
+            
         </h:div><!-- end of main content -->
         <h:div class="footer">
             <h:div class="left_footer">

@@ -34,6 +34,10 @@ public class Constantes {
     public static final int BAD_PASS = 105;
     /** Switch desconectado */
     public static final int CONN_ERROR = 106;
+    /** Registro ya inscrito */
+    public static final int ALREADY_USED = 107;
+    /** Error de validacion */
+    public static final int VALIDATION_ERROR = 108;
 
     /**
      * Institucion Jx-Market
@@ -104,4 +108,6 @@ public class Constantes {
     public static final String MODULO_ADM_PERFILMODULO = "MODULO_ADM_PERFILMODULO";
     public static final String MODULO_CHANGE_PASS = "MODULO_CHANGE_PASS";
 
+    /*VALIDACION DE CARACTERES*/
+    public static final String VALID_TELEFONO = "^[0-9]*$";
 }
