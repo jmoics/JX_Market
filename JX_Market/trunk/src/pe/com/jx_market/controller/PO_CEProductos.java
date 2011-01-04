@@ -2,12 +2,15 @@ package pe.com.jx_market.controller;
 
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.image.AImage;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zul.Div;
@@ -20,6 +23,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Articulo;
+import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
@@ -43,8 +47,17 @@ public class PO_CEProductos extends Window
 
     public void listaProductos()
     {
-        final DTO_Articulo articulo = new DTO_Articulo();
+        lstProds.getItems().clear();
+        DTO_Categoria cat = null;
+        if (getDesktop().getSession().hasAttribute("categoria")) {
+            cat = (DTO_Categoria) getDesktop().getSession().getAttribute("categoria");
+            getDesktop().getSession().removeAttribute("categoria");
+        }
 
+        final DTO_Articulo articulo = new DTO_Articulo();
+        if (cat != null) {
+            articulo.setCategoria(cat.getCodigo());
+        }
         final DTO_Input input = new DTO_Input(articulo);
         input.setVerbo(Constantes.V_LIST);
         final DTO_Output output = articuloService.execute(input);
@@ -70,7 +83,6 @@ public class PO_CEProductos extends Window
                 final Div divProdTitle = new Div();
                 divProdTitle.setSclass("product_title");
                 final Label nomProd = new Label(art.getNombre());
-                nomProd.setAttribute("producto", art);
                 nomProd.addEventListener("onClick",
                         new org.zkoss.zk.ui.event.EventListener() {
                             @Override
@@ -131,8 +143,8 @@ public class PO_CEProductos extends Window
                             public void onEvent(final Event e)
                                 throws UiException
                             {
-                                //getDesktop().getSession().setAttribute("producto", e.getTarget().getParent().getParent().getAttribute("producto"));
-                                //incluir("cEDetalleProducto.zul");
+                                final DTO_Articulo prod = (DTO_Articulo) e.getTarget().getParent().getParent().getParent().getAttribute("producto");
+                                agregarCarrito(prod);
                             }
                 });
                 imgAdd.setParent(divDetailBox);
@@ -169,6 +181,24 @@ public class PO_CEProductos extends Window
             }
         } else {
 
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void agregarCarrito(final DTO_Articulo prod) {
+        if (getDesktop().getSession().getAttribute("cliente") != null
+                        && getDesktop().getSession().getAttribute("carrito") != null) {
+            final Map<Integer, Map<DTO_Articulo, Integer>> map = (Map<Integer, Map<DTO_Articulo, Integer>>) getDesktop()
+                                                                                    .getSession().getAttribute("carrito");
+
+            if (!map.containsKey(prod.getCodigo())) {
+                final Map<DTO_Articulo, Integer> map2 = new HashMap<DTO_Articulo, Integer>();
+                map2.put(prod, 1);
+                map.put(prod.getCodigo(), map2);
+            }
+            incluir("cECarritoCliente.zul");
+        } else {
+            Executions.sendRedirect("cELoginCliente.zul");
         }
     }
 

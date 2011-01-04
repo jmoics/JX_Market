@@ -255,8 +255,9 @@ background-position:5px 6px;
 color:#0fa0dd;
 text-decoration:underline;
 }
-span.current{
+.current{
 color:#0fa0dd;
+text-decoration:underline;
 }
 
 /*-------------left_content------------------*/
@@ -417,7 +418,7 @@ border-top:1px #999999 dashed;
 }
 /*---------prod_box----------*/
 .prod_box{
-width:173px;
+width:170px;
 height:auto;
 float:left;
 padding:10px 10px 10px 11px;

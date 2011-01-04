@@ -1,6 +1,6 @@
 <?page id="menup" title="JX_Market" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:zk="http://www.zkoss.org/2005/zk">
-<div id="w_in" use="pe.com.jx_market.controller.PO_Index">
+<div id="d_cELC" use="pe.com.jx_market.controller.PO_CELoginCliente">
     <style id="sT" src="style.css"/>
     <h:script type="text/javascript" src="js/boxOver.js"></h:script>
 
@@ -26,7 +26,7 @@
         </h:div>
         <h:div id="header">
             <h:div id="logo">
-                <h:a href="index.html">
+                <h:a href="index.zul">
                     <h:img src="media/images/logo.png" alt="" title="" border="0" width="237" height="140" />
                 </h:a>
             </h:div>
@@ -71,7 +71,7 @@
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <h:a href="#" class="nav2">Productos</h:a>
+                        <h:a href="index.zul" class="nav2">Productos</h:a>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
@@ -83,7 +83,7 @@
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <h:a href="cELoginCliente.zul" class="nav4">Inicie Sesion</h:a>
+                        <h:a href="" class="nav4">Inicie Sesion</h:a>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
@@ -108,126 +108,70 @@
             </h:div><!-- end of menu tab -->
 
             <h:div class="crumb_navigation">
-                Usuario:
-                <label value="" id="lbUser" class="current"/>
+                Navigation:
+                <h:span class="current">Home</h:span>
             </h:div>
 
 
-            <h:div class="left_content">
-                <h:div class="title_box">Categorias</h:div>
-                <h:ul id="ulCategorias">
-                </h:ul>
-
-
-                <h:div class="title_box">Special Products</h:div>
-                <h:div class="border_box">
-                    <h:div class="product_title">
-                        <h:a href="details.html">Motorola 156 MX-VL</h:a>
-                    </h:div>
-                    <h:div class="product_img">
-                        <h:a href="details.html">
-                            <h:img src="media/images/laptop.png" alt="" title="" border="0" />
-                        </h:a>
-                    </h:div>
-                    <h:div class="prod_price">
-                        <h:span class="reduce">350$</h:span>
-                        <h:span class="price">270$</h:span>
-                    </h:div>
-                </h:div>
-
-
-                <h:div class="title_box">Newsletter</h:div>
-                <h:div class="border_box">
-                    <h:input type="text" name="newsletter" class="newsletter_input" value="your email" />
-                    <h:a href="#" class="join">join</h:a>
-                </h:div>
-                <h:div class="banner_adds">
-                    <h:a href="#">
-                        <h:img src="media/images/bann2.jpg" alt="" title="" border="0" />
-                    </h:a>
-                </h:div>
-
-
-            </h:div><!-- end of left content -->
-
-
             <div class="center_content">
-                <include id="inc" src="cEProductos.zul"/>
+                <div class="center_title_bar">Iniciar Sesion en JX_Market</div>
+                <div align="left" style="margin-left: 25px">
+                    <hbox>
+                        <vbox>
+                            <h:p />
+                            <div width="350px" align="left"
+                                style="font-weight:bold;color:#002266;font-family:sans-serif;">
+                                Si no está registrado seleccione <toolbarbutton class="current"
+                                            id="tbb_crearUser" label="Registro de Nuevos Usuarios"
+                                            onClick='Executions.sendRedirect("cELoginCliente.zul")'>
+                                        </toolbarbutton>.
+                            </div>
+                            <h:p />
+                            <hbox>
+                                <label id="lbTitu"
+                                    style="font-weight:bold;color: #708090; font-size:13px; font-family: sans-serif;"
+                                    value="Lo invitamos a ingresar">
+                                </label>
+                                <label id="lbNombLog"
+                                    style="font-weight:bold;color: #708090; font-size:13px; font-family: sans-serif;" />
+                            </hbox>
+                            <grid
+                                style="border: 0pt ;margin-top:5pt; margin-bottom:5px">
+                                <rows>
+                                    <row
+                                        style="background: #ff; color:#ff;border: 0pt;">
+                                        <label
+                                            style="font-family: sans-serif; font-weight:bold;color:#0f3b82; font-style:italic">
+                                            Correo Electronico
+                                        </label>
+                                        <textbox id="txtUser" maxlength="${m_d.maxUsrDoc}">
+                                        </textbox>
+                                    </row>
+                                    <row
+                                        style="background: #ff; color:#ff;border: 0pt">
+                                        <label
+                                            style="font-family: sans-serif; font-weight:bold;color:#0f3b82; font-style:italic">
+                                            Contraseña
+                                        </label>
+                                        <textbox id="txtPass" type="password" maxlength="20"
+                                            onOK="d_cELC.iniciarSesion()" />
+                                    </row>
+                                </rows>
+                            </grid>
+                        </vbox>
+                        <div align="center" style="margin-left:15px">
+                            <image src="/media/bienvenido.png" />
+                        </div>
+                    </hbox>
+                </div>
+                <div width="700px" align="rigth"
+                    style="margin-bottom:15px; margin-left:300px">
+                    <button id="s" label="Ingresar " dir="reverse"
+                                zk:onClick="d_cELC.iniciarSesion()" />
+                </div>
             </div><!-- end of center content -->
 
-            <h:div class="right_content">
-                <h:div class="shopping_cart">
-                    <h:div class="cart_title">Shopping cart</h:div>
-
-                    <div class="cart_details">
-                        <label id="lbItems" value="0"/>
-                        <h:br />
-                        <h:span class="border_cart"></h:span>
-                        Total:
-                        <label id="lbTotal" class="price"/>
-                    </div>
-
-                    <h:div class="cart_icon">
-                        <h:a href="#" title="header=[Checkout] fade=[on]">
-                            <h:img src="media/images/shoppingcart.png" alt="" title="" width="48" height="48" border="0" />
-                        </h:a>
-                    </h:div>
-                </h:div>
-
-
-                <h:div class="title_box">Whats new</h:div>
-                <h:div class="border_box">
-                    <h:div class="product_title">
-                        <h:a href="details.html">Motorola 156 MX-VL</h:a>
-                    </h:div>
-                    <h:div class="product_img">
-                        <h:a href="details.html">
-                            <h:img src="media/images/p2.gif" alt="" title="" border="0" />
-                        </h:a>
-                    </h:div>
-                    <h:div class="prod_price">
-                        <h:span class="reduce">350$</h:span>
-                        <h:span class="price">270$</h:span>
-                    </h:div>
-                </h:div>
-
-
-                <h:div class="title_box">Manufacturers</h:div>
-                <h:ul class="left_menu">
-                    <h:li class="odd">
-                        <h:a href="services.html">Sony</h:a>
-                    </h:li>
-                    <h:li class="even">
-                        <h:a href="services.html">Samsung</h:a>
-                    </h:li>
-                    <h:li class="odd">
-                        <h:a href="services.html">Daewoo</h:a>
-                    </h:li>
-                    <h:li class="even">
-                        <h:a href="services.html">LG</h:a>
-                    </h:li>
-                    <h:li class="odd">
-                        <h:a href="services.html">Fujitsu Siemens</h:a>
-                    </h:li>
-                    <h:li class="even">
-                        <h:a href="services.html">Motorola</h:a>
-                    </h:li>
-                    <h:li class="odd">
-                        <h:a href="services.html">Phillips</h:a>
-                    </h:li>
-                    <h:li class="even">
-                        <h:a href="services.html">Beko</h:a>
-                    </h:li>
-                </h:ul>
-
-                <h:div class="banner_adds">
-                    <h:a href="#">
-                        <h:img src="media/images/bann1.jpg" alt="" title="" border="0" />
-                    </h:a>
-                </h:div>
-            </h:div><!-- end of right content -->
-
-
+            
         </h:div><!-- end of main content -->
         <h:div class="footer">
             <h:div class="left_footer">
@@ -243,7 +187,7 @@
                 <h:img src="media/images/payment.gif" alt="" title="" />
             </h:div>
             <h:div class="right_footer">
-                <h:a href="index.html">home</h:a>
+                <h:a href="index.zul">home</h:a>
                 <h:a href="details.html">about</h:a>
                 <h:a href="details.html">sitemap</h:a>
                 <h:a href="details.html">rss</h:a>

@@ -83,7 +83,7 @@
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <h:a href="#" class="nav4">Inicie Sesion</h:a>
+                        <h:a href="cELoginCliente.zul" class="nav4">Inicie Sesion</h:a>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
