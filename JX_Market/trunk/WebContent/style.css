@@ -216,25 +216,25 @@ float:left;
 background:url(media/images/menu_divider.gif) no-repeat center;
 }
 
-a.nav1:link, a.nav1:visited {
-display:block; float:left; padding:0px 8px 0px 21px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/home.png) no-repeat left; color:#676d77;}
-a.nav2:link, a.nav2:visited {
-display:block; float:left; padding:0px 8px 0px 21px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/services.png) no-repeat left; color:#676d77;}
-a.nav3:link, a.nav3:visited {
-display:block; float:left; padding:0px 8px 0px 21px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/favs.png) no-repeat left; color:#676d77;}
-a.nav4:link, a.nav4:visited {
-display:block; float:left; padding:0px 8px 0px 21px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/user_add.png) no-repeat left; color:#676d77;}
-a.nav5:link, a.nav5:visited {
-display:block; float:left; padding:0px 8px 0px 21px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/car.png) no-repeat left; color:#676d77;}
-a.nav6:link, a.nav6:visited {
-display:block; float:left; padding:0px 8px 0px 21px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/contact-new.png) no-repeat left; color:#676d77;}
+.nav1 {
+display:block; float:left; padding:0px 8px 0px 22px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/home.png) no-repeat left; color:#676d77; cursor: pointer; font-weight:bold;}
+.nav2 {
+display:block; float:left; padding:0px 8px 0px 22px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/services.png) no-repeat left; color:#676d77; cursor: pointer; font-weight:bold;}
+.nav3 {
+display:block; float:left; padding:0px 8px 0px 22px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/favs.png) no-repeat left; color:#676d77; cursor: pointer; font-weight:bold;}
+.nav4 {
+display:block; float:left; padding:0px 8px 0px 22px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/user_add.png) no-repeat left; color:#676d77; cursor: pointer; font-weight:bold;}
+.nav5 {
+display:block; float:left; padding:0px 8px 0px 22px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/car.png) no-repeat left; color:#676d77; cursor: pointer; font-weight:bold;}
+.nav6 {
+display:block; float:left; padding:0px 8px 0px 22px; margin:0 13px 0 13px;height:50px;text-decoration:none; background:url(media/images/contact-new.png) no-repeat left; color:#676d77; cursor: pointer; font-weight:bold;}
 
-a.nav1:hover, a.nav2:hover, a.nav3:hover, a.nav4:hover, a.nav5:hover, a.nav6:hover {
+.nav1:hover, .nav2:hover, .nav3:hover, .nav4:hover, .nav5:hover, .nav6:hover {
 color:#333333;}
 
 
 li.currencies{
-width:180px;
+width:130px;
 float:left;
 padding:0 0 0 15px;
 _padding:12px 0 0 15px;

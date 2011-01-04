@@ -67,31 +67,31 @@
                 <h:div class="left_menu_corner"></h:div>
                 <h:ul class="menu">
                     <h:li>
-                        <h:a href="index.zul" class="nav1">Inicio</h:a>
+                        <label onClick='Executions.sendRedirect(null)' class="nav1">Inicio</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <h:a href="#" class="nav2">Productos</h:a>
+                        <label onClick='Executions.sendRedirect(null)' class="nav2">Productos</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <h:a href="#" class="nav3">Especiales</h:a>
+                        <label onClick='Executions.sendRedirect(null)' class="nav3">Mi Cuenta</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <h:a href="#" class="nav4">Mi Cuenta</h:a>
+                        <label onClick='Executions.sendRedirect("cELoginCliente.zul")' class="nav4">Inicie Sesion</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <h:a href="cELoginCliente.zul" class="nav4">Inicie Sesion</h:a>
+                        <label onClick='Executions.sendRedirect("cERegistroCliente.zul")' class="nav5">Registrese</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <h:a href="cERegistroCliente.zul" class="nav5">Registrese</h:a>
+                        <label onClick='Executions.sendRedirect("contact.html")' class="nav6">Contactanos</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <h:a href="contact.html" class="nav6">Contactanos</h:a>
+                        <label onClick='Executions.sendRedirect("eALogin.zul")' class="nav6">Mi Empresa</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li class="currencies">
@@ -114,7 +114,7 @@
 
 
             <h:div class="left_content">
-                <h:div class="title_box">Categorias</h:div>
+                <div class="title_box">Categorias</div>
                 <h:ul id="ulCategorias">
                 </h:ul>
 
