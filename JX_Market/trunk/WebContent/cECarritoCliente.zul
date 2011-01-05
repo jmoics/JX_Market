@@ -16,5 +16,9 @@
             <rows>
             </rows>
         </grid>
+        <div width="550px" align="right">
+            <button id="s" image="media/filesave.png" label="Generar Pedido" dir="reverse"
+                    onClick="w_CECC.generarPedido()" />
+        </div>
     </window>
 </zk>

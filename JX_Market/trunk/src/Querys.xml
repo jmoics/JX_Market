@@ -15,6 +15,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     <typeAlias alias="DTO_Area" type="pe.com.jx_market.domain.DTO_Area" />
     <typeAlias alias="DTO_Modulo" type="pe.com.jx_market.domain.DTO_Modulo" />
     <typeAlias alias="DTO_PerfilModulo" type="pe.com.jx_market.domain.DTO_PerfilModulo" />
+    <typeAlias alias="DTO_Pedido" type="pe.com.jx_market.domain.DTO_Pedido" />
+    <typeAlias alias="DTO_DetallePedido" type="pe.com.jx_market.domain.DTO_DetallePedido" />
 
     <!-- MANTENIMIENTO DE CLIENTES -->
 
@@ -651,5 +653,124 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
          T_NEG_CATEGORIA
       WHERE
          categoria_n_codigo = #codigo#
+   </delete>
+
+    <!-- MANTENIMIENTO DE PEDIDOS -->
+
+    <select id="getPedidos" resultClass="DTO_Pedido" parameterClass="DTO_Pedido">
+        SELECT
+            ped.pedido_n_codigo as codigo,
+            ped.empresa_n_codigo as empresa,
+            ped.cliente_n_codigo as cliente,
+            ped.tipoped_n_codigo as tipo,
+            ped.pedido_d_fecha as fecha,
+            ped.pedido_n_igv as igv,
+            ped.pedido_n_total as total
+        FROM
+            T_NEG_PEDIDO ped
+        WHERE
+            ped.empresa_n_codigo = #empresa#
+    </select>
+    
+    <select id="getPedidosXCodigo" resultClass="DTO_Pedido" parameterClass="DTO_Pedido">
+        SELECT
+            ped.pedido_n_codigo as codigo,
+            ped.empresa_n_codigo as empresa,
+            ped.cliente_n_codigo as cliente,
+            ped.tipoped_n_codigo as tipo,
+            ped.pedido_d_fecha as fecha,
+            ped.pedido_n_igv as igv,
+            ped.pedido_n_total as total
+        FROM
+            T_NEG_PEDIDO ped
+        WHERE
+            ped.pedido_n_codigo = #codigo#
+    </select>
+
+    <insert id="insertPedido" parameterClass="DTO_Pedido">
+        INSERT INTO T_NEG_PEDIDO
+            (empresa_n_codigo, cliente_n_codigo, tipoped_n_codigo,
+            pedido_d_fecha, pedido_n_igv, pedido_n_total)
+        VALUES
+            (#empresa#, #cliente#, #tipo#,
+            #fecha#, #igv#, #total#)
+        <selectKey resultClass="int" type="post" keyProperty="codigo" > 
+           select LAST_INSERT_ID() as value
+        </selectKey>
+    </insert>
+    
+    <insert id="connectPedido">
+        INSERT INTO T_NEG_PEDIDO2PEDIDO
+            (pedido_n_codigo_from, pedido_n_codigo_to)
+        VALUES
+            (#fromLink#, #toLink#)
+    </insert>
+    
+    <update id="updatePedido" parameterClass="DTO_Pedido">
+        UPDATE T_NEG_PEDIDO
+        SET
+            pedido_n_codigo = #codigo#,
+            empresa_n_codigo = #empresa#,
+            cliente_n_codigo = #cliente#,
+            tipoped_n_codigo = #tipo#,
+            pedido_d_fecha = #fecha#,
+            pedido_n_igv = #igv#,
+            pedido_n_total = #total#
+        WHERE
+            pedido_n_codigo = #codigo#
+        AND
+            empresa_n_codigo = #empresa#
+    </update>
+
+    <delete id="deletePedido">
+        DELETE FROM
+            T_NEG_PEDIDO
+        WHERE
+            pedido_n_codigo = #value#
+   </delete>
+   
+   <!-- MANTENIMIENTO DE DETALLES DE PEDIDOS -->
+
+    <select id="getDetallePedidos" resultClass="DTO_DetallePedido" parameterClass="DTO_DetallePedido">
+        SELECT
+            ped.pedido_n_codigo as pedido,
+            ped.articulo_n_codigo as articulo,
+            ped.detped_n_cantidad as cantidad
+        FROM
+            T_NEG_PEDIDO_DET ped
+        WHERE
+        <isNotNull property="pedido">
+            ped.pedido_n_codigo = #pedido#
+            <isNotNull prepend="AND" property="articulo">
+                ped.articulo_n_codigo = #articulo#
+            </isNotNull>
+        </isNotNull>
+        <isNull property="pedido">
+            ped.articulo_n_codigo = #articulo#
+        </isNull>
+    </select>
+
+    <insert id="insertDetallePedido" parameterClass="DTO_DetallePedido">
+        INSERT INTO T_NEG_PEDIDO_DET
+            (pedido_n_codigo, articulo_n_codigo, detped_n_cantidad)
+        VALUES
+            (#pedido#, #articulo#, #cantidad#)
+    </insert>
+    
+    <update id="updateDetallePedido" parameterClass="DTO_DetallePedido">
+        UPDATE T_NEG_PEDIDO_DET
+        SET
+            pedido_n_codigo = #pedido#,
+            articulo_n_codigo = #articulo#,
+            detped_n_cantidad = #cantidad#
+        WHERE
+            pedido_n_codigo = #pedido#
+    </update>
+
+    <delete id="deleteDetallePedido">
+        DELETE FROM
+            T_NEG_PEDIDO_DET
+        WHERE
+            pedido_n_codigo = #value#
    </delete>
 </sqlMap>

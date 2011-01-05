@@ -70,6 +70,11 @@
         <property name="registraCliente" ref="registraCliente"/>
     </bean>
     
+    <bean id="pedidosService" class="pe.com.jx_market.service.PedidosService">
+        <property name="pedidoDAO" ref="pedidoDAO"/>
+        <property name="detalleDAO" ref="detalleDAO"/>
+    </bean>
+    
     <!-- validadores -->
     <bean id="registraCliente" class="pe.com.jx_market.validacion.spring.ValidaRegistroCliente"/>
 </beans>
