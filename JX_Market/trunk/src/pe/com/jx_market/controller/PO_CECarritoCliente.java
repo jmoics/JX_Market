@@ -37,7 +37,9 @@ public class PO_CECarritoCliente extends Window
         articuloService = Utility.getService(this, "articuloService");
         categoriaService = Utility.getService(this, "categoriaService");
 
-        listaProductos();
+        if (getDesktop().getSession().getAttribute("carrito") != null) {
+            listaProductos();
+        }
     }
 
     @SuppressWarnings("unchecked")

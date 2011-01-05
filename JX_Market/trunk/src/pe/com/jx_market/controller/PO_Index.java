@@ -18,7 +18,6 @@ import org.zkoss.zul.Div;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 
-import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.service.Constantes;
@@ -33,7 +32,7 @@ public class PO_Index
     private NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
     private BusinessService articuloService, categoriaService;
     private Ul ulCategorias;
-    private Label lbUser, lbTotal, lbItems;
+    private Label lbUser, lbTotal, lbItems, lbSalir;
 
     public void onCreate()
     {
@@ -42,22 +41,25 @@ public class PO_Index
         lbUser = (Label) getFellow("lbUser");
         lbTotal = (Label) getFellow("lbTotal");
         lbItems = (Label) getFellow("lbItems");
+        lbSalir = (Label) getFellow("lbSalir");
         ulCategorias.getSclass();
         ulCategorias.setSclass("left_menu");
-        //incluir("cEProductos.zul");
+        // incluir("cEProductos.zul");
         listarCategorias();
 
-        if(getDesktop().getSession().getAttribute("actualizar") == null){
+        if (getDesktop().getSession().getAttribute("actualizar") == null) {
             incluir("cEProductos.zul");
+        }
+
+        if (getDesktop().getSession().getAttribute("sendPage") != null) {
+            getDesktop().getSession().removeAttribute("sendPage");
+            Executions.sendRedirect(null);
         }
 
         if (getDesktop().getSession().getAttribute("cliente") != null) {
             final DTO_Cliente cliente = (DTO_Cliente) getDesktop().getSession().getAttribute("cliente");
             lbUser.setValue(cliente.getApellido() + " " + cliente.getNombre());
-
-            @SuppressWarnings("unchecked")
-            final Map<Integer, Map<DTO_Articulo, Integer>> map = (Map<Integer, Map<DTO_Articulo, Integer>>)
-                                                                    getDesktop().getSession().getAttribute("carrito");
+            lbSalir.setVisible(true);
 
             actualizarCarrito();
         }
@@ -65,14 +67,16 @@ public class PO_Index
         getPage().addEventListener(Events.ON_BOOKMARK_CHANGE,
                         new org.zkoss.zk.ui.event.EventListener() {
                             @Override
-                            public void onEvent(final Event arg0) throws Exception {
+                            public void onEvent(final Event arg0)
+                                throws Exception
+                            {
                                 try {
                                     incluir(getDesktop().getBookmark());
                                 } catch (final org.zkoss.zk.ui.ComponentNotFoundException ex) {
                                     incluir("cEProductos.zul");
                                 }
                             }
-                      });
+                        });
     }
 
     public void listarCategorias()
@@ -96,14 +100,14 @@ public class PO_Index
                 item.setAttribute("categoria", categ);
                 item.addEventListener("onClick",
                                 new org.zkoss.zk.ui.event.EventListener() {
-                    @Override
-                    public void onEvent(final Event e)
-                        throws UiException
+                                    @Override
+                                    public void onEvent(final Event e)
+                                        throws UiException
                     {
                         getDesktop().getSession().setAttribute("categoria", e.getTarget().getAttribute("categoria"));
-                        Executions.sendRedirect(null);
+                        saltarPagina("cEProductos.zul", false);
                     }
-                });
+                                });
                 ulCategorias.appendChild(item);
                 cont++;
             }
@@ -113,11 +117,12 @@ public class PO_Index
     }
 
     @SuppressWarnings("unchecked")
-    private void actualizarCarrito () {
+    private void actualizarCarrito()
+    {
         final Map<String, Object> map2 = (Map<String, Object>) getDesktop().getSession().getAttribute("totales");
         final Integer cantTot = (Integer) map2.get("cantidad");
         final BigDecimal precTotal = (BigDecimal) map2.get("total");
-        lbItems.setValue(""+cantTot);
+        lbItems.setValue("" + cantTot);
         lbTotal.setValue(formateador.format(precTotal));
 
     }
@@ -127,6 +132,27 @@ public class PO_Index
         // getDesktop().getSession().setAttribute("paginaActual", txt);
         getDesktop().getSession().setAttribute("actualizar", "actualizar");
         Utility.saltar(this, txt);
+    }
+
+    public void saltarPagina(final String txt,
+                             final boolean anotherPage)
+    {
+        if (getDesktop().getBookmark().contains(txt)) {
+            Executions.sendRedirect(null);
+        } else if (anotherPage) {
+            Executions.sendRedirect(txt);
+        } else {
+            incluir(txt);
+        }
+    }
+
+    public void cerrarSesion()
+    {
+        getDesktop().getSession().removeAttribute("cliente");
+        getDesktop().getSession().removeAttribute("carrito");
+        getDesktop().getSession().removeAttribute("actualizar");
+
+        Executions.sendRedirect(null);
     }
 
     public void alertaInfo(final String txt,

@@ -87,6 +87,7 @@ public class PO_CERegistroCliente extends Div
                         final int rpta = Messagebox.show("Su registro fue realizado correctamente",
                                                     "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
                         if (rpta == Messagebox.OK) {
+                            getDesktop().getSession().setAttribute("sendPage", getDesktop().getBookmark());
                             Executions.sendRedirect("index.zul");
                         }
                     } catch (final InterruptedException e) {
@@ -240,6 +241,15 @@ public class PO_CERegistroCliente extends Div
             throw new RuntimeException();
         }
         return dis;
+    }
+
+    public void saltarPagina(final String txt, final boolean anotherPage) {
+        if (getDesktop().getBookmark().contains(txt)) {
+            Executions.sendRedirect(null);
+        } else if (anotherPage) {
+            getDesktop().getSession().setAttribute("sendPage", getDesktop().getBookmark());
+            Executions.sendRedirect(txt);
+        }
     }
 
     public void alertaInfo(final String txt,

@@ -244,20 +244,31 @@ font-weight:bold;
 }
 /*----------------crumb_navigation-------------*/
 .crumb_navigation{
-width:980px;
+float: left;
+width:880px;
 height:15px;
 padding:5px 10px 0 20px;
 color:#333333;
 background:url(media/images/navbullet.png) no-repeat left;
 background-position:5px 6px;
 }
-.crumb_navigation a{
-color:#0fa0dd;
-text-decoration:underline;
-}
 .current{
 color:#0fa0dd;
 text-decoration:underline;
+}
+.logout{
+padding:5px 10px 0 20px;
+height:15px;
+color:#333333;
+cursor: pointer;
+}
+.logout span{
+text-decoration:underline;
+color:#0fa0dd;
+}
+
+.link{
+cursor: pointer;
 }
 
 /*-------------left_content------------------*/

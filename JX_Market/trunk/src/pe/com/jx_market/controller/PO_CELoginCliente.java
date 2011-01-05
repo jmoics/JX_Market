@@ -49,6 +49,7 @@ public class PO_CELoginCliente extends Div
             map2.put("total", BigDecimal.ZERO);
             map2.put("cantidad", 0);
             getDesktop().getSession().setAttribute("totales", map2);
+            getDesktop().getSession().setAttribute("sendPage", getDesktop().getBookmark());
             Executions.sendRedirect("index.zul");
         } else {
             txtUser.setText("");
@@ -86,6 +87,15 @@ public class PO_CELoginCliente extends Div
         }
 
         return usuario;
+    }
+
+    public void saltarPagina(final String txt, final boolean anotherPage) {
+        if (getDesktop().getBookmark().contains(txt)) {
+            Executions.sendRedirect(null);
+        } else if (anotherPage) {
+            getDesktop().getSession().setAttribute("sendPage", getDesktop().getBookmark());
+            Executions.sendRedirect(txt);
+        }
     }
 
     public void alertaInfo(final String txt,

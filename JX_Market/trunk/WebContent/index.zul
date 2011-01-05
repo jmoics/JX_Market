@@ -62,28 +62,28 @@
             </h:div><!-- end of oferte_content-->
         </h:div>
 
-        <h:div id="main_content">
+        <div id="main_content">
             <h:div id="menu_tab">
                 <h:div class="left_menu_corner"></h:div>
                 <h:ul class="menu">
                     <h:li>
-                        <label onClick='Executions.sendRedirect(null)' class="nav1">Inicio</label>
+                        <label onClick='w_in.saltarPagina("cEProductos.zul", false)' class="nav1">Inicio</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <label onClick='Executions.sendRedirect(null)' class="nav2">Productos</label>
+                        <label onClick='w_in.saltarPagina("cEProductos.zul", false)' class="nav2">Productos</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <label onClick='Executions.sendRedirect(null)' class="nav3">Mi Cuenta</label>
+                        <label onClick='w_in.saltarPagina("cEProductos.zul", false)' class="nav3">Mi Cuenta</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <label onClick='Executions.sendRedirect("cELoginCliente.zul")' class="nav4">Inicie Sesion</label>
+                        <label onClick='w_in.saltarPagina("cELoginCliente.zul", true)' class="nav4">Inicie Sesion</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <label onClick='Executions.sendRedirect("cERegistroCliente.zul")' class="nav5">Registrese</label>
+                        <label onClick='w_in.saltarPagina("cERegistroCliente.zul", true)' class="nav5">Registrese</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
@@ -91,7 +91,7 @@
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <label onClick='Executions.sendRedirect("eALogin.zul")' class="nav6">Mi Empresa</label>
+                        <label onClick='w_in.saltarPagina("eALogin.zul", true)' class="nav6">Mi Empresa</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li class="currencies">
@@ -107,10 +107,14 @@
                 <h:div class="right_menu_corner"></h:div>
             </h:div><!-- end of menu tab -->
 
-            <h:div class="crumb_navigation">
+            <div class="crumb_navigation">
                 Usuario:
                 <label value="" id="lbUser" class="current"/>
-            </h:div>
+            </div>
+            
+            <div class="logout">
+                <label value="Cerrar Sesion" id="lbSalir" visible="false" onClick="w_in.cerrarSesion()"/>
+            </div>
 
 
             <h:div class="left_content">
@@ -168,9 +172,8 @@
                     </div>
 
                     <h:div class="cart_icon">
-                        <h:a href="#" title="header=[Checkout] fade=[on]">
-                            <h:img src="media/images/shoppingcart.png" alt="" title="" width="48" height="48" border="0" />
-                        </h:a>
+                        <image src="media/images/shoppingcart.png" width="48" height="48" border="0" class="link"
+                                onClick='w_in.incluir("cECarritoCliente.zul")'/>
                     </h:div>
                 </h:div>
 
@@ -228,7 +231,7 @@
             </h:div><!-- end of right content -->
 
 
-        </h:div><!-- end of main content -->
+        </div><!-- end of main content -->
         <h:div class="footer">
             <h:div class="left_footer">
                 <h:img src="media/images/footer_logo.png" alt="" title="" width="170" height="49" />
