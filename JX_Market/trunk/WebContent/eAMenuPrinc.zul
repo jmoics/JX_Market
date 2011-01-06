@@ -6,7 +6,7 @@
          <north height="135px" border="0" zclass="z-border-layout">
             <vbox align="left" width="980px">
                <hbox spacing="780px">
-                  <image id="imaLogo" />
+                  <image id="imaLogo" width="212px" height="112px"/>
                   <image src="media/salir.gif"
                      onClick='bl.salir()' style="cursor:pointer" />
                </hbox>

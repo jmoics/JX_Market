@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -238,6 +239,16 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         } else {
             return false;
         }
+    }
+
+    public void salir()
+    {
+        getDesktop().getSession().removeAttribute("login");
+        getDesktop().getSession().removeAttribute("actualizar");
+        getDesktop().getSession().removeAttribute("empresa");
+        getDesktop().getSession().removeAttribute("empleado");
+        // getDesktop().getSession().removeAttribute("paginaActual");
+        Executions.sendRedirect("eALogin.zul");
     }
 
     public void alertaInfo(final String txt,

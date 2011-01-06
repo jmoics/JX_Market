@@ -6,27 +6,31 @@
         <style id="sT" src="style.css" />
 
         <div align="center">
-            <vbox width="580px">
-                <html:p />
-                <div class="center_title_bar">Mis Solicitudes Pendientes</div>
-                <html:p />
-                <groupbox mold="3d" id="grpSolicitud" visible="true" width="580px">
+            <hbox>
+                <image src="media/salir.gif"
+                     onClick='winEESP.salir()' style="cursor:pointer" />
+                <vbox width="580px">
                     <html:p />
-                    <listbox id="lstSolicitud" visible="true" width="560px" multiple="false" checkmark="true">
-                        <listhead>
-                            <listheader label="Empresa" width="160px" />
-                            <listheader label="RUC" width="80px" />
-                            <listheader label="Correo" width="160px" />
-                            <listheader label="Fecha Envío" width="80px" />
-                            <listheader label="Estado" width="80px" />
-                        </listhead>
-                    </listbox>
-                    <div width="560px" align="center" style="margin: 15px 0 0 0">
-                        <button label="Aceptar" onClick="winEESP.aceptarSolicitud()" />
-                        <button label="Rechazar" onClick="winEESP.rechazarSolicitud()"/>
-                    </div>
-                </groupbox>
-            </vbox>
+                    <div class="center_title_bar">Mis Solicitudes Pendientes</div>
+                    <html:p />
+                    <groupbox mold="3d" id="grpSolicitud" visible="true" width="580px">
+                        <html:p />
+                        <listbox id="lstSolicitud" visible="true" width="560px" multiple="false" checkmark="true">
+                            <listhead>
+                                <listheader label="Empresa" width="160px" />
+                                <listheader label="RUC" width="80px" />
+                                <listheader label="Correo" width="160px" />
+                                <listheader label="Fecha Envío" width="80px" />
+                                <listheader label="Estado" width="80px" />
+                            </listhead>
+                        </listbox>
+                        <div width="560px" align="center" style="margin: 15px 0 0 0">
+                            <button label="Aceptar" onClick="winEESP.aceptarSolicitud()" />
+                            <button label="Rechazar" onClick="winEESP.rechazarSolicitud()"/>
+                        </div>
+                    </groupbox>
+                </vbox>
+            </hbox>
         </div>
         <html:p />
     </window>
