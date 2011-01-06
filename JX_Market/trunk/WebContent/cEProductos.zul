@@ -3,7 +3,7 @@
     <window zclass="null" id="wCEP" use="pe.com.jx_market.controller.PO_CEProductos">
         <style id="sT" src="style.css"/>
         <h:script type="text/javascript" src="media/js/boxOver.js"></h:script>
-        <div class="center_title_bar">Ultimos Productos</div>
+        <div class="center_title_bar">Últimos Productos</div>
         <div width="580px">
         <listbox style="padding: 45px 0 0 0" width="580px" id="lstProds" zclass="null" mold="paging" pageSize="6">
             
