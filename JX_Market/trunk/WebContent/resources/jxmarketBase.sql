@@ -81,7 +81,7 @@ CREATE TABLE `T_EMP_EMPLEADO` (
 
 LOCK TABLES `T_EMP_EMPLEADO` WRITE;
 /*!40000 ALTER TABLE `T_EMP_EMPLEADO` DISABLE KEYS */;
-INSERT INTO `T_EMP_EMPLEADO` VALUES (1,1,1,1,'JX_Market','Administrator','','','','','jxmarket@gmail.com','Lima','Lima','',1);
+INSERT INTO `T_EMP_EMPLEADO` VALUES (1,1,1,1,'JX_Market','Administrator','','','','','jxmarket@gmail.com','Lima','Lima','01-01-01',1);
 /*!40000 ALTER TABLE `T_EMP_EMPLEADO` ENABLE KEYS */;
 UNLOCK TABLES;
 
