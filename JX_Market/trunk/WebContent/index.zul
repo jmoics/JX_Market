@@ -169,21 +169,7 @@
                 </h:div>
 
 
-                <h:div class="title_box">Novedades</h:div>
-                <h:div class="border_box">
-                    <h:div class="product_title">
-                        <h:a href="details.html">Motorola 156 MX-VL</h:a>
-                    </h:div>
-                    <h:div class="product_img">
-                        <h:a href="details.html">
-                            <h:img src="media/images/p2.gif" alt="" title="" border="0" />
-                        </h:a>
-                    </h:div>
-                    <h:div class="prod_price">
-                        <h:span class="reduce">350$</h:span>
-                        <h:span class="price">270$</h:span>
-                    </h:div>
-                </h:div>
+               
 
 
                 <h:div class="title_box">Marcas reconocidas</h:div>
