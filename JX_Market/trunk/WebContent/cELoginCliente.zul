@@ -36,16 +36,7 @@
                     <h:img src="media/images/header_divider.png" alt="" title="" width="1" height="164" />
                 </h:div>
                 <h:div class="oferta">
-                    <h:div class="oferta_content">
-                        <h:img src="media/images/laptop.png" width="94" height="92" border="0" class="oferta_img" />
-                        <h:div class="oferta_details">
-                            <h:div class="oferta_title">Samsung GX LM</h:div>
-                            <h:div class="oferta_text">
-                                Laptop Samsung modelo GX procesador 2 ghz y memoria ram 2gb.
-                            </h:div>
-                            <!-- <h:a href="details.html" class="details">detalles</h:a> -->
-                        </h:div>
-                    </h:div>
+                  
                   <!--   <h:div class="oferta_pagination">
                         <h:span class="current">1</h:span>
                         <h:a href="#?page=2">2</h:a>
