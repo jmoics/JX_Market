@@ -801,7 +801,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
            sol.solicitud_n_estado = #estado#          
     </select>
     
-    <select id="getSolicitudesxCodigo" resultClass="DTO_Solicitud" parameterClass="DTO_Solicitud">
+    <select id="getSolicitudxCodigo" resultClass="DTO_Solicitud" parameterClass="DTO_Solicitud">
         SELECT
             sol.solicitud_n_codigo as codigo,
             sol.solicitud_v_razon as razon,
@@ -822,7 +822,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             (#codigo#, #razon#, #ruc#, #correo#, #estado#, #fecha#)
     </insert>
     
-    <update id="updateSolicitud" parameterClass="DTO_DetallePedido">
+    <update id="updateSolicitud" parameterClass="DTO_Solicitud">
         UPDATE T_NEG_PEDIDO_DET
         SET
             solicitud_n_estado = #estado#          

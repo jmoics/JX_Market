@@ -68,6 +68,7 @@
     
     <bean id="validationService" class="pe.com.jx_market.service.ValidationService">
         <property name="registraCliente" ref="registraCliente"/>
+        <property name="registraSolicitud" ref="registraSolicitud"/>
     </bean>
     
     <bean id="pedidosService" class="pe.com.jx_market.service.PedidosService">
@@ -81,4 +82,5 @@
     
     <!-- validadores -->
     <bean id="registraCliente" class="pe.com.jx_market.validacion.spring.ValidaRegistroCliente"/>
+    <bean id="registraSolicitud" class="pe.com.jx_market.validacion.spring.ValidaRegistroSolicitud"/>
 </beans>

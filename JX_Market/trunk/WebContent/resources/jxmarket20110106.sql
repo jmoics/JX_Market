@@ -331,11 +331,11 @@ INSERT INTO `T_NEG_PEDIDO_TIPO` VALUES (1,'Entrega a domicilio'),(2,'Recoger el 
 UNLOCK TABLES;
 
 --
--- Table structure for table `T_NET_SOLICITUD`
+-- Table structure for table `T_NEG_SOLICITUD`
 --
 
-DROP TABLE IF EXISTS `T_NET_SOLICITUD`;
-CREATE TABLE `T_NET_SOLICITUD` (
+DROP TABLE IF EXISTS `T_NEG_SOLICITUD`;
+CREATE TABLE `T_NEG_SOLICITUD` (
   `SOLICITUD_N_CODIGO` int(11) unsigned NOT NULL auto_increment,
   `SOLICITUD_V_RAZON` varchar(100) default NULL,
   `SOLICITUD_N_RUC` int(11) default NULL,
@@ -346,7 +346,7 @@ CREATE TABLE `T_NET_SOLICITUD` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `T_NET_SOLICITUD`
+-- Dumping data for table `T_NEG_SOLICITUD`
 --
 --
 -- Table structure for table `T_NEG_VENTA_TIPO`

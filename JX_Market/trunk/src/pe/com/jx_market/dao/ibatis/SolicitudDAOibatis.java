@@ -23,7 +23,7 @@ public class SolicitudDAOibatis
 	}
 
 	@Override
-	public boolean insertSolicitud(DTO_Solicitud solicitud) {
+	public boolean insertSolicitud(final DTO_Solicitud solicitud) {
 		final DTO_Solicitud sol = (DTO_Solicitud) getSqlMapClientTemplate().queryForObject("getSolicitudxCodigo", solicitud);
         if (sol == null)
             getSqlMapClientTemplate().insert("insertSolicitud", solicitud);
@@ -33,7 +33,7 @@ public class SolicitudDAOibatis
 	}
 
 	@Override
-	public boolean deleteSolicitud(DTO_Solicitud solicitud) {
+	public boolean deleteSolicitud(final DTO_Solicitud solicitud) {
 		getSqlMapClientTemplate().delete("deleteSolicitud", solicitud);
         return true;
 	}

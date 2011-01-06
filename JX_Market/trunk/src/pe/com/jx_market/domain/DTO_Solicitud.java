@@ -7,57 +7,57 @@ public class DTO_Solicitud implements Serializable
 {
 	private Integer codigo;
 	private String razon;
-	private Integer ruc;
+	private String ruc;
 	private String correo;
 	private Integer estado;
 	private Date fecha;
-	
+
 	public Integer getCodigo() {
 		return codigo;
 	}
-	
-	public void setCodigo(Integer codigo) {
+
+	public void setCodigo(final Integer codigo) {
 		this.codigo = codigo;
 	}
-	
+
 	public String getRazon() {
 		return razon;
 	}
-	
-	public void setRazon(String razon) {
+
+	public void setRazon(final String razon) {
 		this.razon = razon;
 	}
-	
-	public Integer getRuc() {
+
+	public String getRuc() {
 		return ruc;
 	}
-	
-	public void setRuc(Integer ruc) {
+
+	public void setRuc(final String ruc) {
 		this.ruc = ruc;
 	}
-	
+
 	public String getCorreo() {
 		return correo;
 	}
-	
-	public void setCorreo(String correo) {
+
+	public void setCorreo(final String correo) {
 		this.correo = correo;
 	}
-	
+
 	public Integer getEstado() {
 		return estado;
 	}
-	
-	public void setEstado(Integer estado) {
+
+	public void setEstado(final Integer estado) {
 		this.estado = estado;
 	}
-	
+
 	public Date getFecha() {
 		return fecha;
 	}
-	
-	public void setFecha(Date fecha) {
+
+	public void setFecha(final Date fecha) {
 		this.fecha = fecha;
 	}
-	
+
 }

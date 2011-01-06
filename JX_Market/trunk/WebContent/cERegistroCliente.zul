@@ -75,7 +75,7 @@
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <label onClick='d_cERC.saltarPagina("index.zul", true)' class="nav3">Mi Cuenta</label>
+                        <label onClick='d_cERC.saltarPagina("cECuentaCliente.zul", true)' class="nav3">Mi Cuenta</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
@@ -115,7 +115,14 @@
 
             <div class="center_content">
                 <div class="center_title_bar">Crear una cuenta en JX_Market</div>
-                <grid width="700px" align="left" zclass="null"
+                <radiogroup id="radgTipDoc" >
+                    <radio label="Cliente" 
+                        checked="true" sclass="post-normal-text"
+                        onCheck="d_cERC.esCliente()" />
+                    <radio label="Empresa" sclass="post-normal-text"
+                        onCheck="d_cERC.esEmpresa()" />
+                </radiogroup>
+                <grid width="700px" align="left" zclass="null" id="grdRegCli"
                     style="margin-bottom:10pt; border:0pt">
                     <columns>
                         <column width="120px" />
@@ -177,6 +184,35 @@
                             <label />
                             <label />
                             <label />
+                        </row>
+                    </rows>
+                </grid>
+                <grid width="700px" align="left" zclass="null" id="grdRegEmp" visible="false"
+                    style="margin-bottom:10pt; border:0pt">
+                    <columns>
+                        <column width="120px" />
+                        <column width="10px" />
+                        <column width="210px" />
+                        <column width="120px" />
+                        <column width="10px" />
+                        <column />
+                    </columns>
+                    <rows>
+                        <row style="border:0pt">
+                            <label value="Razon Social" sclass="post-normal-text" />
+                            <label value="*" sclass="post-asterisco-text" />
+                            <textbox id="txtRS" width="150px" />
+                            <label value="Ruc" sclass="post-normal-text" />
+                            <label value="*" sclass="post-asterisco-text" />
+                            <textbox id="txtRuc" width="180px" maxlength="11"/>
+                        </row>
+                        <row style="border:0pt">
+                            <label value="E-Mail" sclass="post-normal-text" />
+                            <label value="*" sclass="post-asterisco-text" />
+                            <textbox id="txtMailEmp" width="150px" />
+                            <label/>
+                            <label/>
+                            <label/>
                         </row>
                     </rows>
                 </grid>

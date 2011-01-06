@@ -15,7 +15,7 @@ public class ValidationService
 {
 
     static Log logger = LogFactory.getLog(ValidationService.class);
-    private Validador registraCliente;
+    private Validador registraCliente, registraSolicitud;
 
     @Override
     public DTO_Output execute(final DTO_Input input)
@@ -24,6 +24,8 @@ public class ValidationService
         Validador val = null;
         if (input.getVerbo().equals("registraCliente")) {
             val = getRegistraCliente();
+        } else if (input.getVerbo().equals("registraSolicitud")) {
+            val = getRegistraSolicitud();
         }
 
         // procesar...
@@ -52,6 +54,16 @@ public class ValidationService
     public void setRegistraCliente(final Validador registraCliente)
     {
         this.registraCliente = registraCliente;
+    }
+
+    public Validador getRegistraSolicitud()
+    {
+        return registraSolicitud;
+    }
+
+    public void setRegistraSolicitud(final Validador registraSolicitud)
+    {
+        this.registraSolicitud = registraSolicitud;
     }
 
 }
