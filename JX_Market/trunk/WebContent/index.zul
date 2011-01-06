@@ -27,7 +27,7 @@
         <h:div id="header">
             <h:div id="logo">
                 <h:a href="index.html">
-                    <h:img src="media/images/logo.png" alt="" title="" border="0" width="237" height="140" />
+                    <h:img src="media/images/logo_jxmarket.png" alt="" title="" border="0" width="237" height="140" />
                 </h:a>
             </h:div>
 
@@ -39,22 +39,22 @@
                     <h:div class="oferta_content">
                         <h:img src="media/images/laptop.png" width="94" height="92" border="0" class="oferta_img" />
                         <h:div class="oferta_details">
-                            <h:div class="oferta_title">Samsung GX 2004 LM</h:div>
+                            <h:div class="oferta_title">Samsung GX LM</h:div>
                             <h:div class="oferta_text">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco
+                                Laptop Samsung modelo GX procesador 2 ghz y memoria ram 2gb.
                             </h:div>
-                            <h:a href="details.html" class="details">details</h:a>
+                            <!-- <h:a href="details.html" class="details">detalles</h:a> -->
                         </h:div>
                     </h:div>
-                    <h:div class="oferta_pagination">
+                  <!--   <h:div class="oferta_pagination">
                         <h:span class="current">1</h:span>
                         <h:a href="#?page=2">2</h:a>
                         <h:a href="#?page=3">3</h:a>
                         <h:a href="#?page=3">4</h:a>
                         <h:a href="#?page=3">5</h:a>
-                    </h:div>
+                        
+                        
+                    </h:div>-->
                 </h:div>
                 <h:div class="top_divider">
                     <h:img src="media/images/header_divider.png" alt="" title="" width="1" height="164" />
@@ -140,11 +140,11 @@
                 </h:div>
 
 
-                <h:div class="title_box">Newsletter</h:div>
-                <h:div class="border_box">
+               <!-- <h:div class="title_box">Newsletter</h:div> --> 
+                <!-- <h:div class="border_box">
                     <h:input type="text" name="newsletter" class="newsletter_input" value="your email" />
                     <h:a href="#" class="join">join</h:a>
-                </h:div>
+                </h:div> -->
                 <h:div class="banner_adds">
                     <h:a href="#">
                         <h:img src="media/images/bann2.jpg" alt="" title="" border="0" />
@@ -195,9 +195,9 @@
                 </h:div>
 
 
-                <h:div class="title_box">Categorias</h:div>
+                <h:div class="title_box">Marcas reconocidas</h:div>
                 <h:ul class="left_menu">
-                    <h:li class="odd">
+                   <!-- <h:li class="odd">
                         <h:a href="services.html">Sony</h:a>
                     </h:li>
                     <h:li class="even">
@@ -220,6 +220,31 @@
                     </h:li>
                     <h:li class="even">
                         <h:a href="services.html">Beko</h:a>
+                    </h:li> --> 
+                    
+                    <h:li class="odd">
+                        <h:a >Sony</h:a>
+                    </h:li>
+                    <h:li class="even">
+                        <h:a >Samsung</h:a>
+                    </h:li>
+                    <h:li class="odd">
+                        <h:a >Daewoo</h:a>
+                    </h:li>
+                    <h:li class="even">
+                        <h:a >LG</h:a>
+                    </h:li>
+                    <h:li class="odd">
+                        <h:a >Fujitsu Siemens</h:a>
+                    </h:li>
+                    <h:li class="even">
+                        <h:a >Motorola</h:a>
+                    </h:li>
+                    <h:li class="odd">
+                        <h:a >Phillips</h:a>
+                    </h:li>
+                    <h:li class="even">
+                        <h:a >Beko</h:a>
                     </h:li>
                 </h:ul>
 
@@ -234,7 +259,7 @@
         </div><!-- end of main content -->
         <h:div class="footer">
             <h:div class="left_footer">
-                <h:img src="media/images/footer_logo.png" alt="" title="" width="170" height="49" />
+                <h:img src="media/images/footer_logo1.png" alt="" title="" width="170" height="49" />
             </h:div>
             <h:div class="center_footer">
                 @JXMARKET. Todos los derechos reservados 2011.
