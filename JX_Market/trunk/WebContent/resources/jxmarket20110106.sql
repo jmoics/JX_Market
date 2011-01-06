@@ -1,8 +1,8 @@
--- MySQL dump 10.10
+-- MySQL dump 10.13  Distrib 5.1.41, for debian-linux-gnu (i486)
 --
 -- Host: localhost    Database: jxmarket
 -- ------------------------------------------------------
--- Server version	5.0.16-nt
+-- Server version	5.1.41-3ubuntu12.8
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,459 +16,479 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `t_emp_area`
+-- Table structure for table `T_EMP_AREA`
 --
 
-DROP TABLE IF EXISTS `t_emp_area`;
-CREATE TABLE `t_emp_area` (
-  `AREA_N_CODIGO` int(11) NOT NULL auto_increment,
+DROP TABLE IF EXISTS `T_EMP_AREA`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_EMP_AREA` (
+  `AREA_N_CODIGO` int(11) NOT NULL AUTO_INCREMENT,
   `EMPRESA_N_CODIGO` int(11) NOT NULL,
-  `AREA_V_NOMBRE` varchar(50) default NULL,
-  PRIMARY KEY  (`AREA_N_CODIGO`),
+  `AREA_V_NOMBRE` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`AREA_N_CODIGO`),
   KEY `FK_REL_EMPRESA_AREA` (`EMPRESA_N_CODIGO`),
-  CONSTRAINT `FK_REL_EMPRESA_AREA` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `t_emp_empresa` (`EMPRESA_N_CODIGO`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_REL_EMPRESA_AREA` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `T_EMP_EMPRESA` (`EMPRESA_N_CODIGO`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_emp_area`
+-- Dumping data for table `T_EMP_AREA`
 --
 
-
-/*!40000 ALTER TABLE `t_emp_area` DISABLE KEYS */;
-LOCK TABLES `t_emp_area` WRITE;
-INSERT INTO `t_emp_area` VALUES (1,2,'Gerenciaa'),(2,2,'Ventaas'),(3,2,'Productos'),(4,2,'Recursos Humanos');
+LOCK TABLES `T_EMP_AREA` WRITE;
+/*!40000 ALTER TABLE `T_EMP_AREA` DISABLE KEYS */;
+INSERT INTO `T_EMP_AREA` VALUES (1,2,'Gerenciaa'),(2,2,'Ventaas'),(3,2,'Productos'),(4,2,'Recursos Humanos');
+/*!40000 ALTER TABLE `T_EMP_AREA` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_emp_area` ENABLE KEYS */;
 
 --
--- Table structure for table `t_emp_empleado`
+-- Table structure for table `T_EMP_EMPLEADO`
 --
 
-DROP TABLE IF EXISTS `t_emp_empleado`;
-CREATE TABLE `t_emp_empleado` (
-  `EMPLEADO_N_CODIGO` int(11) NOT NULL auto_increment,
+DROP TABLE IF EXISTS `T_EMP_EMPLEADO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_EMP_EMPLEADO` (
+  `EMPLEADO_N_CODIGO` int(11) NOT NULL AUTO_INCREMENT,
   `PERFIL_N_CODIGO` int(11) NOT NULL,
   `USUARIO_N_CODIGO` int(11) NOT NULL,
   `EMPRESA_N_CODIGO` int(11) NOT NULL,
-  `EMPLEADO_V_NOMBRE` varchar(50) default NULL,
-  `EMPLEADO_V_APELLIDO` varchar(50) default NULL,
-  `EMPLEADO_V_DNI` varchar(15) default NULL,
-  `EMPLEADO_V_DIRECCION` varchar(70) default NULL,
-  `EMPLEADO_V_TELEFONO` varchar(15) default NULL,
-  `EMPLEADO_V_CELULAR` varchar(20) default NULL,
-  `EMPLEADO_V_EMAIL` varchar(30) default NULL,
-  `EMPLEADO_V_CIUDAD` varchar(20) default NULL,
-  `EMPLEADO_V_REGION` varchar(20) default NULL,
-  `EMPLEADO_D_FECHNAC` date default NULL,
-  `EMPLEADO_N_ACTIVO` int(11) default NULL,
-  PRIMARY KEY  (`EMPLEADO_N_CODIGO`),
+  `EMPLEADO_V_NOMBRE` varchar(50) DEFAULT NULL,
+  `EMPLEADO_V_APELLIDO` varchar(50) DEFAULT NULL,
+  `EMPLEADO_V_DNI` varchar(15) DEFAULT NULL,
+  `EMPLEADO_V_DIRECCION` varchar(70) DEFAULT NULL,
+  `EMPLEADO_V_TELEFONO` varchar(15) DEFAULT NULL,
+  `EMPLEADO_V_CELULAR` varchar(20) DEFAULT NULL,
+  `EMPLEADO_V_EMAIL` varchar(30) DEFAULT NULL,
+  `EMPLEADO_V_CIUDAD` varchar(20) DEFAULT NULL,
+  `EMPLEADO_V_REGION` varchar(20) DEFAULT NULL,
+  `EMPLEADO_D_FECHNAC` date DEFAULT NULL,
+  `EMPLEADO_N_ACTIVO` int(11) DEFAULT NULL,
+  PRIMARY KEY (`EMPLEADO_N_CODIGO`),
   KEY `FK_REL_EMPLEADO_PERFIL` (`PERFIL_N_CODIGO`),
   KEY `FK_REL_EMPLEADO_USUARIO` (`USUARIO_N_CODIGO`),
   KEY `FK_REL_EMPRESA_EMPLEADO` (`EMPRESA_N_CODIGO`),
-  CONSTRAINT `FK_REL_EMPLEADO_PERFIL` FOREIGN KEY (`PERFIL_N_CODIGO`) REFERENCES `t_seg_perfil` (`PERFIL_N_CODIGO`),
-  CONSTRAINT `FK_REL_EMPLEADO_USUARIO` FOREIGN KEY (`USUARIO_N_CODIGO`) REFERENCES `t_seg_usuario` (`USUARIO_N_CODIGO`),
-  CONSTRAINT `FK_REL_EMPRESA_EMPLEADO` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `t_emp_empresa` (`EMPRESA_N_CODIGO`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_REL_EMPLEADO_PERFIL` FOREIGN KEY (`PERFIL_N_CODIGO`) REFERENCES `T_SEG_PERFIL` (`PERFIL_N_CODIGO`),
+  CONSTRAINT `FK_REL_EMPLEADO_USUARIO` FOREIGN KEY (`USUARIO_N_CODIGO`) REFERENCES `T_SEG_USUARIO` (`USUARIO_N_CODIGO`),
+  CONSTRAINT `FK_REL_EMPRESA_EMPLEADO` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `T_EMP_EMPRESA` (`EMPRESA_N_CODIGO`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_emp_empleado`
+-- Dumping data for table `T_EMP_EMPLEADO`
 --
 
-
-/*!40000 ALTER TABLE `t_emp_empleado` DISABLE KEYS */;
-LOCK TABLES `t_emp_empleado` WRITE;
-INSERT INTO `t_emp_empleado` VALUES (1,1,1,2,'Jorge','Cueva','44128463','Mi casa','4823262','945190242','jmoics@gmail.com','Lima','Lima','1987-12-01',1),(2,3,16,2,'jorge','cueva samames','44128463','mi house','4563423','987755443','','lima','lima',NULL,1);
+LOCK TABLES `T_EMP_EMPLEADO` WRITE;
+/*!40000 ALTER TABLE `T_EMP_EMPLEADO` DISABLE KEYS */;
+INSERT INTO `T_EMP_EMPLEADO` VALUES (1,1,1,2,'Jorge','Cueva','44128463','Mi casa','4823262','945190242','jmoics@gmail.com','Lima','Lima','1987-12-01',1),(2,3,16,2,'jorge','cueva samames','44128463','mi house','4563423','987755443','','lima','lima',NULL,1);
+/*!40000 ALTER TABLE `T_EMP_EMPLEADO` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_emp_empleado` ENABLE KEYS */;
 
 --
--- Table structure for table `t_emp_empresa`
+-- Table structure for table `T_EMP_EMPRESA`
 --
 
-DROP TABLE IF EXISTS `t_emp_empresa`;
-CREATE TABLE `t_emp_empresa` (
-  `EMPRESA_N_CODIGO` int(11) NOT NULL auto_increment,
-  `EMPRESA_V_RAZONSOCIAL` varchar(200) default NULL,
-  `EMPRESA_N_ACTIVO` int(11) default NULL,
-  `EMPRESA_V_RUC` varchar(11) default NULL,
-  `EMPRESA_V_DOMINIO` varchar(10) default NULL,
-  PRIMARY KEY  (`EMPRESA_N_CODIGO`),
+DROP TABLE IF EXISTS `T_EMP_EMPRESA`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_EMP_EMPRESA` (
+  `EMPRESA_N_CODIGO` int(11) NOT NULL AUTO_INCREMENT,
+  `EMPRESA_V_RAZONSOCIAL` varchar(200) DEFAULT NULL,
+  `EMPRESA_N_ACTIVO` int(11) DEFAULT NULL,
+  `EMPRESA_V_RUC` varchar(11) DEFAULT NULL,
+  `EMPRESA_V_DOMINIO` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`EMPRESA_N_CODIGO`),
   UNIQUE KEY `EMPRESA_V_DOMINIO_UNIQUE` (`EMPRESA_V_DOMINIO`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_emp_empresa`
+-- Dumping data for table `T_EMP_EMPRESA`
 --
 
-
-/*!40000 ALTER TABLE `t_emp_empresa` DISABLE KEYS */;
-LOCK TABLES `t_emp_empresa` WRITE;
-INSERT INTO `t_emp_empresa` VALUES (1,'JX_Market',1,'44563458976','jxmarket'),(2,'Metro',1,'35346576899','metro'),(3,'moxter.net',1,'56452345346','moxternet');
+LOCK TABLES `T_EMP_EMPRESA` WRITE;
+/*!40000 ALTER TABLE `T_EMP_EMPRESA` DISABLE KEYS */;
+INSERT INTO `T_EMP_EMPRESA` VALUES (1,'JX_Market',1,'44563458976','jxmarket'),(2,'Metro',1,'35346576899','metro'),(3,'moxter.net',1,'56452345346','moxternet');
+/*!40000 ALTER TABLE `T_EMP_EMPRESA` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_emp_empresa` ENABLE KEYS */;
 
 --
--- Table structure for table `t_neg_articulo`
+-- Table structure for table `T_NEG_ARTICULO`
 --
 
-DROP TABLE IF EXISTS `t_neg_articulo`;
-CREATE TABLE `t_neg_articulo` (
-  `ARTICULO_N_CODIGO` int(11) NOT NULL auto_increment,
+DROP TABLE IF EXISTS `T_NEG_ARTICULO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_NEG_ARTICULO` (
+  `ARTICULO_N_CODIGO` int(11) NOT NULL AUTO_INCREMENT,
   `EMPRESA_N_CODIGO` int(11) NOT NULL,
   `CATEGORIA_N_CODIGO` int(11) NOT NULL,
-  `ARTICULO_V_NOMBRE` varchar(70) default NULL,
-  `ARTICULO_V_MARCA` varchar(30) default NULL,
-  `ARTICULO_V_DESCRIPCION` varchar(4000) default NULL,
-  `ARTICULO_N_PRECIO` float(8,2) default NULL,
-  `ARTICULO_N_STOCK` int(11) default '0',
-  `ARTICULO_N_ACTIVO` int(11) default NULL,
-  `ARTICULO_V_IMAGEN` varchar(45) default NULL,
-  PRIMARY KEY  (`ARTICULO_N_CODIGO`),
+  `ARTICULO_V_NOMBRE` varchar(70) DEFAULT NULL,
+  `ARTICULO_V_MARCA` varchar(30) DEFAULT NULL,
+  `ARTICULO_V_DESCRIPCION` varchar(4000) DEFAULT NULL,
+  `ARTICULO_N_PRECIO` float(8,2) DEFAULT NULL,
+  `ARTICULO_N_STOCK` int(11) DEFAULT '0',
+  `ARTICULO_N_ACTIVO` int(11) DEFAULT NULL,
+  `ARTICULO_V_IMAGEN` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`ARTICULO_N_CODIGO`),
   KEY `FK_REL_ARTICULO_TIPO` (`CATEGORIA_N_CODIGO`),
   KEY `FK_REL_EMPRESA_ARTICULO` (`EMPRESA_N_CODIGO`),
-  CONSTRAINT `FK_REL_ARTICULO_TIPO` FOREIGN KEY (`CATEGORIA_N_CODIGO`) REFERENCES `t_neg_categoria` (`CATEGORIA_N_CODIGO`),
-  CONSTRAINT `FK_REL_EMPRESA_ARTICULO` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `t_emp_empresa` (`EMPRESA_N_CODIGO`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_REL_ARTICULO_TIPO` FOREIGN KEY (`CATEGORIA_N_CODIGO`) REFERENCES `T_NEG_CATEGORIA` (`CATEGORIA_N_CODIGO`),
+  CONSTRAINT `FK_REL_EMPRESA_ARTICULO` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `T_EMP_EMPRESA` (`EMPRESA_N_CODIGO`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_neg_articulo`
+-- Dumping data for table `T_NEG_ARTICULO`
 --
 
-
-/*!40000 ALTER TABLE `t_neg_articulo` DISABLE KEYS */;
-LOCK TABLES `t_neg_articulo` WRITE;
-INSERT INTO `t_neg_articulo` VALUES (1,2,1,'Ring Action','Capcom','juego de video de accion basado en la trilogia del senior de los anillos',24.50,20,1,NULL),(2,2,1,'Final Fantasy X','Sony','Juego de ROL, para consola Play Station 2',25.90,NULL,1,NULL),(11,2,3,'PS2','Sony','play station 2 color azul con un mando y una memory card',550.00,NULL,1,'2.1.PS2.22589'),(12,2,3,'PS2','Sony','play station 2 azul y negro mas un mando',540.00,NULL,1,'2.1.PS2.938193'),(13,3,1,'Final fantasy x-2','Eydos','Juego rpg final fantasy x-2 original en caja',35.00,NULL,1,'3.1.Final fantasy x-2.950467'),(14,3,1,'Final Fantasy XII','Eydos','Juego Final Fantasy XII original algo rayadito XD',40.00,NULL,1,'3.1.Final Fantasy XII.180339'),(15,3,3,'PS2','Sony','consola ps2',500.00,NULL,1,'3.3.PS2.918564');
+LOCK TABLES `T_NEG_ARTICULO` WRITE;
+/*!40000 ALTER TABLE `T_NEG_ARTICULO` DISABLE KEYS */;
+INSERT INTO `T_NEG_ARTICULO` VALUES (1,2,1,'Ring Action','Capcom','juego de video de accion basado en la trilogia del senior de los anillos',24.50,20,1,NULL),(2,2,1,'Final Fantasy X','Sony','Juego de ROL, para consola Play Station 2',25.90,NULL,1,NULL),(11,2,3,'PS2','Sony','play station 2 color azul con un mando y una memory card',550.00,NULL,1,'2.1.PS2.22589'),(12,2,3,'PS2','Sony','play station 2 azul y negro mas un mando',540.00,NULL,1,'2.1.PS2.938193'),(13,3,1,'Final fantasy x-2','Eydos','Juego rpg final fantasy x-2 original en caja',35.00,NULL,1,'3.1.Final fantasy x-2.950467'),(14,3,1,'Final Fantasy XII','Eydos','Juego Final Fantasy XII original algo rayadito XD',40.00,NULL,1,'3.1.Final Fantasy XII.180339'),(15,3,3,'PS2','Sony','consola ps2',500.00,NULL,1,'3.3.PS2.918564');
+/*!40000 ALTER TABLE `T_NEG_ARTICULO` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_neg_articulo` ENABLE KEYS */;
 
 --
--- Table structure for table `t_neg_categoria`
+-- Table structure for table `T_NEG_CATEGORIA`
 --
 
-DROP TABLE IF EXISTS `t_neg_categoria`;
-CREATE TABLE `t_neg_categoria` (
-  `CATEGORIA_N_CODIGO` int(11) NOT NULL auto_increment,
+DROP TABLE IF EXISTS `T_NEG_CATEGORIA`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_NEG_CATEGORIA` (
+  `CATEGORIA_N_CODIGO` int(11) NOT NULL AUTO_INCREMENT,
   `EMPRESA_N_CODIGO` int(11) NOT NULL,
-  `CATEGORIA_V_NOMBRE` varchar(60) default NULL,
-  PRIMARY KEY  (`CATEGORIA_N_CODIGO`),
+  `CATEGORIA_V_NOMBRE` varchar(60) DEFAULT NULL,
+  PRIMARY KEY (`CATEGORIA_N_CODIGO`),
   KEY `FK_REL_EMPRESA_CATEGORIA` (`EMPRESA_N_CODIGO`),
-  CONSTRAINT `FK_REL_EMPRESA_CATEGORIA` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `t_emp_empresa` (`EMPRESA_N_CODIGO`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_REL_EMPRESA_CATEGORIA` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `T_EMP_EMPRESA` (`EMPRESA_N_CODIGO`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_neg_categoria`
+-- Dumping data for table `T_NEG_CATEGORIA`
 --
 
-
-/*!40000 ALTER TABLE `t_neg_categoria` DISABLE KEYS */;
-LOCK TABLES `t_neg_categoria` WRITE;
-INSERT INTO `t_neg_categoria` VALUES (1,1,'Juegos'),(2,1,'Libros'),(3,1,'Consola');
+LOCK TABLES `T_NEG_CATEGORIA` WRITE;
+/*!40000 ALTER TABLE `T_NEG_CATEGORIA` DISABLE KEYS */;
+INSERT INTO `T_NEG_CATEGORIA` VALUES (1,1,'Juegos'),(2,1,'Libros'),(3,1,'Consola');
+/*!40000 ALTER TABLE `T_NEG_CATEGORIA` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_neg_categoria` ENABLE KEYS */;
 
 --
--- Table structure for table `t_neg_cliente`
+-- Table structure for table `T_NEG_CLIENTE`
 --
 
-DROP TABLE IF EXISTS `t_neg_cliente`;
-CREATE TABLE `t_neg_cliente` (
-  `CLIENTE_N_CODIGO` int(11) NOT NULL auto_increment,
+DROP TABLE IF EXISTS `T_NEG_CLIENTE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_NEG_CLIENTE` (
+  `CLIENTE_N_CODIGO` int(11) NOT NULL AUTO_INCREMENT,
   `EMPRESA_N_CODIGO` int(11) NOT NULL,
   `USUARIO_N_CODIGO` int(11) NOT NULL,
-  `CLIENTE_V_NOMBRE` varchar(60) default NULL,
-  `CLIENTE_V_APELLIDO` varchar(60) default NULL,
-  `CLIENTE_D_FECHANAC` date default NULL,
-  `CLIENTE_N_DNI` int(11) default NULL,
-  `CLIENTE_V_DIRECCION` varchar(80) default NULL,
-  `CLIENTE_V_TELEFONO` varchar(10) default NULL,
-  `CLIENTE_V_CELULAR` varchar(10) default NULL,
-  `CLIENTE_V_EMAIL` varchar(30) default NULL,
-  `CLIENTE_V_CIUDAD` varchar(20) default NULL,
-  `CLIENTE_V_REGION` varchar(20) default NULL,
-  `CLIENTE_V_CODPOSTAL` smallint(6) default NULL,
-  `CLIENTE_N_ACTIVO` tinyint(1) default NULL,
-  PRIMARY KEY  (`CLIENTE_N_CODIGO`),
+  `CLIENTE_V_NOMBRE` varchar(60) DEFAULT NULL,
+  `CLIENTE_V_APELLIDO` varchar(60) DEFAULT NULL,
+  `CLIENTE_D_FECHANAC` date DEFAULT NULL,
+  `CLIENTE_N_DNI` int(11) DEFAULT NULL,
+  `CLIENTE_V_DIRECCION` varchar(80) DEFAULT NULL,
+  `CLIENTE_V_TELEFONO` varchar(10) DEFAULT NULL,
+  `CLIENTE_V_CELULAR` varchar(10) DEFAULT NULL,
+  `CLIENTE_V_EMAIL` varchar(30) DEFAULT NULL,
+  `CLIENTE_V_CIUDAD` varchar(20) DEFAULT NULL,
+  `CLIENTE_V_REGION` varchar(20) DEFAULT NULL,
+  `CLIENTE_V_CODPOSTAL` smallint(6) DEFAULT NULL,
+  `CLIENTE_N_ACTIVO` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`CLIENTE_N_CODIGO`),
   KEY `FK_REL_CLIENTE_USUARIO` (`USUARIO_N_CODIGO`),
   KEY `FK_REL_EMPRESA_CLIENTE` (`EMPRESA_N_CODIGO`),
-  CONSTRAINT `FK_REL_CLIENTE_USUARIO` FOREIGN KEY (`USUARIO_N_CODIGO`) REFERENCES `t_seg_usuario` (`USUARIO_N_CODIGO`),
-  CONSTRAINT `FK_REL_EMPRESA_CLIENTE` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `t_emp_empresa` (`EMPRESA_N_CODIGO`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_REL_CLIENTE_USUARIO` FOREIGN KEY (`USUARIO_N_CODIGO`) REFERENCES `T_SEG_USUARIO` (`USUARIO_N_CODIGO`),
+  CONSTRAINT `FK_REL_EMPRESA_CLIENTE` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `T_EMP_EMPRESA` (`EMPRESA_N_CODIGO`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_neg_cliente`
+-- Dumping data for table `T_NEG_CLIENTE`
 --
 
-
-/*!40000 ALTER TABLE `t_neg_cliente` DISABLE KEYS */;
-LOCK TABLES `t_neg_cliente` WRITE;
-INSERT INTO `t_neg_cliente` VALUES (1,1,20,'Jorge','Cueva Samames','1987-02-12',45645645,'mi casa','4564564','987987987','jmoics@gmail.com','Lima',NULL,NULL,NULL),(2,1,21,'Jackeline','Rios Ramos','1989-08-20',45645645,'su casa','4564564','987987987','jacky@gmail.com','Lima','Lima',NULL,1);
+LOCK TABLES `T_NEG_CLIENTE` WRITE;
+/*!40000 ALTER TABLE `T_NEG_CLIENTE` DISABLE KEYS */;
+INSERT INTO `T_NEG_CLIENTE` VALUES (1,1,20,'Jorge','Cueva Samames','1987-02-12',45645645,'mi casa','4564564','987987987','jmoics@gmail.com','Lima',NULL,NULL,NULL),(2,1,21,'Jackeline','Rios Ramos','1989-08-20',45645645,'su casa','4564564','987987987','jacky@gmail.com','Lima','Lima',NULL,1);
+/*!40000 ALTER TABLE `T_NEG_CLIENTE` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_neg_cliente` ENABLE KEYS */;
 
 --
--- Table structure for table `t_neg_pedido`
+-- Table structure for table `T_NEG_PEDIDO`
 --
 
-DROP TABLE IF EXISTS `t_neg_pedido`;
-CREATE TABLE `t_neg_pedido` (
-  `PEDIDO_N_CODIGO` int(11) NOT NULL auto_increment,
+DROP TABLE IF EXISTS `T_NEG_PEDIDO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_NEG_PEDIDO` (
+  `PEDIDO_N_CODIGO` int(11) NOT NULL AUTO_INCREMENT,
   `EMPRESA_N_CODIGO` int(11) NOT NULL,
   `CLIENTE_N_CODIGO` int(11) NOT NULL,
   `TIPOPED_N_CODIGO` int(11) NOT NULL,
-  `PEDIDO_D_FECHA` date default NULL,
-  `PEDIDO_N_IGV` int(11) default NULL,
-  `PEDIDO_N_TOTAL` float(8,2) default NULL,
-  PRIMARY KEY  (`PEDIDO_N_CODIGO`),
+  `PEDIDO_D_FECHA` date DEFAULT NULL,
+  `PEDIDO_N_IGV` int(11) DEFAULT NULL,
+  `PEDIDO_N_TOTAL` float(8,2) DEFAULT NULL,
+  PRIMARY KEY (`PEDIDO_N_CODIGO`),
   KEY `FK_REL_EMPRESA_PEDIDO` (`EMPRESA_N_CODIGO`),
   KEY `FK_REL_PEDIDO_CLIENTE` (`CLIENTE_N_CODIGO`),
   KEY `FK_REL_PEDIDO_TIPO` (`TIPOPED_N_CODIGO`),
-  CONSTRAINT `FK_REL_EMPRESA_PEDIDO` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `t_emp_empresa` (`EMPRESA_N_CODIGO`),
-  CONSTRAINT `FK_REL_PEDIDO_CLIENTE` FOREIGN KEY (`CLIENTE_N_CODIGO`) REFERENCES `t_neg_cliente` (`CLIENTE_N_CODIGO`),
-  CONSTRAINT `FK_REL_PEDIDO_TIPO` FOREIGN KEY (`TIPOPED_N_CODIGO`) REFERENCES `t_neg_pedido_tipo` (`TIPOPED_N_CODIGO`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_REL_EMPRESA_PEDIDO` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `T_EMP_EMPRESA` (`EMPRESA_N_CODIGO`),
+  CONSTRAINT `FK_REL_PEDIDO_CLIENTE` FOREIGN KEY (`CLIENTE_N_CODIGO`) REFERENCES `T_NEG_CLIENTE` (`CLIENTE_N_CODIGO`),
+  CONSTRAINT `FK_REL_PEDIDO_TIPO` FOREIGN KEY (`TIPOPED_N_CODIGO`) REFERENCES `T_NEG_PEDIDO_TIPO` (`TIPOPED_N_CODIGO`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_neg_pedido`
+-- Dumping data for table `T_NEG_PEDIDO`
 --
 
-
-/*!40000 ALTER TABLE `t_neg_pedido` DISABLE KEYS */;
-LOCK TABLES `t_neg_pedido` WRITE;
-INSERT INTO `t_neg_pedido` VALUES (26,1,1,1,'2011-01-05',0,6300.00),(27,2,1,1,'2011-01-05',0,4900.00),(28,3,1,1,'2011-01-05',0,1400.00);
+LOCK TABLES `T_NEG_PEDIDO` WRITE;
+/*!40000 ALTER TABLE `T_NEG_PEDIDO` DISABLE KEYS */;
+INSERT INTO `T_NEG_PEDIDO` VALUES (26,1,1,1,'2011-01-05',0,6300.00),(27,2,1,1,'2011-01-05',0,4900.00),(28,3,1,1,'2011-01-05',0,1400.00);
+/*!40000 ALTER TABLE `T_NEG_PEDIDO` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_neg_pedido` ENABLE KEYS */;
 
 --
--- Table structure for table `t_neg_pedido2pedido`
+-- Table structure for table `T_NEG_PEDIDO2PEDIDO`
 --
 
-DROP TABLE IF EXISTS `t_neg_pedido2pedido`;
-CREATE TABLE `t_neg_pedido2pedido` (
+DROP TABLE IF EXISTS `T_NEG_PEDIDO2PEDIDO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_NEG_PEDIDO2PEDIDO` (
   `PEDIDO_N_CODIGO_FROM` int(11) NOT NULL,
   `PEDIDO_N_CODIGO_TO` int(11) NOT NULL,
-  PRIMARY KEY  (`PEDIDO_N_CODIGO_FROM`,`PEDIDO_N_CODIGO_TO`),
+  PRIMARY KEY (`PEDIDO_N_CODIGO_FROM`,`PEDIDO_N_CODIGO_TO`),
   KEY `fk_T_NEG_PEDIDO2PEDIDO_1` (`PEDIDO_N_CODIGO_FROM`),
   KEY `fk_T_NEG_PEDIDO2PEDIDO_2` (`PEDIDO_N_CODIGO_TO`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_neg_pedido2pedido`
+-- Dumping data for table `T_NEG_PEDIDO2PEDIDO`
 --
 
-
-/*!40000 ALTER TABLE `t_neg_pedido2pedido` DISABLE KEYS */;
-LOCK TABLES `t_neg_pedido2pedido` WRITE;
-INSERT INTO `t_neg_pedido2pedido` VALUES (26,27),(26,28);
+LOCK TABLES `T_NEG_PEDIDO2PEDIDO` WRITE;
+/*!40000 ALTER TABLE `T_NEG_PEDIDO2PEDIDO` DISABLE KEYS */;
+INSERT INTO `T_NEG_PEDIDO2PEDIDO` VALUES (26,27),(26,28);
+/*!40000 ALTER TABLE `T_NEG_PEDIDO2PEDIDO` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_neg_pedido2pedido` ENABLE KEYS */;
 
 --
--- Table structure for table `t_neg_pedido_det`
+-- Table structure for table `T_NEG_PEDIDO_DET`
 --
 
-DROP TABLE IF EXISTS `t_neg_pedido_det`;
-CREATE TABLE `t_neg_pedido_det` (
+DROP TABLE IF EXISTS `T_NEG_PEDIDO_DET`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_NEG_PEDIDO_DET` (
   `PEDIDO_N_CODIGO` int(11) NOT NULL,
   `ARTICULO_N_CODIGO` int(11) NOT NULL,
-  `DETPED_N_CANTIDAD` int(11) default NULL,
-  PRIMARY KEY  (`PEDIDO_N_CODIGO`,`ARTICULO_N_CODIGO`),
+  `DETPED_N_CANTIDAD` int(11) DEFAULT NULL,
+  PRIMARY KEY (`PEDIDO_N_CODIGO`,`ARTICULO_N_CODIGO`),
   KEY `FK_T_NEG_PEDIDO_DET2` (`ARTICULO_N_CODIGO`),
-  CONSTRAINT `FK_T_NEG_PEDIDO_DET` FOREIGN KEY (`PEDIDO_N_CODIGO`) REFERENCES `t_neg_pedido` (`PEDIDO_N_CODIGO`),
-  CONSTRAINT `FK_T_NEG_PEDIDO_DET2` FOREIGN KEY (`ARTICULO_N_CODIGO`) REFERENCES `t_neg_articulo` (`ARTICULO_N_CODIGO`)
+  CONSTRAINT `FK_T_NEG_PEDIDO_DET` FOREIGN KEY (`PEDIDO_N_CODIGO`) REFERENCES `T_NEG_PEDIDO` (`PEDIDO_N_CODIGO`),
+  CONSTRAINT `FK_T_NEG_PEDIDO_DET2` FOREIGN KEY (`ARTICULO_N_CODIGO`) REFERENCES `T_NEG_ARTICULO` (`ARTICULO_N_CODIGO`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_neg_pedido_det`
+-- Dumping data for table `T_NEG_PEDIDO_DET`
 --
 
-
-/*!40000 ALTER TABLE `t_neg_pedido_det` DISABLE KEYS */;
-LOCK TABLES `t_neg_pedido_det` WRITE;
-INSERT INTO `t_neg_pedido_det` VALUES (27,11,4),(27,12,5),(28,14,35);
+LOCK TABLES `T_NEG_PEDIDO_DET` WRITE;
+/*!40000 ALTER TABLE `T_NEG_PEDIDO_DET` DISABLE KEYS */;
+INSERT INTO `T_NEG_PEDIDO_DET` VALUES (27,11,4),(27,12,5),(28,14,35);
+/*!40000 ALTER TABLE `T_NEG_PEDIDO_DET` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_neg_pedido_det` ENABLE KEYS */;
 
 --
--- Table structure for table `t_neg_pedido_tipo`
+-- Table structure for table `T_NEG_PEDIDO_TIPO`
 --
 
-DROP TABLE IF EXISTS `t_neg_pedido_tipo`;
-CREATE TABLE `t_neg_pedido_tipo` (
-  `TIPOPED_N_CODIGO` int(11) NOT NULL auto_increment,
-  `TIPOPED_V_DESCRIPCION` varchar(50) default NULL,
-  PRIMARY KEY  (`TIPOPED_N_CODIGO`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `T_NEG_PEDIDO_TIPO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_NEG_PEDIDO_TIPO` (
+  `TIPOPED_N_CODIGO` int(11) NOT NULL AUTO_INCREMENT,
+  `TIPOPED_V_DESCRIPCION` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`TIPOPED_N_CODIGO`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_neg_pedido_tipo`
+-- Dumping data for table `T_NEG_PEDIDO_TIPO`
 --
 
-
-/*!40000 ALTER TABLE `t_neg_pedido_tipo` DISABLE KEYS */;
-LOCK TABLES `t_neg_pedido_tipo` WRITE;
-INSERT INTO `t_neg_pedido_tipo` VALUES (1,'Entrega a domicilio'),(2,'Recoger el producto');
+LOCK TABLES `T_NEG_PEDIDO_TIPO` WRITE;
+/*!40000 ALTER TABLE `T_NEG_PEDIDO_TIPO` DISABLE KEYS */;
+INSERT INTO `T_NEG_PEDIDO_TIPO` VALUES (1,'Entrega a domicilio'),(2,'Recoger el producto');
+/*!40000 ALTER TABLE `T_NEG_PEDIDO_TIPO` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_neg_pedido_tipo` ENABLE KEYS */;
 
 --
--- Table structure for table `t_neg_solicitud`
+-- Table structure for table `T_NET_SOLICITUD`
 --
 
-DROP TABLE IF EXISTS `t_neg_solicitud`;
-CREATE TABLE `t_neg_solicitud` (
+DROP TABLE IF EXISTS `T_NET_SOLICITUD`;
+CREATE TABLE `T_NET_SOLICITUD` (
   `SOLICITUD_N_CODIGO` int(11) unsigned NOT NULL auto_increment,
   `SOLICITUD_V_RAZON` varchar(100) default NULL,
   `SOLICITUD_N_RUC` int(11) default NULL,
   `SOLICITUD_D_FECHA` date default NULL,
   `SOLICITUD_N_ESTADO` int(1) unsigned default NULL,
   `SOLICITUD_V_EMAIL` varchar(50) default NULL,
-  PRIMARY KEY  USING BTREE (`SOLICITUD_N_CODIGO`),
-  KEY `FK_REL_EMPRESA_VENTA` USING BTREE (`SOLICITUD_V_RAZON`),
-  KEY `FK_REL_VENTA_PEDIDO` USING BTREE (`SOLICITUD_D_FECHA`),
-  KEY `FK_REL_VENTA_TIPO` USING BTREE (`SOLICITUD_N_RUC`)
+  PRIMARY KEY  USING BTREE (`SOLICITUD_N_CODIGO`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `t_neg_solicitud`
+-- Dumping data for table `T_NET_SOLICITUD`
+--
+--
+-- Table structure for table `T_NEG_VENTA_TIPO`
 --
 
-
-/*!40000 ALTER TABLE `t_neg_solicitud` DISABLE KEYS */;
-LOCK TABLES `t_neg_solicitud` WRITE;
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_neg_solicitud` ENABLE KEYS */;
-
---
--- Table structure for table `t_neg_venta_tipo`
---
-
-DROP TABLE IF EXISTS `t_neg_venta_tipo`;
-CREATE TABLE `t_neg_venta_tipo` (
+DROP TABLE IF EXISTS `T_NEG_VENTA_TIPO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_NEG_VENTA_TIPO` (
   `TIPOVEN_N_CODIGO` int(11) NOT NULL,
   `EMPRESA_N_CODIGO` int(11) NOT NULL,
-  `TIPOVEN_V_DESCRIPCION` varchar(50) default NULL,
-  PRIMARY KEY  (`TIPOVEN_N_CODIGO`),
+  `TIPOVEN_V_DESCRIPCION` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`TIPOVEN_N_CODIGO`),
   KEY `FK_REL_EMPRESA_TIPOVENTA` (`EMPRESA_N_CODIGO`),
-  CONSTRAINT `FK_REL_EMPRESA_TIPOVENTA` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `t_emp_empresa` (`EMPRESA_N_CODIGO`)
+  CONSTRAINT `FK_REL_EMPRESA_TIPOVENTA` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `T_EMP_EMPRESA` (`EMPRESA_N_CODIGO`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_neg_venta_tipo`
+-- Dumping data for table `T_NEG_VENTA_TIPO`
 --
 
-
-/*!40000 ALTER TABLE `t_neg_venta_tipo` DISABLE KEYS */;
-LOCK TABLES `t_neg_venta_tipo` WRITE;
+LOCK TABLES `T_NEG_VENTA_TIPO` WRITE;
+/*!40000 ALTER TABLE `T_NEG_VENTA_TIPO` DISABLE KEYS */;
+/*!40000 ALTER TABLE `T_NEG_VENTA_TIPO` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_neg_venta_tipo` ENABLE KEYS */;
 
 --
--- Table structure for table `t_seg_mod_det`
+-- Table structure for table `T_SEG_MODULO`
 --
 
-DROP TABLE IF EXISTS `t_seg_mod_det`;
-CREATE TABLE `t_seg_mod_det` (
+DROP TABLE IF EXISTS `T_SEG_MODULO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_SEG_MODULO` (
+  `MODULO_N_CODIGO` int(11) NOT NULL AUTO_INCREMENT,
+  `EMPRESA_N_CODIGO` int(11) NOT NULL,
+  `MODULO_V_DESC` varchar(50) DEFAULT NULL,
+  `MODULO_V_RECURSO` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`MODULO_N_CODIGO`),
+  KEY `FK_REL_EMPRESA_MODULO` (`EMPRESA_N_CODIGO`),
+  CONSTRAINT `FK_REL_EMPRESA_MODULO` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `T_EMP_EMPRESA` (`EMPRESA_N_CODIGO`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `T_SEG_MODULO`
+--
+
+LOCK TABLES `T_SEG_MODULO` WRITE;
+/*!40000 ALTER TABLE `T_SEG_MODULO` DISABLE KEYS */;
+INSERT INTO `T_SEG_MODULO` VALUES (1,2,'Modulo para administracion de empleados','MODULO_ADM_EMPLEADO'),(3,2,'Modulo para productos','MODULO_PRODUCTOS'),(4,2,'Modulo para ingreso de productos','MODULO_PROD_INGRESO'),(5,2,'Modulo para consulta de productos','MODULO_PROD_CONSULTA'),(6,2,'Modulo para edicion de productos','MODULO_PROD_EDICION'),(7,2,'Modulo para administracion','MODULO_ADMINISTRACION'),(8,2,'Modulo para administracion de perfiles','MODULO_ADM_PERFIL'),(9,2,'modulo para administracion de areas','MODULO_ADM_AREA'),(10,2,'Modulo para administracion de modulos','MODULO_ADM_MODULO'),(11,2,'Modulo para asignacion de modulos a perfiles','MODULO_ADM_PERFILMODULO'),(12,2,'Modulo para administrar la contrasena','MODULO_CHANGE_PASS');
+/*!40000 ALTER TABLE `T_SEG_MODULO` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `T_SEG_MOD_DET`
+--
+
+DROP TABLE IF EXISTS `T_SEG_MOD_DET`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_SEG_MOD_DET` (
   `PERFIL_N_CODIGO` int(11) NOT NULL,
   `MODULO_N_CODIGO` int(11) NOT NULL,
-  `MODDET_N_HABILITADO` int(11) default NULL,
-  PRIMARY KEY  (`PERFIL_N_CODIGO`,`MODULO_N_CODIGO`),
+  `MODDET_N_HABILITADO` int(11) DEFAULT NULL,
+  PRIMARY KEY (`PERFIL_N_CODIGO`,`MODULO_N_CODIGO`),
   KEY `MODULO_N_CODIGO` (`MODULO_N_CODIGO`),
   KEY `FK_T_SEG_MOD_DET_1` (`MODULO_N_CODIGO`),
-  CONSTRAINT `FK_T_SEG_MOD_DET` FOREIGN KEY (`PERFIL_N_CODIGO`) REFERENCES `t_seg_perfil` (`PERFIL_N_CODIGO`),
-  CONSTRAINT `FK_T_SEG_MOD_DET_1` FOREIGN KEY (`MODULO_N_CODIGO`) REFERENCES `t_seg_modulo` (`MODULO_N_CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_T_SEG_MOD_DET` FOREIGN KEY (`PERFIL_N_CODIGO`) REFERENCES `T_SEG_PERFIL` (`PERFIL_N_CODIGO`),
+  CONSTRAINT `FK_T_SEG_MOD_DET_1` FOREIGN KEY (`MODULO_N_CODIGO`) REFERENCES `T_SEG_MODULO` (`MODULO_N_CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_seg_mod_det`
+-- Dumping data for table `T_SEG_MOD_DET`
 --
 
-
-/*!40000 ALTER TABLE `t_seg_mod_det` DISABLE KEYS */;
-LOCK TABLES `t_seg_mod_det` WRITE;
-INSERT INTO `t_seg_mod_det` VALUES (1,1,NULL),(1,3,NULL),(1,4,NULL),(1,5,NULL),(1,6,NULL),(1,7,NULL),(1,8,NULL),(1,9,NULL),(1,10,NULL),(1,11,NULL),(1,12,NULL),(2,3,NULL),(2,5,NULL),(3,3,NULL),(3,4,NULL),(3,5,NULL),(3,6,NULL),(3,12,NULL),(4,1,NULL),(4,7,NULL),(4,8,NULL),(4,12,NULL),(5,3,NULL),(5,5,NULL),(5,6,NULL),(5,7,NULL),(5,8,NULL),(5,11,NULL),(5,12,NULL);
+LOCK TABLES `T_SEG_MOD_DET` WRITE;
+/*!40000 ALTER TABLE `T_SEG_MOD_DET` DISABLE KEYS */;
+INSERT INTO `T_SEG_MOD_DET` VALUES (1,1,NULL),(1,3,NULL),(1,4,NULL),(1,5,NULL),(1,6,NULL),(1,7,NULL),(1,8,NULL),(1,9,NULL),(1,10,NULL),(1,11,NULL),(1,12,NULL),(2,3,NULL),(2,5,NULL),(3,3,NULL),(3,4,NULL),(3,5,NULL),(3,6,NULL),(3,12,NULL),(4,1,NULL),(4,7,NULL),(4,8,NULL),(4,12,NULL),(5,3,NULL),(5,5,NULL),(5,6,NULL),(5,7,NULL),(5,8,NULL),(5,11,NULL),(5,12,NULL);
+/*!40000 ALTER TABLE `T_SEG_MOD_DET` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_seg_mod_det` ENABLE KEYS */;
 
 --
--- Table structure for table `t_seg_modulo`
+-- Table structure for table `T_SEG_PERFIL`
 --
 
-DROP TABLE IF EXISTS `t_seg_modulo`;
-CREATE TABLE `t_seg_modulo` (
-  `MODULO_N_CODIGO` int(11) NOT NULL auto_increment,
-  `EMPRESA_N_CODIGO` int(11) NOT NULL,
-  `MODULO_V_DESC` varchar(50) default NULL,
-  `MODULO_V_RECURSO` varchar(45) default NULL,
-  PRIMARY KEY  (`MODULO_N_CODIGO`),
-  KEY `FK_REL_EMPRESA_MODULO` (`EMPRESA_N_CODIGO`),
-  CONSTRAINT `FK_REL_EMPRESA_MODULO` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `t_emp_empresa` (`EMPRESA_N_CODIGO`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `t_seg_modulo`
---
-
-
-/*!40000 ALTER TABLE `t_seg_modulo` DISABLE KEYS */;
-LOCK TABLES `t_seg_modulo` WRITE;
-INSERT INTO `t_seg_modulo` VALUES (1,2,'Modulo para administracion de empleados','MODULO_ADM_EMPLEADO'),(3,2,'Modulo para productos','MODULO_PRODUCTOS'),(4,2,'Modulo para ingreso de productos','MODULO_PROD_INGRESO'),(5,2,'Modulo para consulta de productos','MODULO_PROD_CONSULTA'),(6,2,'Modulo para edicion de productos','MODULO_PROD_EDICION'),(7,2,'Modulo para administracion','MODULO_ADMINISTRACION'),(8,2,'Modulo para administracion de perfiles','MODULO_ADM_PERFIL'),(9,2,'modulo para administracion de areas','MODULO_ADM_AREA'),(10,2,'Modulo para administracion de modulos','MODULO_ADM_MODULO'),(11,2,'Modulo para asignacion de modulos a perfiles','MODULO_ADM_PERFILMODULO'),(12,2,'Modulo para administrar la contrasena','MODULO_CHANGE_PASS');
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_seg_modulo` ENABLE KEYS */;
-
---
--- Table structure for table `t_seg_perfil`
---
-
-DROP TABLE IF EXISTS `t_seg_perfil`;
-CREATE TABLE `t_seg_perfil` (
-  `PERFIL_N_CODIGO` int(11) NOT NULL auto_increment,
+DROP TABLE IF EXISTS `T_SEG_PERFIL`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_SEG_PERFIL` (
+  `PERFIL_N_CODIGO` int(11) NOT NULL AUTO_INCREMENT,
   `EMPRESA_N_CODIGO` int(11) NOT NULL,
   `AREA_N_CODIGO` int(11) NOT NULL,
-  `PERFIL_V_FUNCION` varchar(50) default NULL,
-  `PERFIL_V_DESCRIPCION` varchar(300) default NULL,
-  PRIMARY KEY  (`PERFIL_N_CODIGO`),
+  `PERFIL_V_FUNCION` varchar(50) DEFAULT NULL,
+  `PERFIL_V_DESCRIPCION` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`PERFIL_N_CODIGO`),
   KEY `FK_REL_EMPRESA_PERFIL` (`EMPRESA_N_CODIGO`),
   KEY `FK_REL_PERFIL_AREA` (`AREA_N_CODIGO`),
-  CONSTRAINT `FK_REL_EMPRESA_PERFIL` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `t_emp_empresa` (`EMPRESA_N_CODIGO`),
-  CONSTRAINT `FK_REL_PERFIL_AREA` FOREIGN KEY (`AREA_N_CODIGO`) REFERENCES `t_emp_area` (`AREA_N_CODIGO`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_REL_EMPRESA_PERFIL` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `T_EMP_EMPRESA` (`EMPRESA_N_CODIGO`),
+  CONSTRAINT `FK_REL_PERFIL_AREA` FOREIGN KEY (`AREA_N_CODIGO`) REFERENCES `T_EMP_AREA` (`AREA_N_CODIGO`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_seg_perfil`
+-- Dumping data for table `T_SEG_PERFIL`
 --
 
-
-/*!40000 ALTER TABLE `t_seg_perfil` DISABLE KEYS */;
-LOCK TABLES `t_seg_perfil` WRITE;
-INSERT INTO `t_seg_perfil` VALUES (1,2,1,'Gerente','Administracion Generaal'),(2,2,2,'Vendedor','Encargador de realizar las ventas'),(3,2,3,'Almacenero','Encargado de la logistica'),(4,2,4,'Gerente','Encargado del area'),(5,2,1,'Subgerente','Subgerencia general');
+LOCK TABLES `T_SEG_PERFIL` WRITE;
+/*!40000 ALTER TABLE `T_SEG_PERFIL` DISABLE KEYS */;
+INSERT INTO `T_SEG_PERFIL` VALUES (1,2,1,'Gerente','Administracion Generaal'),(2,2,2,'Vendedor','Encargador de realizar las ventas'),(3,2,3,'Almacenero','Encargado de la logistica'),(4,2,4,'Gerente','Encargado del area'),(5,2,1,'Subgerente','Subgerencia general');
+/*!40000 ALTER TABLE `T_SEG_PERFIL` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_seg_perfil` ENABLE KEYS */;
 
 --
--- Table structure for table `t_seg_usuario`
+-- Table structure for table `T_SEG_USUARIO`
 --
 
-DROP TABLE IF EXISTS `t_seg_usuario`;
-CREATE TABLE `t_seg_usuario` (
-  `USUARIO_N_CODIGO` int(11) NOT NULL auto_increment,
+DROP TABLE IF EXISTS `T_SEG_USUARIO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_SEG_USUARIO` (
+  `USUARIO_N_CODIGO` int(11) NOT NULL AUTO_INCREMENT,
   `EMPRESA_N_CODIGO` int(11) NOT NULL,
-  `USUARIO_V_CONTRASENA` varchar(150) default NULL,
-  `USUARIO_V_USERNAME` varchar(45) default NULL,
-  PRIMARY KEY  (`USUARIO_N_CODIGO`),
+  `USUARIO_V_CONTRASENA` varchar(150) DEFAULT NULL,
+  `USUARIO_V_USERNAME` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`USUARIO_N_CODIGO`),
   KEY `FK_REL_EMPRESA_USUARIO` (`EMPRESA_N_CODIGO`),
-  CONSTRAINT `FK_REL_EMPRESA_USUARIO` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `t_emp_empresa` (`EMPRESA_N_CODIGO`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_REL_EMPRESA_USUARIO` FOREIGN KEY (`EMPRESA_N_CODIGO`) REFERENCES `T_EMP_EMPRESA` (`EMPRESA_N_CODIGO`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_seg_usuario`
+-- Dumping data for table `T_SEG_USUARIO`
 --
 
-
-/*!40000 ALTER TABLE `t_seg_usuario` DISABLE KEYS */;
-LOCK TABLES `t_seg_usuario` WRITE;
-INSERT INTO `t_seg_usuario` VALUES (1,2,'8679b5756696bc0e69308525b298f27b','jmoics'),(2,3,'552fea927d2ca4f8736fd19f5e50eee4','jcueva'),(16,2,'7adfca2f2aba4cd301a02b9f33ca9037','jcueva'),(17,2,'aae9e370356842606fd0276c415219e2','aencalada'),(20,1,'62a90ccff3fd73694bf6281bb234b09a','jmoics@gmail.com'),(21,1,'5f4dcc3b5aa765d61d8327deb882cf99','jacky@gmail.com');
+LOCK TABLES `T_SEG_USUARIO` WRITE;
+/*!40000 ALTER TABLE `T_SEG_USUARIO` DISABLE KEYS */;
+INSERT INTO `T_SEG_USUARIO` VALUES (1,2,'8679b5756696bc0e69308525b298f27b','jmoics'),(2,3,'552fea927d2ca4f8736fd19f5e50eee4','jcueva'),(16,2,'7adfca2f2aba4cd301a02b9f33ca9037','jcueva'),(17,2,'aae9e370356842606fd0276c415219e2','aencalada'),(20,1,'62a90ccff3fd73694bf6281bb234b09a','jmoics@gmail.com'),(21,1,'5f4dcc3b5aa765d61d8327deb882cf99','jacky@gmail.com');
+/*!40000 ALTER TABLE `T_SEG_USUARIO` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `t_seg_usuario` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -479,3 +499,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+-- Dump completed on 2011-01-05 19:31:31
