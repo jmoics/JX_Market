@@ -25,14 +25,15 @@ public class ModuloDAOibatis
     }
 
     @Override
-    public boolean insertModulo(final DTO_Modulo modulo)
+    public Integer insertModulo(final DTO_Modulo modulo)
     {
         final DTO_Modulo per = (DTO_Modulo) getSqlMapClientTemplate().queryForObject("getModuloXCodigo", modulo);
+        Integer ret = -1;
         if (per == null)
-            getSqlMapClientTemplate().insert("insertModulo", modulo);
+            ret = (Integer) getSqlMapClientTemplate().insert("insertModulo", modulo);
         else
             getSqlMapClientTemplate().update("updateModulo", modulo);
-        return true;
+        return ret;
     }
 
     @Override

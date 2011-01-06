@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package pe.com.jx_market.service;
 
@@ -16,29 +16,30 @@ import pe.com.jx_market.utilities.DTO_Output;
  *
  */
 public class EmpresaService implements BusinessService {
-    
+
     private EmpresaDAO dao;
 
     /* (non-Javadoc)
      * @see pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities.DTO_Input)
      */
     @Override
-    public DTO_Output execute (DTO_Input input) {
-        DTO_Output output = new DTO_Output();
+    public DTO_Output execute (final DTO_Input input) {
+        final DTO_Output output = new DTO_Output();
         if ("list".equals(input.getVerbo())) {
             String nombre = null;
             String ruc = null;
             if (input.getMapa() != null) {
-                Map mapa = input.getMapa();
+                final Map mapa = input.getMapa();
                 nombre = mapa.containsKey("nombre") ? (String)mapa.get("nombre") : null;
                 ruc = mapa.containsKey("ruc") ? (String)mapa.get("ruc") : null;
             }
             output.setLista(dao.getEmpresas(nombre, ruc));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if ("register".equals(input.getVerbo())) {
-            DTO_Empresa empresa = (DTO_Empresa) input.getObject();
-            dao.registraEmpresa(empresa);
+        } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
+            final DTO_Empresa empresa = (DTO_Empresa) input.getObject();
+            final Integer cod = dao.registraEmpresa(empresa);
+            output.setObject(cod);
             output.setErrorCode(Constantes.OK);
             return output;
         } else if ("delete".equals(input.getVerbo())) {
@@ -54,9 +55,9 @@ public class EmpresaService implements BusinessService {
         return dao;
     }
 
-    public void setDao (EmpresaDAO dao) {
+    public void setDao (final EmpresaDAO dao) {
         this.dao = dao;
     }
-    
+
 
 }

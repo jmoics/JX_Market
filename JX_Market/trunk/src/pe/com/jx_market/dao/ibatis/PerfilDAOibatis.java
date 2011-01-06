@@ -25,14 +25,15 @@ public class PerfilDAOibatis
     }
 
     @Override
-    public boolean insertPerfil(final DTO_Perfil perfil)
+    public Integer insertPerfil(final DTO_Perfil perfil)
     {
         final DTO_Perfil per = (DTO_Perfil) getSqlMapClientTemplate().queryForObject("getPerfilXCodigo", perfil);
+        Integer ret = -1;
         if (per == null)
-            getSqlMapClientTemplate().insert("insertPerfil", perfil);
+            ret = (Integer) getSqlMapClientTemplate().insert("insertPerfil", perfil);
         else
             getSqlMapClientTemplate().update("updatePerfil", perfil);
-        return true;
+        return ret;
     }
 
     @Override

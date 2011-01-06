@@ -22,7 +22,7 @@ public interface ModuloDAO
      * @param modulo
      * @return
      */
-    public boolean insertModulo(DTO_Modulo modulo);
+    public Integer insertModulo(DTO_Modulo modulo);
 
     /**
      * @param modulo

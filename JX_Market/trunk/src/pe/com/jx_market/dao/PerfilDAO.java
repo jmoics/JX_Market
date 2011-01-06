@@ -22,7 +22,7 @@ public interface PerfilDAO
      * @param perfil
      * @return
      */
-    public boolean insertPerfil(DTO_Perfil perfil);
+    public Integer insertPerfil(DTO_Perfil perfil);
 
     /**
      * @param perfil

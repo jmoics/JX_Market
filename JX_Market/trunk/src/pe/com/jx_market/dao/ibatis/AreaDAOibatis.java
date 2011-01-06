@@ -25,14 +25,15 @@ public class AreaDAOibatis
     }
 
     @Override
-    public boolean insertArea(final DTO_Area area)
+    public Integer insertArea(final DTO_Area area)
     {
         final DTO_Area per = (DTO_Area) getSqlMapClientTemplate().queryForObject("getAreaXCodigo", area);
+        Integer ret = -1;
         if (per == null)
-            getSqlMapClientTemplate().insert("insertArea", area);
+            ret = (Integer) getSqlMapClientTemplate().insert("insertArea", area);
         else
             getSqlMapClientTemplate().update("updateArea", area);
-        return true;
+        return ret;
     }
 
     @Override

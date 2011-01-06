@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package pe.com.jx_market.dao.ibatis;
 
@@ -10,7 +10,6 @@ import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
 import pe.com.jx_market.dao.EmpresaDAO;
 import pe.com.jx_market.domain.DTO_Empresa;
-import pe.com.jx_market.domain.DTO_Usuario;
 /**
  * @author George
  *
@@ -21,8 +20,8 @@ public class EmpresaDAOibatis extends SqlMapClientDaoSupport implements EmpresaD
      * @see pe.com.jx_market.dao.EmpresaDAO#getEmpresaXCodigo(java.lang.String)
      */
     @Override
-    public DTO_Empresa getEmpresaXCodigo (String codigo) {
-        HashMap<String, Object> mapa = new HashMap<String, Object>();
+    public DTO_Empresa getEmpresaXCodigo (final String codigo) {
+        final HashMap<String, Object> mapa = new HashMap<String, Object>();
         mapa.put("empresa_n_codigo", codigo);
         return (DTO_Empresa) getSqlMapClientTemplate().queryForObject("getEmpresaPorCodigo", mapa);
     }
@@ -31,8 +30,8 @@ public class EmpresaDAOibatis extends SqlMapClientDaoSupport implements EmpresaD
      * @see pe.com.jx_market.dao.EmpresaDAO#eliminaEmpresa(java.lang.String)
      */
     @Override
-    public boolean eliminaEmpresa (String codigo) {
-        HashMap<String, Object> mapa = new HashMap<String, Object>();
+    public boolean eliminaEmpresa (final String codigo) {
+        final HashMap<String, Object> mapa = new HashMap<String, Object>();
         mapa.put("empresa_n_codigo", codigo);
         getSqlMapClientTemplate().delete("deleteEmpresa", mapa);
         return false;
@@ -42,22 +41,23 @@ public class EmpresaDAOibatis extends SqlMapClientDaoSupport implements EmpresaD
      * @see pe.com.jx_market.dao.EmpresaDAO#registraEmpresa(pe.com.jx_market.domain.DTO_Empresa)
      */
     @Override
-    public boolean registraEmpresa (DTO_Empresa empresa) {
-        HashMap<String, Object> mapa = new HashMap<String, Object>();
+    public Integer registraEmpresa (final DTO_Empresa empresa) {
+        final HashMap<String, Object> mapa = new HashMap<String, Object>();
         mapa.put("empresa_n_codigo", empresa.getCodigo());
         mapa.put("empresa_v_razonsocial", empresa.getRazonsocial());
         mapa.put("empresa_n_activo", empresa.getEstado());
         mapa.put("empresa_v_ruc", empresa.getRuc());
 
-        DTO_Empresa emp = (DTO_Empresa) getSqlMapClientTemplate().queryForObject(
+        final DTO_Empresa emp = (DTO_Empresa) getSqlMapClientTemplate().queryForObject(
                 "getEmpresaPorCodigo", mapa);
 
+        Integer ret = -1;
         if (emp == null) {
-            getSqlMapClientTemplate().insert("insertEmpresa", empresa);
-            return true;
+            ret = (Integer) getSqlMapClientTemplate().insert("insertEmpresa", empresa);
+            return ret;
         } else {
             getSqlMapClientTemplate().update("updateEmpresa", mapa);
-            return true;
+            return ret;
         }
     }
 
@@ -65,10 +65,10 @@ public class EmpresaDAOibatis extends SqlMapClientDaoSupport implements EmpresaD
      * @see pe.com.jx_market.dao.EmpresaDAO#getEmpresas()
      */
     @Override
-    public List<DTO_Empresa> getEmpresas (String razonsocial, String ruc) {
-        HashMap<String, Object> mapa = new HashMap<String, Object>();
+    public List<DTO_Empresa> getEmpresas (final String razonsocial, final String ruc) {
+        final HashMap<String, Object> mapa = new HashMap<String, Object>();
         mapa.put("empresa_v_razonsocial", razonsocial);
         mapa.put("empresa_v_ruc", ruc);
-        return (List<DTO_Empresa>)getSqlMapClientTemplate().queryForList("getEmpresas", mapa);
+        return getSqlMapClientTemplate().queryForList("getEmpresas", mapa);
     }
 }

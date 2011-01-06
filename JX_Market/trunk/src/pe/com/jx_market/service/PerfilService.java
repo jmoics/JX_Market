@@ -20,7 +20,8 @@ public class PerfilService
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
-            dao.insertPerfil((DTO_Perfil) input.getObject());
+            final Integer cod = dao.insertPerfil((DTO_Perfil) input.getObject());
+            output.setObject(cod);
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getVerbo())) {

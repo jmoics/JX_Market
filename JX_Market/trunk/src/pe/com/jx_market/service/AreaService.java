@@ -20,7 +20,8 @@ public class AreaService
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
-            dao.insertArea((DTO_Area) input.getObject());
+            final Integer cod = dao.insertArea((DTO_Area) input.getObject());
+            output.setObject(cod);
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getVerbo())) {

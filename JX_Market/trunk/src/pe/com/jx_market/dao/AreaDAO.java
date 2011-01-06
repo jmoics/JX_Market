@@ -22,7 +22,7 @@ public interface AreaDAO
      * @param area
      * @return
      */
-    public boolean insertArea(DTO_Area area);
+    public Integer insertArea(DTO_Area area);
 
     /**
      * @param area

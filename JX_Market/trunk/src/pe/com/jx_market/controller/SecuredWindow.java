@@ -18,7 +18,9 @@ public abstract class SecuredWindow
         if (empleado == null) {
             throw new RuntimeException("La sesión se perdió. Vuelva a ingresar por favor.");
         }
-        checkResources(empleado);
+        if (!empleado.getEmpresa().equals(Constantes.INSTITUCION_JX_MARKET)) {
+            checkResources(empleado);
+        }
         realOnCreate();
     }
 

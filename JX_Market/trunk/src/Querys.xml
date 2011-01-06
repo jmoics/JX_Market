@@ -269,6 +269,9 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             (perfil_v_funcion, perfil_v_descripcion, area_n_codigo, empresa_n_codigo)
         VALUES
             (#funcion#, #descripcion#, #area#, #empresa#)
+        <selectKey resultClass="int" type="post" keyProperty="codigo" > 
+           select LAST_INSERT_ID() as value
+        </selectKey>
     </insert>
     
     <update id="updatePerfil" parameterClass="DTO_Perfil">
@@ -323,6 +326,9 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             (area_v_nombre, empresa_n_codigo)
         VALUES
             (#nombre#, #empresa#)
+        <selectKey resultClass="int" type="post" keyProperty="codigo" > 
+           select LAST_INSERT_ID() as value
+        </selectKey>
     </insert>
     
     <update id="updateArea" parameterClass="DTO_Area">
@@ -377,6 +383,9 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             (modulo_v_desc, modulo_v_recurso, empresa_n_codigo)
         VALUES
             (#descripcion#, #recurso#, #empresa#)
+        <selectKey resultClass="int" type="post" keyProperty="codigo" > 
+           select LAST_INSERT_ID() as value
+        </selectKey>
     </insert>
     
     <update id="updateModulo" parameterClass="DTO_Modulo">
@@ -477,6 +486,9 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             (empresa_v_razonsocial,empresa_n_activo,empresa_v_ruc,empresa_v_dominio)
         VALUES
             (#razonsocial#,#estado#,#ruc#,#dominio#)
+        <selectKey resultClass="int" type="post" keyProperty="codigo" > 
+           select LAST_INSERT_ID() as value
+        </selectKey>
     </insert>
     
     <update id="updateEmpresa">
@@ -792,7 +804,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             sol.solicitud_n_codigo as codigo,
             sol.solicitud_v_razon as razon,
             sol.solicitud_n_ruc as ruc,
-            sol.solicitud_v_corre as correo,
+            sol.solicitud_v_email as correo,
             sol.solicitud_n_estado as estado,
             sol.solicitud_d_fecha as fecha
         FROM
@@ -823,7 +835,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     </insert>
     
     <update id="updateSolicitud" parameterClass="DTO_Solicitud">
-        UPDATE T_NEG_PEDIDO_DET
+        UPDATE T_NEG_SOLICITUD
         SET
             solicitud_n_estado = #estado#          
         WHERE

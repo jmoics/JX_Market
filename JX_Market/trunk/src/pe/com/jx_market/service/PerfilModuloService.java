@@ -65,6 +65,11 @@ public class PerfilModuloService implements BusinessService {
             }
             output.setErrorCode(Constantes.OK);
             return output;
+        } else if(Constantes.V_REGISTERPM.equals(input.getVerbo())) {
+            final DTO_PerfilModulo perfMod = (DTO_PerfilModulo) input.getObject();
+            dao.agregaPorPerfil(perfMod);
+            output.setErrorCode(Constantes.OK);
+            return output;
         }
 
         throw new RuntimeException("Verbo incorrecto");

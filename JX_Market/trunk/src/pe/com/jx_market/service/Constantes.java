@@ -50,12 +50,14 @@ public class Constantes {
      * Constantes para verbos
      */
     public static final String V_REGISTER = "register";
+    public static final String V_REGISTERPM = "registerPM";
     public static final String V_GET = "get";
     public static final String V_LIST = "list";
     public static final String V_LISTEMP = "listEmp";
     public static final String V_DELETE = "delete";
     public static final String V_USTOCK = "upStock";
     public static final String V_GETIMG = "getimg";
+    public static final String V_UPDATE = "update";
 
     /*
      * Constantes para estados

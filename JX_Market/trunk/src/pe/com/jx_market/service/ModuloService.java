@@ -20,7 +20,8 @@ public class ModuloService
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
-            dao.insertModulo((DTO_Modulo) input.getObject());
+            final Integer cod = dao.insertModulo((DTO_Modulo) input.getObject());
+            output.setObject(cod);
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getVerbo())) {

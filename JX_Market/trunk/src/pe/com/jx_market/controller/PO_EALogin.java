@@ -70,7 +70,11 @@ public class PO_EALogin
                     getDesktop().getSession().setAttribute("empleado", empleado);
                     getDesktop().getSession().setAttribute("login", validado);
                     getDesktop().getSession().setAttribute("empresa", empresa);
-                    Executions.sendRedirect("eAMenuPrinc.zul");
+                    if (empresa.getCodigo().equals(Constantes.INSTITUCION_JX_MARKET)) {
+                        Executions.sendRedirect("eESolicitudesPendientes.zul");
+                    } else {
+                        Executions.sendRedirect("eAMenuPrinc.zul");
+                    }
                 } else {
                     txtUser.setText("");
                     txtUser.setFocus(true);
