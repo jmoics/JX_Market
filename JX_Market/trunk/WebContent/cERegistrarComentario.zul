@@ -1,0 +1,23 @@
+<?page title="JX_Market" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:zk="http://www.zkoss.org/2005/zk">
+    <window zclass="null" id="wCER" use="pe.com.jx_market.controller.PO_CERegistrarComentario">
+        <style id="sT" src="style.css"/>
+        <h:script type="text/javascript" src="media/js/boxOver.js"></h:script>
+        <div class="center_title_bar">Detalle Producto</div>
+        <div width="580px">
+        
+        <listbox style="padding: 45px 0 0 0" width="580px" id="lstProds" zclass="null" mold="paging" pageSize="6">
+            
+        </listbox>
+
+		<listbox id="lstComentarios">
+		
+		</listbox>
+
+        <textbox id="txtFunc" width="300px" rows="3" maxlength="300"/>
+        <div align="left">
+            <button id="btnComentar">Comentar</button>
+        </div>
+        </div>
+    </window>
+</zk>
