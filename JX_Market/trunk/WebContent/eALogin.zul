@@ -12,7 +12,7 @@
          background-position: 0 -62px } .z-button-over .z-button-cm { background-position: 0 -30px }
          .z-button-clk .z-button-cm { background-position: 0 -93px }
       </style>
-      <image src="media/jx_market.gif" />
+      <image src="media/jx_market.gif" onClick='Executions.sendRedirect("index.zul")' style="cursor: pointer"/>
       <html:p />
       <window id="w" width="770px" use="pe.com.jx_market.controller.PO_EALogin">
          <div align="left">
