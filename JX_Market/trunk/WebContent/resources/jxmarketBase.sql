@@ -171,7 +171,7 @@ CREATE TABLE `T_NEG_CATEGORIA` (
 
 LOCK TABLES `T_NEG_CATEGORIA` WRITE;
 /*!40000 ALTER TABLE `T_NEG_CATEGORIA` DISABLE KEYS */;
-INSERT INTO `T_NEG_CATEGORIA` VALUES (1,1,'Descarga Digital'),(2,1,'Libros'),(3,1,'Consolas Videojuegos'),(4,1,'Bebidas'),(5,1,'Peliculas, Musica y Juegos'),(6,1,'Computadoras y Oficina'),(7,1,'Electronica'),(8,1,'Casa, Jardin y mascotas'),(9,1,'Juguetes, Ninhos y Bebes'),(10,1,'Ropa, zapatos y joyeria'),(11,1,'Deportes'),(12,1,'Herramientas'),(13,1,'Automoviles'),;
+INSERT INTO `T_NEG_CATEGORIA` VALUES (1,1,'Descarga Digital'),(2,1,'Libros'),(3,1,'Consolas Videojuegos'),(4,1,'Bebidas'),(5,1,'Peliculas, Musica y Juegos'),(6,1,'Computadoras y Oficina'),(7,1,'Electronica'),(8,1,'Casa, Jardin y mascotas'),(9,1,'Juguetes, Ninhos y Bebes'),(10,1,'Ropa, zapatos y joyeria'),(11,1,'Deportes'),(12,1,'Herramientas'),(13,1,'Automoviles');
 /*!40000 ALTER TABLE `T_NEG_CATEGORIA` ENABLE KEYS */;
 UNLOCK TABLES;
 
