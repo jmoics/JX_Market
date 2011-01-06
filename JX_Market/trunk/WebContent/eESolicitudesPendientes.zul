@@ -1,0 +1,35 @@
+<?page title="JX_Market" contentType="text/html;charset=UTF-8"?>
+
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+      <window width="800px"
+         use="pe.com.jx_market.controller.PO_EESolicitudesPendientes"
+         id="winEESP">
+
+		<style id="sT" src="style.css"/>
+		
+         <div align="center">
+            <vbox width="580px">
+               <html:p />
+               <div class="center_title_bar">Mis Solicitudes Pendientes</div>
+               <html:p />
+               <groupbox  mold="3d" id="grpSolicitud" visible="true"
+                  width="580px">
+                  
+                  <html:p />
+
+                  <listbox id="lstSolicitud" visible="true"
+                  	width="560px" multiple="false">
+                  	<listhead>
+                  	<listheader label="Empresa" width="160px"/>
+                  	<listheader label="RUC" width="80px"/>
+                  	<listheader label="Correo" width="160px"/>
+                  	<listheader label="Fecha Envío" width="80px"/>
+                  	<listheader label="Estado" width="80px"/>
+                  	</listhead>
+                  </listbox>
+                  
+            </vbox>
+         </div>
+         <html:p />
+      </window>
+</zk>

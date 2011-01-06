@@ -53,5 +53,9 @@
     <bean id="detalleDAO" class="pe.com.jx_market.dao.ibatis.DetallePedidoDAOibatis">
         <property name="sqlMapClient" ref="sqlMapClient" />
     </bean>
+    
+    <bean id="solicitudDAO" class="pe.com.jx_market.dao.ibatis.SolicitudDAOibatis">
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
 
 </beans>

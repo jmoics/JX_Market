@@ -17,6 +17,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     <typeAlias alias="DTO_PerfilModulo" type="pe.com.jx_market.domain.DTO_PerfilModulo" />
     <typeAlias alias="DTO_Pedido" type="pe.com.jx_market.domain.DTO_Pedido" />
     <typeAlias alias="DTO_DetallePedido" type="pe.com.jx_market.domain.DTO_DetallePedido" />
+    <typeAlias alias="DTO_Solicitud" type="pe.com.jx_market.domain.DTO_Solicitud" />
 
     <!-- MANTENIMIENTO DE CLIENTES -->
 
@@ -783,4 +784,57 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         WHERE
             pedido_n_codigo = #value#
    </delete>
+   
+   <!-- MANTENIMIENTO DE SOLICITUDES -->
+
+    <select id="getSolicitudes" resultClass="DTO_Solicitud" parameterClass="DTO_Solicitud">
+        SELECT
+            sol.solicitud_n_codigo as codigo,
+            sol.solicitud_v_razon as razon,
+            sol.solicitud_n_ruc as ruc,
+            sol.solicitud_v_corre as correo,
+            sol.solicitud_n_estado as estado,
+            sol.solicitud_d_fecha as fecha
+        FROM
+            T_NEG_SOLICITUD sol
+        WHERE
+           sol.solicitud_n_estado = #estado#          
+    </select>
+    
+    <select id="getSolicitudesxCodigo" resultClass="DTO_Solicitud" parameterClass="DTO_Solicitud">
+        SELECT
+            sol.solicitud_n_codigo as codigo,
+            sol.solicitud_v_razon as razon,
+            sol.solicitud_n_ruc as ruc,
+            sol.solicitud_v_email as correo,
+            sol.solicitud_n_estado as estado,
+            sol.solicitud_d_fecha as fecha
+        FROM
+            T_NEG_SOLICITUD sol
+        WHERE
+           sol.solicitud_n_codigo = #codigo#   
+    </select>
+
+    <insert id="insertSolicitud" parameterClass="DTO_Solicitud">
+        INSERT INTO T_NEG_SOLICITUD
+            (solicitud_n_codigo, solicitud_v_razon, solicitud_n_ruc, solicitud_v_email, solicitud_n_estado, solicitud_d_fecha)
+        VALUES
+            (#codigo#, #razon#, #ruc#, #correo#, #estado#, #fecha#)
+    </insert>
+    
+    <update id="updateSolicitud" parameterClass="DTO_DetallePedido">
+        UPDATE T_NEG_PEDIDO_DET
+        SET
+            solicitud_n_estado = #estado#          
+        WHERE
+            solicitud_n_codigo = #codigo#
+    </update>
+
+    <delete id="deleteSolicitud">
+        DELETE FROM
+            T_NEG_SOLICITUD
+        WHERE
+           solicitud_n_codigo = #value#
+   </delete>
+   
 </sqlMap>
