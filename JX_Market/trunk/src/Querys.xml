@@ -553,8 +553,6 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         FROM
             T_NEG_ARTICULO art
         WHERE
-            art.empresa_n_codigo = #empresa#
-        AND
             art.articulo_n_codigo = #codigo#
     </select>
 
@@ -690,7 +688,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             ped.pedido_n_codigo = #codigo#
     </select>
     
-    <select id="getConnected" resultClass="int" parameterClass="int">
+    <select id="getConnected" resultClass="int">
         SELECT
             con.pedido_n_codigo_to as toLink
         FROM

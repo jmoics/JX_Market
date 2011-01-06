@@ -111,4 +111,10 @@ public class Constantes {
 
     /*VALIDACION DE CARACTERES*/
     public static final String VALID_TELEFONO = "^[0-9]*$";
+
+    /*
+     * Tipos de Pedidos
+     */
+    public static final String TIPO_PEDIDO_ENTREGA = "Entrega a Domicilio";
+    public static final String TIPO_PEDIDO_RECOGE = "Recoger Producto";
 }

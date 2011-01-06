@@ -82,5 +82,14 @@ public class PedidoDAOibatis
         return true;
     }
 
+    @Override
+    public List<Integer> getConnected(final Integer pedFrom)
+    {
+        final Map<String, Integer> mapa = new HashMap<String, Integer>();
+        mapa.put("fromLink", pedFrom);
+
+        return getSqlMapClientTemplate().queryForList("getConnected", mapa);
+    }
+
 
 }

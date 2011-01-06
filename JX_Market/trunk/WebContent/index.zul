@@ -75,7 +75,7 @@
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <label onClick='w_in.saltarPagina("cEProductos.zul", false)' class="nav3">Mi Cuenta</label>
+                        <label onClick='w_in.saltarPagina("cECuentaCliente.zul", false)' class="nav3">Mi Cuenta</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>

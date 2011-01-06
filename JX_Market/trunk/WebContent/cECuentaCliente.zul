@@ -3,22 +3,29 @@
     <window zclass="null" id="w_CECC" use="pe.com.jx_market.controller.PO_CECuentaCliente">
         <style id="sT" src="style.css"/>
         <h:script type="text/javascript" src="media/js/boxOver.js"></h:script>
-        <div class="center_title_bar">Su carrito</div>
-        <grid style="margin: 25px 0 0 15px" width="550px" id="grdProds" mold="paging" pageSize="10">
-            <columns>
-                <column label="Cantidad" width="60px"/>
-                <column label="Descripcion del Producto"/>
-                <column label="Precio" width="50px"/>
-                <column label="Total" width="50px"/>
-                <column label="Actualizar" width="55px"/>
-                <column label="Quitar" width="50px"/>
-            </columns>
-            <rows>
-            </rows>
-        </grid>
-        <div width="550px" align="right">
-            <button id="s" image="media/filesave.png" label="Generar Pedido" dir="reverse"
-                    onClick="w_CECC.generarPedido()" />
+        <div class="center_title_bar">Sus pedidos</div>
+        <listbox style="margin: 25px 0 0 15px" width="550px" id="lstPed" mold="paging" pageSize="10">
+            <listhead>
+                <listheader label="Cliente" width="180px"/>
+                <listheader label="Fecha" width="100px"/>
+                <listheader label="Tipo Pedido" width="140px"/>
+                <listheader label="IGV" width="60px"/>
+                <listheader label="Total" width="70px"/>
+            </listhead>
+        </listbox>
+        
+        <listbox style="margin: 25px 0 0 15px" width="550px" id="lstDet" mold="paging" pageSize="10" visible="false">
+            <listhead>
+                <listheader label="Cantidad" width="60px"/>
+                <listheader label="Nombre" width="120px"/>
+                <listheader label="Descripcion del Producto"/>
+                <listheader label="Precio" width="60px"/>
+                <listheader label="Total" width="60px"/>
+            </listhead>
+        </listbox>
+        <div width="550px" align="center" style="margin: 15px 0 0 0">
+            <button id="btnReturn" image="media/ArrowBackGreen.png" label="Retornar" dir="reverse"
+                    onClick="w_CECC.retornar()" />
         </div>
     </window>
 </zk>

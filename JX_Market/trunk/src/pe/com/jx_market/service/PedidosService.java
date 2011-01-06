@@ -4,6 +4,8 @@
 package pe.com.jx_market.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -40,6 +42,29 @@ public class PedidosService implements BusinessService
 
             }
             //output.setLista(dao.getArticulos((DTO_Articulo)input.getObject()));
+            output.setErrorCode(Constantes.OK);
+            return output;
+        } else if (Constantes.V_LIST.equals(input.getVerbo())) {
+            final Map<DTO_Pedido, List<DTO_DetallePedido>> mapPed = new HashMap<DTO_Pedido, List<DTO_DetallePedido>>();
+            //Pedidos de JX_Market para un cliente
+            final List<DTO_Pedido> lstPedCli = pedidoDAO.getPedidos((DTO_Pedido) input.getObject());
+            for (final DTO_Pedido ped : lstPedCli) {
+                final List<DTO_DetallePedido> lstPedEmp = new ArrayList<DTO_DetallePedido>();
+                //Codigos de los pedidos de las empresa
+                final List<Integer> lstPeds = pedidoDAO.getConnected(ped.getCodigo());
+                for (final Integer codPed : lstPeds) {
+                    final DTO_Pedido pedAux = new DTO_Pedido();
+                    pedAux.setCodigo(codPed);
+                    //Pedido de la empresa
+                    final DTO_Pedido pedEmp = pedidoDAO.getPedidoXCodigo(pedAux);
+                    final DTO_DetallePedido detPedAux = new DTO_DetallePedido();
+                    detPedAux.setPedido(pedEmp.getCodigo());
+                    final List<DTO_DetallePedido> detPedEmp = detalleDAO.getDetallePedidos(detPedAux);
+                    lstPedEmp.addAll(detPedEmp);
+                }
+                mapPed.put(ped, lstPedEmp);
+            }
+            output.setMapa(mapPed);
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {

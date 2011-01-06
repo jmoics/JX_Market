@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package pe.com.jx_market.service;
 
@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Random;
 
 import org.apache.commons.logging.Log;
@@ -29,6 +30,8 @@ public class ArticuloService implements BusinessService
 {
     static Log logger = LogFactory.getLog(ArticuloService.class);
     private ArticuloDAO dao;
+
+    @SuppressWarnings("unchecked")
     @Override
     public DTO_Output execute(final DTO_Input input)
     {
@@ -48,8 +51,11 @@ public class ArticuloService implements BusinessService
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getVerbo())) {
+            final Map<String, String> map = input.getMapa();
             final DTO_Articulo art = dao.getArticuloXCodigo((DTO_Articulo) input.getObject());
-            loadPhoto(art);
+            if (map == null) {
+                loadPhoto(art);
+            }
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
