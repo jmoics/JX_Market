@@ -34,7 +34,11 @@ public class PedidosService implements BusinessService
     public DTO_Output execute(final DTO_Input input)
     {
         final DTO_Output output = new DTO_Output();
-        if (Constantes.V_LIST.equals(input.getVerbo())) {
+        if (Constantes.V_LISTEMP.equals(input.getVerbo())) {
+            final List<DTO_Pedido> lst = pedidoDAO.getPedidos((DTO_Pedido) input.getObject());
+            for (final DTO_Pedido ped : lst) {
+
+            }
             //output.setLista(dao.getArticulos((DTO_Articulo)input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;

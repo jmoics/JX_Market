@@ -52,6 +52,7 @@ public class Constantes {
     public static final String V_REGISTER = "register";
     public static final String V_GET = "get";
     public static final String V_LIST = "list";
+    public static final String V_LISTEMP = "listEmp";
     public static final String V_DELETE = "delete";
     public static final String V_USTOCK = "upStock";
     public static final String V_GETIMG = "getimg";

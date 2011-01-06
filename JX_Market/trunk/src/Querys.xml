@@ -670,6 +670,9 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             T_NEG_PEDIDO ped
         WHERE
             ped.empresa_n_codigo = #empresa#
+        <isNotNull prepend="AND" property="cliente">
+            ped.cliente_n_codigo = #cliente#
+        </isNotNull>
     </select>
     
     <select id="getPedidosXCodigo" resultClass="DTO_Pedido" parameterClass="DTO_Pedido">
@@ -685,6 +688,15 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
             T_NEG_PEDIDO ped
         WHERE
             ped.pedido_n_codigo = #codigo#
+    </select>
+    
+    <select id="getConnected" resultClass="int" parameterClass="int">
+        SELECT
+            con.pedido_n_codigo_to as toLink
+        FROM
+            T_NEG_PEDIDO2PEDIDO con
+        WHERE
+            con.pedido_n_codigo_from = #fromLink#
     </select>
 
     <insert id="insertPedido" parameterClass="DTO_Pedido">
