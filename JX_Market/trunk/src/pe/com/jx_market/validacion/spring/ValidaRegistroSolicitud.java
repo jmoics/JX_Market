@@ -20,7 +20,7 @@ public class ValidaRegistroSolicitud extends ValidadorSpringTemplate {
 
 		final EmailValidator evalid = EmailValidator.getInstance();
 		if(! evalid.isValid(solicitud.getCorreo())) {
-			errors.rejectValue("email", "none", "La dirección de email no es válida");
+			errors.rejectValue("correo", "none", "La dirección de email no es válida");
 		}
 	}
 

@@ -1,0 +1,72 @@
+<?page title="JX_Market" contentType="text/html;charset=UTF-8"?>
+
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+      <window width="800px"
+         use="pe.com.jx_market.controller.PO_EESolicitudesPendientes"
+         id="winEESP">
+
+		<style id="sT" src="style.css"/>
+		
+         <div align="center">
+            <vbox width="580px">
+               <html:p />
+               <div class="center_title_bar">Administración Empresas Asociadas</div>
+               <html:p />
+               <groupbox  mold="3d" id="grpEmpresa" visible="true" width="580px">
+					
+					<groupbox mold="3d">					
+						<div id="form1" visible="true">
+											
+						<html:p/>
+						<div align="center">
+						<grid   fixedLayout="true" width="500px">
+							<columns>
+								<column label=""/>
+								<column label=""/>
+								<column label=""/>
+								<column label=""/>
+							</columns>
+							<rows>
+								<row>
+									<label value="Desde: " width="60px" />
+									<datebox width="105px"></datebox>
+									<label value="Hasta: " width="60px" />
+									<datebox width="105px"></datebox>									
+								</row>
+							
+								<row>
+									<label value="Estado: " width="60px" />
+									<combobox readonly="true" value="-Cualquiera-" width="105">
+									
+									<comboitem label="-Cualquiera-" value="" />
+									<comboitem label="Activo"/>
+									<comboitem label="Inactivo" />
+									<comboitem label="Pendiente" />
+									</combobox>
+									
+									<label value="RUC: " width="60px" />
+									<textbox id="txtRuc" maxlength="11" width="105px"/>
+								</row>
+							</rows>
+						</grid>
+						<html:p/>
+						<button  width="105px" label="Consultar" onClick=""></button>
+						</div>	
+
+                  <html:p />
+                  <listbox id="lstSolicitud" visible="true"
+                  	width="560px" multiple="false">
+                  	<listhead>
+                  	<listheader label="Empresa" width="160px"/>
+                  	<listheader label="RUC" width="80px"/>
+                  	<listheader label="Correo" width="160px"/>
+                  	<listheader label="Fecha Envío" width="80px"/>
+                  	<listheader label="Estado" width="80px"/>
+                  	</listhead>
+                  </listbox>
+                  
+            </vbox>
+         </div>
+         <html:p />
+      </window>
+</zk>

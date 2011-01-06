@@ -22,6 +22,7 @@ import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.domain.DTO_Solicitud;
 import pe.com.jx_market.domain.DTO_Usuario;
 import pe.com.jx_market.service.Constantes;
+import pe.com.jx_market.service.EnviarCorreo;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
@@ -100,7 +101,11 @@ public class PO_CERegistroCliente
                         try {
                             final int rpta = Messagebox.show("Su registro fue realizado correctamente",
                                                         "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
-                            if (rpta == Messagebox.OK) {
+                            if (rpta == Messagebox.OK) {             	
+                            	EnviarCorreo correo = new EnviarCorreo();
+                            	boolean enviado = correo.enviarCorreo(cliente.getEmail(),"Bienvenido a JXMARKET","Su registro fue exitoso");
+                            	System.out.println("enviado: "+enviado);     
+                            	
                                 getDesktop().getSession().setAttribute("sendPage", getDesktop().getBookmark());
                                 Executions.sendRedirect("index.zul");
                             }
@@ -132,6 +137,10 @@ public class PO_CERegistroCliente
                     if (output.getErrorCode() == Constantes.OK) {
                         int rpta;
                         try {
+                        	EnviarCorreo correo = new EnviarCorreo();
+                        	boolean enviado = correo.enviarCorreo(solicitud.getCorreo(),"Solicitud Recibida JXMarket","Su solicitud fue recibida, espera nuestra confirmación.");
+                        	System.out.println("enviado: "+enviado);     
+                        	
                             rpta = Messagebox.show("Se registro correctamente su solicitud, "
                                                         + "revise su correo para revisa la confirmacion",
                                                                     "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
