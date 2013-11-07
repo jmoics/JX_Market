@@ -43,13 +43,24 @@ public class PO_Index extends Div
         maxY = 0;
 
 
+        final Map<Integer, Map<Integer, Sector>> matrix = readFile();
 
+        for (int i=0; i<maxX; i++) {
+            for (int j=0; j<maxY; j++) {
+                if (matrix.containsKey(i)) {
+                    if (matrix.get(i).containsKey(j)) {
 
+                    } else {
 
-        readFile();
+                    }
+                } else {
+
+                }
+            }
+        }
     }
 
-    protected void readFile()
+    protected Map<Integer, Map<Integer, Sector>> readFile()
         throws IOException
     {
         final Properties prop = new Properties();
@@ -67,6 +78,8 @@ public class PO_Index extends Div
         scanner.close();
 
         final Map<Integer, Map<Integer, Sector>> matrix = buildMatrix(lstSectors);
+
+        return matrix;
     }
 
     protected List<Sector> buildAll(final Scanner scanner)
