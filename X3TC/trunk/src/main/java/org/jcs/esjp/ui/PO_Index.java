@@ -33,10 +33,15 @@ public class PO_Index extends Div
     private static final Logger LOG = LoggerFactory.getLogger(PO_Index.class);
 
     private Table table;
+    private Integer maxX;
+    private Integer maxY;
 
     public void onCreate() throws IOException
     {
         table = (Table) getFellow("tableContent");
+        maxX = 0;
+        maxY = 0;
+
 
 
 
@@ -312,6 +317,12 @@ public class PO_Index extends Div
         for(final Sector sector: _sectors) {
             final Integer posX = sector.getPosX();
             final Integer posY = sector.getPosY();
+            if (posX > maxX) {
+                maxX = posX;
+            }
+            if (posY > maxY) {
+                maxY = posY;
+            }
             if (rows.containsKey(posX)) {
                 final Map<Integer, Sector> cols = rows.get(posX);
                 if (cols.containsKey(posY)) {
