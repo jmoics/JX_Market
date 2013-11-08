@@ -114,6 +114,16 @@
             <artifactId>ibatis-sqlmap</artifactId>
             <version>2.3.0</version>
         </dependency>
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.5.0-b01</version>
+        </dependency>
    </dependencies>
    <build>
         <finalName>${project.artifactId}</finalName>

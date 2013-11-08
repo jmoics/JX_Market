@@ -29,7 +29,7 @@ public class PO_Index
     extends Div
 {
     static Log logger = LogFactory.getLog(PO_Index.class);
-    private NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
+    private final NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
     private BusinessService articuloService, categoriaService;
     private Ul ulCategorias;
     private Label lbUser, lbTotal, lbItems, lbSalir;
@@ -159,15 +159,13 @@ public class PO_Index
                            final String txt2,
                            final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, "JX_Market", 1, Messagebox.INFORMATION);
-            if (t != null) {
-                logger.info(txt2, t);
-            } else {
-                logger.info(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, "JX_Market", 1, Messagebox.INFORMATION);
+        }
+        if (t != null) {
+            logger.info(txt2, t);
+        } else {
+            logger.info(txt2);
         }
     }
 
@@ -175,15 +173,13 @@ public class PO_Index
                             final String txt2,
                             final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, "JX_Market", 1, Messagebox.EXCLAMATION);
-            if (t != null) {
-                logger.error(txt2, t);
-            } else {
-                logger.error(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, "JX_Market", 1, Messagebox.EXCLAMATION);
+        }
+        if (t != null) {
+            logger.error(txt2, t);
+        } else {
+            logger.error(txt2);
         }
 
     }

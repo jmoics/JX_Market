@@ -266,16 +266,12 @@ public class PO_EAAdministraArea
                             public void onEvent(final Event e)
                                 throws UiException
                             {
-                                try {
-                                    int msg = 0;
-                                    msg = Messagebox.show("¿Está seguro de eliminar el area?",
-                                                    empresa.getRazonsocial(), Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
-                                    if (msg == Messagebox.YES) {
-                                        eliminaFila((DTO_Area) ((Row) e.getTarget().getParent().getParent())
-                                                                                            .getAttribute("area"));
-                                    }
-                                } catch (final InterruptedException e1) {
-                                    e1.printStackTrace();
+                                int msg = 0;
+                                msg = Messagebox.show("¿Está seguro de eliminar el area?",
+                                                empresa.getRazonsocial(), Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
+                                if (msg == Messagebox.YES) {
+                                    eliminaFila((DTO_Area) ((Row) e.getTarget().getParent().getParent())
+                                                                                        .getAttribute("area"));
                                 }
                             }
                         });
@@ -331,15 +327,13 @@ public class PO_EAAdministraArea
                            final String txt2,
                            final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.INFORMATION);
-            if (t != null) {
-                logger.info(txt2, t);
-            } else {
-                logger.info(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.INFORMATION);
+        }
+        if (t != null) {
+            logger.info(txt2, t);
+        } else {
+            logger.info(txt2);
         }
     }
 
@@ -347,15 +341,13 @@ public class PO_EAAdministraArea
                             final String txt2,
                             final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
-            if (t != null) {
-                logger.error(txt2, t);
-            } else {
-                logger.error(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
+        }
+        if (t != null) {
+            logger.error(txt2, t);
+        } else {
+            logger.error(txt2);
         }
     }
 

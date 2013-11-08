@@ -9,9 +9,9 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.zkforge.bwcaptcha.Captcha;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zul.Captcha;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Grid;
@@ -98,20 +98,15 @@ public class PO_CERegistroCliente
                     input.setMapa(map);
                     final DTO_Output output = clienteService.execute(input);
                     if (output.getErrorCode() == Constantes.OK) {
-                        try {
-                            final int rpta = Messagebox.show("Su registro fue realizado correctamente",
-                                                        "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
-                            if (rpta == Messagebox.OK) {             	
-                            	EnviarCorreo correo = new EnviarCorreo();
-                            	boolean enviado = correo.enviarCorreo(cliente.getEmail(),"Bienvenido a JXMARKET","Su registro fue exitoso");
-                            	System.out.println("enviado: "+enviado);     
-                            	
-                                getDesktop().getSession().setAttribute("sendPage", getDesktop().getBookmark());
-                                Executions.sendRedirect("index.zul");
-                            }
-                        } catch (final InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                        final int rpta = Messagebox.show("Su registro fue realizado correctamente",
+                                                    "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
+                        if (rpta == Messagebox.OK) {
+                        	final EnviarCorreo correo = new EnviarCorreo();
+                        	final boolean enviado = correo.enviarCorreo(cliente.getEmail(),"Bienvenido a JXMARKET","Su registro fue exitoso");
+                        	System.out.println("enviado: "+enviado);
+
+                            getDesktop().getSession().setAttribute("sendPage", getDesktop().getBookmark());
+                            Executions.sendRedirect("index.zul");
                         }
                     } else {
                         alertaError("Hubo un error en el registro", "Error en el registro" + output.getErrorCode(), null);
@@ -136,21 +131,16 @@ public class PO_CERegistroCliente
                     final DTO_Output output = solicitudService.execute(input);
                     if (output.getErrorCode() == Constantes.OK) {
                         int rpta;
-                        try {
-                        	EnviarCorreo correo = new EnviarCorreo();
-                        	boolean enviado = correo.enviarCorreo(solicitud.getCorreo(),"Solicitud Recibida JXMarket","Su solicitud fue recibida, espera nuestra confirmación.");
-                        	System.out.println("enviado: "+enviado);     
-                        	
-                            rpta = Messagebox.show("Se registro correctamente su solicitud, "
-                                                        + "revise su correo para revisa la confirmacion",
-                                                                    "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
-                            if (rpta == Messagebox.OK) {
-                                getDesktop().getSession().setAttribute("sendPage", getDesktop().getBookmark());
-                                Executions.sendRedirect("index.zul");
-                            }
-                        } catch (final InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                        final EnviarCorreo correo = new EnviarCorreo();
+                        final boolean enviado = correo.enviarCorreo(solicitud.getCorreo(),"Solicitud Recibida JXMarket","Su solicitud fue recibida, espera nuestra confirmaciï¿½n.");
+                        System.out.println("enviado: "+enviado);
+
+                        rpta = Messagebox.show("Se registro correctamente su solicitud, "
+                                                    + "revise su correo para revisa la confirmacion",
+                                                                "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
+                        if (rpta == Messagebox.OK) {
+                            getDesktop().getSession().setAttribute("sendPage", getDesktop().getBookmark());
+                            Executions.sendRedirect("index.zul");
                         }
                     } else {
                         alertaError("Error al registrar la solicitud", "fallo registro de solicitud", null);
@@ -382,15 +372,13 @@ public class PO_CERegistroCliente
                            final String txt2,
                            final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, "JX_Market", 1, Messagebox.INFORMATION);
-            if (t != null) {
-                logger.info(txt2, t);
-            } else {
-                logger.info(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, "JX_Market", 1, Messagebox.INFORMATION);
+        }
+        if (t != null) {
+            logger.info(txt2, t);
+        } else {
+            logger.info(txt2);
         }
     }
 
@@ -398,15 +386,13 @@ public class PO_CERegistroCliente
                             final String txt2,
                             final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, "JX_Market", 1, Messagebox.EXCLAMATION);
-            if (t != null) {
-                logger.error(txt2, t);
-            } else {
-                logger.error(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, "JX_Market", 1, Messagebox.EXCLAMATION);
+        }
+        if (t != null) {
+            logger.error(txt2, t);
+        } else {
+            logger.error(txt2);
         }
 
     }

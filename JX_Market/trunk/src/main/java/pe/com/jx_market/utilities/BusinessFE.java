@@ -9,7 +9,8 @@ public class BusinessFE implements BusinessService {
     private boolean reportExceptions;
     static Log logger = LogFactory.getLog(BusinessFE.class);
 
-    public DTO_Output execute (DTO_Input e) {
+    @Override
+    public DTO_Output execute (final DTO_Input e) {
         DTO_Output output;
         try {
             if (logger.isDebugEnabled()) {
@@ -20,13 +21,14 @@ public class BusinessFE implements BusinessService {
                 logger.debug("Fin de ejecucion bean " + this.name);
             }
             return output;
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             logger.warn("Excepcion generada por bean " + this.name, ex);
             output = new DTO_Output();
-            if (this.reportExceptions)
+            if (this.reportExceptions) {
                 output.setError(-1, ex.getMessage());
-            else
-                output.setError(-1, "Hubo un problema en la aplicación.");
+            } else {
+                output.setError(-1, "Hubo un problema en la aplicacion.");
+            }
         }
         return output;
     }
@@ -35,7 +37,7 @@ public class BusinessFE implements BusinessService {
         return this.service;
     }
 
-    public void setService (BusinessService service) {
+    public void setService (final BusinessService service) {
         this.service = service;
     }
 
@@ -43,7 +45,7 @@ public class BusinessFE implements BusinessService {
         return this.name;
     }
 
-    public void setName (String name) {
+    public void setName (final String name) {
         this.name = name;
     }
 
@@ -51,7 +53,7 @@ public class BusinessFE implements BusinessService {
         return this.reportExceptions;
     }
 
-    public void setReportExceptions (boolean reportExceptions) {
+    public void setReportExceptions (final boolean reportExceptions) {
         this.reportExceptions = reportExceptions;
     }
 }

@@ -255,15 +255,13 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
                            final String txt2,
                            final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, "JX_Market", 1, Messagebox.INFORMATION);
-            if (t != null) {
-                logger.info(txt2, t);
-            } else {
-                logger.info(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, "JX_Market", 1, Messagebox.INFORMATION);
+        }
+        if (t != null) {
+            logger.info(txt2, t);
+        } else {
+            logger.info(txt2);
         }
     }
 
@@ -271,15 +269,13 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
                             final String txt2,
                             final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, "JX_Market", 1, Messagebox.EXCLAMATION);
-            if (t != null) {
-                logger.error(txt2, t);
-            } else {
-                logger.error(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, "JX_Market", 1, Messagebox.EXCLAMATION);
+        }
+        if (t != null) {
+            logger.error(txt2, t);
+        } else {
+            logger.error(txt2);
         }
 
     }

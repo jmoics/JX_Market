@@ -37,7 +37,7 @@ import pe.com.jx_market.utilities.DTO_Output;
 public class PO_CECarritoCliente extends Window
 {
     static Log logger = LogFactory.getLog(PO_CECarritoCliente.class);
-    private NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
+    private final NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
     private BusinessService articuloService, categoriaService, pedidosService;
     private Grid grdProds;
 
@@ -217,16 +217,11 @@ public class PO_CECarritoCliente extends Window
         final DTO_Output output = pedidosService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             resetearAtributos();
-            try {
-                final int rpta = Messagebox.show("Su pedido fue realizado correctamente, " +
-                                                "revise su cuenta en unos momentos para revisar la venta", "JX_Market",
-                                                Messagebox.OK, Messagebox.INFORMATION);
-                if (rpta == Messagebox.OK) {
-                    Executions.sendRedirect(null);
-                }
-            } catch (final InterruptedException e) {
-                logger.error(e);
-                e.printStackTrace();
+            final int rpta = Messagebox.show("Su pedido fue realizado correctamente, " +
+                                            "revise su cuenta en unos momentos para revisar la venta", "JX_Market",
+                                            Messagebox.OK, Messagebox.INFORMATION);
+            if (rpta == Messagebox.OK) {
+                Executions.sendRedirect(null);
             }
         }
 
@@ -263,15 +258,13 @@ public class PO_CECarritoCliente extends Window
                            final String txt2,
                            final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, "JX_Market", 1, Messagebox.INFORMATION);
-            if (t != null) {
-                logger.info(txt2, t);
-            } else {
-                logger.info(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, "JX_Market", 1, Messagebox.INFORMATION);
+        }
+        if (t != null) {
+            logger.info(txt2, t);
+        } else {
+            logger.info(txt2);
         }
     }
 
@@ -279,15 +272,13 @@ public class PO_CECarritoCliente extends Window
                             final String txt2,
                             final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, "JX_Market", 1, Messagebox.EXCLAMATION);
-            if (t != null) {
-                logger.error(txt2, t);
-            } else {
-                logger.error(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, "JX_Market", 1, Messagebox.EXCLAMATION);
+        }
+        if (t != null) {
+            logger.error(txt2, t);
+        } else {
+            logger.error(txt2);
         }
 
     }

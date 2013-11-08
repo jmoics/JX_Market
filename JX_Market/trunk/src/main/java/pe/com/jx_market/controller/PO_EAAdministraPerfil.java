@@ -107,7 +107,7 @@ public class PO_EAAdministraPerfil
         final Combobox combo = new Combobox();
         combo.setWidth("110px");
         cargarAreas(combo);
-        for (final Comboitem item : (List<Comboitem>) combo.getItems()) {
+        for (final Comboitem item : combo.getItems()) {
             if (perf.getArea().equals(((DTO_Area) item.getAttribute("area")).getCodigo())) {
                 combo.setSelectedItem(item);
             }
@@ -303,14 +303,10 @@ public class PO_EAAdministraPerfil
                             public void onEvent(final Event e)
                                 throws UiException
                             {
-                                try {
-                                    final int msg = Messagebox.show("¿Está seguro de eliminar el perfil?", empresa.getRazonsocial(),
-                                                    Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
-                                    if (msg == Messagebox.YES) {
-                                        eliminaFila((DTO_Perfil) ((Row) e.getTarget().getParent().getParent()).getAttribute("perfil"));
-                                    }
-                                } catch (final InterruptedException e1) {
-                                    e1.printStackTrace();
+                                final int msg = Messagebox.show("¿Está seguro de eliminar el perfil?", empresa.getRazonsocial(),
+                                                Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
+                                if (msg == Messagebox.YES) {
+                                    eliminaFila((DTO_Perfil) ((Row) e.getTarget().getParent().getParent()).getAttribute("perfil"));
                                 }
                             }
                         });
@@ -403,15 +399,13 @@ public class PO_EAAdministraPerfil
                            final String txt2,
                            final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.INFORMATION);
-            if (t != null) {
-                logger.info(txt2, t);
-            } else {
-                logger.info(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.INFORMATION);
+        }
+        if (t != null) {
+            logger.info(txt2, t);
+        } else {
+            logger.info(txt2);
         }
     }
 
@@ -419,15 +413,13 @@ public class PO_EAAdministraPerfil
                             final String txt2,
                             final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
-            if (t != null) {
-                logger.error(txt2, t);
-            } else {
-                logger.error(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
+        }
+        if (t != null) {
+            logger.error(txt2, t);
+        } else {
+            logger.error(txt2);
         }
     }
 

@@ -33,7 +33,7 @@ import pe.com.jx_market.utilities.DTO_Output;
 public class PO_CECuentaCliente extends Window
 {
     static Log logger = LogFactory.getLog(PO_CECuentaCliente.class);
-    private NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
+    private final NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
     private BusinessService pedidosService, articuloService;
     private Listbox lstPed, lstDet;
     private Button btnReturn;
@@ -175,15 +175,13 @@ public class PO_CECuentaCliente extends Window
                            final String txt2,
                            final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, "JX_Market", 1, Messagebox.INFORMATION);
-            if (t != null) {
-                logger.info(txt2, t);
-            } else {
-                logger.info(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, "JX_Market", 1, Messagebox.INFORMATION);
+        }
+        if (t != null) {
+            logger.info(txt2, t);
+        } else {
+            logger.info(txt2);
         }
     }
 
@@ -191,15 +189,13 @@ public class PO_CECuentaCliente extends Window
                             final String txt2,
                             final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, "JX_Market", 1, Messagebox.EXCLAMATION);
-            if (t != null) {
-                logger.error(txt2, t);
-            } else {
-                logger.error(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, "JX_Market", 1, Messagebox.EXCLAMATION);
+        }
+        if (t != null) {
+            logger.error(txt2, t);
+        } else {
+            logger.error(txt2);
         }
 
     }

@@ -36,7 +36,7 @@ public class PO_EAConsultaProducto
     extends SecuredWindow
 {
     static Log logger = LogFactory.getLog(PO_EAConsultaProducto.class);
-    private NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
+    private final NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
     private Textbox txtNomProd, txtMarc;
     private Combobox cmbCat, cmbEstad;
     private Groupbox grpCons, grpBusq;
@@ -197,15 +197,13 @@ public class PO_EAConsultaProducto
                            final String txt2,
                            final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.INFORMATION);
-            if (t != null) {
-                logger.info(txt2, t);
-            } else {
-                logger.info(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.INFORMATION);
+        }
+        if (t != null) {
+            logger.info(txt2, t);
+        } else {
+            logger.info(txt2);
         }
     }
 
@@ -213,15 +211,13 @@ public class PO_EAConsultaProducto
                             final String txt2,
                             final Throwable t)
     {
-        try {
-            if (txt.length() > 0)
-                Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
-            if (t != null) {
-                logger.error(txt2, t);
-            } else {
-                logger.error(txt2);
-            }
-        } catch (final InterruptedException ex) {
+        if (txt.length() > 0) {
+            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
+        }
+        if (t != null) {
+            logger.error(txt2, t);
+        } else {
+            logger.error(txt2);
         }
     }
 
