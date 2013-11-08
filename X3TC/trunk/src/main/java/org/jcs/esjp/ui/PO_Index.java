@@ -26,7 +26,16 @@ import org.jcs.esjp.util.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.zhtml.Table;
+import org.zkoss.zhtml.Tbody;
+import org.zkoss.zhtml.Td;
+import org.zkoss.zhtml.Tr;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.UiException;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Window;
 
 public class PO_Index extends Div
 {
@@ -36,28 +45,71 @@ public class PO_Index extends Div
     private Integer maxX;
     private Integer maxY;
 
-    public void onCreate() throws IOException
+    public void onCreate()
+        throws IOException
     {
         table = (Table) getFellow("tableContent");
         maxX = 0;
         maxY = 0;
 
+        final Tbody tbody = new Tbody();
+        tbody.setParent(table);
 
         final Map<Integer, Map<Integer, Sector>> matrix = readFile();
 
-        for (int i=0; i<maxX; i++) {
-            for (int j=0; j<maxY; j++) {
+        for (int i = 0; i < maxX; i++) {
+            final Tr tr = new Tr();
+            tr.setParent(tbody);
+            tr.setSclass("sec");
+            for (int j = 0; j < maxY; j++) {
                 if (matrix.containsKey(i)) {
                     if (matrix.get(i).containsKey(j)) {
-
+                        final Sector sector = matrix.get(i).get(j);
+                        buildUISector(tr, sector);
                     } else {
-
+                        buildUIEmptySector(tr);
                     }
                 } else {
-
+                    buildUIEmptySector(tr);
                 }
             }
         }
+    }
+
+    protected void buildUIEmptySector(final Tr _tr) {
+        final Td td = new Td();
+        td.setParent(_tr);
+    }
+
+    protected void buildUISector(final Tr _tr,
+                                 final Sector _sector)
+    {
+        final Td td = new Td();
+        td.setSclass("sec");
+        td.setStyle("background-color: " + _sector.getRace().getColor());
+        td.setParent(_tr);
+
+        final Div div = new Div();
+        div.setSclass("sec");
+        div.setParent(td);
+
+        final Label label = new Label();
+        label.setValue(_sector.getName());
+        label.setSclass("secTitle");
+        label.setParent(div);
+        label.addEventListener(Events.ON_CLICK, new org.zkoss.zk.ui.event.EventListener<Event>()
+        {
+            @Override
+            public void onEvent(final Event e)
+                throws UiException
+            {
+                final Window window = (Window) Executions.createComponents(
+                                "sectorData.zul", null, null);
+                window.setAttribute("sector", _sector);
+                window.doModal();
+                window.setPosition("center,top");
+            }
+        });
     }
 
     protected Map<Integer, Map<Integer, Sector>> readFile()
@@ -138,6 +190,8 @@ public class PO_Index extends Div
         final Race race = new Race();
         race.setName(_scanner.nextLine());
         race.setColor(Settings.RACE2COLOR.get(race.getName()));
+
+        _sector.setRace(race);
 
         // I don't know what is this yet.
         _scanner.nextLine();
@@ -329,6 +383,9 @@ public class PO_Index extends Div
         final Map<Integer, Map<Integer, Sector>> rows = new TreeMap<Integer, Map<Integer, Sector>>();
         for(final Sector sector: _sectors) {
             final Integer posX = sector.getPosX();
+            /*if (!Settings.RaceSettings.TERRAN.getKey().equals(sector.getRace().getName())) {
+                posX = sector.getPosX() + 6;
+            }*/
             final Integer posY = sector.getPosY();
             if (posX > maxX) {
                 maxX = posX;

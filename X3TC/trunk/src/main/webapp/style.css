@@ -125,3 +125,29 @@ A.l:hover {
 	border: 1px dotted rgb(250, 0, 0);
 }
 
+tr.sec {
+    vertical-align: center;
+}
+td.sec {
+    height: 80px; 
+    width: 80px;
+}
+div.sec {
+    vertical-align: top;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+.secTitle {
+    color: white;
+    font-size: smaller;
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: tahoma;
+}
+.secTitle:hover {
+    color: #FFCC55;
+    text-decoration: underline;
+    font-family: tahoma;
+    font-size: smaller;
+}
