@@ -303,7 +303,7 @@ public class PO_Index extends Div
                         && !Settings.FactorySettings.VACIO.getKey().equals(line)) {
             final StructureOther other = new StructureOther();
             final String[] objs = line.split("; ");
-            other.setName(objs[0].replace("+ ", ""));
+            other.setName(objs[0].replace("+ ", "").replace("+", ""));
             System.out.println("Nombre del Other: "  + other.getName());
             other.setPosX(Integer.parseInt(objs[1]));
             other.setPosY(Integer.parseInt(objs[2]));
@@ -330,7 +330,7 @@ public class PO_Index extends Div
                         && !Settings.FactorySettings.VACIO.getKey().equals(line)) {
             final StructureFreeShip freeship = new StructureFreeShip();
             final String[] objs = line.split("; ");
-            freeship.setName(objs[0].replace("+ ", "") + " " + objs[1]);
+            freeship.setName(objs[0].replace("+ ", "").replace("+", "") + " " + objs[1]);
             System.out.println("Nombre de la free ship: "  + freeship.getName());
             freeship.setPosX(Integer.parseInt(objs[2]));
             freeship.setPosY(Integer.parseInt(objs[3]));
@@ -348,7 +348,7 @@ public class PO_Index extends Div
         while (lineObjs.startsWith("+")) {
             final ObjectSale strucSale = new ObjectSale();
             final String[] lineObjsArr = lineObjs.split("; ");
-            strucSale.setName(lineObjsArr[0].replace("+ ", ""));
+            strucSale.setName(lineObjsArr[0].replace("+ ", "").replace("+", ""));
             strucSale.setPrice(new BigDecimal(lineObjsArr[1]));
             strucSale.setQuantity(Integer.parseInt(lineObjsArr[2]));
             strucSale.setFreeSpace(Integer.parseInt(lineObjsArr[3]));
@@ -364,7 +364,7 @@ public class PO_Index extends Div
         while (lineObjs.startsWith("*")) {
             final ObjectPurchase strucPur = new ObjectPurchase();
             final String[] lineObjsArr = lineObjs.split("; ");
-            strucPur.setName(lineObjsArr[0].replace("* ", ""));
+            strucPur.setName(lineObjsArr[0].replace("* ", "").replace("*", ""));
             strucPur.setPrice(new BigDecimal(lineObjsArr[1]));
             strucPur.setQuantity(Integer.parseInt(lineObjsArr[2]));
             strucPur.setFreeSpace(Integer.parseInt(lineObjsArr[3]));

@@ -35,6 +35,9 @@ public class PO_SectorData
     protected void buildStructureList() {
         final Listbox lst = new Listbox();
         final Listhead lstHead = new Listhead();
+        final Listheader lstHeader = new Listheader();
+        lstHeader.setWidth("50px");
+        lstHead.appendChild(lstHeader);
         lstHead.appendChild(new Listheader("Nombre"));
         lstHead.appendChild(new Listheader("Cantidad"));
         lstHead.appendChild(new Listheader("Precio"));
@@ -50,6 +53,9 @@ public class PO_SectorData
                 lstGroup.setParent(lst);
                 for (final ObjectSale object : ((StructureNormal) struct).getObjSale()) {
                     final Listitem item = new Listitem();
+                    final Listcell cell = new Listcell();
+                    cell.setImage("images/sale.png");
+                    item.appendChild(cell);
                     item.appendChild(new Listcell(object.getName()));
                     item.appendChild(new Listcell(getDecimalFormat(0, 0).format(object.getQuantity())));
                     item.appendChild(new Listcell(getDecimalFormat(0, 2).format(object.getPrice())));
@@ -63,6 +69,10 @@ public class PO_SectorData
                 lstGroup.setParent(lst);
                 for (final ObjectSale object : ((StructureFactory) struct).getObjSale()) {
                     final Listitem item = new Listitem();
+                    final Listcell cell = new Listcell();
+                    cell.setImage("images/sale.png");
+                    //cell.setWidth("10px");
+                    item.appendChild(cell);
                     item.appendChild(new Listcell(object.getName()));
                     item.appendChild(new Listcell(getDecimalFormat(0, 0).format(object.getQuantity())));
                     item.appendChild(new Listcell(getDecimalFormat(0, 2).format(object.getPrice())));
@@ -70,6 +80,10 @@ public class PO_SectorData
                 }
                 for (final ObjectPurchase object : ((StructureFactory) struct).getObjPurch()) {
                     final Listitem item = new Listitem();
+                    final Listcell cell = new Listcell();
+                    cell.setImage("images/purchase.png");
+                    item.appendChild(cell);
+                    //cell.setWidth("10px");
                     item.appendChild(new Listcell(object.getName()));
                     item.appendChild(new Listcell(getDecimalFormat(0, 0).format(object.getQuantity())));
                     item.appendChild(new Listcell(getDecimalFormat(0, 2).format(object.getPrice())));
