@@ -28,7 +28,10 @@ public class MapPanel
 
     public MapPanel()
     {
-        // Make dragging a little faster but perhaps uglier.
+      //Let the user scroll by dragging to outside the window.
+        setAutoscrolls(true); //enable synthetic drag events
+        addMouseMotionListener(this); //handle mouse drags
+        addMouseListener(this);
         buildSectors();
     }
 
