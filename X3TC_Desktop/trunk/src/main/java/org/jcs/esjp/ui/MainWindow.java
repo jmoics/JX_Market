@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 
 import javax.swing.JFrame;
-import javax.swing.UIManager;
 
 public class MainWindow
     extends WindowAdapter
@@ -28,10 +27,10 @@ public class MainWindow
     public static void createAndShowGUI()
     {
         // Use the Java look and feel.
-        try {
+        /*try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (final Exception e) {
-        }
+        }*/
 
         // Make sure we have nice window decorations.
         /*JFrame.setDefaultLookAndFeelDecorated(true);
@@ -52,10 +51,11 @@ public class MainWindow
         frame.getRootPane().setDefaultButton(defaultButton);*/
 
         // Display the window.
+        //frame.setSize(3000, 3000);
+        frame.setResizable(true);
         frame.pack();
-        frame.setLocationRelativeTo(null); // center it
+        //frame.setLocationRelativeTo(null); // center it
         frame.setVisible(true);
-        //frame.setSize(1980, 1020);
     }
 
 }
