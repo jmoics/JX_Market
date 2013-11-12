@@ -21,7 +21,7 @@ public class ScrollPanel extends JPanel
 
         //Put it in this panel.
         add(scrollPane);
-        setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        //setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
     }
 
 }

@@ -32,17 +32,18 @@ public class Settings
 
     public enum RaceSettings
     {
-        ARGON("Argon", "#005588"),
-        TERRAN("Terran", "#142c50"),
-        BORON("Boron", "#362080"),
-        TELADI("Teladi", "#1d401d"),
-        PARANID("Paranid", "#402542"),
-        SPLIT("Split", "#535008"),
-        PIRATAS("Piratas", "black"),
-        XENON("Xenon", "#5a1919"),
-        KHAAK("Kha'ak", "#aa0520"),
-        YAKI("Yaki", "#555555"),
-        UNKNOWN("Desconocida", "#555555");
+        ARGON("Argon", "src/main/resources/images/argon.png"),
+        TERRAN("Terran", "src/main/resources/images/terran.png"),
+        BORON("Boron", "src/main/resources/images/boron.png"),
+        TELADI("Teladi", "src/main/resources/images/teladi.png"),
+        PARANID("Paranid", "src/main/resources/images/paranid.png"),
+        SPLIT("Split", "src/main/resources/images/split.png"),
+        PIRATAS("Piratas", "src/main/resources/images/pirata.png"),
+        XENON("Xenon", "src/main/resources/images/xenon.png"),
+        KHAAK("Kha'ak", "src/main/resources/images/khaak.png"),
+        YAKI("Yaki", "src/main/resources/images/yaki.png"),
+        UNKNOWN("Desconocida", "src/main/resources/images/desconocido.png"),
+        GONER("Goner", "src/main/resources/images/goner.png");
 
         private final String key;
         private final String color;
@@ -67,17 +68,18 @@ public class Settings
 
     public static Map<String, String> RACE2COLOR = new HashMap<String, String>();
     static {
-        Settings.RACE2COLOR.put("Argon", "#005588");
-        Settings.RACE2COLOR.put("Terran", "#142c50");
-        Settings.RACE2COLOR.put("Boron", "#362080");
-        Settings.RACE2COLOR.put("Teladi", "#1d401d");
-        Settings.RACE2COLOR.put("Paranid", "#402542");
-        Settings.RACE2COLOR.put("Split", "#535008");
-        Settings.RACE2COLOR.put("Piratas", "black");
-        Settings.RACE2COLOR.put("Xenon", "#5a1919");
-        Settings.RACE2COLOR.put("Kha'ak", "#aa0520");
-        Settings.RACE2COLOR.put("Yaki", "#555555");
-        Settings.RACE2COLOR.put("Desconocida", "#555555");
+        Settings.RACE2COLOR.put("Argon", "src/main/resources/images/argon.png");
+        Settings.RACE2COLOR.put("Terran", "src/main/resources/images/terran.png");
+        Settings.RACE2COLOR.put("Boron", "src/main/resources/images/boron.png");
+        Settings.RACE2COLOR.put("Teladi", "src/main/resources/images/teladi.png");
+        Settings.RACE2COLOR.put("Paranid", "src/main/resources/images/paranid.png");
+        Settings.RACE2COLOR.put("Split", "src/main/resources/images/split.png");
+        Settings.RACE2COLOR.put("Piratas", "src/main/resources/images/pirata.png");
+        Settings.RACE2COLOR.put("Xenon", "src/main/resources/images/xenon.png");
+        Settings.RACE2COLOR.put("Kha'ak", "src/main/resources/images/khaak.png");
+        Settings.RACE2COLOR.put("Yaki", "src/main/resources/images/yaki.png");
+        Settings.RACE2COLOR.put("Goner", "src/main/resources/images/goner.png");
+        Settings.RACE2COLOR.put("Desconocida", "src/main/resources/images/desconocido.png");
     }
 
     public enum GateSettings

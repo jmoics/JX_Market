@@ -24,6 +24,8 @@ public class MapPanel
 {
     int x;
     int y;
+    int maxX;
+    int maxY;
     private final int maxUnitIncrement = 30;
 
     public MapPanel()
@@ -44,10 +46,10 @@ public class MapPanel
             e.printStackTrace();
         }
 
-        final Integer maxX = structure.getMaxX() + 1;
-        final Integer maxY = structure.getMaxY() + 1;
+        maxX = structure.getMaxX() + 1;
+        maxY = structure.getMaxY() + 1;
 
-        final GridLayout layout = new GridLayout(maxX, maxY, 12, 12);
+        final GridLayout layout = new GridLayout(maxX, maxY, 10, 10);
         setLayout(layout);
 
         for (int i = 0; i < maxX; i++) {
@@ -70,27 +72,12 @@ public class MapPanel
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(3000, 3000);
-    }
-
-    @Override
-    public void mouseDragged(final MouseEvent e)
-    {
-        e.translatePoint(e.getComponent().getLocation().x - x, e.getComponent().getLocation().y - y);
-        setLocation(e.getX(), e.getY());
-    }
-
-    @Override
-    public void mouseMoved(final MouseEvent e)
-    {
-        // TODO Auto-generated method stub
-
+        return new Dimension(maxX * 120, maxY * 85);
     }
 
     @Override
     public Dimension getPreferredScrollableViewportSize()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -136,22 +123,20 @@ public class MapPanel
     @Override
     public boolean getScrollableTracksViewportWidth()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean getScrollableTracksViewportHeight()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public void mouseClicked(final MouseEvent e)
+    public void mouseDragged(final MouseEvent e)
     {
-        // TODO Auto-generated method stub
-
+        e.translatePoint(e.getComponent().getLocation().x - x, e.getComponent().getLocation().y - y);
+        setLocation(e.getX(), e.getY());
     }
 
     @Override
@@ -162,23 +147,17 @@ public class MapPanel
     }
 
     @Override
-    public void mouseReleased(final MouseEvent e)
-    {
-        // TODO Auto-generated method stub
-
-    }
+    public void mouseMoved(final MouseEvent e) {}
 
     @Override
-    public void mouseEntered(final MouseEvent e)
-    {
-        // TODO Auto-generated method stub
-
-    }
+    public void mouseClicked(final MouseEvent e) {}
 
     @Override
-    public void mouseExited(final MouseEvent e)
-    {
-        // TODO Auto-generated method stub
+    public void mouseReleased(final MouseEvent e) {}
 
-    }
+    @Override
+    public void mouseEntered(final MouseEvent e) {}
+
+    @Override
+    public void mouseExited(final MouseEvent e) {}
 }
