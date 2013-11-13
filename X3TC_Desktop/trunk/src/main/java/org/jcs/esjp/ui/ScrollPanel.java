@@ -9,11 +9,11 @@ import javax.swing.JScrollPane;
 
 public class ScrollPanel extends JPanel
 {
-    MapPanel mappan;
-
     public ScrollPanel() {
-      //Set up the scroll pane.
-        mappan = new MapPanel();
+        setBackground(new Color(53, 66, 90));
+
+        //Set up the scroll pane.
+        final MapPanel mappan = new MapPanel();
         final JScrollPane scrollPane = new JScrollPane(mappan);
         scrollPane.setPreferredSize(new Dimension(1920, 980));
         scrollPane.setViewportBorder(

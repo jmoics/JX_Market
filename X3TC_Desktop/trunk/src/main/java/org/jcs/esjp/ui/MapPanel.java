@@ -1,5 +1,6 @@
 package org.jcs.esjp.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
@@ -22,22 +23,24 @@ public class MapPanel
     MouseMotionListener,
     MouseListener
 {
-    int x;
-    int y;
-    int maxX;
-    int maxY;
+    private int x;
+    private int y;
+    private int maxX;
+    private int maxY;
     private final int maxUnitIncrement = 30;
 
     public MapPanel()
     {
-      //Let the user scroll by dragging to outside the window.
-        setAutoscrolls(true); //enable synthetic drag events
-        addMouseMotionListener(this); //handle mouse drags
+        setBackground(new Color(53, 66, 90));
+        // Let the user scroll by dragging to outside the window.
+        setAutoscrolls(true); // enable synthetic drag events
+        addMouseMotionListener(this); // handle mouse drags
         addMouseListener(this);
         buildSectors();
     }
 
-    protected void buildSectors() {
+    protected void buildSectors()
+    {
         final Structure structure = new Structure();
         Map<Integer, Map<Integer, Sector>> matrix = new HashMap<Integer, Map<Integer, Sector>>();
         try {
@@ -71,7 +74,8 @@ public class MapPanel
     }
 
     @Override
-    public Dimension getPreferredSize() {
+    public Dimension getPreferredSize()
+    {
         return new Dimension(maxX * 120, maxY * 85);
     }
 
@@ -86,7 +90,7 @@ public class MapPanel
                                           final int orientation,
                                           final int direction)
     {
-      //Get the current position.
+        // Get the current position.
         int currentPosition = 0;
         if (orientation == SwingConstants.HORIZONTAL) {
             currentPosition = visibleRect.x;
@@ -94,17 +98,17 @@ public class MapPanel
             currentPosition = visibleRect.y;
         }
 
-        //Return the number of pixels between currentPosition
-        //and the nearest tick mark in the indicated direction.
+        // Return the number of pixels between currentPosition
+        // and the nearest tick mark in the indicated direction.
         if (direction < 0) {
             final int newPosition = currentPosition -
-                             (currentPosition / maxUnitIncrement)
-                              * maxUnitIncrement;
+                            (currentPosition / maxUnitIncrement)
+                            * maxUnitIncrement;
             return (newPosition == 0) ? maxUnitIncrement : newPosition;
         } else {
             return ((currentPosition / maxUnitIncrement) + 1)
-                   * maxUnitIncrement
-                   - currentPosition;
+                            * maxUnitIncrement
+                            - currentPosition;
         }
     }
 
@@ -147,17 +151,27 @@ public class MapPanel
     }
 
     @Override
-    public void mouseMoved(final MouseEvent e) {}
+    public void mouseMoved(final MouseEvent e)
+    {
+    }
 
     @Override
-    public void mouseClicked(final MouseEvent e) {}
+    public void mouseClicked(final MouseEvent e)
+    {
+    }
 
     @Override
-    public void mouseReleased(final MouseEvent e) {}
+    public void mouseReleased(final MouseEvent e)
+    {
+    }
 
     @Override
-    public void mouseEntered(final MouseEvent e) {}
+    public void mouseEntered(final MouseEvent e)
+    {
+    }
 
     @Override
-    public void mouseExited(final MouseEvent e) {}
+    public void mouseExited(final MouseEvent e)
+    {
+    }
 }

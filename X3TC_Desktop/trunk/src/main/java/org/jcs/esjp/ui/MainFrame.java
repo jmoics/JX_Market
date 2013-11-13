@@ -1,5 +1,7 @@
 package org.jcs.esjp.ui;
 
+import java.awt.Color;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -8,8 +10,8 @@ public class MainFrame
 {
     public MainFrame()
     {
+        setBackground(new Color(53, 66, 90));
         final JComponent newContentPane = new ScrollPanel();
-        newContentPane.setOpaque(true); //content panes must be opaque
         setContentPane(newContentPane);
     }
 }
