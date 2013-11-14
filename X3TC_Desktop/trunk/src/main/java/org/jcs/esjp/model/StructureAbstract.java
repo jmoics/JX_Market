@@ -8,6 +8,7 @@ public abstract class StructureAbstract
     private Integer posY;
     private Integer posZ;
     private String iconPath;
+    private Integer orderType;
 
     public String getName()
     {
@@ -56,6 +57,14 @@ public abstract class StructureAbstract
     public void setIconPath(final String iconPath)
     {
         this.iconPath = iconPath;
+    }
+    public Integer getOrderType()
+    {
+        return orderType;
+    }
+    public void setOrderType(final Integer orderType)
+    {
+        this.orderType = orderType;
     }
 
     @Override

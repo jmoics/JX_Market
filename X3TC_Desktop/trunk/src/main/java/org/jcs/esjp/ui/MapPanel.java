@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JPanel;
@@ -28,6 +27,7 @@ public class MapPanel
     private int maxX;
     private int maxY;
     private final int maxUnitIncrement = 30;
+    private Map<Integer, Map<Integer, Sector>> matrix;
 
     public MapPanel()
     {
@@ -43,7 +43,6 @@ public class MapPanel
     protected void buildSectors()
     {
         final Structure structure = new Structure();
-        Map<Integer, Map<Integer, Sector>> matrix = new HashMap<Integer, Map<Integer, Sector>>();
         try {
             matrix = structure.init();
         } catch (final IOException e) {

@@ -9,7 +9,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -35,6 +37,7 @@ import org.jcs.esjp.model.StructureAbstract;
 import org.jcs.esjp.model.StructureFactory;
 import org.jcs.esjp.model.StructureNormal;
 import org.jcs.esjp.model.StructureOther;
+import org.jcs.esjp.util.Settings;
 
 public class SectorDataFrame
     extends JFrame
@@ -53,8 +56,8 @@ public class SectorDataFrame
 
         dataView = new JPanel();
         dataView.setBackground(new Color(53, 66, 90));
-        dataView.setLayout(new GridLayout(3, 2));
-        initHelp();
+        dataView.setLayout(new BorderLayout());
+        //initHelp();
 
         final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setLeftComponent(createDataPane(_sector));
@@ -220,44 +223,52 @@ public class SectorDataFrame
         final Object object = ((DefaultMutableTreeNode) ((JTree) e.getSource())
                         .getLastSelectedPathComponent()).getUserObject();
         if (object instanceof ObjectAbstract) {
-            dataView.removeAll();
+            Properties prop = new Properties();
+            try {
+                prop = Settings.getProperties();
+            } catch (final IOException e1) {
+                e1.printStackTrace();
+            }
+
+            final JPanel northView = new JPanel();
+            northView.setBackground(new Color(53, 66, 90));
+            northView.setLayout(new GridLayout(4, 2));
+            northView.removeAll();
             final Font font = new Font("Tahoma", Font.PLAIN, 10);
-            JLabel label = new JLabel("Precio");
+            JLabel label = new JLabel(prop.getProperty("org.jcs.esjp.ui.Price"));
             label.setFont(font);
             label.setForeground(new Color(255, 255, 255));
-            dataView.add(label);
+            northView.add(label);
 
             label = new JLabel(formatter.format(((ObjectAbstract) object).getPrice()));
             label.setFont(font);
             label.setForeground(new Color(255, 255, 255));
-            dataView.add(label);
+            northView.add(label);
 
-            label = new JLabel("Cantidad");
+            label = new JLabel(prop.getProperty("org.jcs.esjp.ui.Quantity"));
             label.setFont(font);
             label.setForeground(new Color(255, 255, 255));
-            dataView.add(label);
+            northView.add(label);
 
             label = new JLabel(formatter.format(((ObjectAbstract) object).getQuantity()));
             label.setFont(font);
             label.setForeground(new Color(255, 255, 255));
-            dataView.add(label);
+            northView.add(label);
 
-            label = new JLabel("Espacio Libre");
+            label = new JLabel(prop.getProperty("org.jcs.esjp.ui.FreeSpace"));
             label.setFont(font);
             label.setForeground(new Color(255, 255, 255));
-            dataView.add(label);
+            northView.add(label);
 
             label = new JLabel(formatter.format(((ObjectAbstract) object).getFreeSpace()));
             label.setFont(font);
             label.setForeground(new Color(255, 255, 255));
-            dataView.add(label);
+            northView.add(label);
 
-            dataView.repaint();
+
+
+            dataView.add(northView, BorderLayout.NORTH);
+            dataView.revalidate();
         }
-    }
-
-    private void initHelp() {
-        final JLabel label = new JLabel("Iniciando...");
-        dataView.add(label);
     }
 }

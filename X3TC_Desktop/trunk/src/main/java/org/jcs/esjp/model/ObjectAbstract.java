@@ -9,6 +9,7 @@ public abstract class ObjectAbstract
     private Integer quantity;
     private Integer freeSpace;
     private String iconPath;
+    private Integer orderType;
 
     public String getIconPath()
     {
@@ -50,7 +51,14 @@ public abstract class ObjectAbstract
     {
         this.freeSpace = freeSpace;
     }
-
+    public Integer getOrderType()
+    {
+        return orderType;
+    }
+    public void setOrderType(final Integer orderType)
+    {
+        this.orderType = orderType;
+    }
     @Override
     public String toString() {
         return this.name;

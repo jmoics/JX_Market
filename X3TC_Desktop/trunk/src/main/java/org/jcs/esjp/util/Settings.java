@@ -1,7 +1,10 @@
 package org.jcs.esjp.util;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+import java.util.TreeMap;
 
 public class Settings
 {
@@ -100,5 +103,34 @@ public class Settings
         {
             return this.key;
         }
+    }
+
+    public static Map<Integer, String> CODE2TYPE = new TreeMap<Integer, String>();
+    static {
+        Settings.CODE2TYPE.put(1, "");
+        Settings.CODE2TYPE.put(2, "");
+        Settings.CODE2TYPE.put(3, "");
+        Settings.CODE2TYPE.put(4, "");
+        Settings.CODE2TYPE.put(5, "EquipmentDock");
+        Settings.CODE2TYPE.put(6, "Factory");
+        Settings.CODE2TYPE.put(7, "Ship");
+        Settings.CODE2TYPE.put(8, "Weapon");
+        Settings.CODE2TYPE.put(9, "Shield");
+        Settings.CODE2TYPE.put(10, "Misil");
+        Settings.CODE2TYPE.put(11, "EnergyCell");
+        Settings.CODE2TYPE.put(12, "");
+        Settings.CODE2TYPE.put(13, "Consumable1");
+        Settings.CODE2TYPE.put(14, "Consumable2");
+        Settings.CODE2TYPE.put(15, "Ore");
+        Settings.CODE2TYPE.put(16, "Improvement");
+        Settings.CODE2TYPE.put(17, "");
+    }
+
+    public static Properties getProperties()
+        throws IOException
+    {
+        final Properties prop = new Properties();
+        prop.load(Settings.class.getClassLoader().getResourceAsStream("application.properties"));
+        return prop;
     }
 }

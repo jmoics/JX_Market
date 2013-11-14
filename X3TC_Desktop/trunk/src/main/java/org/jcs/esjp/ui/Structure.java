@@ -6,6 +6,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -38,12 +40,7 @@ public class Structure {
         maxX = 0;
         maxY = 0;
 
-        final Properties prop = new Properties();
-        try {
-            prop.load(Structure.class.getClassLoader().getResourceAsStream("application.properties"));
-        } catch (final IOException e1) {
-            e1.printStackTrace();
-        }
+        final Properties prop = Settings.getProperties();
 
         final String filePath = prop.getProperty("org.jcs.esjp.file");
         final Path path = Paths.get(filePath);
@@ -64,6 +61,7 @@ public class Structure {
         while (scanner.hasNextLine()) {
             line = analize(line, scanner, null, lstSect);
         }
+        orderSectorComponents(lstSect);
         return lstSect;
     }
 
@@ -165,10 +163,13 @@ public class Structure {
             final String[] objs = line.split("; ");
             normalStruc.setName(objs[0]);
             if (Settings.FactorySettings.ASTILLERO.getKey().equals(_curLine)) {
+                normalStruc.setOrderType(1);
                 normalStruc.setIconPath("src/main/resources/images/data/shipyard.png");
             } else if (Settings.FactorySettings.ESTACION_COMERCIAL.getKey().equals(_curLine)) {
+                normalStruc.setOrderType(2);
                 normalStruc.setIconPath("src/main/resources/images/data/tradeStation.png");
             } else if (Settings.FactorySettings.MUELLE.getKey().equals(_curLine)) {
+                normalStruc.setOrderType(3);
                 normalStruc.setIconPath("src/main/resources/images/data/equipmentDock.png");
             }
             normalStruc.setPosX(Integer.parseInt(objs[1]));
@@ -204,6 +205,7 @@ public class Structure {
             final String[] objs = line.split("; ");
             factory.setName(objs[0]);
             factory.setIconPath("src/main/resources/images/data/factory.png");
+            factory.setOrderType(4);
             factory.setPosX(Integer.parseInt(objs[1]));
             factory.setPosY(Integer.parseInt(objs[2]));
             factory.setPosZ(Integer.parseInt(objs[3]));
@@ -236,7 +238,7 @@ public class Structure {
             final StructureOther other = new StructureOther();
             final String[] objs = line.split("; ");
             other.setName(objs[0].replace("+ ", "").replace("+", ""));
-            //System.out.println("Nombre del Other: "  + other.getName());
+            other.setOrderType(5);
             other.setPosX(Integer.parseInt(objs[1]));
             other.setPosY(Integer.parseInt(objs[2]));
             other.setPosZ(Integer.parseInt(objs[3]));
@@ -263,7 +265,7 @@ public class Structure {
             final StructureFreeShip freeship = new StructureFreeShip();
             final String[] objs = line.split("; ");
             freeship.setName(objs[0].replace("+ ", "").replace("+", "") + " " + objs[1]);
-            //System.out.println("Nombre de la free ship: "  + freeship.getName());
+            freeship.setOrderType(6);
             freeship.setPosX(Integer.parseInt(objs[2]));
             freeship.setPosY(Integer.parseInt(objs[3]));
             freeship.setPosZ(Integer.parseInt(objs[4]));
@@ -285,6 +287,7 @@ public class Structure {
             strucSale.setPrice(new BigDecimal(lineObjsArr[1]));
             strucSale.setQuantity(Integer.parseInt(lineObjsArr[2]));
             strucSale.setFreeSpace(Integer.parseInt(lineObjsArr[3]));
+            strucSale.setOrderType(Integer.parseInt(lineObjsArr[4]));
 
             if (_structure instanceof StructureNormal) {
                 ((StructureNormal) _structure).getObjSale().add(strucSale);
@@ -302,6 +305,7 @@ public class Structure {
             strucPur.setPrice(new BigDecimal(lineObjsArr[1]));
             strucPur.setQuantity(Integer.parseInt(lineObjsArr[2]));
             strucPur.setFreeSpace(Integer.parseInt(lineObjsArr[3]));
+            strucPur.setOrderType(Integer.parseInt(lineObjsArr[4]));
 
             if (_structure instanceof StructureFactory) {
                 ((StructureFactory) _structure).getObjPurch().add(strucPur);
@@ -341,6 +345,95 @@ public class Structure {
             }
         }
         return rows;
+    }
+
+    private void orderSectorComponents(final List<Sector> lstSect)
+    {
+        for (final Sector sector : lstSect) {
+            orderStructures(sector.getLstStruct());
+        }
+
+    }
+
+    private void orderStructures(final List<StructureAbstract> _lstStruct)
+    {
+        Collections.sort(_lstStruct, new Comparator<StructureAbstract>()
+        {
+            @Override
+            public int compare(final StructureAbstract o1,
+                               final StructureAbstract o2)
+            {
+                final int ret;
+                final Integer order1 = o1.getOrderType();
+                final Integer order2 = o2.getOrderType();
+                if (order1.equals(order2)) {
+                    final String name1 = o1.getName();
+                    final String name2 = o2.getName();
+                    ret = name1.compareTo(name2);
+                } else {
+                    ret = order1.compareTo(order2);
+                }
+                return ret;
+            }
+        });
+        for (final StructureAbstract struc : _lstStruct) {
+            if (struc instanceof StructureNormal) {
+                final List<ObjectSale> lstObjSale = ((StructureNormal) struc).getObjSale();
+                orderObjectSale(lstObjSale);
+            } else if (struc instanceof StructureFactory) {
+                final List<ObjectSale> lstObjSale = ((StructureFactory) struc).getObjSale();
+                orderObjectSale(lstObjSale);
+
+                final List<ObjectPurchase> lstObjPur = ((StructureFactory) struc).getObjPurch();
+                orderObjectPurchase(lstObjPur);
+            }
+        }
+    }
+
+    private void orderObjectPurchase(final List<ObjectPurchase> _lstObjPur)
+    {
+        Collections.sort(_lstObjPur, new Comparator<ObjectPurchase>()
+        {
+            @Override
+            public int compare(final ObjectPurchase o1,
+                               final ObjectPurchase o2)
+            {
+                final int ret;
+                final Integer order1 = o1.getOrderType();
+                final Integer order2 = o2.getOrderType();
+                if (order1.equals(order2)) {
+                    final String name1 = o1.getName();
+                    final String name2 = o2.getName();
+                    ret = name1.compareTo(name2);
+                } else {
+                    ret = order1.compareTo(order2);
+                }
+                return ret;
+            }
+        });
+    }
+
+    private void orderObjectSale(final List<ObjectSale> _lstObjSale)
+    {
+        Collections.sort(_lstObjSale, new Comparator<ObjectSale>()
+        {
+            @Override
+            public int compare(final ObjectSale o1,
+                               final ObjectSale o2)
+            {
+                final int ret;
+                final Integer order1 = o1.getOrderType();
+                final Integer order2 = o2.getOrderType();
+                if (order1.equals(order2)) {
+                    final String name1 = o1.getName();
+                    final String name2 = o2.getName();
+                    ret = name1.compareTo(name2);
+                } else {
+                    ret = order1.compareTo(order2);
+                }
+                return ret;
+            }
+        });
     }
 
     public Integer getMaxX() {
