@@ -13,7 +13,6 @@ package org.jcs.esjp.test;
  *    vm.html
  */
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.io.IOException;
 import java.net.URL;
 
@@ -45,15 +44,15 @@ public class TreeDemo extends JPanel
     private static boolean useSystemLookAndFeel = false;
 
     public TreeDemo() {
-        super(new GridLayout(1,0));
-
-        //Create the nodes.
+      //Create the nodes.
         final DefaultMutableTreeNode top =
             new DefaultMutableTreeNode("The Java Series");
+        createNodes(top);
+
         //Create a tree that allows one selection at a time.
         tree = new JTree(top);
         tree.getSelectionModel().setSelectionMode
-        (TreeSelectionModel.SINGLE_TREE_SELECTION);
+                (TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         //Listen for when the selection changes.
         tree.addTreeSelectionListener(this);
@@ -76,10 +75,10 @@ public class TreeDemo extends JPanel
         final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         splitPane.setTopComponent(treeView);
         splitPane.setBottomComponent(htmlView);
-        final Dimension minimumSize = new Dimension(100, 50);
-        treeView.setMinimumSize(minimumSize);
-        htmlView.setMinimumSize(minimumSize);
 
+        final Dimension minimumSize = new Dimension(100, 50);
+        htmlView.setMinimumSize(minimumSize);
+        treeView.setMinimumSize(minimumSize);
         splitPane.setDividerLocation(100);
         splitPane.setPreferredSize(new Dimension(500, 300));
 
