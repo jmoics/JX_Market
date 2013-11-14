@@ -10,6 +10,7 @@ public class MainFrame
 {
     public MainFrame()
     {
+        super();
         setBackground(new Color(53, 66, 90));
         final JComponent newContentPane = new ScrollPanel();
         setContentPane(newContentPane);

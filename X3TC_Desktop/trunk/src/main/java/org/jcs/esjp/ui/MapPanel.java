@@ -31,11 +31,12 @@ public class MapPanel
 
     public MapPanel()
     {
+        super();
         setBackground(new Color(53, 66, 90));
         // Let the user scroll by dragging to outside the window.
         setAutoscrolls(true); // enable synthetic drag events
-        addMouseMotionListener(this); // handle mouse drags
-        addMouseListener(this);
+        //addMouseMotionListener(this);
+        //addMouseListener(this);
         buildSectors();
     }
 
@@ -139,15 +140,15 @@ public class MapPanel
     @Override
     public void mouseDragged(final MouseEvent e)
     {
-        e.translatePoint(e.getComponent().getLocation().x - x, e.getComponent().getLocation().y - y);
-        setLocation(e.getX(), e.getY());
+        /*e.translatePoint(e.getComponent().getLocation().x - x, e.getComponent().getLocation().y - y);
+        setLocation(e.getX(), e.getY());*/
     }
 
     @Override
     public void mousePressed(final MouseEvent e)
     {
-        x = e.getX();
-        y = e.getY();
+        /*x = e.getX();
+        y = e.getY();*/
     }
 
     @Override
