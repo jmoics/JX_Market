@@ -8,7 +8,16 @@ public abstract class ObjectAbstract
     private BigDecimal price;
     private Integer quantity;
     private Integer freeSpace;
+    private String iconPath;
 
+    public String getIconPath()
+    {
+        return iconPath;
+    }
+    public void setIconPath(final String iconPath)
+    {
+        this.iconPath = iconPath;
+    }
     public String getName()
     {
         return name;
@@ -41,4 +50,9 @@ public abstract class ObjectAbstract
     {
         this.freeSpace = freeSpace;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    };
 }

@@ -81,7 +81,7 @@ public class Structure {
                         || Settings.FactorySettings.ASTILLERO.getKey().equals(_line)
                         || Settings.FactorySettings.ESTACION_COMERCIAL.getKey().equals(_line)
                         || Settings.FactorySettings.MUELLE.getKey().equals(_line)) {
-            line = buildNormal((Sector) _object, _scanner);
+            line = buildNormal((Sector) _object, _scanner, _line);
             line = analize(line, _scanner, _object, _lstSector);
         } else if (Settings.FactorySettings.FACTORIA.getKey().equals(_line)) {
             line = buildFactory((Sector) _object, _scanner);
@@ -148,7 +148,8 @@ public class Structure {
     }
 
     protected String buildNormal(final Sector _sector,
-                                 final Scanner _scanner) {
+                                 final Scanner _scanner,
+                                 final String _curLine) {
         String line = _scanner.nextLine();
         while (!"==========".equals(line)
                         && !Settings.FactorySettings.ASTILLERO.getKey().equals(line)
@@ -163,7 +164,13 @@ public class Structure {
             final StructureNormal normalStruc = new StructureNormal();
             final String[] objs = line.split("; ");
             normalStruc.setName(objs[0]);
-            //System.out.println("Nombre de la Estructura: "  + normalStruc.getName());
+            if (Settings.FactorySettings.ASTILLERO.getKey().equals(_curLine)) {
+                normalStruc.setIconPath("src/main/resources/images/data/shipyard.png");
+            } else if (Settings.FactorySettings.ESTACION_COMERCIAL.getKey().equals(_curLine)) {
+                normalStruc.setIconPath("src/main/resources/images/data/tradeStation.png");
+            } else if (Settings.FactorySettings.MUELLE.getKey().equals(_curLine)) {
+                normalStruc.setIconPath("src/main/resources/images/data/equipmentDock.png");
+            }
             normalStruc.setPosX(Integer.parseInt(objs[1]));
             normalStruc.setPosY(Integer.parseInt(objs[2]));
             normalStruc.setPosZ(Integer.parseInt(objs[3]));
@@ -196,7 +203,7 @@ public class Structure {
             final StructureFactory factory = new StructureFactory();
             final String[] objs = line.split("; ");
             factory.setName(objs[0]);
-            //System.out.println("Nombre de la Fabrica: "  + factory.getName());
+            factory.setIconPath("src/main/resources/images/data/factory.png");
             factory.setPosX(Integer.parseInt(objs[1]));
             factory.setPosY(Integer.parseInt(objs[2]));
             factory.setPosZ(Integer.parseInt(objs[3]));
@@ -274,6 +281,7 @@ public class Structure {
             final ObjectSale strucSale = new ObjectSale();
             final String[] lineObjsArr = lineObjs.split("; ");
             strucSale.setName(lineObjsArr[0].replace("+ ", "").replace("+", ""));
+            strucSale.setIconPath("src/main/resources/images/data/sale.png");
             strucSale.setPrice(new BigDecimal(lineObjsArr[1]));
             strucSale.setQuantity(Integer.parseInt(lineObjsArr[2]));
             strucSale.setFreeSpace(Integer.parseInt(lineObjsArr[3]));
@@ -290,6 +298,7 @@ public class Structure {
             final ObjectPurchase strucPur = new ObjectPurchase();
             final String[] lineObjsArr = lineObjs.split("; ");
             strucPur.setName(lineObjsArr[0].replace("* ", "").replace("*", ""));
+            strucPur.setIconPath("src/main/resources/images/data/purchase.png");
             strucPur.setPrice(new BigDecimal(lineObjsArr[1]));
             strucPur.setQuantity(Integer.parseInt(lineObjsArr[2]));
             strucPur.setFreeSpace(Integer.parseInt(lineObjsArr[3]));

@@ -7,6 +7,7 @@ public abstract class StructureAbstract
     private Integer posX;
     private Integer posY;
     private Integer posZ;
+    private String iconPath;
 
     public String getName()
     {
@@ -48,5 +49,17 @@ public abstract class StructureAbstract
     {
         this.posZ = posZ;
     }
+    public String getIconPath()
+    {
+        return iconPath;
+    }
+    public void setIconPath(final String iconPath)
+    {
+        this.iconPath = iconPath;
+    }
 
+    @Override
+    public String toString() {
+        return this.name;
+    };
 }

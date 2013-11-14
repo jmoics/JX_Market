@@ -76,7 +76,7 @@ public class SectorPanel
     {
         if (e.getClickCount() == 2) {
             final SectorDataFrame intFrame = new SectorDataFrame(((SectorPanel) e.getSource()).getSector());
-            intFrame.setSize(new Dimension(600, 800));
+            intFrame.setSize(new Dimension(800, 950));
             intFrame.setVisible(true);
         }
     }
