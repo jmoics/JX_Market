@@ -15,6 +15,8 @@ import javax.swing.JToolBar;
 
 public class ScrollPanel extends JPanel
 {
+    private final MapPanel mappan;
+
     public ScrollPanel() {
         super(new BorderLayout());
         setBackground(new Color(53, 66, 90));
@@ -25,7 +27,7 @@ public class ScrollPanel extends JPanel
         addButtons(toolBar);
 
         //Set up the scroll pane.
-        final MapPanel mappan = new MapPanel();
+        mappan = new MapPanel();
         mappan.getComponents();
 
         final JScrollPane scrollPane = new JScrollPane(mappan);
@@ -64,7 +66,7 @@ public class ScrollPanel extends JPanel
             @Override
             public void actionPerformed(final ActionEvent e)
             {
-                final SearchDataFrame intFrame = new SearchDataFrame();
+                final SearchDataFrame intFrame = new SearchDataFrame(mappan);
                 intFrame.setSize(new Dimension(800, 400));
                 intFrame.setVisible(true);
             }

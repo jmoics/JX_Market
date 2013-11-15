@@ -174,4 +174,19 @@ public class MapPanel
     public void mouseExited(final MouseEvent e)
     {
     }
+
+    protected Map<Integer, Map<Integer, Sector>> getMatrix() {
+        return this.matrix;
+    }
+
+    public int getMaxX()
+    {
+        return this.maxX;
+    }
+
+    public int getMaxY()
+    {
+        return this.maxY;
+    }
+
 }

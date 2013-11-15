@@ -126,6 +126,25 @@ public class Settings
         Settings.CODE2TYPE.put(17, "");
     }
 
+    public enum SearchSettings
+    {
+        SECTOR("Sector"),
+        DOCK("Muelle"),
+        FACTORY("Fabrica");
+
+        private final String key;
+
+        private SearchSettings(final String _key)
+        {
+            this.key = _key;
+        }
+
+        public String getKey()
+        {
+            return this.key;
+        }
+    }
+
     public static Properties getProperties()
         throws IOException
     {
