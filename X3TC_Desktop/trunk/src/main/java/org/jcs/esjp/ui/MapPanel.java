@@ -8,13 +8,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JPanel;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
 import org.jcs.esjp.model.Sector;
+import org.jcs.esjp.ui.SearchDataFrame.ObjectPosition;
 
 public class MapPanel
     extends JPanel
@@ -59,18 +62,43 @@ public class MapPanel
             for (int j = 0; j < maxY; j++) {
                 if (matrix.containsKey(i)) {
                     if (matrix.get(i).containsKey(j)) {
-                        final SectorPanel secPan = new SectorPanel(matrix.get(i).get(j));
+                        final SectorPanel secPan = new SectorPanel(matrix.get(i).get(j), false);
                         add(secPan);
                     } else {
-                        final SectorPanel secPan = new SectorPanel(null);
+                        final SectorPanel secPan = new SectorPanel(null, false);
                         add(secPan);
                     }
                 } else {
-                    final SectorPanel secPan = new SectorPanel(null);
+                    final SectorPanel secPan = new SectorPanel(null, false);
                     add(secPan);
                 }
             }
         }
+    }
+
+    protected void updateGalaxyMap(final ObjectPosition _objPos) {
+        removeAll();
+        final Map<Object, Integer> obj2pos = _objPos.getObject2Position();
+        final Set<Integer> setPos = new HashSet<Integer>(obj2pos.values());
+
+        for (int i = 0; i < maxX; i++) {
+            for (int j = 0; j < maxY; j++) {
+                final Integer curPos = i * getMaxY() + j;
+                if (matrix.containsKey(i)) {
+                    if (matrix.get(i).containsKey(j)) {
+                        final SectorPanel secPan = new SectorPanel(matrix.get(i).get(j), !setPos.contains(curPos));
+                        add(secPan);
+                    } else {
+                        final SectorPanel secPan = new SectorPanel(null, false);
+                        add(secPan);
+                    }
+                } else {
+                    final SectorPanel secPan = new SectorPanel(null, false);
+                    add(secPan);
+                }
+            }
+        }
+        repaint();
     }
 
     @Override

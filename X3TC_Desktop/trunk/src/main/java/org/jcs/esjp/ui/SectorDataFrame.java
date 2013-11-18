@@ -266,7 +266,7 @@ public class SectorDataFrame
             northView.add(label);
 
 
-
+            dataView.removeAll();
             dataView.add(northView, BorderLayout.NORTH);
             dataView.revalidate();
         }

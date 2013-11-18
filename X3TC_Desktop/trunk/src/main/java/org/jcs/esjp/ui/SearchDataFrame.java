@@ -1,13 +1,21 @@
 package org.jcs.esjp.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -18,9 +26,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSplitPane;
 
-import org.jcs.esjp.model.ObjectAbstract;
-import org.jcs.esjp.model.ObjectPurchase;
-import org.jcs.esjp.model.ObjectSale;
 import org.jcs.esjp.model.Sector;
 import org.jcs.esjp.model.StructureAbstract;
 import org.jcs.esjp.model.StructureFactory;
@@ -28,9 +33,10 @@ import org.jcs.esjp.model.StructureNormal;
 import org.jcs.esjp.util.Settings;
 
 public class SearchDataFrame
-    extends JFrame
+    extends JFrame implements ActionListener
 {
     MapPanel mappan;
+    JComboBox<ObjectPosition> galaxyCombo;
 
     public SearchDataFrame(final MapPanel _mappan)
     {
@@ -52,22 +58,24 @@ public class SearchDataFrame
         final JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        final List<ObjectPosition> lst = getGalaxyData();
-        final JComboBox<ObjectPosition> galaxyCombo = new JComboBox<ObjectPosition>(lst.toArray(new ObjectPosition[0]));
+        buildGalaxyDropDown(null);
 
         final JPanel radioPan = new JPanel(new GridLayout(1, 0));
         radioPan.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
         final JRadioButton sectorButton = new JRadioButton("Sector");
         sectorButton.setActionCommand(Settings.SearchSettings.SECTOR.getKey());
+        sectorButton.addActionListener(this);
         sectorButton.setSelected(true);
 
         final JRadioButton dockButton = new JRadioButton("Docks");
         dockButton.setActionCommand(Settings.SearchSettings.DOCK.getKey());
+        dockButton.addActionListener(this);
         dockButton.setSelected(true);
 
         final JRadioButton factButton = new JRadioButton("Fabrica");
         factButton.setActionCommand(Settings.SearchSettings.FACTORY.getKey());
+        factButton.addActionListener(this);
         factButton.setSelected(true);
 
         /*
@@ -80,6 +88,16 @@ public class SearchDataFrame
         radioPan.add(factButton);
 
         final JButton searchButton = new JButton("Buscar");
+        searchButton.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(final MouseEvent e)
+            {
+                final ObjectPosition item = (ObjectPosition) galaxyCombo.getSelectedItem();
+                mappan.updateGalaxyMap(item);
+            }
+
+        });
 
         panel.add(galaxyCombo, BorderLayout.PAGE_START);
         panel.add(radioPan, BorderLayout.CENTER);
@@ -89,41 +107,87 @@ public class SearchDataFrame
         return panel;
     }
 
-    protected List<ObjectPosition> getGalaxyData()
+    protected void buildGalaxyDropDown(final Set<String> _setFilter) {
+        final Collection<ObjectPosition> lst = getGalaxyData(_setFilter).values();
+        if (galaxyCombo != null) {
+            galaxyCombo.removeAllItems();
+            for (final ObjectPosition objPos : lst) {
+                galaxyCombo.addItem(objPos);
+            }
+        } else {
+            galaxyCombo = new JComboBox<ObjectPosition>(lst.toArray(new ObjectPosition[0]));
+        }
+    }
+
+    @Override
+    public void actionPerformed(final ActionEvent e) {
+        final Component[] components = ((JRadioButton)e.getSource()).getParent().getComponents();
+        final Set<String> setFilter = new HashSet<String>();
+        for (final Component component : components) {
+            final JRadioButton radioButton = (JRadioButton) component;
+            if (radioButton.isSelected()) {
+                setFilter.add(radioButton.getActionCommand());
+            }
+        }
+        buildGalaxyDropDown(setFilter);
+    }
+
+    protected Map<String, ObjectPosition> getGalaxyData(final Set<String> _setFilter)
     {
-        final List<ObjectPosition> list = new ArrayList<ObjectPosition>();
+        final Map<String, ObjectPosition> mapPos = new TreeMap<String, ObjectPosition>();
         final Map<Integer, Map<Integer, Sector>> matrix = mappan.getMatrix();
         for (final Entry<Integer, Map<Integer, Sector>> entry : matrix.entrySet()) {
             final Integer posX = entry.getKey();
             for (final Entry<Integer, Sector> entry2 : entry.getValue().entrySet()) {
-                final Integer posY = entry2.getKey();
                 final Sector sector = entry2.getValue();
-                final int position = posX * mappan.getMaxY() + posY;
-                final ObjectPosition secPos = new ObjectPosition(sector, position);
-                System.out.println("Sector --> " + sector.getName());
-                list.add(secPos);
+                final Integer posY = entry2.getKey();
+                final Integer position = posX * mappan.getMaxY() + posY;
+                if (_setFilter == null || _setFilter.contains(Settings.SearchSettings.SECTOR.getKey())) {
+                    System.out.println("Sector --> " + sector.getName());
+                    final String nameObj = sector.getName();
+                    final ObjectPosition secPos = new ObjectPosition(nameObj);
+                    secPos.getObject2Position().put(sector, position);
+                    mapPos.put(nameObj, secPos);
+                }
                 for (final StructureAbstract struc : sector.getLstStruct()) {
-                    final ObjectPosition strucPos = new ObjectPosition(struc, position);
+                    final String nameObj = struc.getName().split("[(]")[0];
+                    //final ObjectPosition strucPos = new ObjectPosition(struc, position);
                     if (struc instanceof StructureNormal) {
-                        System.out.println("Normal --> " + struc.getName());
-                        list.add(strucPos);
+                        if (_setFilter == null || _setFilter.contains(Settings.SearchSettings.DOCK.getKey())) {
+                            System.out.println("Normal --> " + struc.getName());
+                            if (!mapPos.containsKey(nameObj)) {
+                                final ObjectPosition strucPos = new ObjectPosition(nameObj);
+                                strucPos.getObject2Position().put(struc, position);
+                                mapPos.put(nameObj, strucPos);
+                            } else {
+                                final ObjectPosition secPos = mapPos.get(nameObj);
+                                secPos.getObject2Position().put(struc, position);
+                            }
+                        }
                     } else if (struc instanceof StructureFactory) {
-                        System.out.println("Factory --> " + struc.getName());
-                        list.add(strucPos);
+                        if (_setFilter == null || _setFilter.contains(Settings.SearchSettings.FACTORY.getKey())) {
+                            System.out.println("Factory --> " + struc.getName());
+                            if (!mapPos.containsKey(nameObj)) {
+                                final ObjectPosition strucPos = new ObjectPosition(nameObj);
+                                strucPos.getObject2Position().put(struc, position);
+                                mapPos.put(nameObj, strucPos);
+                            } else {
+                                final ObjectPosition secPos = mapPos.get(nameObj);
+                                secPos.getObject2Position().put(struc, position);
+                            }
+                        }
                     }
                 }
             }
         }
 
-        orderObjectPositionList(list);
-
-        return list;
+        return mapPos;
     }
 
     protected List<ObjectPosition> getObjectsData()
     {
         final List<ObjectPosition> list = new ArrayList<ObjectPosition>();
-        final Map<Integer, Map<Integer, Sector>> matrix = mappan.getMatrix();
+        /*final Map<Integer, Map<Integer, Sector>> matrix = mappan.getMatrix();
         for (final Entry<Integer, Map<Integer, Sector>> entry : matrix.entrySet()) {
             final Integer posX = entry.getKey();
             for (final Entry<Integer, Sector> entry2 : entry.getValue().entrySet()) {
@@ -150,7 +214,7 @@ public class SearchDataFrame
             }
         }
 
-        orderObjectPositionList(list);
+        orderObjectPositionList(list);*/
 
         return list;
     }
@@ -167,82 +231,36 @@ public class SearchDataFrame
         return objectsPane;
     }
 
-    protected void orderObjectPositionList(final List<ObjectPosition> list)
-    {
-        Collections.sort(list, new Comparator<ObjectPosition>()
-        {
-            @Override
-            public int compare(final ObjectPosition o1,
-                               final ObjectPosition o2)
-            {
-                String name1 = "";
-                String name2 = "";
-                if (o1.getObject() instanceof Sector) {
-                    name1 = ((Sector) o1.getObject()).getName();
-                } else if (o1.getObject() instanceof StructureAbstract) {
-                    name1 = ((StructureAbstract) o1.getObject()).getName();
-                } else if (o1.getObject() instanceof ObjectAbstract) {
-                    name1 = ((ObjectAbstract) o1.getObject()).getName();
-                }
-
-                if (o2.getObject() instanceof Sector) {
-                    name2 = ((Sector) o2.getObject()).getName();
-                } else if (o2.getObject() instanceof StructureAbstract) {
-                    name2 = ((StructureAbstract) o2.getObject()).getName();
-                } else if (o2.getObject() instanceof ObjectAbstract) {
-                    name2 = ((ObjectAbstract) o2.getObject()).getName();
-                }
-                return name1.compareTo(name2);
-            }
-        });
-    }
-
     public class ObjectPosition
     {
-        private Object object;
-        private int position;
+        private String name;
+        private final Map<Object, Integer> object2Position;
 
-        public ObjectPosition(final Object _object,
-                              final int _position)
+        public ObjectPosition(final String _name)
         {
-            this.object = _object;
-            this.position = _position;
+            this.name = _name;
+            this.object2Position = new HashMap<Object, Integer>();
         }
 
-        public Object getObject()
+        public String getName()
         {
-            return object;
+            return name;
         }
 
-        public void setSector(final Object sector)
+        public void setName(final String name)
         {
-            this.object = sector;
+            this.name = name;
         }
 
-        public int getPosition()
+        public Map<Object, Integer> getObject2Position()
         {
-            return position;
-        }
-
-        public void setPosition(final int position)
-        {
-            this.position = position;
+            return object2Position;
         }
 
         @Override
         public String toString()
         {
-            String ret;
-            if (object instanceof Sector) {
-                ret = ((Sector) object).getName();
-            } else if (object instanceof StructureAbstract) {
-                ret = ((StructureAbstract) object).getName();
-            } else if (object instanceof ObjectAbstract) {
-                ret = ((ObjectAbstract) object).getName();
-            } else {
-                ret = super.toString();
-            }
-            return ret;
+            return name;
         }
     }
 }
