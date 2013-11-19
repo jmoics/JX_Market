@@ -1,7 +1,6 @@
 package org.jcs.esjp.ui;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -284,7 +283,7 @@ public class Structure {
             final String[] lineObjsArr = lineObjs.split("; ");
             strucSale.setName(lineObjsArr[0].replace("+ ", "").replace("+", ""));
             strucSale.setIconPath("src/main/resources/images/data/sale.png");
-            strucSale.setPrice(new BigDecimal(lineObjsArr[1]));
+            strucSale.setPrice(Integer.parseInt(lineObjsArr[1]));
             strucSale.setQuantity(Integer.parseInt(lineObjsArr[2]));
             strucSale.setFreeSpace(Integer.parseInt(lineObjsArr[3]));
             strucSale.setOrderType(Integer.parseInt(lineObjsArr[4]));
@@ -302,7 +301,7 @@ public class Structure {
             final String[] lineObjsArr = lineObjs.split("; ");
             strucPur.setName(lineObjsArr[0].replace("* ", "").replace("*", ""));
             strucPur.setIconPath("src/main/resources/images/data/purchase.png");
-            strucPur.setPrice(new BigDecimal(lineObjsArr[1]));
+            strucPur.setPrice(Integer.parseInt(lineObjsArr[1]));
             strucPur.setQuantity(Integer.parseInt(lineObjsArr[2]));
             strucPur.setFreeSpace(Integer.parseInt(lineObjsArr[3]));
             strucPur.setOrderType(Integer.parseInt(lineObjsArr[4]));

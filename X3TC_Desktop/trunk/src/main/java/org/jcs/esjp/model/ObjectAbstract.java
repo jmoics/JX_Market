@@ -1,11 +1,10 @@
 package org.jcs.esjp.model;
 
-import java.math.BigDecimal;
 
 public abstract class ObjectAbstract
 {
     private String name;
-    private BigDecimal price;
+    private Integer price;
     private Integer quantity;
     private Integer freeSpace;
     private String iconPath;
@@ -27,11 +26,11 @@ public abstract class ObjectAbstract
     {
         this.name = name;
     }
-    public BigDecimal getPrice()
+    public Integer getPrice()
     {
         return price;
     }
-    public void setPrice(final BigDecimal price)
+    public void setPrice(final Integer price)
     {
         this.price = price;
     }

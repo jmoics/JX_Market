@@ -130,7 +130,11 @@ public class Settings
     {
         SECTOR("Sector"),
         DOCK("Muelle"),
-        FACTORY("Fabrica");
+        FACTORY("Fabrica"),
+        MINQUANTITY("MinQuantity"),
+        NOMINORPERCENT("NoMenorPercentage"),
+        MINPRICE("MinPrice"),
+        MAXPRICE("MaxPrice");
 
         private final String key;
 
