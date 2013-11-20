@@ -10,7 +10,9 @@ import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.swing.JPanel;
 import javax.swing.Scrollable;
@@ -62,14 +64,14 @@ public class MapPanel
             for (int j = 0; j < maxY; j++) {
                 if (matrix.containsKey(i)) {
                     if (matrix.get(i).containsKey(j)) {
-                        final SectorPanel secPan = new SectorPanel(matrix.get(i).get(j), false);
+                        final SectorPanel secPan = new SectorPanel(matrix.get(i).get(j), false, null);
                         add(secPan);
                     } else {
-                        final SectorPanel secPan = new SectorPanel(null, false);
+                        final SectorPanel secPan = new SectorPanel(null, false, null);
                         add(secPan);
                     }
                 } else {
-                    final SectorPanel secPan = new SectorPanel(null, false);
+                    final SectorPanel secPan = new SectorPanel(null, false, null);
                     add(secPan);
                 }
             }
@@ -79,21 +81,35 @@ public class MapPanel
     protected void updateGalaxyMap(final ObjectPosition _objPos) {
         removeAll();
         final Map<Object, Integer> obj2pos = _objPos.getObject2Position();
-        final Set<Integer> setPos = new HashSet<Integer>(obj2pos.values());
+
+        final Map<Integer, Set<Object>> position2Objects = new TreeMap<Integer, Set<Object>>();
+        for (final Entry<Object, Integer> entry : obj2pos.entrySet()) {
+            final Object object = entry.getKey();
+            final Integer position = entry.getValue();
+            if (position2Objects.containsKey(position)) {
+                final Set<Object> list = position2Objects.get(position);
+                list.add(object);
+            } else {
+                final Set<Object> list = new HashSet<Object>();
+                list.add(object);
+                position2Objects.put(position, list);
+            }
+        }
 
         for (int i = 0; i < maxX; i++) {
             for (int j = 0; j < maxY; j++) {
                 final Integer curPos = i * getMaxY() + j;
                 if (matrix.containsKey(i)) {
                     if (matrix.get(i).containsKey(j)) {
-                        final SectorPanel secPan = new SectorPanel(matrix.get(i).get(j), !setPos.contains(curPos));
+                        final SectorPanel secPan = new SectorPanel(matrix.get(i).get(j), !position2Objects.containsKey(curPos),
+                                        position2Objects.containsKey(curPos) ? position2Objects.get(curPos) : null);
                         add(secPan);
                     } else {
-                        final SectorPanel secPan = new SectorPanel(null, false);
+                        final SectorPanel secPan = new SectorPanel(null, false, null);
                         add(secPan);
                     }
                 } else {
-                    final SectorPanel secPan = new SectorPanel(null, false);
+                    final SectorPanel secPan = new SectorPanel(null, false, null);
                     add(secPan);
                 }
             }

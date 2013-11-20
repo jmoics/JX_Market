@@ -8,6 +8,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,9 +30,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import org.jcs.esjp.model.ObjectAbstract;
 import org.jcs.esjp.model.ObjectPurchase;
@@ -42,7 +41,7 @@ import org.jcs.esjp.model.StructureNormal;
 import org.jcs.esjp.util.Settings;
 
 public class SearchDataFrame
-    extends JFrame implements ItemListener, DocumentListener
+    extends JFrame implements ItemListener, PropertyChangeListener
 {
     MapPanel mappan;
     JComboBox<ObjectPosition> galaxyCombo;
@@ -223,7 +222,7 @@ public class SearchDataFrame
         txtQuantity.setName(Settings.SearchSettings.MINQUANTITY.getKey());
         txtQuantity.setEditable(false);
         txtQuantity.setFont(font);
-        txtQuantity.getDocument().addDocumentListener(this);
+        txtQuantity.addPropertyChangeListener("value", this);
         filterPanel.add(minQuantity);
         filterPanel.add(txtQuantity);
 
@@ -236,7 +235,7 @@ public class SearchDataFrame
         txtNotMinorPer.setName(Settings.SearchSettings.NOMINORPERCENT.getKey());
         txtNotMinorPer.setEditable(false);
         txtNotMinorPer.setFont(font);
-        txtNotMinorPer.getDocument().addDocumentListener(this);
+        txtNotMinorPer.addPropertyChangeListener("value", this);
         filterPanel.add(percentage);
         filterPanel.add(txtNotMinorPer);
 
@@ -249,7 +248,7 @@ public class SearchDataFrame
         txtMinPrice.setName(Settings.SearchSettings.MINPRICE.getKey());
         txtMinPrice.setEditable(false);
         txtMinPrice.setFont(font);
-        txtMinPrice.getDocument().addDocumentListener(this);
+        txtMinPrice.addPropertyChangeListener("value", this);
         filterPanel.add(minPrice);
         filterPanel.add(txtMinPrice);
 
@@ -262,7 +261,7 @@ public class SearchDataFrame
         txtMaxPrice.setName(Settings.SearchSettings.MAXPRICE.getKey());
         txtMaxPrice.setEditable(false);
         txtMaxPrice.setFont(font);
-        txtMaxPrice.getDocument().addDocumentListener(this);
+        txtMaxPrice.addPropertyChangeListener("value", this);
         filterPanel.add(maxPrice);
         filterPanel.add(txtMaxPrice);
 
@@ -357,6 +356,7 @@ public class SearchDataFrame
                 if (key.equals(Settings.SearchSettings.MINQUANTITY.getKey())) {
                     if (object.getQuantity() < value) {
                         valid = false;
+                        break;
                     }
                 } else if (key.equals(Settings.SearchSettings.NOMINORPERCENT.getKey())) {
                     /*if (_object.getQuantity() < value) {
@@ -365,10 +365,12 @@ public class SearchDataFrame
                 } else if (key.equals(Settings.SearchSettings.MINPRICE.getKey())) {
                     if (object.getPrice() < value) {
                         valid = false;
+                        break;
                     }
                 } else if (key.equals(Settings.SearchSettings.MAXPRICE.getKey())) {
                     if (object.getPrice() > value) {
                         valid = false;
+                        break;
                     }
                 }
             }
@@ -402,10 +404,10 @@ public class SearchDataFrame
             for (final Component component : components) {
                 if (component instanceof JCheckBox) {
                     final JCheckBox checkBox = (JCheckBox) component;
-                    final JTextField txtValue = (JTextField) components[cont + 1];
+                    final JFormattedTextField txtValue = (JFormattedTextField) components[cont + 1];
                     if (checkBox.isSelected()) {
                         txtValue.setEditable(true);
-                        mapFilter.put(checkBox.getActionCommand(), Integer.parseInt(txtValue.getText()));
+                        mapFilter.put(checkBox.getActionCommand(), (Integer) txtValue.getValue());
                     } else {
                         txtValue.setEditable(false);
                         mapFilter.remove(checkBox.getActionCommand());
@@ -418,46 +420,14 @@ public class SearchDataFrame
     }
 
     @Override
-    public void insertUpdate(final DocumentEvent e)
+    public void propertyChange(final PropertyChangeEvent evt)
     {
-        for (final String str : mapFilter.keySet()) {
-            if (txtQuantity.isEditable() && txtQuantity.getName().equals(str)) {
-                mapFilter.put(str, txtQuantity.getValue() instanceof Integer ? (Integer) txtQuantity.getValue() : 1);
-            }
-            if (txtNotMinorPer.isEditable() && txtNotMinorPer.getName().equals(str)) {
-                mapFilter.put(str, txtNotMinorPer.getValue() instanceof Integer ? (Integer) txtNotMinorPer.getValue() : 100);
-            }
-            if (txtMinPrice.isEditable() && txtMinPrice.getName().equals(str)) {
-                mapFilter.put(str, txtMinPrice.getValue() instanceof Integer ? (Integer) txtMinPrice.getValue() : 0);
-            }
-            if (txtMaxPrice.isEditable() && txtMaxPrice.getName().equals(str)) {
-                mapFilter.put(str, txtMaxPrice.getValue() instanceof Integer ? (Integer) txtMaxPrice.getValue() : 100000);
-            }
+         final JFormattedTextField source = (JFormattedTextField) evt.getSource();
+        if (mapFilter.containsKey(source.getName())) {
+            mapFilter.put(source.getName(), (Integer) source.getValue());
+        } else {
+            mapFilter.put(source.getName(), (Integer) source.getValue());
         }
-    }
-
-    @Override
-    public void removeUpdate(final DocumentEvent e)
-    {
-        for (final String str : mapFilter.keySet()) {
-            if (txtQuantity.isEditable() && txtQuantity.getName().equals(str)) {
-                mapFilter.put(str, txtQuantity.getValue() instanceof Integer ? (Integer) txtQuantity.getValue() : 1);
-            }
-            if (txtNotMinorPer.isEditable() && txtNotMinorPer.getName().equals(str)) {
-                mapFilter.put(str, txtNotMinorPer.getValue() instanceof Integer ? (Integer) txtNotMinorPer.getValue() : 100);
-            }
-            if (txtMinPrice.isEditable() && txtMinPrice.getName().equals(str)) {
-                mapFilter.put(str, txtMinPrice.getValue() instanceof Integer ? (Integer) txtMinPrice.getValue() : 0);
-            }
-            if (txtMaxPrice.isEditable() && txtMaxPrice.getName().equals(str)) {
-                mapFilter.put(str, txtMaxPrice.getValue() instanceof Integer ? (Integer) txtMaxPrice.getValue() : 100000);
-            }
-        }
-    }
-
-    @Override
-    public void changedUpdate(final DocumentEvent e)
-    {
     }
 
     public class ObjectPosition

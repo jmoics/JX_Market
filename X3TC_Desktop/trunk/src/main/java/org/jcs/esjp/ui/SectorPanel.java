@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
+import java.util.Set;
 
 import javax.swing.GrayFilter;
 import javax.swing.ImageIcon;
@@ -22,11 +23,14 @@ public class SectorPanel
 {
     private Image bgImage;
     private final Sector sector;
+    private final Set<Object> setFindObjects;
 
     public SectorPanel(final Sector _sector,
-                       final Boolean _isDisabled) {
+                       final Boolean _isDisabled,
+                       final Set<Object> _setObjects) {
         super();
         sector = _sector;
+        setFindObjects = _setObjects;
         setOpaque(false);
 
         setSize(85, 85);
@@ -79,7 +83,7 @@ public class SectorPanel
     public void mouseClicked(final MouseEvent e)
     {
         if (e.getClickCount() == 2) {
-            final SectorDataFrame intFrame = new SectorDataFrame(((SectorPanel) e.getSource()).getSector());
+            final SectorDataFrame intFrame = new SectorDataFrame((SectorPanel) e.getSource());
             intFrame.setSize(new Dimension(800, 950));
             intFrame.setVisible(true);
         }
@@ -118,6 +122,11 @@ public class SectorPanel
     public Image getBgImage()
     {
         return bgImage;
+    }
+
+    public Set<Object> getSetFindObjects()
+    {
+        return setFindObjects;
     }
 
 }

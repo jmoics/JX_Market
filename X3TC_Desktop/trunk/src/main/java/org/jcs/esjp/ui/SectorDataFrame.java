@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -45,11 +46,13 @@ public class SectorDataFrame
 {
     final JPanel dataView;
     JTree tree;
+    final Set<Object> setObjects;
 
-    public SectorDataFrame(final Sector _sector)
+    public SectorDataFrame(final SectorPanel _sectorPanel)
     {
-        super(_sector.getName());
+        super(_sectorPanel.getSector().getName());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setObjects = _sectorPanel.getSetFindObjects();
 
         // Place the button near the bottom of the window.
         final Container contentPane = getContentPane();
@@ -60,7 +63,7 @@ public class SectorDataFrame
         //initHelp();
 
         final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        splitPane.setLeftComponent(createDataPane(_sector));
+        splitPane.setLeftComponent(createDataPane(_sectorPanel.getSector()));
         splitPane.setRightComponent(dataView);
 
         contentPane.add(splitPane, BorderLayout.CENTER);
@@ -195,6 +198,9 @@ public class SectorDataFrame
             final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
             if (node.getUserObject() instanceof ObjectAbstract) {
                 final ObjectAbstract obj = (ObjectAbstract) node.getUserObject();
+                if (setObjects.contains(obj)) {
+                    setForeground(Color.YELLOW);
+                }
                 if (obj.getIconPath() != null) {
                     setIcon(new ImageIcon(obj.getIconPath()));
                 } else {
@@ -202,6 +208,9 @@ public class SectorDataFrame
                 }
             } else if (node.getUserObject() instanceof StructureAbstract) {
                 final StructureAbstract str = (StructureAbstract) node.getUserObject();
+                if (setObjects.contains(str)) {
+                    setForeground(Color.YELLOW);
+                }
                 if (str.getIconPath() != null) {
                     setIcon(new ImageIcon(str.getIconPath()));
                 } else {
