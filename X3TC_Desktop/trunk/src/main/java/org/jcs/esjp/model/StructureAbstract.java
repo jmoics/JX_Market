@@ -9,6 +9,7 @@ public abstract class StructureAbstract
     private Integer posZ;
     private String iconPath;
     private Integer orderType;
+    private Sector parent;
 
     public String getName()
     {
@@ -66,7 +67,14 @@ public abstract class StructureAbstract
     {
         this.orderType = orderType;
     }
-
+    public Sector getParent()
+    {
+        return parent;
+    }
+    public void setParent(final Sector parent)
+    {
+        this.parent = parent;
+    }
     @Override
     public String toString() {
         return this.name;

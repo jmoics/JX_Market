@@ -161,6 +161,7 @@ public class Structure {
             final StructureNormal normalStruc = new StructureNormal();
             final String[] objs = line.split("; ");
             normalStruc.setName(objs[0]);
+            normalStruc.setParent(_sector);
             if (Settings.FactorySettings.ASTILLERO.getKey().equals(_curLine)) {
                 normalStruc.setOrderType(1);
                 normalStruc.setIconPath("src/main/resources/images/data/shipyard.png");
@@ -203,6 +204,7 @@ public class Structure {
             final StructureFactory factory = new StructureFactory();
             final String[] objs = line.split("; ");
             factory.setName(objs[0]);
+            factory.setParent(_sector);
             factory.setIconPath("src/main/resources/images/data/factory.png");
             factory.setOrderType(4);
             factory.setPosX(Integer.parseInt(objs[1]));
@@ -236,6 +238,7 @@ public class Structure {
                         && !Settings.FactorySettings.VACIO.getKey().equals(line)) {
             final StructureOther other = new StructureOther();
             final String[] objs = line.split("; ");
+            other.setParent(_sector);
             other.setName(objs[0].replace("+ ", "").replace("+", ""));
             other.setOrderType(5);
             other.setPosX(Integer.parseInt(objs[1]));
@@ -264,6 +267,7 @@ public class Structure {
             final StructureFreeShip freeship = new StructureFreeShip();
             final String[] objs = line.split("; ");
             freeship.setName(objs[0].replace("+ ", "").replace("+", "") + " " + objs[1]);
+            freeship.setParent(_sector);
             freeship.setOrderType(6);
             freeship.setPosX(Integer.parseInt(objs[2]));
             freeship.setPosY(Integer.parseInt(objs[3]));
@@ -282,6 +286,7 @@ public class Structure {
             final ObjectSale strucSale = new ObjectSale();
             final String[] lineObjsArr = lineObjs.split("; ");
             strucSale.setName(lineObjsArr[0].replace("+ ", "").replace("+", ""));
+            strucSale.setParent(_structure);
             strucSale.setIconPath("src/main/resources/images/data/sale.png");
             strucSale.setPrice(Integer.parseInt(lineObjsArr[1]));
             strucSale.setQuantity(Integer.parseInt(lineObjsArr[2]));
@@ -300,6 +305,7 @@ public class Structure {
             final ObjectPurchase strucPur = new ObjectPurchase();
             final String[] lineObjsArr = lineObjs.split("; ");
             strucPur.setName(lineObjsArr[0].replace("* ", "").replace("*", ""));
+            strucPur.setParent(_structure);
             strucPur.setIconPath("src/main/resources/images/data/purchase.png");
             strucPur.setPrice(Integer.parseInt(lineObjsArr[1]));
             strucPur.setQuantity(Integer.parseInt(lineObjsArr[2]));

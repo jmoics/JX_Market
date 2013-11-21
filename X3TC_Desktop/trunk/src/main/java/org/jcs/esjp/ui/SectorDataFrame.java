@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
@@ -53,6 +54,9 @@ public class SectorDataFrame
         super(_sectorPanel.getSector().getName());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setObjects = _sectorPanel.getSetFindObjects();
+        if (setObjects != null) {
+            evaluateSetObjects();
+        }
 
         // Place the button near the bottom of the window.
         final Container contentPane = getContentPane();
@@ -70,8 +74,6 @@ public class SectorDataFrame
         contentPane.add(createButtonPane(), BorderLayout.PAGE_END);
     }
 
-    // Make the button do the same thing as the default close operation
-    // (DISPOSE_ON_CLOSE).
     @Override
     public void actionPerformed(final ActionEvent e)
     {
@@ -142,6 +144,21 @@ public class SectorDataFrame
         return pane;
     }
 
+    protected void evaluateSetObjects() {
+        final Set<Object> toAdd = new HashSet<Object>();
+        for (final Object object : setObjects) {
+            if (object instanceof StructureAbstract) {
+                toAdd.add(((StructureAbstract) object).getParent());
+            } else if (object instanceof ObjectAbstract) {
+                toAdd.add(((ObjectAbstract) object).getParent());
+            }
+        }
+
+        for (final Object add : toAdd) {
+            setObjects.add(add);
+        }
+    }
+
     public class MyCellRenderer
         extends DefaultTreeCellRenderer
     {
@@ -198,8 +215,13 @@ public class SectorDataFrame
             final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
             if (node.getUserObject() instanceof ObjectAbstract) {
                 final ObjectAbstract obj = (ObjectAbstract) node.getUserObject();
-                if (setObjects.contains(obj)) {
+                if (setObjects != null && setObjects.contains(obj)) {
                     setForeground(Color.YELLOW);
+                    final DefaultMutableTreeNode nodeAux = (DefaultMutableTreeNode) node.getParent();
+                    /*while (nodeAux != null) {
+                        nodeAux.getUserObject()
+                        nodeAux = nodeAux.getParent();
+                    }*/
                 }
                 if (obj.getIconPath() != null) {
                     setIcon(new ImageIcon(obj.getIconPath()));
@@ -208,7 +230,7 @@ public class SectorDataFrame
                 }
             } else if (node.getUserObject() instanceof StructureAbstract) {
                 final StructureAbstract str = (StructureAbstract) node.getUserObject();
-                if (setObjects.contains(str)) {
+                if (setObjects!= null && setObjects.contains(str)) {
                     setForeground(Color.YELLOW);
                 }
                 if (str.getIconPath() != null) {

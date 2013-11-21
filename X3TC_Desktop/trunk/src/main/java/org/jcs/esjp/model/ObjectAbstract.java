@@ -9,6 +9,7 @@ public abstract class ObjectAbstract
     private Integer freeSpace;
     private String iconPath;
     private Integer orderType;
+    private StructureAbstract parent;
 
     public String getIconPath()
     {
@@ -57,6 +58,14 @@ public abstract class ObjectAbstract
     public void setOrderType(final Integer orderType)
     {
         this.orderType = orderType;
+    }
+    public StructureAbstract getParent()
+    {
+        return parent;
+    }
+    public void setParent(final StructureAbstract parent)
+    {
+        this.parent = parent;
     }
     @Override
     public String toString() {
