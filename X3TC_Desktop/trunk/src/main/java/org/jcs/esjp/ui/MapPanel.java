@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -80,7 +81,8 @@ public class MapPanel
 
     protected void updateGalaxyMap(final ObjectPosition _objPos) {
         removeAll();
-        final Map<Object, Integer> obj2pos = _objPos.getObject2Position();
+        final Map<Object, Integer> obj2pos = _objPos != null
+                        ? _objPos.getObject2Position() : new HashMap<Object, Integer>();
 
         final Map<Integer, Set<Object>> position2Objects = new TreeMap<Integer, Set<Object>>();
         for (final Entry<Object, Integer> entry : obj2pos.entrySet()) {
@@ -101,8 +103,10 @@ public class MapPanel
                 final Integer curPos = i * getMaxY() + j;
                 if (matrix.containsKey(i)) {
                     if (matrix.get(i).containsKey(j)) {
-                        final SectorPanel secPan = new SectorPanel(matrix.get(i).get(j), !position2Objects.containsKey(curPos),
-                                        position2Objects.containsKey(curPos) ? position2Objects.get(curPos) : null);
+                        final SectorPanel secPan = new SectorPanel(matrix.get(i).get(j),
+                                        _objPos != null ? !position2Objects.containsKey(curPos) : false,
+                                        _objPos != null ? (position2Objects.containsKey(curPos)
+                                                        ? position2Objects.get(curPos) : null) : null);
                         add(secPan);
                     } else {
                         final SectorPanel secPan = new SectorPanel(null, false, null);

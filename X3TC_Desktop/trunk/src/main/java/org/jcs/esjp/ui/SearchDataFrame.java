@@ -2,6 +2,7 @@ package org.jcs.esjp.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
@@ -32,7 +33,6 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import org.jcs.esjp.model.ObjectAbstract;
-import org.jcs.esjp.model.ObjectPurchase;
 import org.jcs.esjp.model.ObjectSale;
 import org.jcs.esjp.model.Sector;
 import org.jcs.esjp.model.StructureAbstract;
@@ -58,17 +58,23 @@ public class SearchDataFrame
         super();
         font = new Font("SansSerif", Font.PLAIN, 10);
         this.mappan = _mappan;
+        mapFilter = new HashMap<String, Integer>();
+
         final JSplitPane container = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         this.setContentPane(container);
 
         final JSplitPane structPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         structPane.add(getGalaxyPane());
         structPane.add(getOtherPanel());
-
+        structPane.setDividerLocation(170);
         container.add(structPane);
 
-        mapFilter = new HashMap<String, Integer>();
-        container.add(getObjectsPanel());
+        final JSplitPane objectsPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        objectsPane.add(getObjectsPanel());
+        objectsPane.add(getAdditionalPane());
+        objectsPane.setDividerLocation(280);
+
+        container.add(objectsPane);
     }
 
     protected JComponent getGalaxyPane()
@@ -108,7 +114,9 @@ public class SearchDataFrame
         radioPan.add(dockButton);
         radioPan.add(factButton);
 
+        final JPanel buttonPanel = new JPanel();
         final JButton searchButton = new JButton("Buscar");
+        searchButton.setPreferredSize(new Dimension(100, 24));
         searchButton.setFont(font);
         searchButton.addMouseListener(new MouseAdapter()
         {
@@ -120,10 +128,11 @@ public class SearchDataFrame
             }
 
         });
+        buttonPanel.add(searchButton);
 
         panel.add(galaxyCombo, BorderLayout.PAGE_START);
         panel.add(radioPan, BorderLayout.CENTER);
-        panel.add(searchButton, BorderLayout.PAGE_END);
+        panel.add(buttonPanel, BorderLayout.PAGE_END);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         return panel;
@@ -210,6 +219,7 @@ public class SearchDataFrame
         final JPanel filterPanel = new JPanel();
         //filterPanel.setBounds(0, 0, 400, 200);
         filterPanel.setLayout(new GridLayout(4, 2));
+        filterPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
         final NumberFormat format = NumberFormat.getIntegerInstance();
 
@@ -265,7 +275,9 @@ public class SearchDataFrame
         filterPanel.add(maxPrice);
         filterPanel.add(txtMaxPrice);
 
+        final JPanel panelButton = new JPanel();
         final JButton searchButton = new JButton("Buscar");
+        searchButton.setPreferredSize(new Dimension(100, 24));
         searchButton.setFont(font);
         searchButton.addMouseListener(new MouseAdapter()
         {
@@ -273,18 +285,19 @@ public class SearchDataFrame
             public void mouseClicked(final MouseEvent e)
             {
                 final ObjectPosition item = (ObjectPosition) objectsCombo.getSelectedItem();
-                analizeObjectsFilter(item);
-                mappan.updateGalaxyMap(item);
+                final ObjectPosition itemAnalized = analizeObjectsFilter(item);
+                mappan.updateGalaxyMap(itemAnalized);
             }
 
         });
+        panelButton.add(searchButton);
 
         objectsPane.add(objectsCombo, BorderLayout.PAGE_START);
         objectsPane.add(filterPanel, BorderLayout.CENTER);
-        objectsPane.add(searchButton, BorderLayout.PAGE_END);
+        objectsPane.add(panelButton, BorderLayout.PAGE_END);
         objectsPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        buildGalaxyDropDown(null);
+        //buildGalaxyDropDown(null);
         return objectsPane;
     }
 
@@ -292,6 +305,7 @@ public class SearchDataFrame
         final Collection<ObjectPosition> lst = getObjectsData().values();
         objectsCombo = new JComboBox<ObjectPosition>(lst.toArray(new ObjectPosition[0]));
         objectsCombo.setFont(font);
+        objectsCombo.revalidate();
     }
 
     protected Map<String, ObjectPosition> getObjectsData()
@@ -327,7 +341,7 @@ public class SearchDataFrame
                                 secPos.getObject2Position().put(objSale, position);
                             }
                         }
-                        for (final ObjectPurchase objPur : ((StructureFactory) struc).getObjPurch()) {
+                        /*for (final ObjectPurchase objPur : ((StructureFactory) struc).getObjPurch()) {
                             if (!mapPos.containsKey(objPur.getName())) {
                                 final ObjectPosition objPos = new ObjectPosition(objPur.getName());
                                 objPos.getObject2Position().put(objPur, position);
@@ -336,7 +350,7 @@ public class SearchDataFrame
                                 final ObjectPosition secPos = mapPos.get(objPur.getName());
                                 secPos.getObject2Position().put(objPur, position);
                             }
-                        }
+                        }*/
                     }
                 }
             }
@@ -345,7 +359,8 @@ public class SearchDataFrame
         return mapPos;
     }
 
-    protected void analizeObjectsFilter(final ObjectPosition _objectPosition) {
+    protected ObjectPosition analizeObjectsFilter(final ObjectPosition _objectPosition) {
+        final ObjectPosition objecPos = new ObjectPosition(_objectPosition.getName());
         final List<ObjectAbstract> removes = new ArrayList<ObjectAbstract>();
         for (final Object obj : _objectPosition.getObject2Position().keySet()) {
             boolean valid = true;
@@ -378,9 +393,13 @@ public class SearchDataFrame
                 removes.add(object);
             }
         }
+
+        objecPos.getObject2Position().putAll(_objectPosition.getObject2Position());
+
         for (final ObjectAbstract remove : removes) {
-            _objectPosition.getObject2Position().remove(remove);
+            objecPos.getObject2Position().remove(remove);
         }
+        return objecPos;
     }
 
     @Override
@@ -407,7 +426,9 @@ public class SearchDataFrame
                     final JFormattedTextField txtValue = (JFormattedTextField) components[cont + 1];
                     if (checkBox.isSelected()) {
                         txtValue.setEditable(true);
-                        mapFilter.put(checkBox.getActionCommand(), (Integer) txtValue.getValue());
+                        mapFilter.put(checkBox.getActionCommand(),
+                                        txtValue.getValue() instanceof Long
+                                        ? ((Long)txtValue.getValue()).intValue() : (Integer) txtValue.getValue());
                     } else {
                         txtValue.setEditable(false);
                         mapFilter.remove(checkBox.getActionCommand());
@@ -424,10 +445,45 @@ public class SearchDataFrame
     {
          final JFormattedTextField source = (JFormattedTextField) evt.getSource();
         if (mapFilter.containsKey(source.getName())) {
-            mapFilter.put(source.getName(), (Integer) source.getValue());
+            mapFilter.put(source.getName(), source.getValue() instanceof Long
+                                    ? ((Long)source.getValue()).intValue() : (Integer) source.getValue());
         } else {
-            mapFilter.put(source.getName(), (Integer) source.getValue());
+            mapFilter.put(source.getName(), source.getValue() instanceof Long
+                                    ? ((Long)source.getValue()).intValue() : (Integer) source.getValue());
         }
+    }
+
+    protected JPanel getAdditionalPane() {
+        final JPanel additionalPan = new JPanel();
+
+        final JButton defaultButton = new JButton("Limpiar");
+        defaultButton.setPreferredSize(new Dimension(100, 24));
+        defaultButton.setFont(font);
+        defaultButton.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(final MouseEvent e)
+            {
+                mappan.updateGalaxyMap(null);
+            }
+        });
+
+        final JButton freeShipsButton = new JButton("FreeShips");
+        freeShipsButton.setPreferredSize(new Dimension(100, 24));
+        freeShipsButton.setFont(font);
+        freeShipsButton.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(final MouseEvent e)
+            {
+            }
+        });
+
+        additionalPan.add(defaultButton);
+        additionalPan.add(freeShipsButton);
+        additionalPan.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+
+        return additionalPan;
     }
 
     public class ObjectPosition
