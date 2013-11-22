@@ -1,9 +1,11 @@
 package org.jcs.esjp.model;
 
+import java.awt.Image;
+
 public class Race
 {
     private String name;
-    private String color;
+    private Image image;
 
     public String getName()
     {
@@ -13,14 +15,12 @@ public class Race
     {
         this.name = name;
     }
-    public String getColor()
+    public Image getImage()
     {
-        return color;
+        return image;
     }
-    public void setColor(final String color)
+    public void setImage(final Image image)
     {
-        this.color = color;
+        this.image = image;
     }
-
-
 }

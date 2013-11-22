@@ -10,13 +10,11 @@ import java.awt.event.MouseEvent;
 import java.util.Set;
 
 import javax.swing.GrayFilter;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 
 import org.jcs.esjp.model.Sector;
-import org.jcs.esjp.util.Settings;
 
 public class SectorPanel
     extends JPanel implements MouseInputListener
@@ -36,7 +34,7 @@ public class SectorPanel
         setSize(85, 85);
         setLayout(null);
         if (_sector != null && _sector.getName() != null) {
-            final Image image = new ImageIcon(Settings.RACE2COLOR.get(_sector.getRace().getName())).getImage();
+            final Image image = _sector.getRace().getImage();
             if (_isDisabled) {
                 setBackgroundImage(GrayFilter.createDisabledImage(image));
             } else {

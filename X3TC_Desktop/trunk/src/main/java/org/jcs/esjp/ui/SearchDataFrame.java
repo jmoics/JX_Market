@@ -39,10 +39,17 @@ import org.jcs.esjp.model.StructureAbstract;
 import org.jcs.esjp.model.StructureFactory;
 import org.jcs.esjp.model.StructureNormal;
 import org.jcs.esjp.util.Settings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SearchDataFrame
     extends JFrame implements ItemListener, PropertyChangeListener
 {
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(SearchDataFrame.class);
+
     MapPanel mappan;
     JComboBox<ObjectPosition> galaxyCombo;
     JComboBox<ObjectPosition> objectsCombo;
@@ -153,6 +160,7 @@ public class SearchDataFrame
 
     protected Map<String, ObjectPosition> getGalaxyData(final Set<String> _setFilter)
     {
+        SearchDataFrame.LOG.debug("Building Galaxy Data for Galaxy Sectors and Structures");
         final Map<String, ObjectPosition> mapPos = new TreeMap<String, ObjectPosition>();
         final Map<Integer, Map<Integer, Sector>> matrix = mappan.getMatrix();
         for (final Entry<Integer, Map<Integer, Sector>> entry : matrix.entrySet()) {
@@ -162,7 +170,7 @@ public class SearchDataFrame
                 final Integer posY = entry2.getKey();
                 final Integer position = posX * mappan.getMaxY() + posY;
                 if (_setFilter == null || _setFilter.contains(Settings.SearchSettings.SECTOR.getKey())) {
-                    System.out.println("Sector --> " + sector.getName());
+                    SearchDataFrame.LOG.debug("Sector: '{}'", sector.getName());
                     final String nameObj = sector.getName();
                     final ObjectPosition secPos = new ObjectPosition(nameObj);
                     secPos.getObject2Position().put(sector, position);
@@ -173,7 +181,7 @@ public class SearchDataFrame
                     //final ObjectPosition strucPos = new ObjectPosition(struc, position);
                     if (struc instanceof StructureNormal) {
                         if (_setFilter == null || _setFilter.contains(Settings.SearchSettings.DOCK.getKey())) {
-                            System.out.println("Normal --> " + struc.getName());
+                            SearchDataFrame.LOG.debug("Normal: '{}'", struc.getName());
                             if (!mapPos.containsKey(nameObj)) {
                                 final ObjectPosition strucPos = new ObjectPosition(nameObj);
                                 strucPos.getObject2Position().put(struc, position);
@@ -185,7 +193,7 @@ public class SearchDataFrame
                         }
                     } else if (struc instanceof StructureFactory) {
                         if (_setFilter == null || _setFilter.contains(Settings.SearchSettings.FACTORY.getKey())) {
-                            System.out.println("Factory --> " + struc.getName());
+                            SearchDataFrame.LOG.debug("Factory: '{}'", struc.getName());
                             if (!mapPos.containsKey(nameObj)) {
                                 final ObjectPosition strucPos = new ObjectPosition(nameObj);
                                 strucPos.getObject2Position().put(struc, position);
@@ -310,6 +318,7 @@ public class SearchDataFrame
 
     protected Map<String, ObjectPosition> getObjectsData()
     {
+        SearchDataFrame.LOG.debug("Building Objects Sale Data for Structures");
         final Map<String, ObjectPosition> mapPos = new TreeMap<String, ObjectPosition>();
         final Map<Integer, Map<Integer, Sector>> matrix = mappan.getMatrix();
         for (final Entry<Integer, Map<Integer, Sector>> entry : matrix.entrySet()) {
@@ -321,6 +330,7 @@ public class SearchDataFrame
                 for (final StructureAbstract struc : sector.getLstStruct()) {
                     if (struc instanceof StructureNormal) {
                         for (final ObjectSale objSale : ((StructureNormal) struc).getObjSale()) {
+                            SearchDataFrame.LOG.debug("Object Sale: '{}'", objSale.getName());
                             if (!mapPos.containsKey(objSale.getName())) {
                                 final ObjectPosition objPos = new ObjectPosition(objSale.getName());
                                 objPos.getObject2Position().put(objSale, position);
@@ -332,6 +342,7 @@ public class SearchDataFrame
                         }
                     } else if (struc instanceof StructureFactory) {
                         for (final ObjectSale objSale : ((StructureFactory) struc).getObjSale()) {
+                            SearchDataFrame.LOG.debug("Object Sale: '{}'", objSale.getName());
                             if (!mapPos.containsKey(objSale.getName())) {
                                 final ObjectPosition objPos = new ObjectPosition(objSale.getName());
                                 objPos.getObject2Position().put(objSale, position);

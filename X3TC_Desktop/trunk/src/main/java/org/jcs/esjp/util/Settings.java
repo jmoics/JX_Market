@@ -6,8 +6,16 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Settings
 {
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(Settings.class);
+
     public enum FactorySettings
     {
         ASTILLERO("-----Astillero"),
@@ -35,18 +43,18 @@ public class Settings
 
     public enum RaceSettings
     {
-        ARGON("Argon", "src/main/resources/images/argon.png"),
-        TERRAN("Terran", "src/main/resources/images/terran.png"),
-        BORON("Boron", "src/main/resources/images/boron.png"),
-        TELADI("Teladi", "src/main/resources/images/teladi.png"),
-        PARANID("Paranid", "src/main/resources/images/paranid.png"),
-        SPLIT("Split", "src/main/resources/images/split.png"),
-        PIRATAS("Piratas", "src/main/resources/images/pirata.png"),
-        XENON("Xenon", "src/main/resources/images/xenon.png"),
-        KHAAK("Kha'ak", "src/main/resources/images/khaak.png"),
-        YAKI("Yaki", "src/main/resources/images/yaki.png"),
-        UNKNOWN("Desconocida", "src/main/resources/images/desconocido.png"),
-        GONER("Goner", "src/main/resources/images/goner.png");
+        ARGON("Argon", "images/argon.png"),
+        TERRAN("Terran", "images/terran.png"),
+        BORON("Boron", "images/boron.png"),
+        TELADI("Teladi", "images/teladi.png"),
+        PARANID("Paranid", "images/paranid.png"),
+        SPLIT("Split", "images/split.png"),
+        PIRATAS("Piratas", "images/pirata.png"),
+        XENON("Xenon", "images/xenon.png"),
+        KHAAK("Kha'ak", "images/khaak.png"),
+        YAKI("Yaki", "images/yaki.png"),
+        UNKNOWN("Desconocida", "images/desconocido.png"),
+        GONER("Goner", "images/goner.png");
 
         private final String key;
         private final String color;
@@ -71,18 +79,18 @@ public class Settings
 
     public static Map<String, String> RACE2COLOR = new HashMap<String, String>();
     static {
-        Settings.RACE2COLOR.put("Argon", "src/main/resources/images/argon.png");
-        Settings.RACE2COLOR.put("Terran", "src/main/resources/images/terran.png");
-        Settings.RACE2COLOR.put("Boron", "src/main/resources/images/boron.png");
-        Settings.RACE2COLOR.put("Teladi", "src/main/resources/images/teladi.png");
-        Settings.RACE2COLOR.put("Paranid", "src/main/resources/images/paranid.png");
-        Settings.RACE2COLOR.put("Split", "src/main/resources/images/split.png");
-        Settings.RACE2COLOR.put("Piratas", "src/main/resources/images/pirata.png");
-        Settings.RACE2COLOR.put("Xenon", "src/main/resources/images/xenon.png");
-        Settings.RACE2COLOR.put("Kha'ak", "src/main/resources/images/khaak.png");
-        Settings.RACE2COLOR.put("Yaki", "src/main/resources/images/yaki.png");
-        Settings.RACE2COLOR.put("Goner", "src/main/resources/images/goner.png");
-        Settings.RACE2COLOR.put("Desconocida", "src/main/resources/images/desconocido.png");
+        Settings.RACE2COLOR.put("Argon", "images/argon.png");
+        Settings.RACE2COLOR.put("Terran", "images/terran.png");
+        Settings.RACE2COLOR.put("Boron", "images/boron.png");
+        Settings.RACE2COLOR.put("Teladi", "images/teladi.png");
+        Settings.RACE2COLOR.put("Paranid", "images/paranid.png");
+        Settings.RACE2COLOR.put("Split", "images/split.png");
+        Settings.RACE2COLOR.put("Piratas", "images/pirata.png");
+        Settings.RACE2COLOR.put("Xenon", "images/xenon.png");
+        Settings.RACE2COLOR.put("Kha'ak", "images/khaak.png");
+        Settings.RACE2COLOR.put("Yaki", "images/yaki.png");
+        Settings.RACE2COLOR.put("Goner", "images/goner.png");
+        Settings.RACE2COLOR.put("Desconocida", "images/desconocido.png");
     }
 
     public enum GateSettings
@@ -150,10 +158,13 @@ public class Settings
     }
 
     public static Properties getProperties()
-        throws IOException
     {
         final Properties prop = new Properties();
-        prop.load(Settings.class.getClassLoader().getResourceAsStream("application.properties"));
+        try {
+            prop.load(Settings.class.getClassLoader().getResourceAsStream("application.properties"));
+        } catch (final IOException e) {
+            Settings.LOG.error("Error reading properties file", e);
+        }
         return prop;
     }
 }

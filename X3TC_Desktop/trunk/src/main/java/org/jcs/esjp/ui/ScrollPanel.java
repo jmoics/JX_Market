@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -13,18 +14,27 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ScrollPanel extends JPanel
 {
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(ScrollPanel.class);
+
     private final MapPanel mappan;
 
     public ScrollPanel() {
         super(new BorderLayout());
         setBackground(new Color(53, 66, 90));
 
+        ScrollPanel.LOG.debug("Building Toolbar...");
         final JToolBar toolBar = new JToolBar("Buscar");
         toolBar.setBackground(new Color(53, 66, 90));
         toolBar.setBorderPainted(false);
-        addButtons(toolBar);
+        toolBar.add(makeNavigationButton());
 
         //Set up the scroll pane.
         mappan = new MapPanel();
@@ -41,31 +51,22 @@ public class ScrollPanel extends JPanel
         //setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
     }
 
-    protected void addButtons(final JToolBar toolBar) {
-        JButton button = null;
+    protected JButton makeNavigationButton() {
 
-        //first button
-        button = makeNavigationButton("src/main/resources/images/data/search2.png",
-                                      "BUSCAR",
-                                      "Buscar");
-        toolBar.add(button);
-    }
+        ScrollPanel.LOG.debug("Building Search Button in Toolbar");
+        final URL imageURL = this.getClass().getClassLoader().getResource("images/data/search2.png");
 
-    protected JButton makeNavigationButton(final String _imagePath,
-                                           final String _actionCommand,
-                                           final String _toolTipText) {
-
-        //URL imageURL = ToolBarDemo.class.getResource(imgLocation);
-        final ImageIcon imgIcon = new ImageIcon(_imagePath);
+        final ImageIcon imgIcon = new ImageIcon(imageURL);
 
         final JButton button = new JButton();
-        button.setActionCommand(_actionCommand);
-        button.setToolTipText(_toolTipText);
+        button.setActionCommand("BUSCAR");
+        button.setToolTipText("Buscar");
         button.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(final ActionEvent e)
             {
+                ScrollPanel.LOG.debug("Search Button executing...");
                 final SearchDataFrame intFrame = new SearchDataFrame(mappan);
                 intFrame.setSize(new Dimension(800, 400));
                 intFrame.setVisible(true);
@@ -73,7 +74,7 @@ public class ScrollPanel extends JPanel
         });
 
         button.setIcon(imgIcon);
-        //button.setContentAreaFilled(false);
+        ScrollPanel.LOG.debug("Adding image icon for Search Button, located in {}", imageURL.getPath());
         button.setFocusPainted(true);
         button.setBorder(BorderFactory.createEmptyBorder());
 

@@ -9,7 +9,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Properties;
@@ -255,11 +254,7 @@ public class SectorDataFrame
                         .getLastSelectedPathComponent()).getUserObject();
         if (object instanceof ObjectAbstract) {
             Properties prop = new Properties();
-            try {
-                prop = Settings.getProperties();
-            } catch (final IOException e1) {
-                e1.printStackTrace();
-            }
+            prop = Settings.getProperties();
 
             final JPanel northView = new JPanel();
             northView.setBackground(new Color(53, 66, 90));

@@ -1,6 +1,7 @@
 package org.jcs.esjp.ui;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,6 +13,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.TreeMap;
+
+import javax.swing.ImageIcon;
 
 import org.jcs.esjp.model.ObjectPurchase;
 import org.jcs.esjp.model.ObjectSale;
@@ -57,9 +60,11 @@ public class Structure {
     {
         final List<Sector> lstSect = new ArrayList<Sector>();
         String line = scanner.nextLine();
+        Structure.LOG.debug("===========================Start Reading File===============================");
         while (scanner.hasNextLine()) {
             line = analize(line, scanner, null, lstSect);
         }
+        Structure.LOG.debug("===========================Finish Reading File===============================");
         orderSectorComponents(lstSect);
         return lstSect;
     }
@@ -102,7 +107,6 @@ public class Structure {
                                  final Scanner _scanner) {
         String line = _scanner.nextLine();
         _sector.setName(line);
-        Structure.LOG.info("Nombre del Sector: '{}'", _sector.getName());
         final Integer posY = Integer.parseInt(_scanner.nextLine());
         _sector.setPosY(posY);
         final Integer posX = Integer.parseInt(_scanner.nextLine());
@@ -110,9 +114,11 @@ public class Structure {
 
         final Race race = new Race();
         race.setName(_scanner.nextLine());
-        race.setColor(Settings.RACE2COLOR.get(race.getName()));
 
-        System.out.println("Nombre del Sector: "  + _sector.getName() + " X=" + _sector.getPosX() + " Y=" + _sector.getPosY());
+        final URL url = this.getClass().getClassLoader().getResource(Settings.RACE2COLOR.get(race.getName()));
+        race.setImage(new ImageIcon(url).getImage());
+
+        Structure.LOG.debug("   Nombre del Sector: '{}' X={} Y={}", _sector.getName(), _sector.getPosX(), _sector.getPosY());
         _sector.setRace(race);
 
         // I don't know what is this yet.
@@ -164,21 +170,28 @@ public class Structure {
             normalStruc.setParent(_sector);
             if (Settings.FactorySettings.ASTILLERO.getKey().equals(_curLine)) {
                 normalStruc.setOrderType(1);
-                normalStruc.setIconPath("src/main/resources/images/data/shipyard.png");
+                normalStruc.setIconPath(this.getClass().getClassLoader()
+                                .getResource("images/data/shipyard.png").getPath());
             } else if (Settings.FactorySettings.ESTACION_COMERCIAL.getKey().equals(_curLine)) {
                 normalStruc.setOrderType(2);
-                normalStruc.setIconPath("src/main/resources/images/data/tradeStation.png");
+                normalStruc.setIconPath(this.getClass().getClassLoader()
+                                .getResource("images/data/tradeStation.png").getPath());
             } else if (Settings.FactorySettings.MUELLE.getKey().equals(_curLine)) {
                 normalStruc.setOrderType(3);
-                normalStruc.setIconPath("src/main/resources/images/data/equipmentDock.png");
+                normalStruc.setIconPath(this.getClass().getClassLoader()
+                                .getResource("images/data/equipmentDock.png").getPath());
             }
             normalStruc.setPosX(Integer.parseInt(objs[1]));
             normalStruc.setPosY(Integer.parseInt(objs[2]));
             normalStruc.setPosZ(Integer.parseInt(objs[3]));
 
+            Structure.LOG.debug("       Nombre de la Estructura: '{}' X={} Y={}",
+                            normalStruc.getName(), normalStruc.getPosX(), normalStruc.getPosY());
+
             final Race race = new Race();
             race.setName(_scanner.nextLine());
-            race.setColor(Settings.RACE2COLOR.get(race.getName()));
+            final URL url = this.getClass().getClassLoader().getResource(Settings.RACE2COLOR.get(race.getName()));
+            race.setImage(new ImageIcon(url).getImage());
             normalStruc.setRace(race);
 
             line = buildSalePurchase(_scanner, normalStruc);
@@ -205,15 +218,20 @@ public class Structure {
             final String[] objs = line.split("; ");
             factory.setName(objs[0]);
             factory.setParent(_sector);
-            factory.setIconPath("src/main/resources/images/data/factory.png");
+            factory.setIconPath(this.getClass().getClassLoader()
+                            .getResource("images/data/factory.png").getPath());
             factory.setOrderType(4);
             factory.setPosX(Integer.parseInt(objs[1]));
             factory.setPosY(Integer.parseInt(objs[2]));
             factory.setPosZ(Integer.parseInt(objs[3]));
 
+            Structure.LOG.debug("       Nombre de la Fabrica: '{}' X={} Y={}",
+                            factory.getName(), factory.getPosX(), factory.getPosY());
+
             final Race race = new Race();
             race.setName(_scanner.nextLine());
-            race.setColor(Settings.RACE2COLOR.get(race.getName()));
+            final URL url = this.getClass().getClassLoader().getResource(Settings.RACE2COLOR.get(race.getName()));
+            race.setImage(new ImageIcon(url).getImage());
             factory.setRace(race);
 
             line = buildSalePurchase(_scanner, factory);
@@ -245,6 +263,9 @@ public class Structure {
             other.setPosY(Integer.parseInt(objs[2]));
             other.setPosZ(Integer.parseInt(objs[3]));
 
+            Structure.LOG.debug("       Nombre del Other: '{}' X={} Y={}",
+                            other.getName(), other.getPosX(), other.getPosY());
+
             line = _scanner.nextLine();
             _sector.getLstStruct().add(other);
         }
@@ -273,6 +294,9 @@ public class Structure {
             freeship.setPosY(Integer.parseInt(objs[3]));
             freeship.setPosZ(Integer.parseInt(objs[4]));
 
+            Structure.LOG.debug("       Nombre de la Freeship: '{}' X={} Y={}",
+                            freeship.getName(), freeship.getPosX(), freeship.getPosY());
+
             line = _scanner.nextLine();
             _sector.getLstStruct().add(freeship);
         }
@@ -287,11 +311,14 @@ public class Structure {
             final String[] lineObjsArr = lineObjs.split("; ");
             strucSale.setName(lineObjsArr[0].replace("+ ", "").replace("+", ""));
             strucSale.setParent(_structure);
-            strucSale.setIconPath("src/main/resources/images/data/sale.png");
+            strucSale.setIconPath(this.getClass().getClassLoader()
+                            .getResource("images/data/sale.png").getPath());
             strucSale.setPrice(Integer.parseInt(lineObjsArr[1]));
             strucSale.setQuantity(Integer.parseInt(lineObjsArr[2]));
             strucSale.setFreeSpace(Integer.parseInt(lineObjsArr[3]));
             strucSale.setOrderType(Integer.parseInt(lineObjsArr[4]));
+
+            Structure.LOG.debug("           Nombre del Objecto: '{}'", strucSale.getName());
 
             if (_structure instanceof StructureNormal) {
                 ((StructureNormal) _structure).getObjSale().add(strucSale);
@@ -306,11 +333,14 @@ public class Structure {
             final String[] lineObjsArr = lineObjs.split("; ");
             strucPur.setName(lineObjsArr[0].replace("* ", "").replace("*", ""));
             strucPur.setParent(_structure);
-            strucPur.setIconPath("src/main/resources/images/data/purchase.png");
+            strucPur.setIconPath(this.getClass().getClassLoader()
+                            .getResource("images/data/purchase.png").getPath());
             strucPur.setPrice(Integer.parseInt(lineObjsArr[1]));
             strucPur.setQuantity(Integer.parseInt(lineObjsArr[2]));
             strucPur.setFreeSpace(Integer.parseInt(lineObjsArr[3]));
             strucPur.setOrderType(Integer.parseInt(lineObjsArr[4]));
+
+            Structure.LOG.debug("           Nombre del Objecto: '{}'", strucPur.getName());
 
             if (_structure instanceof StructureFactory) {
                 ((StructureFactory) _structure).getObjPurch().add(strucPur);
@@ -357,7 +387,6 @@ public class Structure {
         for (final Sector sector : lstSect) {
             orderStructures(sector.getLstStruct());
         }
-
     }
 
     private void orderStructures(final List<StructureAbstract> _lstStruct)
