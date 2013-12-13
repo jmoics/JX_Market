@@ -56,6 +56,8 @@ public class ScrollPanel extends JPanel
         ScrollPanel.LOG.debug("Building Search Button in Toolbar");
         final URL imageURL = this.getClass().getClassLoader().getResource("images/data/search2.png");
 
+        ScrollPanel.LOG.debug("Path for Search Button is '{}'", imageURL.getPath());
+
         final ImageIcon imgIcon = new ImageIcon(imageURL);
 
         final JButton button = new JButton();

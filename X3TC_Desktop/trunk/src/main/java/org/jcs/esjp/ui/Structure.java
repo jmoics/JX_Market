@@ -170,16 +170,13 @@ public class Structure {
             normalStruc.setParent(_sector);
             if (Settings.FactorySettings.ASTILLERO.getKey().equals(_curLine)) {
                 normalStruc.setOrderType(1);
-                normalStruc.setIconPath(this.getClass().getClassLoader()
-                                .getResource("images/data/shipyard.png").getPath());
+                normalStruc.setIconPath("images/data/shipyard.png");
             } else if (Settings.FactorySettings.ESTACION_COMERCIAL.getKey().equals(_curLine)) {
                 normalStruc.setOrderType(2);
-                normalStruc.setIconPath(this.getClass().getClassLoader()
-                                .getResource("images/data/tradeStation.png").getPath());
+                normalStruc.setIconPath("images/data/tradeStation.png");
             } else if (Settings.FactorySettings.MUELLE.getKey().equals(_curLine)) {
                 normalStruc.setOrderType(3);
-                normalStruc.setIconPath(this.getClass().getClassLoader()
-                                .getResource("images/data/equipmentDock.png").getPath());
+                normalStruc.setIconPath("images/data/equipmentDock.png");
             }
             normalStruc.setPosX(Integer.parseInt(objs[1]));
             normalStruc.setPosY(Integer.parseInt(objs[2]));
@@ -218,8 +215,7 @@ public class Structure {
             final String[] objs = line.split("; ");
             factory.setName(objs[0]);
             factory.setParent(_sector);
-            factory.setIconPath(this.getClass().getClassLoader()
-                            .getResource("images/data/factory.png").getPath());
+            factory.setIconPath("images/data/factory.png");
             factory.setOrderType(4);
             factory.setPosX(Integer.parseInt(objs[1]));
             factory.setPosY(Integer.parseInt(objs[2]));
@@ -289,8 +285,7 @@ public class Structure {
             final String[] objs = line.split("; ");
             freeship.setName(objs[0].replace("+ ", "").replace("+", "") + " " + objs[1]);
             freeship.setParent(_sector);
-            freeship.setIconPath(this.getClass().getClassLoader()
-                            .getResource("images/data/spaceShip.png").getPath());
+            freeship.setIconPath("images/data/spaceShip.png");
             freeship.setOrderType(6);
             freeship.setPosX(Integer.parseInt(objs[2]));
             freeship.setPosY(Integer.parseInt(objs[3]));
@@ -313,8 +308,7 @@ public class Structure {
             final String[] lineObjsArr = lineObjs.split("; ");
             strucSale.setName(lineObjsArr[0].replace("+ ", "").replace("+", ""));
             strucSale.setParent(_structure);
-            strucSale.setIconPath(this.getClass().getClassLoader()
-                            .getResource("images/data/sale.png").getPath());
+            strucSale.setIconPath("images/data/sale.png");
             strucSale.setPrice(Integer.parseInt(lineObjsArr[1]));
             strucSale.setQuantity(Integer.parseInt(lineObjsArr[2]));
             strucSale.setFreeSpace(Integer.parseInt(lineObjsArr[3]));
@@ -335,8 +329,7 @@ public class Structure {
             final String[] lineObjsArr = lineObjs.split("; ");
             strucPur.setName(lineObjsArr[0].replace("* ", "").replace("*", ""));
             strucPur.setParent(_structure);
-            strucPur.setIconPath(this.getClass().getClassLoader()
-                            .getResource("images/data/purchase.png").getPath());
+            strucPur.setIconPath("images/data/purchase.png");
             strucPur.setPrice(Integer.parseInt(lineObjsArr[1]));
             strucPur.setQuantity(Integer.parseInt(lineObjsArr[2]));
             strucPur.setFreeSpace(Integer.parseInt(lineObjsArr[3]));

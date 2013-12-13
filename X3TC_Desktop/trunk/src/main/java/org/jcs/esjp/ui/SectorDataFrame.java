@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Properties;
@@ -40,11 +41,15 @@ import org.jcs.esjp.model.StructureFreeShip;
 import org.jcs.esjp.model.StructureNormal;
 import org.jcs.esjp.model.StructureOther;
 import org.jcs.esjp.util.Settings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SectorDataFrame
     extends JFrame
     implements ActionListener, TreeSelectionListener
 {
+    private static final Logger LOG = LoggerFactory.getLogger(SectorDataFrame.class);
+
     final JPanel dataView;
     JTree tree;
     final Set<Object> setObjects;
@@ -225,9 +230,11 @@ public class SectorDataFrame
                     }*/
                 }
                 if (obj.getIconPath() != null) {
-                    setIcon(new ImageIcon(obj.getIconPath()));
+                    SectorDataFrame.LOG.debug("Path for '{}' is '{}'", obj.getName(), obj.getIconPath());
+                    final URL imageURL = this.getClass().getClassLoader().getResource(obj.getIconPath());
+                    setIcon(new ImageIcon(imageURL));
                 } else {
-                    System.err.println("Icon for the ObjectAbstract was not found.");
+                    SectorDataFrame.LOG.error("Icon for the ObjectAbstract '{}' was not found.", obj.getName());
                 }
             } else if (node.getUserObject() instanceof StructureAbstract) {
                 final StructureAbstract str = (StructureAbstract) node.getUserObject();
@@ -235,9 +242,11 @@ public class SectorDataFrame
                     setForeground(Color.YELLOW);
                 }
                 if (str.getIconPath() != null) {
-                    setIcon(new ImageIcon(str.getIconPath()));
+                    SectorDataFrame.LOG.debug("Path for '{}' is '{}'", str.getName(), str.getIconPath());
+                    final URL imageURL = this.getClass().getClassLoader().getResource(str.getIconPath());
+                    setIcon(new ImageIcon(imageURL));
                 } else {
-                    System.err.println("Icon for the StructureAbstract was not found.");
+                    SectorDataFrame.LOG.error("Icon for the StructureAbstract '{}' was not found.", str.getName());
                 }
             }
 
