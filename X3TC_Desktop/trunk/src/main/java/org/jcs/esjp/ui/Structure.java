@@ -289,6 +289,8 @@ public class Structure {
             final String[] objs = line.split("; ");
             freeship.setName(objs[0].replace("+ ", "").replace("+", "") + " " + objs[1]);
             freeship.setParent(_sector);
+            freeship.setIconPath(this.getClass().getClassLoader()
+                            .getResource("images/data/spaceShip.png").getPath());
             freeship.setOrderType(6);
             freeship.setPosX(Integer.parseInt(objs[2]));
             freeship.setPosY(Integer.parseInt(objs[3]));

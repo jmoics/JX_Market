@@ -142,7 +142,8 @@ public class Settings
         MINQUANTITY("MinQuantity"),
         NOMINORPERCENT("NoMenorPercentage"),
         MINPRICE("MinPrice"),
-        MAXPRICE("MaxPrice");
+        MAXPRICE("MaxPrice"),
+        FREESHIP("FreeShip"),;
 
         private final String key;
 

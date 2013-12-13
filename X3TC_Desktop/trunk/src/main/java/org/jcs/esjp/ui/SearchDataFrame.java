@@ -37,6 +37,7 @@ import org.jcs.esjp.model.ObjectSale;
 import org.jcs.esjp.model.Sector;
 import org.jcs.esjp.model.StructureAbstract;
 import org.jcs.esjp.model.StructureFactory;
+import org.jcs.esjp.model.StructureFreeShip;
 import org.jcs.esjp.model.StructureNormal;
 import org.jcs.esjp.util.Settings;
 import org.slf4j.Logger;
@@ -194,6 +195,18 @@ public class SearchDataFrame
                     } else if (struc instanceof StructureFactory) {
                         if (_setFilter == null || _setFilter.contains(Settings.SearchSettings.FACTORY.getKey())) {
                             SearchDataFrame.LOG.debug("Factory: '{}'", struc.getName());
+                            if (!mapPos.containsKey(nameObj)) {
+                                final ObjectPosition strucPos = new ObjectPosition(nameObj);
+                                strucPos.getObject2Position().put(struc, position);
+                                mapPos.put(nameObj, strucPos);
+                            } else {
+                                final ObjectPosition secPos = mapPos.get(nameObj);
+                                secPos.getObject2Position().put(struc, position);
+                            }
+                        }
+                    } else if (struc instanceof StructureFreeShip) {
+                        if (_setFilter != null && _setFilter.contains(Settings.SearchSettings.FREESHIP.getKey())) {
+                            SearchDataFrame.LOG.debug("FreeShip: '{}'", struc.getName());
                             if (!mapPos.containsKey(nameObj)) {
                                 final ObjectPosition strucPos = new ObjectPosition(nameObj);
                                 strucPos.getObject2Position().put(struc, position);
@@ -487,6 +500,16 @@ public class SearchDataFrame
             @Override
             public void mouseClicked(final MouseEvent e)
             {
+                final Set<String> setFilter = new HashSet<String>();
+                setFilter.add(Settings.SearchSettings.FREESHIP.getKey());
+                final Collection<ObjectPosition> lst = getGalaxyData(setFilter).values();
+                final ObjectPosition newObjPos = new ObjectPosition("FreeShip");
+                for (final ObjectPosition objPos : lst) {
+                    for (final Entry<Object, Integer> entry : objPos.getObject2Position().entrySet()) {
+                        newObjPos.getObject2Position().put(entry.getKey(), entry.getValue());
+                    }
+                }
+                mappan.updateGalaxyMap(newObjPos);
             }
         });
 

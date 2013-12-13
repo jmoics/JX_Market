@@ -36,6 +36,7 @@ import org.jcs.esjp.model.ObjectSale;
 import org.jcs.esjp.model.Sector;
 import org.jcs.esjp.model.StructureAbstract;
 import org.jcs.esjp.model.StructureFactory;
+import org.jcs.esjp.model.StructureFreeShip;
 import org.jcs.esjp.model.StructureNormal;
 import org.jcs.esjp.model.StructureOther;
 import org.jcs.esjp.util.Settings;
@@ -107,8 +108,9 @@ public class SectorDataFrame
                 }
             } else if (struct instanceof StructureOther) {
 
-            } else {
-
+            } else if (struct instanceof StructureFreeShip) {
+                final DefaultMutableTreeNode structure = new DefaultMutableTreeNode(struct);
+                top.add(structure);
             }
         }
 
@@ -250,12 +252,11 @@ public class SectorDataFrame
         formatter.setMaximumFractionDigits(0);
         formatter.setParseBigDecimal(true);
 
+        Properties prop = new Properties();
+        prop = Settings.getProperties();
         final Object object = ((DefaultMutableTreeNode) ((JTree) e.getSource())
                         .getLastSelectedPathComponent()).getUserObject();
         if (object instanceof ObjectAbstract) {
-            Properties prop = new Properties();
-            prop = Settings.getProperties();
-
             final JPanel northView = new JPanel();
             northView.setBackground(new Color(53, 66, 90));
             northView.setLayout(new GridLayout(4, 2));
@@ -291,6 +292,30 @@ public class SectorDataFrame
             label.setForeground(new Color(255, 255, 255));
             northView.add(label);
 
+
+            dataView.removeAll();
+            dataView.add(northView, BorderLayout.NORTH);
+            dataView.revalidate();
+        } else if (object instanceof StructureAbstract) {
+            final JPanel northView = new JPanel();
+            northView.setBackground(new Color(53, 66, 90));
+            northView.setLayout(new GridLayout(4, 2));
+            northView.removeAll();
+            final Font font = new Font("Tahoma", Font.PLAIN, 10);
+            JLabel label = new JLabel(prop.getProperty("org.jcs.esjp.ui.Position"));
+            label.setFont(font);
+            label.setForeground(new Color(255, 255, 255));
+            northView.add(label);
+
+            final StringBuilder strBldr = new StringBuilder();
+            strBldr.append("X=").append(formatter.format(((StructureAbstract) object).getPosX())).append("  ")
+                    .append("Y=").append(formatter.format(((StructureAbstract) object).getPosY())).append("  ")
+                    .append("Z=").append(formatter.format(((StructureAbstract) object).getPosZ()));
+
+            label = new JLabel(strBldr.toString());
+            label.setFont(font);
+            label.setForeground(new Color(255, 255, 255));
+            northView.add(label);
 
             dataView.removeAll();
             dataView.add(northView, BorderLayout.NORTH);
