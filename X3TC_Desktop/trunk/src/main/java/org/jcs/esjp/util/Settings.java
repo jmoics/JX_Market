@@ -91,6 +91,7 @@ public class Settings
         Settings.RACE2COLOR.put("Yaki", "images/yaki.png");
         Settings.RACE2COLOR.put("Goner", "images/goner.png");
         Settings.RACE2COLOR.put("Desconocida", "images/desconocido.png");
+        Settings.RACE2COLOR.put("Player", "images/terran.png");
     }
 
     public enum GateSettings

@@ -48,15 +48,7 @@ public class MapPanel
 
     protected void buildSectors()
     {
-        final Structure structure = new Structure();
-        try {
-            matrix = structure.init();
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
-
-        maxX = structure.getMaxX() + 1;
-        maxY = structure.getMaxY() + 1;
+        buildMatrix();
 
         final GridLayout layout = new GridLayout(maxX, maxY, 10, 10);
         setLayout(layout);
@@ -79,10 +71,25 @@ public class MapPanel
         }
     }
 
+    protected void buildMatrix() {
+        final Structure structure = new Structure();
+        try {
+            matrix = structure.init();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+
+        maxX = structure.getMaxX() + 1;
+        maxY = structure.getMaxY() + 1;
+    }
+
     protected void updateGalaxyMap(final ObjectPosition _objPos) {
         removeAll();
         final Map<Object, Integer> obj2pos = _objPos != null
                         ? _objPos.getObject2Position() : new HashMap<Object, Integer>();
+        if (_objPos == null) {
+            buildMatrix();
+        }
 
         final Map<Integer, Set<Object>> position2Objects = new TreeMap<Integer, Set<Object>>();
         for (final Entry<Object, Integer> entry : obj2pos.entrySet()) {

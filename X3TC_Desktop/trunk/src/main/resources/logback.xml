@@ -17,7 +17,7 @@
         </encoder>
     </appender>
 
-    <logger name="org.jcs.esjp" level="DEBUG" additivity="false">
+    <logger name="org.jcs.esjp" level="INFO" additivity="false">
          <!-- <appender-ref ref="FILE" />-->
          <appender-ref ref="STDOUT" />
     </logger>
