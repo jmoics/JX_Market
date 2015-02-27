@@ -273,8 +273,8 @@ public class PO_EAAdministraEmpleado
         lblPerfil.setValue((getPerfil(empleado.getPerfil()).getFuncion()));
         lblCiudad.setValue(empleado.getCiudad());
         lblDNI.setValue(empleado.getDni());
-        final String estado = (String) (empleado.getEstado().equals(Constantes.ST_ACTIVO ) ? Constantes.STATUS_ACTIVO
-                                                                                     : Constantes.ST_INACTIVO);
+        final String estado = Constantes.ST_ACTIVO.equals(empleado.getEstado()) ? Constantes.STATUS_ACTIVO
+                                                                                     : Constantes.STATUS_INACTIVO;
         lblEstado.setValue(estado);
         lblMail.setValue(empleado.getEmail());
         lblTelefono.setValue(empleado.getTelefono());
