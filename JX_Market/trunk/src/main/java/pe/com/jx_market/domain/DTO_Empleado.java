@@ -1,8 +1,9 @@
 package pe.com.jx_market.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class DTO_Empleado implements java.io.Serializable {
+public class DTO_Empleado implements Serializable {
 
     private String codigo;
     private Integer perfil;

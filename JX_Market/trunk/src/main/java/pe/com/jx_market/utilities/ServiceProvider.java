@@ -35,6 +35,7 @@ public class ServiceProvider {
                         "applicationContext-jdbc-prop.xml");
             } else {
                 this.context = new ClassPathXmlApplicationContext("applicationContext-jdbc.xml");
+                System.out.println("test");
             }
         } else
             throw new RuntimeException("Bad mode. Please use SetConfigurationMode() before");

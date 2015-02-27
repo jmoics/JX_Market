@@ -62,10 +62,10 @@ public class Constantes {
     /*
      * Constantes para estados
      */
-    public static final int ST_ACTIVO = 1;
-    public static final int ST_INACTIVO = 2;
-    public static final int ST_CANCELADO = 3;
-    public static final int ST_PENDIENTE = 4;
+    public static final Integer ST_ACTIVO = 1;
+    public static final Integer ST_INACTIVO = 2;
+    public static final Integer ST_CANCELADO = 3;
+    public static final Integer ST_PENDIENTE = 4;
 
     /*
      * Strings para estados
