@@ -1,4 +1,4 @@
-﻿--
+--
 -- Table structure for table T_EMP_EMPRESA
 --
 
