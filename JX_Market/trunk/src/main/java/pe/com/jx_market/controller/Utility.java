@@ -71,12 +71,12 @@ public class Utility implements ServletContextListener {
     }
 
     /**
-     * Obtiene un servicio de la capa de negocios
+     * Obtiene un servicio de la capa de negocios, si el servicio no se encuentra
+     * en el mapa por se la primera vez, busca en los beans dentro del contexto,
+     * el cual fue inicializado a partir del applicationContext-jdbc.xml.
      *
-     * @param w
-     *            La ventana actual
-     * @param name
-     *            El nombre del servicio
+     * @param w La ventana actual
+     * @param name El nombre del servicio
      * @return El servicio
      */
     public static BusinessService getService (final Window w, final String name) {

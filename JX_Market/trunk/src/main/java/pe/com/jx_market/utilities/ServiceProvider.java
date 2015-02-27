@@ -17,6 +17,12 @@ public class ServiceProvider {
     private HashMap<String, BusinessService> serviceMap;
     private ApplicationContext context;
 
+    /**
+     * Constructor donde se inicializa el contexto de spring, en el cual ingresamos
+     * los distintos beans a partir del xml applicationContext.
+     * Además inicializamos la instancia del mapa de servicios que se irá llenando
+     * mientras los servicios sean convocados.
+     */
     private ServiceProvider () {
         logger.info("Utility - Starting Spring");
         this.serviceMap = new HashMap();
@@ -34,6 +40,14 @@ public class ServiceProvider {
             throw new RuntimeException("Bad mode. Please use SetConfigurationMode() before");
     }
 
+    /**
+     * Método para obtener un servicio a partir de su nombre (id del bean), el cual
+     * si no se encuentra dentro del mapa de servicios de la clase, éste será buscado 
+     * dentro de los beans del contexto de spring.
+     * 
+     * @param name id del bean en los beans de servicios.
+     * @return frontEnd el objeto que contiene el servicio.
+     */
     public BusinessService getService (String name) {
         logger.debug("Retrieving service " + name + " via Spring");
         BusinessService srv = (BusinessService) this.serviceMap.get(name);
@@ -52,6 +66,11 @@ public class ServiceProvider {
         return srv;
     }
 
+    /**
+     * Método que inicializa el proovedor de servicios
+     * .
+     * @return provider, proveedor de servicios
+     */
     public static ServiceProvider getServiceProvider () {
         if (provider == null) {
             provider = new ServiceProvider();
