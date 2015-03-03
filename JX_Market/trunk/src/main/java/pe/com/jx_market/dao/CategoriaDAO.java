@@ -30,6 +30,12 @@ public interface CategoriaDAO
      * @return
      */
     public boolean insertCategoria(DTO_Categoria categoria);
+    
+    /**
+     * @param categoria
+     * @return
+     */
+    public boolean updateCategoria(DTO_Categoria categoria);
 
     /**
      * @param categoria

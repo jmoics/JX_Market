@@ -23,6 +23,12 @@ public interface AreaDAO
      * @return
      */
     public Integer insertArea(DTO_Area area);
+    
+    /**
+     * @param area
+     * @return
+     */
+    public Integer updateArea(DTO_Area area);
 
     /**
      * @param area

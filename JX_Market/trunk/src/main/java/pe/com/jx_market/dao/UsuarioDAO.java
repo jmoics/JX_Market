@@ -7,11 +7,13 @@ import pe.com.jx_market.domain.DTO_Usuario;
 public interface UsuarioDAO
 {
 
-    public DTO_Usuario leeUsuario(DTO_Usuario usuario);
+    public DTO_Usuario getUsuarioPorUsername(DTO_Usuario usuario);
 
     public boolean eliminaUsuario(DTO_Usuario usuario);
 
-    public boolean registraUsuario(DTO_Usuario p);
+    public boolean insertUsuario(DTO_Usuario p);
+    
+    public boolean updateUsuario(DTO_Usuario p);
 
     public List<DTO_Usuario> getUsuarios(DTO_Usuario usuario);
 

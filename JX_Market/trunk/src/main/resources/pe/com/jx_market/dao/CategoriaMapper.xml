@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.dao.CategoryMapper">
+
+  <cache />
+    <!-- MANTENIMIENTO DE CATEGORIAS -->
+
+    <select id="getCategorias" parameterType="DTO_Categoria" resultType="DTO_Categoria">
+        SELECT
+        cat.categoria_n_codigo as codigo,
+        cat.empresa_n_codigo as empresa,
+        cat.categoria_v_nombre as nombre
+        FROM
+        T_NEG_CATEGORIA cat
+        <if test="empresa != null">
+            WHERE
+            cat.empresa_n_codigo = 1 OR
+            cat.empresa_n_codigo = #{empresa}
+        </if>
+    </select>
+
+    <select id="getCategoriaXCodigo" parameterType="DTO_Categoria" resultType="DTO_Categoria">
+        SELECT
+        cat.categoria_n_codigo as codigo,
+        cat.empresa_n_codigo as empresa,
+        cat.categoria_v_nombre as nombre
+        FROM
+        T_NEG_CATEGORIA cat
+        WHERE
+        cat.categoria_n_codigo = #{codigo}
+    </select>
+
+    <insert id="insertCategoria" parameterType="DTO_Categoria">
+        INSERT INTO T_NEG_CATEGORIA
+        (empresa_n_codigo,categoria_v_nombre)
+        VALUES
+        (#{empresa},#{nombre})
+    </insert>
+
+    <update id="updateCategoria" parameterType="DTO_Categoria">
+        UPDATE T_NEG_CATEGORIA
+        SET
+        categoria_v_nombre = #{nombre},
+        WHERE
+        categoria_n_codigo = #{codigo}
+        AND
+        empresa_n_codigo = #{empresa}
+    </update>
+
+    <delete id="deleteCategoria" parameterType="DTO_Categoria">
+        DELETE FROM
+        T_NEG_CATEGORIA
+        WHERE
+        categoria_n_codigo = #{codigo}
+    </delete>
+
+</mapper>

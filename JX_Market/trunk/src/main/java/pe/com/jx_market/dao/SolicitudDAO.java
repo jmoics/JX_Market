@@ -14,18 +14,22 @@ public interface SolicitudDAO
     public List<DTO_Solicitud> getSolicitudes(DTO_Solicitud solicitud);
 
     /**
-     * 
      * @param solicitud
      * @return
      */
     public DTO_Solicitud getSolicitudxCodigo(DTO_Solicitud solicitud);
 
     /**
-     * 
      * @param solicitud
      * @return
      */
     public boolean insertSolicitud(DTO_Solicitud solicitud);
+    
+    /**
+     * @param solicitud
+     * @return
+     */
+    public boolean updateSolicitud(DTO_Solicitud solicitud);
 
     /**
      * @param solicitud

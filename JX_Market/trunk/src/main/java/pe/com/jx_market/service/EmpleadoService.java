@@ -1,6 +1,7 @@
 package pe.com.jx_market.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -83,7 +84,12 @@ public class EmpleadoService implements BusinessService {
                     }
                 }
             }
-            dao.registraEmpleado(empleado);
+            List<DTO_Empleado> empTmp = dao.getEmpleados(empleado);
+            if (empTmp == null || empTmp.isEmpty()) {
+                dao.insertEmpleado(empleado);
+            } else {
+                dao.updateEmpleado(empleado);
+            }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_DELETE.equals(input.getVerbo())) {

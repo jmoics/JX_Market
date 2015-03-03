@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.dao.EmpresaMapper">
+
+  <cache />
+
+    <!-- MANTENIMIENTO DE EMPRESAS -->
+
+    <select id="getEmpresaPorCodigo" resultType="DTO_Empresa">
+        SELECT
+            emp.empresa_n_codigo as codigo,
+            emp.empresa_v_razonsocial as razonsocial,
+            emp.empresa_n_activo as estado,
+            emp.empresa_v_ruc as ruc,
+            emp.empresa_v_dominio as dominio
+        FROM
+            T_EMP_EMPRESA emp
+        WHERE
+            emp.empresa_n_codigo = #{empresa_n_codigo}
+    </select>
+
+    <select id="getEmpresas" resultType="DTO_Empresa">
+        SELECT
+            emp.empresa_n_codigo as codigo,
+            emp.empresa_v_razonsocial as razonsocial,
+            emp.empresa_n_activo as estado,
+            emp.empresa_v_ruc as ruc,
+            emp.empresa_v_dominio as dominio
+        FROM
+            T_EMP_EMPRESA emp
+        WHERE
+            emp.empresa_n_activo = 1
+            <if test="empresa_v_razonsocial != null">AND
+               emp.empresa_v_razonsocial LIKE #{empresa_v_razonsocial}
+            </if>
+            <if test="empresa_v_ruc != null">OR
+               emp.empresa_v_ruc LIKE #{empresa_v_ruc}
+            </if>
+    </select>
+
+    <insert id="insertEmpresa" parameterType="DTO_Empresa">
+        INSERT INTO T_EMP_EMPRESA
+            (empresa_v_razonsocial,empresa_n_activo,empresa_v_ruc,empresa_v_dominio)
+        VALUES
+            (#{razonsocial},#{estado},#{ruc},#{dominio})
+        <selectKey keyProperty="codigo" resultType="int" order="AFTER"> 
+           select LAST_INSERT_ID() as value
+        </selectKey>
+    </insert>
+    
+    <update id="updateEmpresa">
+        UPDATE T_EMP_EMPRESA
+        SET
+            empresa_v_razonsocial = #{empresa_v_razonsocial},
+            empresa_n_activo = #{empresa_n_activo},
+            empresa_v_ruc = #{empresa_v_ruc},
+            empresa_v_dominio = #{empresa_v_dominio}
+        WHERE
+            empresa_n_codigo = #{empresa_n_codigo}
+    </update>
+
+   <delete id="deleteEmpresa">
+      DELETE FROM
+         T_EMP_EMPRESA
+      WHERE
+         empresa_n_codigo = #{value}
+    </delete>
+
+</mapper>

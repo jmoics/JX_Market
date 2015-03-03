@@ -37,7 +37,7 @@ public class AuthService
         final DTO_Usuario suposedUser = (DTO_Usuario) input.getObject();
         final String password = suposedUser.getContrasena();
         suposedUser.setContrasena("erased");
-        final DTO_Usuario us = dao.leeUsuario(suposedUser);
+        final DTO_Usuario us = dao.getUsuarioPorUsername(suposedUser);
 
         if (us == null) {
             logger.error("No se proporciono usuario valido");

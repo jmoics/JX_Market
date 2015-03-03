@@ -11,20 +11,38 @@
     <!-- <context:component-scan base-package="pe.com.jx_market" />-->
     
 	<!-- archivo de propiedades JDBC -->
-	<bean
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<value>classpath:jdbc.properties</value>
-		</property>
-	</bean>
+    <bean
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <value>classpath:jdbc.properties</value>
+        </property>
+    </bean>
 
-	<bean id="dataSource" destroy-method="close"
-		class="org.apache.commons.dbcp.BasicDataSource" lazy-init="true">
-		<property name="driverClassName" value="${jdbc.driverClassName}" />
-		<property name="url" value="${jdbc.url}" />
-		<property name="username" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
-	</bean>
+    <bean id="dataSource" destroy-method="close"
+        class="org.apache.commons.dbcp.BasicDataSource" lazy-init="true">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+    
+    <!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean> -->
+    
+    <!-- enable component scanning and autowire (beware that this does not enable mapper scanning!) -->    
+    <!-- <context:component-scan base-package="org.mybatis.jpetstore.service" /> -->
 
-	<import resource="commonContext.xml" />
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="typeAliasesPackage" value="pe.com.jx_market.domain" />
+    </bean>
+
+    <!-- escaneo de mappers en el paquete especificado -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="pe.com.jx_market.dao" />
+    </bean>
+
+    <!-- archivo con los servicios -->
+	<import resource="beans.xml" />
 </beans>

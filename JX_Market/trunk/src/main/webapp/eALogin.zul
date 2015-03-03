@@ -26,8 +26,11 @@
                </div>
                <html:p />
                <div align="center">
-                  <grid fixedLayout="true" width="480px">
-                     <columns></columns>
+                  <grid hflex="1" fixedLayout="true" width="480px">
+                     <columns visible="false">
+                        <column/><!-- se debe definir columnas sino no se muestra -->
+                        <column/>
+                    </columns>
                      <rows>
                         <row>
                            <label class="desc">Empresa:</label>

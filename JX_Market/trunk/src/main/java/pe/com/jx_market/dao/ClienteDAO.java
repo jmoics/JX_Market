@@ -10,7 +10,9 @@ public interface ClienteDAO {
 
     public boolean eliminaCliente (DTO_Cliente cliente);
 
-    public boolean registraCliente (DTO_Cliente cliente);
+    public boolean insertCliente (DTO_Cliente cliente);
+    
+    public boolean updateCliente (DTO_Cliente cliente);
 
     public List<DTO_Cliente> getClientes (DTO_Cliente cliente);
 }

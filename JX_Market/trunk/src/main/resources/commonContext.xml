@@ -11,6 +11,7 @@
     <!-- archivo con los servicios -->
     <import resource="beans.xml" />
 
+    <!-- Se cambio a mybatis, esto no es necesario -->
     <!-- mapa iBATIS -->
     <bean id="sqlMapClient"
         class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">

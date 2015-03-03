@@ -19,7 +19,7 @@ public interface EmpresaDAO {
      * @param codigo codigo de la empresa.
      * @return DTO_Empresa con la data de la empresa.
      */
-    public DTO_Empresa getEmpresaXCodigo (String codigo);
+    public DTO_Empresa getEmpresaPorCodigo (String codigo);
 
     /**
      * @param codigo
@@ -31,7 +31,13 @@ public interface EmpresaDAO {
      * @param empresa
      * @return
      */
-    public Integer registraEmpresa (DTO_Empresa empresa);
+    public Integer insertEmpresa (DTO_Empresa empresa);
+    
+    /**
+     * @param empresa
+     * @return
+     */
+    public Integer updateEmpresa (DTO_Empresa empresa);
 
     /**
      * @return

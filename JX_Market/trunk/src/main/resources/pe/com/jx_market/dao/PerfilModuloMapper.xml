@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.dao.PerfilModuloMapper">
+
+  <cache />
+
+    <!-- MANTENIMIENTOD DE MODULOS POR PERFIL -->
+
+    <select id="getModulosPorPerfil" parameterType="DTO_Perfil" resultType="Integer">
+        SELECT
+            modulo_n_codigo
+        FROM
+            T_SEG_MOD_DET
+        WHERE
+            perfil_n_codigo = #{codigo}
+    </select>
+    
+    <select id="getModuloStringPorPerfil" parameterType="DTO_Perfil" resultType="String">
+        SELECT
+            modu.modulo_v_recurso
+        FROM
+            T_SEG_MOD_DET modDet,
+            T_SEG_MODULO modu
+        WHERE
+            modDet.modulo_n_codigo = modu.modulo_n_codigo
+        AND
+            modDet.perfil_n_codigo = #{codigo}
+    </select>
+
+    <insert id="insertModuloPerfil" parameterType="DTO_PerfilModulo">
+        INSERT INTO
+            T_SEG_MOD_DET
+                (perfil_n_codigo, modulo_n_codigo, moddet_n_habilitado)
+            VALUES
+                (#{perfil}, #{modulo}, #{estado})
+       
+    </insert>
+   
+    <delete id="deleteModuloPerfil" parameterType="DTO_Perfil">
+        DELETE FROM
+            T_SEG_MOD_DET
+        WHERE
+            perfil_n_codigo = #{codigo}
+    </delete>
+
+</mapper>

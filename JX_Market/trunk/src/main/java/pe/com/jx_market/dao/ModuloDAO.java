@@ -23,6 +23,12 @@ public interface ModuloDAO
      * @return
      */
     public Integer insertModulo(DTO_Modulo modulo);
+    
+    /**
+     * @param modulo
+     * @return
+     */
+    public Integer updateModulo(DTO_Modulo modulo);
 
     /**
      * @param modulo

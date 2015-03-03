@@ -83,7 +83,12 @@ public class ClienteService implements BusinessService {
                     }
                 }
             }
-            dao.registraCliente(cliente);
+            final DTO_Cliente clTmp = (DTO_Cliente) dao.getClientes(cliente);
+            if (clTmp == null) {
+                dao.insertCliente(cliente);
+            } else {
+                dao.updateCliente(cliente);
+            }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_DELETE.equals(input.getVerbo())) {

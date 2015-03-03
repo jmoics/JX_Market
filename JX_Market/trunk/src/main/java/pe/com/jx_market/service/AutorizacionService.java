@@ -45,7 +45,7 @@ public class AutorizacionService
         } else {
             modulos = (String[]) input.getMapa().get("modulo-array");
         }
-        final Set<String> modulosDelPerfil = dao.listaModulosPorPerfil(perfil);
+        final Set<String> modulosDelPerfil = dao.getModuloStringPorPerfil(perfil);
         // debemos validar que todos los recursos solicitados estan en el array
         for (int z = 0; z < modulos.length; z++) {
             if (!modulosDelPerfil.contains(modulos[z])) {

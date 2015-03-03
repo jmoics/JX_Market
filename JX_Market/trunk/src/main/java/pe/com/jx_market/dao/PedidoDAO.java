@@ -17,6 +17,7 @@ public interface PedidoDAO
     public DTO_Pedido getPedidoXCodigo (DTO_Pedido ped);
     public List<Integer> getConnected (Integer pedFrom);
     public Integer insertPedido (DTO_Pedido ped);
+    public Integer updatePedido (DTO_Pedido ped);
     public boolean deletePedido (DTO_Pedido ped);
     public boolean connectPedido (Integer pedFrom, Integer pedTo);
 }

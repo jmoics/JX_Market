@@ -60,7 +60,7 @@ public class ArticuloService implements BusinessService
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_USTOCK.equals(input.getVerbo())) {
-            dao.insertStock((DTO_Articulo) input.getObject());
+            dao.updateStock((DTO_Articulo) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_GETIMG.equals(input.getVerbo())) {
