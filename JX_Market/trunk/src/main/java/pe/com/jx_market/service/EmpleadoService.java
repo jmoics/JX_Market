@@ -6,10 +6,13 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.dao.EmpleadoDAO;
 import pe.com.jx_market.domain.DTO_Empleado;
 import pe.com.jx_market.domain.DTO_Usuario;
+import pe.com.jx_market.persistence.EmpleadoMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
@@ -20,11 +23,14 @@ import pe.com.jx_market.utilities.DTO_Output;
  * @author jorge
  *
  */
-
-public class EmpleadoService implements BusinessService {
-
+@Service
+public class EmpleadoService 
+    implements BusinessService 
+{
     static Log logger = LogFactory.getLog(EmpleadoService.class);
-    private EmpleadoDAO dao;
+    @Autowired
+    private EmpleadoMapper empleadoMapper;
+    @Autowired
     private BusinessService usuarioService;
 
     /**
@@ -42,17 +48,18 @@ public class EmpleadoService implements BusinessService {
      * @return Objeto estandar de salida
      */
     @Override
+    @Transactional
     public DTO_Output execute (final DTO_Input input) {
 
         final DTO_Output output = new DTO_Output();
         if (Constantes.V_LIST.equals(input.getVerbo())) {
             final DTO_Empleado empleado = (DTO_Empleado) input.getObject();
-            output.setLista(dao.getEmpleados(empleado));
+            output.setLista(empleadoMapper.getEmpleados(empleado));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getVerbo())) {
             final DTO_Empleado empleado = (DTO_Empleado) input.getObject();
-            output.setObject(dao.leeEmpleado(empleado));
+            output.setObject(empleadoMapper.getEmpleados(empleado).get(0));
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
@@ -84,16 +91,16 @@ public class EmpleadoService implements BusinessService {
                     }
                 }
             }
-            List<DTO_Empleado> empTmp = dao.getEmpleados(empleado);
+            List<DTO_Empleado> empTmp = empleadoMapper.getEmpleados(empleado);
             if (empTmp == null || empTmp.isEmpty()) {
-                dao.insertEmpleado(empleado);
+                empleadoMapper.insertEmpleado(empleado);
             } else {
-                dao.updateEmpleado(empleado);
+                empleadoMapper.updateEmpleado(empleado);
             }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_DELETE.equals(input.getVerbo())) {
-            dao.eliminaEmpleado((DTO_Empleado) input.getObject());
+            empleadoMapper.eliminaEmpleado((DTO_Empleado) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         } else {
@@ -122,12 +129,12 @@ public class EmpleadoService implements BusinessService {
         this.usuarioService = usuarioService;
     }
 
-    public EmpleadoDAO getDao () {
-        return dao;
+    public EmpleadoMapper getDao () {
+        return empleadoMapper;
     }
 
-    public void setDao (final EmpleadoDAO dao) {
-        this.dao = dao;
+    public void setDao (final EmpleadoMapper empleadoMapper) {
+        this.empleadoMapper = empleadoMapper;
     }
 
 }

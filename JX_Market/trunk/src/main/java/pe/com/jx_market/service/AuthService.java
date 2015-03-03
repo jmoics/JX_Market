@@ -2,9 +2,12 @@ package pe.com.jx_market.service;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.dao.UsuarioDAO;
 import pe.com.jx_market.domain.DTO_Usuario;
+import pe.com.jx_market.persistence.UsuarioMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
@@ -13,13 +16,14 @@ import pe.com.jx_market.utilities.DTO_Output;
  * Servicio de Autenticacion de Usuarios.
  * 
  */
-
+@Service
 public class AuthService
     implements BusinessService
 {
-
     static Log logger = LogFactory.getLog(AuthService.class);
-    private UsuarioDAO dao;
+    @Autowired
+    private UsuarioMapper usuarioMapper;
+    @Autowired
     private BusinessService passwordHashService;
 
     /**
@@ -31,13 +35,14 @@ public class AuthService
      * @return Objeto estandar de salida
      */
     @Override
+    @Transactional
     public DTO_Output execute(final DTO_Input input)
     {
         final DTO_Output output = new DTO_Output();
         final DTO_Usuario suposedUser = (DTO_Usuario) input.getObject();
         final String password = suposedUser.getContrasena();
         suposedUser.setContrasena("erased");
-        final DTO_Usuario us = dao.getUsuarioPorUsername(suposedUser);
+        final DTO_Usuario us = usuarioMapper.getUsuarioXUsername(suposedUser);
 
         if (us == null) {
             logger.error("No se proporciono usuario valido");
@@ -79,14 +84,14 @@ public class AuthService
         return passEncriptada;
     }
 
-    public UsuarioDAO getDao()
+    public UsuarioMapper getDao()
     {
-        return dao;
+        return usuarioMapper;
     }
 
-    public void setDao(final UsuarioDAO dao)
+    public void setDao(final UsuarioMapper usuarioMapper)
     {
-        this.dao = dao;
+        this.usuarioMapper = usuarioMapper;
     }
 
     public BusinessService getPasswordHashService()

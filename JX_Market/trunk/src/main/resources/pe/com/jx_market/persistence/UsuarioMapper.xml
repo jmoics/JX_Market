@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.UsuarioMapper">
+
+  <cache />
+
+    <!-- MANTENIMIENTO DE USUARIOS -->
+
+    <select id="getUsuarioXUsername" parameterType="DTO_Usuario" resultType="DTO_Usuario">
+        SELECT
+            us.usuario_n_codigo as codigo,
+            us.usuario_v_username as username,
+            us.usuario_v_contrasena as contrasena,
+            us.empresa_n_codigo as empresa
+        FROM
+            T_SEG_USUARIO us
+        WHERE
+            us.usuario_v_username = #{username}
+        AND
+            us.empresa_n_codigo = #{empresa}
+    </select>
+
+    <select id="getUsuarios" parameterType="DTO_Usuario" resultType="DTO_Usuario">
+        SELECT
+            us.usuario_n_codigo as codigo,
+            us.usuario_v_username as username,
+            us.empresa_n_codigo as empresa
+        FROM
+            T_SEG_USUARIO us
+        WHERE
+            us.empresa_n_codigo = #{empresa}
+        <if test="codigo != null">AND
+            us.usuario_n_codigo = #{codigo}
+        </if>
+        ORDER BY
+            us.usuario_n_codigo
+    </select>
+
+    <insert id="insertUsuario" parameterType="DTO_Usuario" useGeneratedKeys="true" keyProperty="codigo">
+        INSERT INTO T_SEG_USUARIO
+            (usuario_v_username,usuario_v_contrasena,empresa_n_codigo)
+        VALUES
+            (#{username}, #{contrasena}, #{empresa})
+    </insert>
+    
+    <update id="updateUsuario" parameterType="DTO_Usuario">
+        UPDATE T_SEG_USUARIO
+        SET
+            usuario_v_username = #{username}
+        WHERE
+            usuario_n_codigo = #{codigo}
+        AND
+            empresa_n_codigo = #{empresa}
+    </update>
+
+    <update id="cambiaPassword" parameterType="DTO_Usuario">
+        UPDATE T_SEG_USUARIO
+        SET
+            usuario_v_contrasena = #{contrasena}
+        WHERE
+            usuario_v_username = #{username}
+        AND
+            empresa_n_codigo = #{empresa}
+    </update>
+
+</mapper>

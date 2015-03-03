@@ -5,15 +5,21 @@
 package pe.com.jx_market.service;
 
 import pe.com.jx_market.utilities.*;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 import org.apache.commons.logging.*;
+import org.springframework.stereotype.Service;
 
 /**
  * 
  * @author jorge
  */
-public class PasswordHashService implements BusinessService {
+@Service
+public class PasswordHashService 
+    implements BusinessService 
+{
 
     static Log logger = LogFactory.getLog(PasswordHashService.class);
     private MessageDigest algorithm = null;

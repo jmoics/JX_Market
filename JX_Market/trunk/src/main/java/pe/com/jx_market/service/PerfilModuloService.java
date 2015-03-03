@@ -6,12 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import pe.com.jx_market.dao.ModuloDAO;
-import pe.com.jx_market.dao.PerfilDAO;
-import pe.com.jx_market.dao.PerfilModuloDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import pe.com.jx_market.domain.DTO_Modulo;
 import pe.com.jx_market.domain.DTO_Perfil;
 import pe.com.jx_market.domain.DTO_PerfilModulo;
+import pe.com.jx_market.persistence.ModuloMapper;
+import pe.com.jx_market.persistence.PerfilMapper;
+import pe.com.jx_market.persistence.PerfilModuloMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
@@ -21,16 +25,21 @@ import pe.com.jx_market.utilities.DTO_Output;
  * @author diego
  *
  */
-public class PerfilModuloService implements BusinessService {
-
-    private PerfilModuloDAO dao;
-    private PerfilDAO perfilDAO;
-    private ModuloDAO moduloDAO;
+@Service
+public class PerfilModuloService implements BusinessService 
+{
+    @Autowired
+    private PerfilModuloMapper perfilModuloMapper;
+    @Autowired
+    private PerfilMapper perfilMapper;
+    @Autowired
+    private ModuloMapper moduloMapper;
 
     /**El DTO_Input debe contener un Verbo, el cual es un String en el cual se específica la acción a realizar
      * ya sea consulta, registro o eliminación ("list", "register" o "delete" respectivamente)
      */
     @Override
+    @Transactional
     public DTO_Output execute(final DTO_Input input) {
 
         final DTO_Output output = new DTO_Output();
@@ -40,12 +49,12 @@ public class PerfilModuloService implements BusinessService {
             final DTO_Perfil perfil = (DTO_Perfil) map.get("perfil");
             final DTO_Modulo modulo = (DTO_Modulo) map.get("modulo");
 
-            final List<DTO_Perfil> perfiles = perfilDAO.getPerfiles(perfil);
+            final List<DTO_Perfil> perfiles = perfilMapper.getPerfiles(perfil);
             final HashMap <DTO_Perfil, Set<Integer>> perfXMod = new HashMap<DTO_Perfil, Set<Integer>>();
             for(final DTO_Perfil perf : perfiles) {
-                perfXMod.put(perf, dao.listaPorPerfil(perf));
+                perfXMod.put(perf, perfilModuloMapper.getModulosPorPerfil(perf));
             }
-            output.setLista(moduloDAO.getModulos(modulo));
+            output.setLista(moduloMapper.getModulos(modulo));
             output.setMapa(perfXMod);
             output.setErrorCode(Constantes.OK);
             return output;
@@ -54,20 +63,20 @@ public class PerfilModuloService implements BusinessService {
             final Iterator<DTO_Perfil> perfilIterator = mapa.keySet().iterator();
             while(perfilIterator.hasNext()) {
                 final DTO_Perfil perfil = perfilIterator.next();
-                dao.eliminaPorPerfil(perfil);
+                perfilModuloMapper.deleteModuloPerfil(perfil);
                 final Set <DTO_PerfilModulo> recursos =  mapa.get(perfil);
                 final Iterator <DTO_PerfilModulo> itBlock = recursos.iterator();
                 while(itBlock.hasNext()) {
                     final DTO_PerfilModulo perfMod = itBlock.next();
                     System.out.println("Agrego: " + perfMod.getPerfil() + " cod: " + perfMod.getModulo());
-                    dao.agregaPorPerfil(perfMod);
+                    perfilModuloMapper.insertModuloPerfil(perfMod);
                 }
             }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if(Constantes.V_REGISTERPM.equals(input.getVerbo())) {
             final DTO_PerfilModulo perfMod = (DTO_PerfilModulo) input.getObject();
-            dao.agregaPorPerfil(perfMod);
+            perfilModuloMapper.insertModuloPerfil(perfMod);
             output.setErrorCode(Constantes.OK);
             return output;
         }
@@ -75,31 +84,31 @@ public class PerfilModuloService implements BusinessService {
         throw new RuntimeException("Verbo incorrecto");
     }
 
-    public ModuloDAO getModuloDAO() {
-        return moduloDAO;
+    public ModuloMapper getModuloDAO() {
+        return moduloMapper;
     }
 
-    public void setModuloDAO(final ModuloDAO moduloDAO)
+    public void setModuloDAO(final ModuloMapper moduloMapper)
     {
-        this.moduloDAO = moduloDAO;
+        this.moduloMapper = moduloMapper;
     }
 
-    public PerfilModuloDAO getDao()
+    public PerfilModuloMapper getDao()
     {
-        return dao;
+        return perfilModuloMapper;
     }
 
-    public void setDao(final PerfilModuloDAO dao)
+    public void setDao(final PerfilModuloMapper perfilModuloMapper)
     {
-        this.dao = dao;
+        this.perfilModuloMapper = perfilModuloMapper;
     }
 
-    public PerfilDAO getPerfilDAO() {
-        return perfilDAO;
+    public PerfilMapper getPerfilDAO() {
+        return perfilMapper;
     }
 
-    public void setPerfilDAO(final PerfilDAO perfilDAO) {
-        this.perfilDAO = perfilDAO;
+    public void setPerfilDAO(final PerfilMapper perfilMapper) {
+        this.perfilMapper = perfilMapper;
     }
 
 }

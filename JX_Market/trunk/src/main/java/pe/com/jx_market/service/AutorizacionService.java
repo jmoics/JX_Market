@@ -2,9 +2,13 @@ package pe.com.jx_market.service;
 
 import java.util.Set;
 
-import pe.com.jx_market.dao.PerfilModuloDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import pe.com.jx_market.domain.DTO_Empleado;
 import pe.com.jx_market.domain.DTO_Perfil;
+import pe.com.jx_market.persistence.PerfilModuloMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
@@ -15,11 +19,12 @@ import pe.com.jx_market.utilities.DTO_Output;
  * @author americati
  *
  */
+@Service
 public class AutorizacionService
     implements BusinessService
 {
-
-    private PerfilModuloDAO dao;
+    @Autowired
+    private PerfilModuloMapper perfilModuloMapper;
 
     /**
      * El DTO_Input contendrá un objeto DTO_Contacto y un objeto con un recurso
@@ -30,9 +35,9 @@ public class AutorizacionService
      * @return Objeto estándar de salida
      */
     @Override
+    @Transactional
     public DTO_Output execute(final DTO_Input input)
     {
-
         final DTO_Output output = new DTO_Output();
         final DTO_Empleado empleado = (DTO_Empleado) input.getMapa().get("empleado");
         final DTO_Perfil perfil = new DTO_Perfil();
@@ -45,7 +50,7 @@ public class AutorizacionService
         } else {
             modulos = (String[]) input.getMapa().get("modulo-array");
         }
-        final Set<String> modulosDelPerfil = dao.getModuloStringPorPerfil(perfil);
+        final Set<String> modulosDelPerfil = perfilModuloMapper.getModuloStringPorPerfil(perfil);
         // debemos validar que todos los recursos solicitados estan en el array
         for (int z = 0; z < modulos.length; z++) {
             if (!modulosDelPerfil.contains(modulos[z])) {
@@ -57,14 +62,14 @@ public class AutorizacionService
         return output;
     }
 
-    public PerfilModuloDAO getDao()
+    public PerfilModuloMapper getDao()
     {
-        return dao;
+        return perfilModuloMapper;
     }
 
-    public void setDao(final PerfilModuloDAO dao)
+    public void setDao(final PerfilModuloMapper perfilModuloMapper)
     {
-        this.dao = dao;
+        this.perfilModuloMapper = perfilModuloMapper;
     }
 
 }

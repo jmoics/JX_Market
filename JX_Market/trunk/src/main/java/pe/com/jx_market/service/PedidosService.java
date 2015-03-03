@@ -12,11 +12,14 @@ import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.dao.DetallePedidoDAO;
-import pe.com.jx_market.dao.PedidoDAO;
 import pe.com.jx_market.domain.DTO_DetallePedido;
 import pe.com.jx_market.domain.DTO_Pedido;
+import pe.com.jx_market.persistence.DetallePedidoMapper;
+import pe.com.jx_market.persistence.PedidoMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
@@ -25,19 +28,23 @@ import pe.com.jx_market.utilities.DTO_Output;
  * @author George
  *
  */
+@Service
 public class PedidosService implements BusinessService
 {
     static Log logger = LogFactory.getLog(PedidosService.class);
-    private PedidoDAO pedidoDAO;
-    private DetallePedidoDAO detalleDAO;
+    @Autowired
+    private PedidoMapper pedidoMapper;
+    @Autowired
+    private DetallePedidoMapper detallePedidoMapper;
 
     @SuppressWarnings("unchecked")
     @Override
+    @Transactional
     public DTO_Output execute(final DTO_Input input)
     {
         final DTO_Output output = new DTO_Output();
         if (Constantes.V_LISTEMP.equals(input.getVerbo())) {
-            final List<DTO_Pedido> lst = pedidoDAO.getPedidos((DTO_Pedido) input.getObject());
+            final List<DTO_Pedido> lst = pedidoMapper.getPedidos((DTO_Pedido) input.getObject());
             for (final DTO_Pedido ped : lst) {
 
             }
@@ -47,19 +54,19 @@ public class PedidosService implements BusinessService
         } else if (Constantes.V_LIST.equals(input.getVerbo())) {
             final Map<DTO_Pedido, List<DTO_DetallePedido>> mapPed = new HashMap<DTO_Pedido, List<DTO_DetallePedido>>();
             //Pedidos de JX_Market para un cliente
-            final List<DTO_Pedido> lstPedCli = pedidoDAO.getPedidos((DTO_Pedido) input.getObject());
+            final List<DTO_Pedido> lstPedCli = pedidoMapper.getPedidos((DTO_Pedido) input.getObject());
             for (final DTO_Pedido ped : lstPedCli) {
                 final List<DTO_DetallePedido> lstPedEmp = new ArrayList<DTO_DetallePedido>();
                 //Codigos de los pedidos de las empresa
-                final List<Integer> lstPeds = pedidoDAO.getConnected(ped.getCodigo());
+                final List<Integer> lstPeds = pedidoMapper.getConnected(ped.getCodigo());
                 for (final Integer codPed : lstPeds) {
                     final DTO_Pedido pedAux = new DTO_Pedido();
                     pedAux.setCodigo(codPed);
                     //Pedido de la empresa
-                    final DTO_Pedido pedEmp = pedidoDAO.getPedidoXCodigo(pedAux);
+                    final DTO_Pedido pedEmp = pedidoMapper.getPedidoXCodigo(pedAux);
                     final DTO_DetallePedido detPedAux = new DTO_DetallePedido();
                     detPedAux.setPedido(pedEmp.getCodigo());
-                    final List<DTO_DetallePedido> detPedEmp = detalleDAO.getDetallePedidos(detPedAux);
+                    final List<DTO_DetallePedido> detPedEmp = detallePedidoMapper.getDetallePedidos(detPedAux);
                     lstPedEmp.addAll(detPedEmp);
                 }
                 mapPed.put(ped, lstPedEmp);
@@ -78,15 +85,23 @@ public class PedidosService implements BusinessService
                         final DTO_Pedido pedMain = obtenerPedido(ped);
                         pedMain.setEmpresa(Constantes.INSTITUCION_JX_MARKET);
                         pedMain.setTotal(total);
-                        pedMainId = pedidoDAO.insertPedido(pedMain);
+                        DTO_Pedido pedTmp = pedidoMapper.getPedidoXCodigo(pedMain);
+                        if (pedTmp == null) {
+                            pedMainId = pedidoMapper.insertPedido(pedMain);
+                        } else {
+                            pedidoMapper.updatePedido(pedMain);
+                            pedMainId = pedTmp.getCodigo();
+                        }
                     }
-                    final Integer idPedido = pedidoDAO.insertPedido(ped);
-                    pedidoDAO.connectPedido(pedMainId, idPedido);
+                    final Integer idPedido = pedidoMapper.insertPedido(ped);
+                    pedidoMapper.connectPedido(pedMainId, idPedido);
                     final List<DTO_DetallePedido> lstDet = entry2.getValue();
                     for (final DTO_DetallePedido detPed : lstDet) {
                         final DTO_DetallePedido detAux = obtenerDetallePedido(detPed);
                         detAux.setPedido(idPedido);
-                        detalleDAO.insertDetallePedido(detAux);
+                        detallePedidoMapper.insertDetallePedido(detAux);
+                        
+                        // Ver si el update es factible
                     }
                 }
             }
@@ -120,24 +135,24 @@ public class PedidosService implements BusinessService
         return detAux;
     }
 
-    public PedidoDAO getPedidoDAO()
+    public PedidoMapper getPedidoDAO()
     {
-        return pedidoDAO;
+        return pedidoMapper;
     }
 
-    public void setPedidoDAO(final PedidoDAO pedidoDAO)
+    public void setPedidoDAO(final PedidoMapper pedidoMapper)
     {
-        this.pedidoDAO = pedidoDAO;
+        this.pedidoMapper = pedidoMapper;
     }
 
-    public DetallePedidoDAO getDetalleDAO()
+    public DetallePedidoMapper getDetalleDAO()
     {
-        return detalleDAO;
+        return detallePedidoMapper;
     }
 
-    public void setDetalleDAO(final DetallePedidoDAO detalleDAO)
+    public void setDetalleDAO(final DetallePedidoMapper detallePedidoMapper)
     {
-        this.detalleDAO = detalleDAO;
+        this.detallePedidoMapper = detallePedidoMapper;
     }
 
 }

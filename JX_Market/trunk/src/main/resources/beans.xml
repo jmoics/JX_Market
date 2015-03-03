@@ -9,78 +9,79 @@
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <!-- PERSISTENCIA -->
-    <import resource="daobeans.xml" />
+    <!-- Con mybatis no es necesario, el mapper se encarga -->
+    <!-- <import resource="daobeans.xml" /> -->
 
     <!-- SERVICIOS -->
 
     <bean id="authService" class="pe.com.jx_market.service.AuthService">
-        <property name="dao" ref="usuarioDAO" />
+        <property name="dao" ref="UsuarioMapper" />
         <property name="passwordHashService" ref="passwordHashService" />
     </bean>
     
     <bean id="articuloService" class="pe.com.jx_market.service.ArticuloService">
-        <property name="dao" ref="articuloDAO" />
+        <property name="dao" ref="ArticuloMapper" />
     </bean>
     
     <bean id="empresaService" class="pe.com.jx_market.service.EmpresaService">
-        <property name="dao" ref="empresaDAO" />
+        <property name="dao" ref="EmpresaMapper" />
     </bean>
 
     <bean id="clienteService" class="pe.com.jx_market.service.ClienteService">
-        <property name="dao" ref="clienteDAO" />
-        <property name="usuarioService" ref="usuarioService"/>
+        <property name="dao" ref="ClienteMapper" />
+        <property name="usuarioService" ref="UsuarioService"/>
     </bean>
 
     <bean id="empleadoService" class="pe.com.jx_market.service.EmpleadoService">
-        <property name="dao" ref="empleadoDAO" />
-        <property name="usuarioService" ref="usuarioService"/>
+        <property name="dao" ref="EmpleadoMapper" />
+        <property name="usuarioService" ref="UsuarioService"/>
     </bean>
 
     <bean id="usuarioService" class="pe.com.jx_market.service.UsuarioService">
-        <property name="dao" ref="usuarioDAO" />
-        <property name="passwordHashService" ref="passwordHashService" />
+        <property name="dao" ref="UsuarioMapper" />
+        <property name="passwordHashService" ref="PasswordHashService" />
     </bean>
     
     <bean id="passwordHashService" class="pe.com.jx_market.service.PasswordHashService" />
     
     <bean id="categoriaService" class="pe.com.jx_market.service.CategoriaService">
-        <property name="dao" ref="categoriaDAO" />
+        <property name="dao" ref="CategoriaMapper" />
     </bean>
     
     <bean id="perfilService" class="pe.com.jx_market.service.PerfilService">
-        <property name="dao" ref="perfilDAO" />
+        <property name="dao" ref="PerfilMapper" />
     </bean>
     
     <bean id="areaService" class="pe.com.jx_market.service.AreaService">
-        <property name="dao" ref="areaDAO" />
+        <property name="dao" ref="AreaMapper" />
     </bean>
     
     <bean id="moduloService" class="pe.com.jx_market.service.ModuloService">
-        <property name="dao" ref="moduloDAO" />
+        <property name="dao" ref="ModuloMapper" />
     </bean>
     
     <bean id="perfilModuloService" class="pe.com.jx_market.service.PerfilModuloService">
-        <property name="dao" ref="perfilModuloDAO" />
-        <property name="moduloDAO" ref="moduloDAO"/>
-        <property name="perfilDAO" ref="perfilDAO"/>
+        <property name="dao" ref="PerfilModuloMapper" />
+        <property name="moduloMapper" ref="ModuloMapper"/>
+        <property name="perfilMapper" ref="PerfilMapper"/>
     </bean>
     
     <bean id="autorizacionService" class="pe.com.jx_market.service.AutorizacionService">
-        <property name="dao" ref="perfilModuloDAO" />
+        <property name="dao" ref="PerfilModuloMapper" />
     </bean>
     
     <bean id="validationService" class="pe.com.jx_market.service.ValidationService">
-        <property name="registraCliente" ref="registraCliente"/>
-        <property name="registraSolicitud" ref="registraSolicitud"/>
+        <property name="registraCliente" ref="RegistraCliente"/>
+        <property name="registraSolicitud" ref="RegistraSolicitud"/>
     </bean>
     
     <bean id="pedidosService" class="pe.com.jx_market.service.PedidosService">
-        <property name="pedidoDAO" ref="pedidoDAO"/>
-        <property name="detalleDAO" ref="detalleDAO"/>
+        <property name="pedidoMapper" ref="PedidoMapper"/>
+        <property name="detalleMapper" ref="DetalleMapper"/>
     </bean>
     
     <bean id="solicitudService" class="pe.com.jx_market.service.SolicitudService">
-        <property name="dao" ref="solicitudDAO"/>
+        <property name="dao" ref="SolicitudMapper"/>
     </bean>
     
     <!-- validadores -->

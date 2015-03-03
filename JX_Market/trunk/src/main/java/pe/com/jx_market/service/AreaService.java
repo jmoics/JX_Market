@@ -1,36 +1,49 @@
 package pe.com.jx_market.service;
 
-import pe.com.jx_market.dao.AreaDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import pe.com.jx_market.domain.DTO_Area;
+import pe.com.jx_market.persistence.AreaMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
 
+@Service
 public class AreaService
     implements BusinessService
 {
-    private AreaDAO dao;
+    @Autowired
+    private AreaMapper areaMapper;
 
+    @Transactional
     @Override
     public DTO_Output execute(final DTO_Input input)
     {
         final DTO_Output output = new DTO_Output();
         if (Constantes.V_LIST.equals(input.getVerbo())) {
-            output.setLista(dao.getAreas((DTO_Area) input.getObject()));
+            output.setLista(areaMapper.getAreas((DTO_Area) input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
-            final Integer cod = dao.insertArea((DTO_Area) input.getObject());
-            output.setObject(cod);
+            DTO_Area areaTmp = areaMapper.getAreaXCodigo((DTO_Area) input.getObject());
+            if (areaTmp == null) {
+                final Integer cod = areaMapper.insertArea((DTO_Area) input.getObject());
+                output.setObject(cod);
+            } else {
+                areaMapper.updateArea((DTO_Area) input.getObject());
+                output.setObject(new Integer(-1));
+            }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getVerbo())) {
-            final DTO_Area art = dao.getAreaXCodigo((DTO_Area) input.getObject());
+            final DTO_Area art = areaMapper.getAreaXCodigo((DTO_Area) input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_DELETE.equals(input.getVerbo())) {
-            dao.deleteArea((DTO_Area) input.getObject());
+            areaMapper.deleteArea((DTO_Area) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         } else {
@@ -38,14 +51,14 @@ public class AreaService
         }
     }
 
-    public AreaDAO getDao()
+    public AreaMapper getDao()
     {
-        return dao;
+        return areaMapper;
     }
 
-    public void setDao(final AreaDAO dao)
+    public void setDao(final AreaMapper areaMapper)
     {
-        this.dao = dao;
+        this.areaMapper = areaMapper;
     }
 
 }

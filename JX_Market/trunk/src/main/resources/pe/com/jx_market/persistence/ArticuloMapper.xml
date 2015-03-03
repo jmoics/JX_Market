@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.ArticuloMapper">
+
+    <cache />
+
+    <!-- MANTENIMIENTO DE PRODUCTOS -->
+
+    <select id="getArticulos" parameterType="DTO_Articulo" resultType="DTO_Articulo">
+        SELECT
+            art.articulo_n_codigo as codigo,
+            art.empresa_n_codigo as empresa,
+            art.categoria_n_codigo as categoria,
+            art.articulo_v_nombre as nombre,
+            art.articulo_v_marca as marca,
+            art.articulo_v_descripcion as descripcion,
+            art.articulo_n_precio as precio,
+            art.articulo_n_stock as stock,
+            art.articulo_n_activo as activo,
+            art.articulo_v_imagen as nomimg
+        FROM
+            T_NEG_ARTICULO art
+        <if test="empresa != null">
+            WHERE
+                art.empresa_n_codigo = #{empresa}
+            <if test="categoria != null">AND
+                art.categoria_n_codigo = #{categoria}
+            </if>
+            <if test="nombre != null">AND
+                art.articulo_v_nombre LIKE #{nombre}
+            </if>
+            <if test="marca != null">AND
+                art.articulo_v_marca LIKE #{marca}
+            </if>
+            <if test="activo != null">AND
+                art.articulo_n_activo = #{activo}
+            </if>
+        </if>
+        <if test="empresa == null">
+            <if test="categoria != null">
+            WHERE
+                art.categoria_n_codigo = #{categoria}
+            </if>
+        </if>
+        
+    </select>
+
+    <select id="getArticuloXCodigo" parameterType="DTO_Articulo" resultType="DTO_Articulo">
+        SELECT
+            art.articulo_n_codigo as codigo,
+            art.empresa_n_codigo as empresa,
+            art.categoria_n_codigo as categoria,
+            art.articulo_v_nombre as nombre,
+            art.articulo_v_marca as marca,
+            art.articulo_v_descripcion as descripcion,
+            art.articulo_n_precio as precio,
+            art.articulo_n_stock as stock,
+            art.articulo_n_activo as activo,
+            art.articulo_v_imagen as nomimg
+        FROM
+            T_NEG_ARTICULO art
+        WHERE
+            art.articulo_n_codigo = #{codigo}
+    </select>
+
+    <insert id="insertArticulo" parameterType="DTO_Articulo">
+        INSERT INTO T_NEG_ARTICULO
+            (empresa_n_codigo,categoria_n_codigo,articulo_v_nombre,
+            articulo_v_marca,articulo_v_descripcion,articulo_n_precio,
+            articulo_n_stock,articulo_n_activo,articulo_v_imagen)
+        VALUES
+            (#{empresa},#{categoria},#{nombre},
+            #{marca},#{descripcion},#{precio},
+            #{stock},#{activo},#{nomimg})
+    </insert>
+    
+    <update id="updateStock" parameterType="DTO_Articulo">
+        UPDATE T_NEG_ARTICULO
+        SET
+            articulo_n_stock = #{stock}
+        WHERE
+            empresa_n_codigo = #{empresa}
+        AND
+            articulo_n_codigo = #{codigo}
+    </update>
+    
+    <update id="updateArticulo" parameterType="DTO_Articulo">
+        UPDATE T_NEG_ARTICULO
+        SET
+            categoria_n_codigo = #{categoria},
+            articulo_v_nombre = #{nombre},
+            articulo_v_marca = #{marca},
+            articulo_v_descripcion = #{descripcion},
+            articulo_n_precio = #{precio},
+            articulo_n_activo = #{activo},
+            articulo_v_imagen = #{nomimg}
+        WHERE
+            articulo_n_codigo = #{codigo}
+        AND
+            empresa_n_codigo = #{empresa}
+    </update>
+
+   <delete id="deleteArticulo">
+        DELETE FROM
+            T_NEG_ARTICULO
+        WHERE
+            articulo_n_codigo = #{value}
+   </delete>
+
+</mapper>

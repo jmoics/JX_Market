@@ -4,20 +4,23 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
 import pe.com.jx_market.validacion.Validador;
 
+@Service
 public class ValidationService
     implements BusinessService
 {
-
     static Log logger = LogFactory.getLog(ValidationService.class);
     private Validador registraCliente, registraSolicitud;
 
     @Override
+    @Transactional
     public DTO_Output execute(final DTO_Input input)
     {
         final DTO_Output output = new DTO_Output();

@@ -5,10 +5,13 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.dao.ClienteDAO;
 import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.domain.DTO_Usuario;
+import pe.com.jx_market.persistence.ClienteMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
@@ -19,10 +22,14 @@ import pe.com.jx_market.utilities.DTO_Output;
  * @author jorge
  *
  */
-
-public class ClienteService implements BusinessService {
+@Service
+public class ClienteService 
+    implements BusinessService 
+{
     static Log logger = LogFactory.getLog(ClienteService.class);
-    private ClienteDAO dao;
+    @Autowired
+    private ClienteMapper clienteMapper;
+    @Autowired
     private BusinessService usuarioService;
 
     /**
@@ -41,17 +48,18 @@ public class ClienteService implements BusinessService {
      * @return Objeto estandar de salida
      */
     @Override
+    @Transactional
     public DTO_Output execute (final DTO_Input input) {
 
         final DTO_Output output = new DTO_Output();
         if (Constantes.V_LIST.equals(input.getVerbo())) {
             final DTO_Cliente cliente = (DTO_Cliente) input.getObject();
-            output.setLista(dao.getClientes(cliente));
+            output.setLista(clienteMapper.getClientes(cliente));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getVerbo())) {
             final DTO_Cliente cliente = (DTO_Cliente) input.getObject();
-            output.setObject(dao.leeCliente(cliente));
+            output.setObject(clienteMapper.leeCliente(cliente));
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
@@ -83,16 +91,16 @@ public class ClienteService implements BusinessService {
                     }
                 }
             }
-            final DTO_Cliente clTmp = (DTO_Cliente) dao.getClientes(cliente);
+            final DTO_Cliente clTmp = (DTO_Cliente) clienteMapper.getClientes(cliente);
             if (clTmp == null) {
-                dao.insertCliente(cliente);
+                clienteMapper.insertCliente(cliente);
             } else {
-                dao.updateCliente(cliente);
+                clienteMapper.updateCliente(cliente);
             }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_DELETE.equals(input.getVerbo())) {
-            dao.eliminaCliente((DTO_Cliente) input.getObject());
+            clienteMapper.eliminaCliente((DTO_Cliente) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         } else {
@@ -111,12 +119,12 @@ public class ClienteService implements BusinessService {
         }
     }
 
-    public ClienteDAO getDao () {
-        return dao;
+    public ClienteMapper getDao () {
+        return clienteMapper;
     }
 
-    public void setDao (final ClienteDAO dao) {
-        this.dao = dao;
+    public void setDao (final ClienteMapper clienteMapper) {
+        this.clienteMapper = clienteMapper;
     }
 
     public BusinessService getUsuarioService()

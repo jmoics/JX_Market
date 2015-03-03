@@ -15,9 +15,12 @@ import java.util.Random;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.dao.ArticuloDAO;
 import pe.com.jx_market.domain.DTO_Articulo;
+import pe.com.jx_market.persistence.ArticuloMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
@@ -26,18 +29,21 @@ import pe.com.jx_market.utilities.DTO_Output;
  * @author George
  *
  */
+@Service
 public class ArticuloService implements BusinessService
 {
     static Log logger = LogFactory.getLog(ArticuloService.class);
-    private ArticuloDAO dao;
+    @Autowired
+    private ArticuloMapper articuloMapper;
 
     @SuppressWarnings("unchecked")
     @Override
+    @Transactional
     public DTO_Output execute(final DTO_Input input)
     {
         final DTO_Output output = new DTO_Output();
         if (Constantes.V_LIST.equals(input.getVerbo())) {
-            output.setLista(dao.getArticulos((DTO_Articulo)input.getObject()));
+            output.setLista(articuloMapper.getArticulos((DTO_Articulo)input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
@@ -47,12 +53,17 @@ public class ArticuloService implements BusinessService
                                 arti.getNombre().trim() + "." + generarNombreAleatorio());
                 savePhoto(arti);
             }
-            dao.insertArticulo(arti);
+            DTO_Articulo artiTmp = articuloMapper.getArticuloXCodigo(arti);
+            if (artiTmp == null) {
+                articuloMapper.insertArticulo(arti);
+            } else {
+                articuloMapper.updateArticulo(arti);
+            }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getVerbo())) {
             final Map<String, String> map = input.getMapa();
-            final DTO_Articulo art = dao.getArticuloXCodigo((DTO_Articulo) input.getObject());
+            final DTO_Articulo art = articuloMapper.getArticuloXCodigo((DTO_Articulo) input.getObject());
             if (map == null) {
                 loadPhoto(art);
             }
@@ -60,7 +71,7 @@ public class ArticuloService implements BusinessService
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_USTOCK.equals(input.getVerbo())) {
-            dao.updateStock((DTO_Articulo) input.getObject());
+            articuloMapper.updateStock((DTO_Articulo) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_GETIMG.equals(input.getVerbo())) {
@@ -137,12 +148,12 @@ public class ArticuloService implements BusinessService
         }
     }
 
-    public ArticuloDAO getDao () {
-        return dao;
+    public ArticuloMapper getDao () {
+        return articuloMapper;
     }
 
-    public void setDao (final ArticuloDAO dao) {
-        this.dao = dao;
+    public void setDao (final ArticuloMapper articuloMapper) {
+        this.articuloMapper = articuloMapper;
     }
 
 }

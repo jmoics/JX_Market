@@ -3,8 +3,12 @@ package pe.com.jx_market.service;
 import java.util.HashSet;
 import java.util.Map;
 
-import pe.com.jx_market.dao.UsuarioDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import pe.com.jx_market.domain.DTO_Usuario;
+import pe.com.jx_market.persistence.UsuarioMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
@@ -15,12 +19,13 @@ import pe.com.jx_market.utilities.DTO_Output;
  * @author jorge
  *
  */
-
+@Service
 public class UsuarioService
     implements BusinessService
 {
-
-    private UsuarioDAO dao;
+    @Autowired
+    private UsuarioMapper usuarioDAO;
+    @Autowired
     private BusinessService passwordHashService;
 
     /**
@@ -39,35 +44,37 @@ public class UsuarioService
      */
     @SuppressWarnings("rawtypes")
     @Override
+    @Transactional
     public DTO_Output execute(final DTO_Input input)
     {
 
         final DTO_Output output = new DTO_Output();
         if (Constantes.V_LIST.equals(input.getVerbo())) {
             final DTO_Usuario usuario = (DTO_Usuario) input.getObject();
-            output.setLista(dao.getUsuarios(usuario));
+            output.setLista(usuarioDAO.getUsuarios(usuario));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getVerbo())) {
-            output.setObject(dao.leeUsuario((DTO_Usuario) input.getObject()));
+            output.setObject(usuarioDAO.getUsuarioXUsername((DTO_Usuario) input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
             final DTO_Usuario usuario = (DTO_Usuario) input.getObject();
             usuario.setContrasena(encriptaPass(usuario.getContrasena()));
-            final boolean nonused = dao.registraUsuario(usuario);
-            if (nonused) {
+            DTO_Usuario nonused = usuarioDAO.getUsuarioXUsername(usuario);
+            if (nonused == null) {
+                final Integer idUser = usuarioDAO.insertUsuario(usuario);
                 output.setErrorCode(Constantes.OK);
             } else {
                 output.setErrorCode(Constantes.ERROR_RC);
             }
             return output;
         } else if (Constantes.V_DELETE.equals(input.getVerbo())) {
-            dao.eliminaUsuario((DTO_Usuario) input.getObject());
+            usuarioDAO.eliminaUsuario((DTO_Usuario) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         } else if ("consultaSiEstaDisponible".equals(input.getVerbo())) {
-            final DTO_Usuario us = dao.leeUsuario((DTO_Usuario) input.getObject());
+            final DTO_Usuario us = usuarioDAO.getUsuarioXUsername((DTO_Usuario) input.getObject());
             if (us == null) {
                 output.setErrorCode(Constantes.OK);
             } else {
@@ -100,7 +107,9 @@ public class UsuarioService
             // encriptar el password..
             usuario.setContrasena(encriptaPass(nuevoPassword));
 
-            if (dao.cambiaPassword(usuario)) {
+            DTO_Usuario usrTmp = usuarioDAO.getUsuarioXUsername(usuario);
+            if (usrTmp != null) {
+                usuarioDAO.cambiaPassword(usuario);
                 output.setErrorCode(Constantes.OK);
                 return output;
             } else {
@@ -126,7 +135,7 @@ public class UsuarioService
     private boolean checkPasswordAnterior(final DTO_Usuario us,
                                           final String pass)
     {
-        final DTO_Usuario usuario = dao.leeUsuario(us);
+        final DTO_Usuario usuario = usuarioDAO.getUsuarioXUsername(us);
         String passEncriptado;
         // encriptar password enviado
         final DTO_Output output = passwordHashService.execute(new DTO_Input(pass));
@@ -148,14 +157,14 @@ public class UsuarioService
         return null;
     }
 
-    public UsuarioDAO getDao()
+    public UsuarioMapper getDao()
     {
-        return dao;
+        return usuarioDAO;
     }
 
-    public void setDao(final UsuarioDAO dao)
+    public void setDao(final UsuarioMapper usuarioDAO)
     {
-        this.dao = dao;
+        this.usuarioDAO = usuarioDAO;
     }
 
     public BusinessService getPasswordHashService()

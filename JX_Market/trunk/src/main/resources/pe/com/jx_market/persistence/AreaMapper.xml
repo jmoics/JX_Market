@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.AreaMapper">
+
+    <cache />
+
+    <!-- MANTENIMIENTO DE AREAS -->
+
+    <select id="getAreas" parameterType="DTO_Area" resultType="DTO_Area">
+        SELECT
+            area.area_n_codigo as codigo,
+            area.area_v_nombre as nombre,
+            area.empresa_n_codigo as empresa
+        FROM
+            T_EMP_AREA area
+        WHERE
+            area.empresa_n_codigo = #{empresa}
+    </select>
+    
+    <select id="getAreaXCodigo" parameterType="DTO_Area" resultType="DTO_Area">
+        SELECT
+            area.area_n_codigo as codigo,
+            area.area_v_nombre as nombre,
+            area.empresa_n_codigo as empresa
+        FROM
+            T_EMP_AREA area
+        WHERE
+            area.empresa_n_codigo = #{empresa}
+        AND
+            area.area_n_codigo = #{codigo}
+    </select>
+
+    <insert id="insertArea" parameterType="DTO_Area">
+        INSERT INTO T_EMP_AREA
+            (area_v_nombre, empresa_n_codigo)
+        VALUES
+            (#{nombre}, #{empresa})
+        <selectKey keyProperty="codigo" resultType="int" order="AFTER"> 
+           select LAST_INSERT_ID() as value
+        </selectKey>
+    </insert>
+    
+    <update id="updateArea" parameterType="DTO_Area">
+        UPDATE T_EMP_AREA
+        SET
+            area_v_nombre = #{nombre}
+        WHERE
+            area_n_codigo = #{codigo}
+        AND
+            empresa_n_codigo = #{empresa}
+    </update>
+    
+    <delete id="deleteArea" parameterType="DTO_Area">
+      DELETE FROM
+         T_EMP_AREA
+      WHERE
+            area_n_codigo = #{codigo}
+        AND
+            empresa_n_codigo = #{empresa}
+    </delete>
+
+</mapper>
