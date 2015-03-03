@@ -2,7 +2,7 @@
 <zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:zk="http://www.zkoss.org/2005/zk">
 <div id="w_in" use="pe.com.jx_market.controller.PO_Index">
     <style id="sT" src="style.css"/>
-    <h:script type="text/javascript" src="js/boxOver.js"></h:script>
+    <h:script type="text/javascript" src="media/js/boxOver.js"></h:script>
 
     <h:div id="main_container">
         <h:div class="top_bar">
@@ -231,10 +231,15 @@
                     </h:a>
                 </h:div>
             </h:div><!-- end of right content -->
-<h:iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FJX-market%2F116739915064601&amp;width=170&amp;colorscheme=dark&amp;show_faces=true&amp;stream=true&amp;header=false&amp;height=62" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:170px; height:70px;" allowTransparency="false"></h:iframe>
+<!-- <h:iframe src="http://www.facebook.com/plugins/likebox.phpid=YOURUNIQUEID&amp;width=158&amp;connections=5&amp;stream=true&amp;header=false&amp;height=555" 
+        scrolling="no" 
+        frameborder="0" 
+        style="border:none; overflow:hidden; width:158px; height:555px;" 
+        allowTransparency="true">
+</h:iframe> -->
 
 
-<h:iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FJX-market%2F116739915064601&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:170px; height:180px;" allowTransparency="true"></h:iframe>
+<!-- <h:iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FJX-market%2F116739915064601&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:170px; height:180px;" allowTransparency="true"></h:iframe>-->
 
         </div><!-- end of main content -->
         

@@ -2,7 +2,7 @@
 <zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:zk="http://www.zkoss.org/2005/zk">
 <div id="d_cELC" use="pe.com.jx_market.controller.PO_CELoginCliente">
     <style id="sT" src="style.css"/>
-    <h:script type="text/javascript" src="js/boxOver.js"></h:script>
+    <h:script type="text/javascript" src="media/js/boxOver.js"></h:script>
 
     <h:div id="main_container">
        <h:div class="top_bar">
