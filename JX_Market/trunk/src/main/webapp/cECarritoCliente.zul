@@ -2,7 +2,7 @@
 <zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:zk="http://www.zkoss.org/2005/zk">
     <window zclass="null" id="w_CECC" use="pe.com.jx_market.controller.PO_CECarritoCliente">
         <style id="sT" src="style.css"/>
-        <h:script type="text/javascript" src="media/media/js/boxOver.js"></h:script>
+        <h:script type="text/javascript" src="media/js/boxOver.js"></h:script>
         <div class="center_title_bar">Su carrito</div>
         <grid style="margin: 25px 0 0 15px" width="550px" id="grdProds" mold="paging" pageSize="10">
             <columns>

@@ -2,13 +2,12 @@
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
    <div align="center">
       <borderlayout height="650px" width="995px" id="bl"
-         use="pe.com.jx_market.controller.PO_EAMenuPrinc">
+                    apply="pe.com.jx_market.controller.PO_EAMenuPrinc">
          <north height="135px" border="0" zclass="z-border-layout">
             <vbox align="left" width="980px">
                <hbox spacing="780px">
                   <image id="imaLogo" width="212px" height="112px"/>
-                  <image src="media/salir.gif"
-                     onClick='bl.salir()' style="cursor:pointer" />
+                  <image id="salir" src="media/salir.gif" style="cursor:pointer" />
                </hbox>
                <div width="100%">
                   <include id="inch" src="eAHeader.zul" />

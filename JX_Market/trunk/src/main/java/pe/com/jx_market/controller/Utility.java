@@ -5,6 +5,7 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Include;
@@ -45,6 +46,13 @@ public class Utility implements ServletContextListener {
         w.getDesktop().getPage("menup").getFellows();
         w.getDesktop().setBookmark(destino);
         ((Include) w.getDesktop().getPage("menup").getFellow("inc"))
+                .setSrc(destino);
+    }
+    
+    public static void saltar (final Desktop w, final String destino) {
+        w.getPage("menup").getFellows();
+        w.setBookmark(destino);
+        ((Include) w.getPage("menup").getFellow("inc"))
                 .setSrc(destino);
     }
 
@@ -96,11 +104,16 @@ public class Utility implements ServletContextListener {
                 .getAttribute(appAttrName);
         return p.getService(name);
     }
-
-    public static BusinessService getService (
-            final javax.servlet.ServletContext context, final String name) {
-        final ServiceProvider p = (ServiceProvider) context.getAttribute(appAttrName);
+    
+    public static BusinessService getService (final Desktop w, final String name) {
+        final ServiceProvider p = (ServiceProvider) w.getWebApp()
+                .getAttribute(appAttrName);
         return p.getService(name);
     }
 
+    public static BusinessService getService (final javax.servlet.ServletContext context, 
+                                              final String name) {
+        final ServiceProvider p = (ServiceProvider) context.getAttribute(appAttrName);
+        return p.getService(name);
+    }
 }

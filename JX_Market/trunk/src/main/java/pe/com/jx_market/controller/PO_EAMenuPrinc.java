@@ -12,9 +12,14 @@ import java.io.IOException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.image.AImage;
+import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Image;
 
@@ -29,23 +34,80 @@ import pe.com.jx_market.utilities.DTO_Output;
  * @author George
  *
  */
-public class PO_EAMenuPrinc extends Borderlayout
+public class PO_EAMenuPrinc extends SelectorComposer<Borderlayout>
 {
     static Log logger = LogFactory.getLog(PO_EAMenuPrinc.class);
     private byte[] imgLogoByte;
+    @Wire
     private Image imaLogo;
+    @WireVariable
+    private Desktop desktop;
     private BusinessService autorizacionService;
     private DTO_Empresa empresa;
 
+    @Override
+    public void doBeforeComposeChildren(Borderlayout comp)
+        throws Exception
+    {
+        super.doBeforeComposeChildren(comp);
+        incluir("eAFondo.zul");
+    }
+    
+    @Override
+    public void doAfterCompose(final Borderlayout comp)
+        throws Exception
+    {
+        super.doAfterCompose(comp);
+        autorizacionService = Utility.getService(comp, "autorizacionService");
+        
+        final DTO_Empleado empleado = (DTO_Empleado) comp.getDesktop().getSession().getAttribute("empleado");
+        empresa = (DTO_Empresa) comp.getDesktop().getSession().getAttribute("empresa");
+        
+        loadPhoto(empresa.getDominio());
+        
+        setGraficoFoto();
+        if (empleado == null) {
+            throw new RuntimeException("La sesion se perdio, vuelva a ingresar por favor");
+        }
+
+        if(comp.getDesktop().getSession().getAttribute("actualizar") == null){
+            incluir("eAFondo.zul");
+        }
+        
+        getPage().addEventListener(Events.ON_BOOKMARK_CHANGE,
+                        new org.zkoss.zk.ui.event.EventListener() {
+                            @Override
+                            public void onEvent(final Event arg0) throws Exception {
+                                try {
+                                    incluir(comp.getDesktop().getBookmark());
+                                } catch (final org.zkoss.zk.ui.ComponentNotFoundException ex) {
+                                    incluir("eAFondo.zul");
+                                }
+                            }
+                      });
+        
+        setVisibilityByResource(comp, "id_option_productos", Constantes.MODULO_PRODUCTOS, empleado);
+        setVisibilityByResource(comp, "id_option_prod_ingreso", Constantes.MODULO_PROD_INGRESO, empleado);
+        setVisibilityByResource(comp, "id_option_prod_consulta", Constantes.MODULO_PROD_CONSULTA, empleado);
+        setVisibilityByResource(comp, "id_option_prod_inventario", Constantes.MODULO_PROD_INVENTARIO, empleado);
+        setVisibilityByResource(comp, "id_option_administracion", Constantes.MODULO_ADMINISTRACION, empleado);
+        setVisibilityByResource(comp, "id_option_adm_areas", Constantes.MODULO_ADM_AREA, empleado);
+        setVisibilityByResource(comp, "id_option_adm_emp", Constantes.MODULO_ADM_EMPLEADO, empleado);
+        setVisibilityByResource(comp, "id_option_adm_mod", Constantes.MODULO_ADM_MODULO, empleado);
+        setVisibilityByResource(comp, "id_option_adm_perf", Constantes.MODULO_ADM_PERFIL, empleado);
+        setVisibilityByResource(comp, "id_option_adm_perfi_modulo", Constantes.MODULO_ADM_PERFILMODULO, empleado);
+        setVisibilityByResource(comp, "id_option_chgpass", Constantes.MODULO_CHANGE_PASS, empleado);
+    }
+    
     public void onCreate()
     {
-        imaLogo = (Image) getFellow("imaLogo");
+        /*imaLogo = (Image) getFellow("imaLogo");
         autorizacionService = Utility.getService(this, "autorizacionService");
         incluir("eAFondo.zul");
         final DTO_Empleado empleado = (DTO_Empleado) getDesktop().getSession().getAttribute("empleado");
         empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
 
-        //imaLogo.setSrc("Service/"+empresa.getDominio().toUpperCase()+"/"+empresa.getDominio()+".png");
+        imaLogo.setSrc("Service/"+empresa.getDominio().toUpperCase()+"/"+empresa.getDominio()+".png");
         loadPhoto(empresa.getDominio());
         setGraficoFoto();
         if (empleado == null) {
@@ -54,9 +116,9 @@ public class PO_EAMenuPrinc extends Borderlayout
 
         if(getDesktop().getSession().getAttribute("actualizar") == null){
             incluir("eAFondo.zul");
-        }
+        }*/
 
-        getPage().addEventListener(Events.ON_BOOKMARK_CHANGE,
+        /*getPage().addEventListener(Events.ON_BOOKMARK_CHANGE,
                 new org.zkoss.zk.ui.event.EventListener() {
                     @Override
                     public void onEvent(final Event arg0) throws Exception {
@@ -66,9 +128,9 @@ public class PO_EAMenuPrinc extends Borderlayout
                             incluir("eAFondo.zul");
                         }
                     }
-              });
+              });*/
 
-        setVisibilityByResource("id_option_productos", Constantes.MODULO_PRODUCTOS, empleado);
+        /*setVisibilityByResource("id_option_productos", Constantes.MODULO_PRODUCTOS, empleado);
         setVisibilityByResource("id_option_prod_ingreso", Constantes.MODULO_PROD_INGRESO, empleado);
         setVisibilityByResource("id_option_prod_consulta", Constantes.MODULO_PROD_CONSULTA, empleado);
         setVisibilityByResource("id_option_prod_inventario", Constantes.MODULO_PROD_INVENTARIO, empleado);
@@ -78,10 +140,11 @@ public class PO_EAMenuPrinc extends Borderlayout
         setVisibilityByResource("id_option_adm_mod", Constantes.MODULO_ADM_MODULO, empleado);
         setVisibilityByResource("id_option_adm_perf", Constantes.MODULO_ADM_PERFIL, empleado);
         setVisibilityByResource("id_option_adm_perfi_modulo", Constantes.MODULO_ADM_PERFILMODULO, empleado);
-        setVisibilityByResource("id_option_chgpass", Constantes.MODULO_CHANGE_PASS, empleado);
+        setVisibilityByResource("id_option_chgpass", Constantes.MODULO_CHANGE_PASS, empleado);*/
     }
 
-    private void setVisibilityByResource(final String widget,
+    private void setVisibilityByResource(final Borderlayout comp,
+                                         final String widget,
                                          final String modulo,
                                          final DTO_Empleado empleado)
     {
@@ -91,7 +154,7 @@ public class PO_EAMenuPrinc extends Borderlayout
         input.addMapPair("modulo", modulo);
         final DTO_Output output = autorizacionService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
-            getFellow(widget).setVisible(false);
+            comp.getFellow(widget).setVisible(false);
         }
 
     }
@@ -99,8 +162,8 @@ public class PO_EAMenuPrinc extends Borderlayout
     public void incluir(final String txt)
     {
         // getDesktop().getSession().setAttribute("paginaActual", txt);
-        getDesktop().getSession().setAttribute("actualizar", "actualizar");
-        Utility.saltar(this, txt);
+        desktop.getSession().setAttribute("actualizar", "actualizar");
+        Utility.saltar(desktop, txt);
     }
 
     private void setGraficoFoto()
@@ -156,12 +219,13 @@ public class PO_EAMenuPrinc extends Borderlayout
         }
     }
 
+    @Listen("onClick=#salir")
     public void salir()
     {
-        getDesktop().getSession().removeAttribute("login");
-        getDesktop().getSession().removeAttribute("actualizar");
-        getDesktop().getSession().removeAttribute("empresa");
-        getDesktop().getSession().removeAttribute("empleado");
+        desktop.getSession().removeAttribute("login");
+        desktop.getSession().removeAttribute("actualizar");
+        desktop.getSession().removeAttribute("empresa");
+        desktop.getSession().removeAttribute("empleado");
         // getDesktop().getSession().removeAttribute("paginaActual");
         Executions.sendRedirect("eALogin.zul");
     }

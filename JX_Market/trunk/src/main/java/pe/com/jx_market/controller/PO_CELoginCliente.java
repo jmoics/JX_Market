@@ -42,15 +42,20 @@ public class PO_CELoginCliente extends Div
         final DTO_Usuario validado = getUsuario(usuario);
         if (validado != null) {
             final DTO_Cliente cliente = getCliente(validado);
-            getDesktop().getSession().setAttribute("cliente", cliente);
-            final Map<Integer, Map<DTO_Articulo, Integer>> map = new HashMap<Integer, Map<DTO_Articulo, Integer>>();
-            getDesktop().getSession().setAttribute("carrito", map);
-            final Map<String, Object> map2 = new HashMap<String, Object>();
-            map2.put("total", BigDecimal.ZERO);
-            map2.put("cantidad", 0);
-            getDesktop().getSession().setAttribute("totales", map2);
-            getDesktop().getSession().setAttribute("sendPage", getDesktop().getBookmark());
-            Executions.sendRedirect("index.zul");
+            if (cliente != null) {
+                getDesktop().getSession().setAttribute("cliente", cliente);
+                final Map<Integer, Map<DTO_Articulo, Integer>> map = new HashMap<Integer, Map<DTO_Articulo, Integer>>();
+                getDesktop().getSession().setAttribute("carrito", map);
+                final Map<String, Object> map2 = new HashMap<String, Object>();
+                map2.put("total", BigDecimal.ZERO);
+                map2.put("cantidad", 0);
+                getDesktop().getSession().setAttribute("totales", map2);
+                getDesktop().getSession().setAttribute("sendPage", getDesktop().getBookmark());
+                
+                Executions.sendRedirect("index.zul");
+            } else {
+                // Hacer algo para que indique que no se pudo loguear
+            }
         } else {
             txtUser.setText("");
             txtUser.setFocus(true);

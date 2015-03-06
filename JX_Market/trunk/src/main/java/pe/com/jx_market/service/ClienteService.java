@@ -1,6 +1,7 @@
 package pe.com.jx_market.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -59,8 +60,11 @@ public class ClienteService
             return output;
         } else if (Constantes.V_GET.equals(input.getVerbo())) {
             final DTO_Cliente cliente = (DTO_Cliente) input.getObject();
-            output.setObject(clienteMapper.leeCliente(cliente));
-            output.setErrorCode(Constantes.OK);
+            List<DTO_Cliente> cliLstTmp = clienteMapper.getClientes(cliente);
+            if (cliLstTmp != null && !cliLstTmp.isEmpty()) {
+                output.setObject(cliLstTmp.get(0));
+                output.setErrorCode(Constantes.OK);
+            }
             return output;
         }else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
             final Map map = input.getMapa();
