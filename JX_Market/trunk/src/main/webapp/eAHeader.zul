@@ -1,14 +1,19 @@
 <?page id="headerpage" title="" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-
-   <window id="wh" use="pe.com.jx_market.controller.PO_EAHeader">
-      <div width="100%" align="right">
-         <label zclass="z-south-header"
-            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:12px; font-weight:normal "
-            value="Usted es:" />
-         <label zclass="z-south-header"
-            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:12px; font-weight:normal "
-            id="userdata" />
-      </div>
-   </window>
+    <window id="wh" apply="pe.com.jx_market.controller.PO_EAHeader" >
+        <hbox width="100%" spacing="100%" align="center">
+            <image id="imaLogo" width="200px" height="100px" />
+            <vbox align="right">
+                <image id="salir" src="media/salir.gif" style="cursor:pointer" />
+                <div width="280px" align="right">
+                    <label zclass="z-south-header"
+                        style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:12px; font-weight:normal"
+                        value="Bienvenido:" />
+                    <label zclass="z-south-header"
+                        style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:12px; font-weight:normal"
+                        id="userdata" />
+                </div>
+            </vbox>
+        </hbox>
+    </window>
 </zk>

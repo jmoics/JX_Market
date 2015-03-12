@@ -1,5 +1,8 @@
 package pe.com.jx_market.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Constantes a utilizar
  *
@@ -10,7 +13,6 @@ public class Constantes {
      *
      * CONSTANTES RETORNADAS POR LOS SERVICIOS: ERROR_CODES
      */
-
     /** Exito en la ejecucion del servicio */
     public static final int OK = 17;
     /**
@@ -121,4 +123,5 @@ public class Constantes {
      */
     public static final String TIPO_PEDIDO_ENTREGA = "Entrega a Domicilio";
     public static final String TIPO_PEDIDO_RECOGE = "Recoger Producto";
+    
 }

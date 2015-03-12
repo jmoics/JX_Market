@@ -8,6 +8,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,6 +18,7 @@ import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -36,21 +39,33 @@ import pe.com.jx_market.utilities.DTO_Output;
  */
 public class PO_EAMenuPrinc extends SelectorComposer<Borderlayout>
 {
+    /**
+     * Mapeo de paginas a redirigir de acuerdo al ID del link en el menu.
+     */
+    public static final Map<String, String> MAPA_MENU = new HashMap<String, String>();
+    {
+        PO_EAMenuPrinc.MAPA_MENU.put("id_option_prod_ingreso", "eAIngresaProducto.zul");
+        PO_EAMenuPrinc.MAPA_MENU.put("id_option_prod_consulta", "eAConsultaProducto.zul");
+        PO_EAMenuPrinc.MAPA_MENU.put("id_option_prod_inventario","");
+        PO_EAMenuPrinc.MAPA_MENU.put("id_option_adm_areas", "eAAdministraArea.zul");
+        PO_EAMenuPrinc.MAPA_MENU.put("id_option_adm_emp", "eAAdministraEmpleado.zul");
+        PO_EAMenuPrinc.MAPA_MENU.put("id_option_adm_perf", "eAAdministraPerfil.zul");
+        PO_EAMenuPrinc.MAPA_MENU.put("id_option_adm_mod", "eAAdministraModulo.zul");
+        PO_EAMenuPrinc.MAPA_MENU.put("id_option_adm_perfi_modulo", "eAAdministraPerfilModulo.zul");
+        PO_EAMenuPrinc.MAPA_MENU.put("id_option_chgpass", "eACambiarContrasenia.zul");
+    }
+    
     static Log logger = LogFactory.getLog(PO_EAMenuPrinc.class);
-    private byte[] imgLogoByte;
-    @Wire
-    private Image imaLogo;
+
     @WireVariable
     private Desktop desktop;
     private BusinessService autorizacionService;
-    private DTO_Empresa empresa;
 
     @Override
     public void doBeforeComposeChildren(Borderlayout comp)
         throws Exception
     {
         super.doBeforeComposeChildren(comp);
-        incluir("eAFondo.zul");
     }
     
     @Override
@@ -59,13 +74,10 @@ public class PO_EAMenuPrinc extends SelectorComposer<Borderlayout>
     {
         super.doAfterCompose(comp);
         autorizacionService = Utility.getService(comp, "autorizacionService");
+        incluir("eAFondo.zul");
         
         final DTO_Empleado empleado = (DTO_Empleado) comp.getDesktop().getSession().getAttribute("empleado");
-        empresa = (DTO_Empresa) comp.getDesktop().getSession().getAttribute("empresa");
-        
-        loadPhoto(empresa.getDominio());
-        
-        setGraficoFoto();
+
         if (empleado == null) {
             throw new RuntimeException("La sesion se perdio, vuelva a ingresar por favor");
         }
@@ -159,64 +171,21 @@ public class PO_EAMenuPrinc extends SelectorComposer<Borderlayout>
 
     }
 
-    public void incluir(final String txt)
+    @Listen("onClick = #id_option_prod_ingreso, #id_option_prod_consulta, #id_option_prod_inventario, "
+                    + "#id_option_adm_areas, #id_option_adm_emp, #id_option_adm_perf, "
+                    + "#id_option_adm_mod, #id_option_adm_perfi_modulo, #id_option_chgpass")
+    public void incluir(MouseEvent event)
     {
         // getDesktop().getSession().setAttribute("paginaActual", txt);
         desktop.getSession().setAttribute("actualizar", "actualizar");
-        Utility.saltar(desktop, txt);
+        Utility.saltar(desktop, PO_EAMenuPrinc.MAPA_MENU.get(event.getTarget().getId()));
     }
-
-    private void setGraficoFoto()
+    
+    public void incluir(String _txt)
     {
-        if (imgLogoByte != null) {
-            try {
-                imaLogo.setContent(new AImage("foto", imgLogoByte));
-                return;
-            } catch (final IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-        imaLogo.setSrc("/media/imagProd.gif");
-    }
-
-    private File getPhotoFile(final String name) {
-        String ruta;
-        if(System.getProperty("os.name").contains("Windows")){
-            ruta = Constantes.RUTA_IMAGENES_WINDOWS + File.separator + name;
-        } else{
-            ruta = Constantes.RUTA_IMAGENES + File.separator + name;
-        }
-        return new File(ruta);
-    }
-
-    private void loadPhoto(final String name) {
-        final File photo = getPhotoFile(name);
-        if(!photo.exists()) {
-            if(logger.isDebugEnabled()) {
-                logger.debug("No existe archivo de foto " + photo.getName());
-            }
-            imgLogoByte = null;
-            return;
-        }
-        if(logger.isDebugEnabled()) {
-            logger.debug("Existe archivo de foto " + photo.getName());
-        }
-        try {
-            final BufferedInputStream bis = new BufferedInputStream(new FileInputStream(photo));
-            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            int n;
-            while((n = bis.read()) != -1) {
-                baos.write(n);
-            }
-            bis.close();
-            baos.close();
-            imgLogoByte = baos.toByteArray();
-            if(logger.isDebugEnabled()) {
-                logger.debug("Cargamos bytes en foto "+ imgLogoByte.length);
-            }
-        } catch(final IOException ex) {
-            throw new RuntimeException(ex);
-        }
+        // getDesktop().getSession().setAttribute("paginaActual", txt);
+        desktop.getSession().setAttribute("actualizar", "actualizar");
+        Utility.saltar(desktop, _txt);
     }
 
     @Listen("onClick=#salir")
