@@ -67,13 +67,13 @@ public class PO_EAIngresaProducto
                         && !txtDesc.getValue().equals("") && !txtMarca.getValue().equals("")
                         && decPrec.getValue() != null && decPrec.getValue() != BigDecimal.ZERO) {
             final DTO_Articulo articulo = new DTO_Articulo();
-            articulo.setCategoria(((DTO_Categoria) cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
+            //articulo.setCategoria(((DTO_Categoria) cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
             articulo.setActivo(Constantes.ST_ACTIVO);
             articulo.setDescripcion(txtDesc.getValue());
             articulo.setEmpresa(empresa.getCodigo());
-            articulo.setMarca(txtMarca.getValue());
+            //articulo.setMarca(txtMarca.getValue());
             articulo.setNombre(txtNombre.getValue());
-            articulo.setPrecio(decPrec.getValue());
+            //articulo.setPrecio(decPrec.getValue());
             if (imgProducto != null) {
                 articulo.setImagen(imgProducto);
             }

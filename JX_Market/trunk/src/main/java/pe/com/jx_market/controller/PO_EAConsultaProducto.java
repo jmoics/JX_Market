@@ -4,6 +4,8 @@
 package pe.com.jx_market.controller;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -74,14 +76,27 @@ public class PO_EAConsultaProducto
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("", "Exito al cargar categorias", null);
             final List<DTO_Categoria> lstCat = output.getLista();
-            for (final DTO_Categoria categ : lstCat) {
+            /*for (final DTO_Categoria categ : lstCat) {
                 final Comboitem item = new Comboitem();
                 item.setLabel(categ.getNombre());
                 item.setAttribute("categoria", categ);
                 cmbCat.appendChild(item);
-            }
+            }*/
+            armarTreeCategorias(lstCat);
         } else {
             alertaError("Error inesperado, por favor contacte al administrador", "Error cargando categorias", null);
+        }
+    }
+    
+    private void armarTreeCategorias(List<DTO_Categoria> categorias) {
+        List<DTO_Categoria> roots = new ArrayList<DTO_Categoria>();
+        List<DTO_Categoria> childs = new ArrayList<DTO_Categoria>();
+        for (DTO_Categoria cat : categorias) {
+            if (cat.getCodigoPadre() == null) {
+                roots.add(cat);
+            } else {
+                childs.add(cat);
+            }
         }
     }
 
@@ -99,10 +114,10 @@ public class PO_EAConsultaProducto
 
     public void buscarProductos()
     {
-        final DTO_Articulo articulo = new DTO_Articulo();
+        /*final DTO_Articulo articulo = new DTO_Articulo();
         articulo.setEmpresa(empresa.getCodigo());
         if (cmbCat.getSelectedItem() != null) {
-            articulo.setCategoria(((DTO_Categoria) cmbCat.getSelectedItem().getAttribute("categoria")).getCodigo());
+            //articulo.setCategoria(((DTO_Categoria) cmbCat.getSelectedItem().getAttribute("categoria")).getCodigo());
         }
         if (txtNomProd.getValue().length() > 0) {
             articulo.setNombre(txtNomProd.getValue());
@@ -151,7 +166,7 @@ public class PO_EAConsultaProducto
 
         }
         grpCons.setVisible(true);
-        grpBusq.setVisible(false);
+        grpBusq.setVisible(false);*/
     }
 
     private String getCategoria(final Integer codCat)

@@ -14,12 +14,12 @@ public class DTO_Articulo implements Serializable
 {
     private Integer codigo;
     private Integer empresa;
-    private Integer categoria;
+    //private Integer categoria;
     private String nombre;
     private String descripcion;
-    private String marca;
-    private BigDecimal precio;
-    private Integer stock;
+    //private String marca;
+    //private BigDecimal precio;
+    //private Integer stock;
     private Integer activo;
     private byte[] imagen;
     private String nomimg;
@@ -57,14 +57,14 @@ public class DTO_Articulo implements Serializable
     {
         this.empresa = empresa;
     }
-    public Integer getCategoria()
+    /*public Integer getCategoria()
     {
         return categoria;
     }
     public void setCategoria(Integer categoria)
     {
         this.categoria = categoria;
-    }
+    }*/
     public String getNombre()
     {
         return nombre;
@@ -81,7 +81,7 @@ public class DTO_Articulo implements Serializable
     {
         this.descripcion = descripcion;
     }
-    public String getMarca()
+    /*public String getMarca()
     {
         return marca;
     }
@@ -104,7 +104,7 @@ public class DTO_Articulo implements Serializable
     public void setStock(Integer stock)
     {
         this.stock = stock;
-    }
+    }*/
     public Integer getActivo()
     {
         return activo;

@@ -49,8 +49,8 @@ public class ArticuloService implements BusinessService
         } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
             final DTO_Articulo arti = (DTO_Articulo) input.getObject();
             if(arti.getNomimg() == null) {
-                arti.setNomimg(arti.getEmpresa() + "." + arti.getCategoria() + "." +
-                                arti.getNombre().trim() + "." + generarNombreAleatorio());
+                /*arti.setNomimg(arti.getEmpresa() + "." + arti.getCategoria() + "." +
+                                arti.getNombre().trim() + "." + generarNombreAleatorio());*/
                 savePhoto(arti);
             }
             DTO_Articulo artiTmp = articuloMapper.getArticuloXCodigo(arti);

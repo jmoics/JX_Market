@@ -11,7 +11,8 @@
         SELECT
         cat.categoria_n_codigo as codigo,
         cat.empresa_n_codigo as empresa,
-        cat.categoria_v_nombre as nombre
+        cat.categoria_v_nombre as nombre,
+        cat.categoria_n_codigo_p as codigoPadre
         FROM
         T_NEG_CATEGORIA cat
         <if test="empresa != null">

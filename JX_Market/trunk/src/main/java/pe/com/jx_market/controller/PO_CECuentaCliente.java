@@ -132,11 +132,11 @@ public class PO_CECuentaCliente extends Window
             cell.setParent(item);
 
             cell = new Listcell();
-            cell.setLabel(formateador.format(art.getPrecio()));
+            //cell.setLabel(formateador.format(art.getPrecio()));
             cell.setParent(item);
 
             cell = new Listcell();
-            cell.setLabel(formateador.format(art.getPrecio().multiply(new BigDecimal(det.getCantidad()))));
+            //cell.setLabel(formateador.format(art.getPrecio().multiply(new BigDecimal(det.getCantidad()))));
             cell.setParent(item);
 
             lstDet.appendChild(item);

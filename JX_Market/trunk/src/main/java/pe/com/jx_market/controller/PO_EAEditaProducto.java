@@ -82,13 +82,13 @@ public class PO_EAEditaProducto
         if (cmbCateg.getSelectedItem() != null && cmbEstado.getSelectedItem() != null && !txtNombre.getValue().equals("")
                         && !txtDesc.getValue().equals("") && !txtMarca.getValue().equals("")
                         && decPrec.getValue() != null && decPrec.getValue() != BigDecimal.ZERO) {
-            articulo.setCategoria(((DTO_Categoria) cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
+            //articulo.setCategoria(((DTO_Categoria) cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
             articulo.setActivo((Integer) cmbEstado.getSelectedItem().getValue());
             articulo.setDescripcion(txtDesc.getValue());
             articulo.setEmpresa(empresa.getCodigo());
-            articulo.setMarca(txtMarca.getValue());
+            //articulo.setMarca(txtMarca.getValue());
             articulo.setNombre(txtNombre.getValue());
-            articulo.setPrecio(decPrec.getValue());
+            //articulo.setPrecio(decPrec.getValue());
             if (imgProducto != null && !imgProducto.equals(articulo.getImagen())) {
                 articulo.setImagen(imgProducto);
                 articulo.setNomimg(null);
@@ -118,9 +118,9 @@ public class PO_EAEditaProducto
         listarEstados();
         listarCategorias();
         txtNombre.setValue(articulo.getNombre());
-        txtMarca.setValue(articulo.getMarca());
+        //txtMarca.setValue(articulo.getMarca());
         txtDesc.setValue(articulo.getDescripcion());
-        decPrec.setValue(articulo.getPrecio());
+        //decPrec.setValue(articulo.getPrecio());
         imgProducto = articulo.getImagen();
         setGraficoFoto();
     }
@@ -185,9 +185,9 @@ public class PO_EAEditaProducto
                 item.setLabel(categ.getNombre());
                 item.setAttribute("categoria", categ);
                 cmbCateg.appendChild(item);
-                if (articulo.getCategoria().equals(categ.getCodigo())) {
+                /*if (articulo.getCategoria().equals(categ.getCodigo())) {
                     cmbCateg.setSelectedItem(item);
-                }
+                }*/
             }
         } else {
             alertaError("Error inesperado, por favor contacte al administrador", "Error cargando categorias", null);

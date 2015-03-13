@@ -1,0 +1,31 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+<div align="center">
+    <window id="winEACC" width="100%" apply="pe.com.jx_market.controller.PO_EAConsultaCategoria">
+        <div align="center">
+            <vbox>
+                <html:p />
+                <div align="center">
+                    <label zclass="z-south-header"
+                        style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                        Consulta de Categorias
+                    </label>
+                </div>
+                <html:p />
+                <tree id="tree" hflex="1">
+                    <treecols>
+                        <treecol label="Categorias" />
+                    </treecols>
+                    <template name="model">
+                        <treeitem>
+                            <treerow>
+                                <treecell label="${each.data.nombre}"/>
+                            </treerow>
+                        </treeitem>
+                    </template>
+                </tree>
+            </vbox>
+        </div>
+    </window>
+</div>
+</zk>

@@ -79,14 +79,14 @@ public class PO_CECarritoCliente extends Window
                 desc.setParent(row);
 
                 final Label prec = new Label();
-                prec.setValue(formateador.format(producto.getPrecio()));
+                //prec.setValue(formateador.format(producto.getPrecio()));
                 prec.setParent(row);
 
                 final Label tot = new Label();
-                tot.setValue(formateador.format(producto.getPrecio().multiply(new BigDecimal(entry2.getValue()))));
+                //tot.setValue(formateador.format(producto.getPrecio().multiply(new BigDecimal(entry2.getValue()))));
                 tot.setParent(row);
 
-                precTotal = precTotal.add(producto.getPrecio().multiply(new BigDecimal(entry2.getValue())));
+                //precTotal = precTotal.add(producto.getPrecio().multiply(new BigDecimal(entry2.getValue())));
 
                 final Image imgGuardar = new Image("media/add.png");
                 imgGuardar.setStyle("cursor:pointer");
@@ -176,7 +176,7 @@ public class PO_CECarritoCliente extends Window
                     for (final Entry<DTO_Pedido, List<DTO_DetallePedido>> entry3 : mapAux.entrySet()) {
                         final DTO_Pedido pedAux = entry3.getKey();
                         BigDecimal total = pedAux.getTotal();
-                        total = total.add(arti.getPrecio().multiply(new BigDecimal(entry2.getValue())));
+                        //total = total.add(arti.getPrecio().multiply(new BigDecimal(entry2.getValue())));
 
                         final List<DTO_DetallePedido> lstDet = entry3.getValue();
                         final DTO_DetallePedido det = new DTO_DetallePedido();
@@ -194,7 +194,7 @@ public class PO_CECarritoCliente extends Window
                 } else {
                     final DTO_Pedido pedAux = construirPedido();
                     pedAux.setEmpresa(arti.getEmpresa());
-                    pedAux.setTotal(arti.getPrecio().multiply(new BigDecimal(entry2.getValue())));
+                    //pedAux.setTotal(arti.getPrecio().multiply(new BigDecimal(entry2.getValue())));
 
                     final List<DTO_DetallePedido> lstDet = new ArrayList<DTO_DetallePedido>();
                     final DTO_DetallePedido det = new DTO_DetallePedido();

@@ -44,6 +44,7 @@ public class PO_EAMenuPrinc extends SelectorComposer<Borderlayout>
      */
     public static final Map<String, String> MAPA_MENU = new HashMap<String, String>();
     {
+        PO_EAMenuPrinc.MAPA_MENU.put("id_option_categ", "eAConsultaCategoria.zul");
         PO_EAMenuPrinc.MAPA_MENU.put("id_option_prod_ingreso", "eAIngresaProducto.zul");
         PO_EAMenuPrinc.MAPA_MENU.put("id_option_prod_consulta", "eAConsultaProducto.zul");
         PO_EAMenuPrinc.MAPA_MENU.put("id_option_prod_inventario","");
@@ -173,7 +174,8 @@ public class PO_EAMenuPrinc extends SelectorComposer<Borderlayout>
 
     @Listen("onClick = #id_option_prod_ingreso, #id_option_prod_consulta, #id_option_prod_inventario, "
                     + "#id_option_adm_areas, #id_option_adm_emp, #id_option_adm_perf, "
-                    + "#id_option_adm_mod, #id_option_adm_perfi_modulo, #id_option_chgpass")
+                    + "#id_option_adm_mod, #id_option_adm_perfi_modulo, #id_option_chgpass, "
+                    + "#id_option_categ")
     public void incluir(MouseEvent event)
     {
         // getDesktop().getSession().setAttribute("paginaActual", txt);

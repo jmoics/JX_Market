@@ -11,9 +11,13 @@ import java.io.Serializable;
  */
 public class DTO_Categoria implements Serializable
 {
+    private static final long serialVersionUID = 7736453145474958927L;
+    
     private Integer codigo;
     private Integer empresa;
     private String nombre;
+    private Integer codigoPadre;
+    
     public Integer getCodigo()
     {
         return codigo;
@@ -39,5 +43,13 @@ public class DTO_Categoria implements Serializable
         this.nombre = nombre;
     }
     
+    public Integer getCodigoPadre()
+    {
+        return codigoPadre;
+    }
     
+    public void setCodigoPadre(Integer codigoPadre)
+    {
+        this.codigoPadre = codigoPadre;
+    }
 }

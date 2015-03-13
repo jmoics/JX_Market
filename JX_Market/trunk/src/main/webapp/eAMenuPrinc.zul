@@ -18,6 +18,7 @@
                     <html:p />
                     <menubar style="text-align:left" orient="vertical" autodrop="true">
                         <menuitem src="/media/filenew.png" label="Pedidos" onClick='' id="id_option_newrecl" />
+                        <menuitem src="/media/viewmag.png" label="Categorias" id="id_option_categ" />
                         <menu src="/media/logviewer.png" label="Productos" id="id_option_productos">
                             <menupopup>
                                 <menuitem src="/media/edit-find.png" id="id_option_prod_ingreso"

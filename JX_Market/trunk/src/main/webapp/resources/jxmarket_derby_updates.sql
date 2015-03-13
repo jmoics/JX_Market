@@ -41,16 +41,31 @@ INSERT INTO T_EMP_EMPLEADO (PERFIL_N_CODIGO, USUARIO_N_CODIGO, EMPRESA_N_CODIGO,
            VALUES (1,1,2,'Jorge','Cueva','44128463','Mi casa','4823262','945190242','jmoics@gmail.com','Lima','Lima','1987-12-01',1),
 				  (3,2,2,'jorge','cueva samames','44128463','mi house','4563423','987755443','','lima','lima',NULL,1);
 
-INSERT INTO T_NEG_CATEGORIA (EMPRESA_N_CODIGO, CATEGORIA_V_NOMBRE) 
-           VALUES (1,'Juegos'),(1,'Libros'),(1,'Consola');
+INSERT INTO T_NEG_CATEGORIA (EMPRESA_N_CODIGO, CATEGORIA_V_NOMBRE, CATEGORIA_N_CODIGO_P) 
+           VALUES (1,'Cómputo y Videojuegos', null),(1,'Cómputo', 1),(1,'Tablets y Accesorios', 1),(1,'Videojuegos', 1),
+                  (1, 'PlayStation 4', 4),(1, 'Desktop', 2),(1, 'TV, Audio y Foto', null),(1, 'TV y Video', 7);
 
-INSERT INTO T_NEG_ARTICULO (EMPRESA_N_CODIGO, CATEGORIA_N_CODIGO, ARTICULO_V_NOMBRE, ARTICULO_V_MARCA, ARTICULO_V_DESCRIPCION, ARTICULO_N_PRECIO, ARTICULO_N_STOCK, ARTICULO_N_ACTIVO, ARTICULO_V_IMAGEN) VALUES (2,1,'Ring Action','Capcom','juego de video de accion basado en la trilogia del senior de los anillos',24.50,20,1,NULL),
-				  (2,1,'Final Fantasy X','Sony','Juego de ROL, para consola Play Station 2',25.90,NULL,1,NULL),
-				  (2,3,'PS2','Sony','play station 2 color azul con un mando y una memory card',550.00,NULL,1,'2.1.PS2.22589'),
-				  (2,3,'PS2','Sony','play station 2 azul y negro mas un mando',540.00,NULL,1,'2.1.PS2.938193'),
-				  (3,1,'Final fantasy x-2','Eydos','Juego rpg final fantasy x-2 original en caja',35.00,NULL,1,'3.1.Final fantasy x-2.950467'),
-				  (3,1,'Final Fantasy XII','Eydos','Juego Final Fantasy XII original algo rayadito XD',40.00,NULL,1,'3.1.Final Fantasy XII.180339'),
-				  (3,3,'PS2','Sony','consola ps2',500.00,NULL,1,'3.3.PS2.918564');
+INSERT INTO T_NEG_ARTICULO (EMPRESA_N_CODIGO, ARTICULO_V_NOMBRE, ARTICULO_V_DESCRIPCION, ARTICULO_N_ACTIVO, ARTICULO_V_IMAGEN) 
+           VALUES (2,'Ring Action','juego de video de accion basado en la trilogia del senior de los anillos',1,NULL),
+				  (2,'Final Fantasy X','Juego de ROL, para consola Play Station 2',1,NULL),
+				  (2,'PS2','play station 2 color azul con un mando y una memory card',1,'2.1.PS2.22589'),
+				  (2,'PS2','play station 2 azul y negro mas un mando',1,'2.1.PS2.938193'),
+				  (3,'Final fantasy x-2','Juego rpg final fantasy x-2 original en caja',1,'3.1.Final fantasy x-2.950467'),
+				  (3,'Final Fantasy XII','Juego Final Fantasy XII original algo rayadito XD',1,'3.1.Final Fantasy XII.180339'),
+				  (3,'PS2','consola ps2',1,'3.3.PS2.918564');
+				  
+INSERT INTO T_NEG_CATEG2ARTIC (CATE_N_ID, ARTI_N_ID)
+           VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(2,1),(2,2),(4,3),(4,4),(2,5),(2,6),(4,7);
+           
+INSERT INTO T_NEG_PRECIO (ARTI_N_ID, PREC_F_DESDE, PREC_F_HASTA, PREC_D_MONTO)
+           VALUES (1,'01/01/2015','31/03/2015',24.50), (2,'01/01/2015','31/03/2015',25.90), (3,'01/01/2015','31/03/2015',550.00),
+                  (4,'01/01/2015','31/03/2015',540.00),(5,'01/01/2015','31/03/2015',35.00), (6,'01/01/2015','31/03/2015',40.00),
+                  (7,'01/01/2015','31/03/2015',500.00);
+                  
+INSERT INTO T_NEG_COSTO (ARTI_N_ID, COST_F_DESDE, COST_F_HASTA, COST_D_MONTO)
+           VALUES (1,'01/01/2015','31/03/2015',19.50), (2,'01/01/2015','31/03/2015',18.40), (3,'01/01/2015','31/03/2015',490.00),
+                  (4,'01/01/2015','31/03/2015',500.00),(5,'01/01/2015','31/03/2015',28.00), (6,'01/01/2015','31/03/2015',32.00),
+                  (7,'01/01/2015','31/03/2015',450.00);
 
 INSERT INTO T_NEG_CLIENTE (EMPRESA_N_CODIGO, USUARIO_N_CODIGO, CLIENTE_V_NOMBRE, CLIENTE_V_APELLIDO, CLIENTE_D_FECHANAC, CLIENTE_N_DNI, CLIENTE_V_DIRECCION, CLIENTE_V_TELEFONO, CLIENTE_V_CELULAR, CLIENTE_V_EMAIL, CLIENTE_V_CIUDAD, CLIENTE_V_REGION, CLIENTE_V_CODPOSTAL, CLIENTE_N_ACTIVO) VALUES (1,2,'Jorge','Cueva Samames','1987-02-12',45645645,'mi casa','4564564','987987987','jmoics@gmail.com','Lima',NULL,NULL,NULL),
 				 (1,7,'Jackeline','Rios Ramos','1989-08-20',45645645,'su casa','4564564','987987987','jacky@gmail.com','Lima','Lima',NULL,1);

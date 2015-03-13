@@ -1,6 +1,7 @@
 package pe.com.jx_market.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +57,7 @@ public class PO_CEProductos extends Window
 
         final DTO_Articulo articulo = new DTO_Articulo();
         if (cat != null) {
-            articulo.setCategoria(cat.getCodigo());
+            //articulo.setCategoria(cat.getCodigo());
         }
         final DTO_Input input = new DTO_Input(articulo);
         input.setVerbo(Constantes.V_LIST);
@@ -118,7 +119,7 @@ public class PO_CEProductos extends Window
 
                 final Div divProdPrice = new Div();
                 divProdPrice.setSclass("prod_price");
-                final Label lbPrecio = new Label(formateador.format(art.getPrecio()));
+                final Label lbPrecio = new Label(formateador.format(BigDecimal.ZERO));
                 lbPrecio.setSclass("price");
                 divProdPrice.appendChild(lbPrecio);
                 divProdPrice.setParent(divCenterProdBox);
