@@ -18,6 +18,26 @@ CREATE SEQUENCE T_NEG_CATEGORIA_ID_SEQ;
 ALTER TABLE T_NEG_CATEGORIA ALTER COLUMN CATEGORIA_N_CODIGO SET DEFAULT nextval('T_NEG_CATEGORIA_ID_SEQ');
 ALTER SEQUENCE T_NEG_CATEGORIA_ID_SEQ OWNED BY T_NEG_CATEGORIA.CATEGORIA_N_CODIGO;
 
+CREATE SEQUENCE T_NEG_ATRIBUTO_ID_SEQ;
+ALTER TABLE T_NEG_ATRIBUTO ALTER COLUMN ATR_N_ID SET DEFAULT nextval('T_NEG_ATRIBUTO_ID_SEQ');
+ALTER SEQUENCE T_NEG_ATRIBUTO_ID_SEQ OWNED BY T_NEG_ATRIBUTO.ATR_N_ID;
+
+CREATE SEQUENCE T_NEG_INVENTARIO_ID_SEQ;
+ALTER TABLE T_NEG_INVENTARIO ALTER COLUMN INVE_N_ID SET DEFAULT nextval('T_NEG_INVENTARIO_ID_SEQ');
+ALTER SEQUENCE T_NEG_INVENTARIO_ID_SEQ OWNED BY T_NEG_INVENTARIO.INVE_N_ID;
+
+CREATE SEQUENCE T_NEG_PRECIO_ID_SEQ;
+ALTER TABLE T_NEG_PRECIO ALTER COLUMN PREC_N_ID SET DEFAULT nextval('T_NEG_PRECIO_ID_SEQ');
+ALTER SEQUENCE T_NEG_PRECIO_ID_SEQ OWNED BY T_NEG_PRECIO.PREC_N_ID;
+
+CREATE SEQUENCE T_NEG_COSTO_ID_SEQ;
+ALTER TABLE T_NEG_COSTO ALTER COLUMN COST_N_ID SET DEFAULT nextval('T_NEG_COSTO_ID_SEQ');
+ALTER SEQUENCE T_NEG_COSTO_ID_SEQ OWNED BY T_NEG_COSTO.COST_N_ID;
+
+CREATE SEQUENCE T_NEG_OFERTA_ID_SEQ;
+ALTER TABLE T_NEG_OFERTA ALTER COLUMN OFER_N_ID SET DEFAULT nextval('T_NEG_OFERTA_ID_SEQ');
+ALTER SEQUENCE T_NEG_OFERTA_ID_SEQ OWNED BY T_NEG_OFERTA.OFER_N_ID;
+
 CREATE SEQUENCE T_NEG_CLIENTE_ID_SEQ;
 ALTER TABLE T_NEG_CLIENTE ALTER COLUMN CLIENTE_N_CODIGO SET DEFAULT nextval('T_NEG_CLIENTE_ID_SEQ');
 ALTER SEQUENCE T_NEG_CLIENTE_ID_SEQ OWNED BY T_NEG_CLIENTE.CLIENTE_N_CODIGO;
@@ -53,55 +73,72 @@ ALTER SEQUENCE T_SEG_USUARIO_ID_SEQ OWNED BY T_SEG_USUARIO.USUARIO_N_CODIGO;
 --
 
 INSERT INTO T_EMP_EMPRESA (EMPRESA_V_RAZONSOCIAL, EMPRESA_N_ACTIVO, EMPRESA_V_RUC, EMPRESA_V_DOMINIO) 
-	VALUES ('JX_Market',1,'44563458976','jxmarket'),('Metro',1,'35346576899','metro'),('moxter.net',1,'56452345346','moxternet');
+    VALUES ('JX_Market',1,'44563458976','jxmarket'),('Metro',1,'35346576899','metro'),('moxter.net',1,'56452345346','moxternet');
 
 INSERT INTO T_EMP_AREA (EMPRESA_N_CODIGO, AREA_V_NOMBRE) VALUES (2,'Gerenciaa'),(2,'Ventaas'),(2,'Productos'),(2,'Recursos Humanos'),(1,'Administration');
 
 INSERT INTO T_SEG_PERFIL (EMPRESA_N_CODIGO, AREA_N_CODIGO, PERFIL_V_FUNCION, PERFIL_V_DESCRIPCION) VALUES (2,1,'Gerente','Administracion Generaal'),
-				(2,2,'Vendedor','Encargador de realizar las ventas'),
-				(2,3,'Almacenero','Encargado de la logistica'),
-				(2,4,'Gerente','Encargado del area'),
-				(2,1,'Subgerente','Subgerencia general');
+                (2,2,'Vendedor','Encargador de realizar las ventas'),
+                (2,3,'Almacenero','Encargado de la logistica'),
+                (2,4,'Gerente','Encargado del area'),
+                (2,1,'Subgerente','Subgerencia general');
 
 INSERT INTO T_SEG_USUARIO (EMPRESA_N_CODIGO, USUARIO_V_CONTRASENA, USUARIO_V_USERNAME) VALUES (1,'62a90ccff3fd73694bf6281bb234b09a',NULL),
-				 (2,'8679b5756696bc0e69308525b298f27b','jmoics'),
-				 (3,'552fea927d2ca4f8736fd19f5e50eee4','jcueva'),
-				 (2,'7adfca2f2aba4cd301a02b9f33ca9037','jcueva'),
-				 (2,'aae9e370356842606fd0276c415219e2','aencalada'),
-				 (1,'62a90ccff3fd73694bf6281bb234b09a','jmoics@gmail.com'),
-				 (1,'5f4dcc3b5aa765d61d8327deb882cf99','jacky@gmail.com');
+                 (2,'e10adc3949ba59abbe56e057f20f883e','jmoics'),
+                 (3,'e10adc3949ba59abbe56e057f20f883e','jcueva'),
+                 (2,'e10adc3949ba59abbe56e057f20f883e','jcueva'),
+                 (2,'e10adc3949ba59abbe56e057f20f883e','aencalada'),
+                 (1,'e10adc3949ba59abbe56e057f20f883e','jmoics@gmail.com'),
+                 (1,'e10adc3949ba59abbe56e057f20f883e','jacky@gmail.com');
 
 INSERT INTO T_SEG_MODULO (EMPRESA_N_CODIGO, MODULO_V_DESC, MODULO_V_RECURSO) VALUES (2,'Modulo para administracion de empleados','MODULO_ADM_EMPLEADO'),
-				(2,'Modulo para productos','MODULO_PRODUCTOS'),
-				(2,'Modulo para ingreso de productos','MODULO_PROD_INGRESO'),
-				(2,'Modulo para consulta de productos','MODULO_PROD_CONSULTA'),
-				(2,'Modulo para edicion de productos','MODULO_PROD_EDICION'),
-				(2,'Modulo para administracion','MODULO_ADMINISTRACION'),
-				(2,'Modulo para administracion de perfiles','MODULO_ADM_PERFIL'),
-				(2,'modulo para administracion de areas','MODULO_ADM_AREA'),
-				(2,'Modulo para administracion de modulos','MODULO_ADM_MODULO'),
-				(2,'Modulo para asignacion de modulos a perfiles','MODULO_ADM_PERFILMODULO'),
-				(2,'Modulo para administrar la contrasena','MODULO_CHANGE_PASS');
+                (2,'Modulo para productos','MODULO_PRODUCTOS'),
+                (2,'Modulo para ingreso de productos','MODULO_PROD_INGRESO'),
+                (2,'Modulo para consulta de productos','MODULO_PROD_CONSULTA'),
+                (2,'Modulo para edicion de productos','MODULO_PROD_EDICION'),
+                (2,'Modulo para administracion','MODULO_ADMINISTRACION'),
+                (2,'Modulo para administracion de perfiles','MODULO_ADM_PERFIL'),
+                (2,'modulo para administracion de areas','MODULO_ADM_AREA'),
+                (2,'Modulo para administracion de modulos','MODULO_ADM_MODULO'),
+                (2,'Modulo para asignacion de modulos a perfiles','MODULO_ADM_PERFILMODULO'),
+                (2,'Modulo para administrar la contrasena','MODULO_CHANGE_PASS');
 
 INSERT INTO T_SEG_MOD_DET (PERFIL_N_CODIGO, MODULO_N_CODIGO, MODDET_N_HABILITADO) VALUES (1,1,NULL),(1,2,NULL),(1,3,NULL),(1,4,NULL),(1,5,NULL),(1,6,NULL),(1,7,NULL),(1,8,NULL),(1,9,NULL),(1,10,NULL),(1,11,NULL),
-				(2,2,NULL),(2,4,NULL),(3,2,NULL),(3,3,NULL),(3,4,NULL),(3,5,NULL),(3,11,NULL),(4,1,NULL),(4,6,NULL),(4,7,NULL),(4,11,NULL),
-				(5,2,NULL),(5,4,NULL),(5,5,NULL),(5,6,NULL),(5,7,NULL),(5,10,NULL),(5,11,NULL);
+                (2,2,NULL),(2,4,NULL),(3,2,NULL),(3,3,NULL),(3,4,NULL),(3,5,NULL),(3,11,NULL),(4,1,NULL),(4,6,NULL),(4,7,NULL),(4,11,NULL),
+                (5,2,NULL),(5,4,NULL),(5,5,NULL),(5,6,NULL),(5,7,NULL),(5,10,NULL),(5,11,NULL);
 
-INSERT INTO T_EMP_EMPLEADO (PERFIL_N_CODIGO, USUARIO_N_CODIGO, EMPRESA_N_CODIGO, EMPLEADO_V_NOMBRE, EMPLEADO_V_APELLIDO,  EMPLEADO_V_DNI, EMPLEADO_V_DIRECCION, EMPLEADO_V_TELEFONO, EMPLEADO_V_CELULAR, EMPLEADO_V_EMAIL, EMPLEADO_V_CIUDAD, EMPLEADO_V_REGION, EMPLEADO_D_FECHNAC, EMPLEADO_N_ACTIVO) VALUES (1,1,2,'Jorge','Cueva','44128463','Mi casa','4823262','945190242','jmoics@gmail.com','Lima','Lima','1987-12-01',1),
-				  (3,2,2,'jorge','cueva samames','44128463','mi house','4563423','987755443','','lima','lima',NULL,1);
+INSERT INTO T_EMP_EMPLEADO (PERFIL_N_CODIGO, USUARIO_N_CODIGO, EMPRESA_N_CODIGO, EMPLEADO_V_NOMBRE, EMPLEADO_V_APELLIDO,  EMPLEADO_V_DNI, EMPLEADO_V_DIRECCION, EMPLEADO_V_TELEFONO, EMPLEADO_V_CELULAR, EMPLEADO_V_EMAIL, EMPLEADO_V_CIUDAD, EMPLEADO_V_REGION, EMPLEADO_D_FECHNAC, EMPLEADO_N_ACTIVO) 
+           VALUES (1,1,2,'Jorge','Cueva','44128463','Mi casa','4823262','945190242','jmoics@gmail.com','Lima','Lima','1987-12-01',1),
+                  (3,2,2,'George','Cave','44128463','mi house','4563423','987755443','','lima','lima',NULL,1);
 
-INSERT INTO T_NEG_CATEGORIA (EMPRESA_N_CODIGO, CATEGORIA_V_NOMBRE) VALUES (1,'Juegos'),(1,'Libros'),(1,'Consola');
+INSERT INTO T_NEG_CATEGORIA (EMPRESA_N_CODIGO, CATEGORIA_V_NOMBRE, CATEGORIA_N_CODIGO_P) 
+           VALUES (1,'Cómputo y Videojuegos', null),(1,'Cómputo', 1),(1,'Tablets y Accesorios', 1),(1,'Videojuegos', 1),
+                  (1, 'PlayStation 4', 4),(1, 'Desktop', 2),(1, 'TV, Audio y Foto', null),(1, 'TV y Video', 7);
 
-INSERT INTO T_NEG_ARTICULO (EMPRESA_N_CODIGO, CATEGORIA_N_CODIGO, ARTICULO_V_NOMBRE, ARTICULO_V_MARCA, ARTICULO_V_DESCRIPCION, ARTICULO_N_PRECIO, ARTICULO_N_STOCK, ARTICULO_N_ACTIVO, ARTICULO_V_IMAGEN) VALUES (2,1,'Ring Action','Capcom','juego de video de accion basado en la trilogia del senior de los anillos',24.50,20,1,NULL),
-				  (2,1,'Final Fantasy X','Sony','Juego de ROL, para consola Play Station 2',25.90,NULL,1,NULL),
-				  (2,3,'PS2','Sony','play station 2 color azul con un mando y una memory card',550.00,NULL,1,'2.1.PS2.22589'),
-				  (2,3,'PS2','Sony','play station 2 azul y negro mas un mando',540.00,NULL,1,'2.1.PS2.938193'),
-				  (3,1,'Final fantasy x-2','Eydos','Juego rpg final fantasy x-2 original en caja',35.00,NULL,1,'3.1.Final fantasy x-2.950467'),
-				  (3,1,'Final Fantasy XII','Eydos','Juego Final Fantasy XII original algo rayadito XD',40.00,NULL,1,'3.1.Final Fantasy XII.180339'),
-				  (3,3,'PS2','Sony','consola ps2',500.00,NULL,1,'3.3.PS2.918564');
+INSERT INTO T_NEG_ARTICULO (EMPRESA_N_CODIGO, ARTICULO_V_NOMBRE, ARTICULO_V_DESCRIPCION, ARTICULO_N_ACTIVO, ARTICULO_V_IMAGEN) 
+           VALUES (2,'Ring Action','juego de video de accion basado en la trilogia del senior de los anillos',1,NULL),
+                  (2,'Final Fantasy X','Juego de ROL, para consola Play Station 2',1,NULL),
+                  (2,'PS2','play station 2 color azul con un mando y una memory card',1,'2.1.PS2.22589'),
+                  (2,'PS2','play station 2 azul y negro mas un mando',1,'2.1.PS2.938193'),
+                  (3,'Final fantasy x-2','Juego rpg final fantasy x-2 original en caja',1,'3.1.Final fantasy x-2.950467'),
+                  (3,'Final Fantasy XII','Juego Final Fantasy XII original algo rayadito XD',1,'3.1.Final Fantasy XII.180339'),
+                  (3,'PS2','consola ps2',1,'3.3.PS2.918564');
+                  
+INSERT INTO T_NEG_CATEG2ARTIC (CATE_N_ID, ARTI_N_ID)
+           VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(2,1),(2,2),(4,3),(4,4),(2,5),(2,6),(4,7);
+           
+INSERT INTO T_NEG_PRECIO (ARTI_N_ID, PREC_F_DESDE, PREC_F_HASTA, PREC_D_MONTO)
+           VALUES (1,'01/01/2015','31/03/2015',24.50), (2,'01/01/2015','31/03/2015',25.90), (3,'01/01/2015','31/03/2015',550.00),
+                  (4,'01/01/2015','31/03/2015',540.00),(5,'01/01/2015','31/03/2015',35.00), (6,'01/01/2015','31/03/2015',40.00),
+                  (7,'01/01/2015','31/03/2015',500.00);
+                  
+INSERT INTO T_NEG_COSTO (ARTI_N_ID, COST_F_DESDE, COST_F_HASTA, COST_D_MONTO)
+           VALUES (1,'01/01/2015','31/03/2015',19.50), (2,'01/01/2015','31/03/2015',18.40), (3,'01/01/2015','31/03/2015',490.00),
+                  (4,'01/01/2015','31/03/2015',500.00),(5,'01/01/2015','31/03/2015',28.00), (6,'01/01/2015','31/03/2015',32.00),
+                  (7,'01/01/2015','31/03/2015',450.00);
 
 INSERT INTO T_NEG_CLIENTE (EMPRESA_N_CODIGO, USUARIO_N_CODIGO, CLIENTE_V_NOMBRE, CLIENTE_V_APELLIDO, CLIENTE_D_FECHANAC, CLIENTE_N_DNI, CLIENTE_V_DIRECCION, CLIENTE_V_TELEFONO, CLIENTE_V_CELULAR, CLIENTE_V_EMAIL, CLIENTE_V_CIUDAD, CLIENTE_V_REGION, CLIENTE_V_CODPOSTAL, CLIENTE_N_ACTIVO) VALUES (1,2,'Jorge','Cueva Samames','1987-02-12',45645645,'mi casa','4564564','987987987','jmoics@gmail.com','Lima',NULL,NULL,NULL),
-				 (1,7,'Jackeline','Rios Ramos','1989-08-20',45645645,'su casa','4564564','987987987','jacky@gmail.com','Lima','Lima',NULL,1);
+                 (1,7,'Jackeline','Rios Ramos','1989-08-20',45645645,'su casa','4564564','987987987','jacky@gmail.com','Lima','Lima',NULL,1);
 
 INSERT INTO T_NEG_PEDIDO_TIPO (TIPOPED_V_DESCRIPCION) VALUES ('Entrega a domicilio'),('Recoger el producto');
 

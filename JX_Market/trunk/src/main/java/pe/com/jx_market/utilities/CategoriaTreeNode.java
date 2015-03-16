@@ -4,32 +4,41 @@ import org.zkoss.zul.DefaultTreeNode;
 
 import pe.com.jx_market.domain.DTO_Categoria;
 
+public class CategoriaTreeNode
+    extends DefaultTreeNode<DTO_Categoria>
+{
 
-@SuppressWarnings("hiding")
-public class CategoriaTreeNode<T> extends DefaultTreeNode<T> {
     private static final long serialVersionUID = -8085873079938209759L;
-     
+
     // Node Control the default open
     private boolean open = false;
- 
-    public CategoriaTreeNode(T data, CategoriaTreeNodeCollection<T> children, boolean open) {
+
+    public CategoriaTreeNode(final DTO_Categoria data,
+                             final CategoriaTreeNodeCollection children,
+                             final boolean open)
+    {
         super(data, children);
         this.setOpen(open);
     }
- 
-    public CategoriaTreeNode(T data, CategoriaTreeNodeCollection<T> children) {
+
+    public CategoriaTreeNode(final DTO_Categoria data,
+                             final CategoriaTreeNodeCollection children)
+    {
         super(data, children);
     }
- 
-    public CategoriaTreeNode(T data) {
+
+    public CategoriaTreeNode(final DTO_Categoria data)
+    {
         super(data);
     }
- 
-    public boolean isOpen() {
+
+    public boolean isOpen()
+    {
         return open;
     }
- 
-    public void setOpen(boolean open) {
+
+    public void setOpen(final boolean open)
+    {
         this.open = open;
     }
 }
