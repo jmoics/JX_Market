@@ -13,7 +13,7 @@ public class AdvancedTreeModel
 
     DefaultTreeNode<DTO_Categoria> _root;
 
-    public AdvancedTreeModel(CategoriaTreeNode contactTreeNode)
+    public AdvancedTreeModel(final CategoriaTreeNode contactTreeNode)
     {
         super(contactTreeNode);
         _root = contactTreeNode;
@@ -22,28 +22,28 @@ public class AdvancedTreeModel
     /**
      * remove the nodes which parent is <code>parent</code> with indexes
      * <code>indexes</code>
-     * 
+     *
      * @param parent The parent of nodes are removed
      * @param indexFrom the lower index of the change range
      * @param indexTo the upper index of the change range
      * @throws IndexOutOfBoundsException - indexFrom < 0 or indexTo > number of
      *             parent's children
      */
-    public void remove(DefaultTreeNode<DTO_Categoria> parent,
-                       int indexFrom,
-                       int indexTo)
+    public void remove(final DefaultTreeNode<DTO_Categoria> parent,
+                       final int indexFrom,
+                       final int indexTo)
         throws IndexOutOfBoundsException
     {
-        DefaultTreeNode<DTO_Categoria> stn = parent;
+        final DefaultTreeNode<DTO_Categoria> stn = parent;
         for (int i = indexTo; i >= indexFrom; i--)
             try {
                 stn.getChildren().remove(i);
-            } catch (Exception exp) {
+            } catch (final Exception exp) {
                 exp.printStackTrace();
             }
     }
 
-    public void remove(DefaultTreeNode<DTO_Categoria> target)
+    public void remove(final DefaultTreeNode<DTO_Categoria> target)
         throws IndexOutOfBoundsException
     {
         int index = 0;
@@ -56,12 +56,24 @@ public class AdvancedTreeModel
             }
         }
         remove(parent, index, index);
+        // Remover el contenedor de childs (children) si no existen más una vez removido.
+        if (parent.getChildren().isEmpty()) {
+            final CategoriaTreeNode newParent = new CategoriaTreeNode(parent.getData());
+            final CategoriaTreeNode grandParent = (CategoriaTreeNode) parent.getParent();
+            for (index = 0; index < grandParent.getChildCount(); index++) {
+                if (grandParent.getChildAt(index).equals(parent)) {
+                    break;
+                }
+            }
+            parent.removeFromParent();
+            grandParent.getChildren().add(index, newParent);
+        }
     }
 
     /**
      * insert new nodes which parent is <code>parent</code> with indexes
      * <code>indexes</code> by new nodes <code>newNodes</code>
-     * 
+     *
      * @param parent The parent of nodes are inserted
      * @param indexFrom the lower index of the change range
      * @param indexTo the upper index of the change range
@@ -69,17 +81,17 @@ public class AdvancedTreeModel
      * @throws IndexOutOfBoundsException - indexFrom < 0 or indexTo > number of
      *             parent's children
      */
-    public void insert(DefaultTreeNode<DTO_Categoria> parent,
-                       int indexFrom,
-                       int indexTo,
-                       DefaultTreeNode<DTO_Categoria>[] newNodes)
+    public void insert(final DefaultTreeNode<DTO_Categoria> parent,
+                       final int indexFrom,
+                       final int indexTo,
+                       final CategoriaTreeNodeCollection newNodes)
         throws IndexOutOfBoundsException
     {
-        DefaultTreeNode<DTO_Categoria> stn = parent;
+        final DefaultTreeNode<DTO_Categoria> stn = parent;
         for (int i = indexFrom; i <= indexTo; i++) {
             try {
-                stn.getChildren().add(i, newNodes[i - indexFrom]);
-            } catch (Exception exp) {
+                stn.getChildren().add(i, newNodes.get(i - indexFrom));
+            } catch (final Exception exp) {
                 throw new IndexOutOfBoundsException("Out of bound: " + i + " while size=" + stn.getChildren().size());
             }
         }
@@ -88,29 +100,43 @@ public class AdvancedTreeModel
     /**
      * append new nodes which parent is <code>parent</code> by new nodes
      * <code>newNodes</code>
-     * 
+     *
      * @param parent The parent of nodes are appended
      * @param newNodes New nodes which are appended
      */
-    public void add(DefaultTreeNode<DTO_Categoria> parent,
-                    DefaultTreeNode<DTO_Categoria>[] newNodes)
+    public void add(final DefaultTreeNode<DTO_Categoria> parent,
+                    final CategoriaTreeNodeCollection newNodes)
     {
-        DefaultTreeNode<DTO_Categoria> stn = (DefaultTreeNode<DTO_Categoria>) parent;
+        final DefaultTreeNode<DTO_Categoria> stn = parent;
 
-        for (int i = 0; i < newNodes.length; i++)
-            stn.getChildren().add(newNodes[i]);
+        for (int i = 0; i < newNodes.size(); i++) {
+            if (stn.getChildren() != null) {
+                stn.getChildren().add(newNodes.get(i));
+            } else {
+                final CategoriaTreeNode newNode = new CategoriaTreeNode(stn.getData(), newNodes);
+                final CategoriaTreeNode grandParent = (CategoriaTreeNode) stn.getParent();
+                int index = 0;
+                for (index = 0; index < grandParent.getChildCount(); index++) {
+                    if (grandParent.getChildAt(index).equals(stn)) {
+                        break;
+                    }
+                }
+                remove(stn);
+                grandParent.getChildren().add(index, newNode);
+            }
+        }
 
     }
 
-    private DefaultTreeNode<DTO_Categoria> dfSearchParent(DefaultTreeNode<DTO_Categoria> node,
-                                                          DefaultTreeNode<DTO_Categoria> target)
+    private DefaultTreeNode<DTO_Categoria> dfSearchParent(final DefaultTreeNode<DTO_Categoria> node,
+                                                          final DefaultTreeNode<DTO_Categoria> target)
     {
         if (node.getChildren() != null && node.getChildren().contains(target)) {
             return node;
         } else {
-            int size = getChildCount(node);
+            final int size = getChildCount(node);
             for (int i = 0; i < size; i++) {
-                DefaultTreeNode<DTO_Categoria> parent = dfSearchParent(
+                final DefaultTreeNode<DTO_Categoria> parent = dfSearchParent(
                                 (DefaultTreeNode<DTO_Categoria>) getChild(node, i), target);
                 if (parent != null) {
                     return parent;

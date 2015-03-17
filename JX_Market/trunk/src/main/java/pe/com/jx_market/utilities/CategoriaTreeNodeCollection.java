@@ -9,7 +9,6 @@ import pe.com.jx_market.domain.DTO_Categoria;
 public class CategoriaTreeNodeCollection
     extends LinkedList<CategoriaTreeNode>
 {
-
     private static final long serialVersionUID = 5118244589333582131L;
 
     protected void construirJerarquia(final Collection<DTO_Categoria> childs,
@@ -22,7 +21,6 @@ public class CategoriaTreeNodeCollection
                     add(new CategoriaTreeNode(child,
                                     new CategoriaTreeNodeCollection()
                                     {
-
                                         private static final long serialVersionUID = -525877166192606505L;
                                         {
                                             construirJerarquia(childs, child, setPadres);

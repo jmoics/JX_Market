@@ -10,10 +10,21 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zkoss.zk.ui.Desktop;
+import org.zkoss.zk.ui.event.DropEvent;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zul.Hlayout;
+import org.zkoss.zul.Image;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Tree;
+import org.zkoss.zul.Treecell;
+import org.zkoss.zul.Treeitem;
+import org.zkoss.zul.TreeitemRenderer;
+import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Categoria;
@@ -27,7 +38,7 @@ import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
 
 public class PO_EAConsultaCategoria
-    extends SelectorComposer<Window>
+extends SelectorComposer<Window>
 {
 
     private static final long serialVersionUID = -1481359887612974294L;
@@ -45,7 +56,7 @@ public class PO_EAConsultaCategoria
 
     @Override
     public void doAfterCompose(final Window comp)
-        throws Exception
+                    throws Exception
     {
         super.doAfterCompose(comp);
 
@@ -56,6 +67,7 @@ public class PO_EAConsultaCategoria
 
         listarCategorias();
         categoriaTreeModel = new AdvancedTreeModel(categoriaTreeNode);
+        tree.setItemRenderer(new CategoriaTreeRenderer());
         tree.setModel(categoriaTreeModel);
     }
 
@@ -94,26 +106,71 @@ public class PO_EAConsultaCategoria
 
         categoriaTreeNode = new CategoriaTreeNode(null,
                         new CategoriaTreeNodeCollection()
-                        {
+        {
 
-                            private static final long serialVersionUID = -8249078122595873454L;
+            private static final long serialVersionUID = -8249078122595873454L;
+            {
+                for (final DTO_Categoria root : roots.values()) {
+                    if (!setPadres.contains(root.getCodigo())) {
+                        add(new CategoriaTreeNode(root));
+                    } else {
+                        add(new CategoriaTreeNode(root,
+                                        new CategoriaTreeNodeCollection()
+                        {
+                            private static final long serialVersionUID = -5643408533240445491L;
                             {
-                                for (final DTO_Categoria root : roots.values()) {
-                                    if (!setPadres.contains(root.getCodigo())) {
-                                        add(new CategoriaTreeNode(root));
-                                    } else {
-                                        add(new CategoriaTreeNode(root,
-                                                new CategoriaTreeNodeCollection()
-                                                {
-                                                    private static final long serialVersionUID = -5643408533240445491L;
-                                                    {
-                                                        construirJerarquia(childs.values(), root, setPadres);
-                                                    }
-                                                }));
-                                    }
-                                }
+                                construirJerarquia(childs.values(), root, setPadres);
                             }
-                        },
-                        true);
+                        }, true));
+                    }
+                }
+            }
+        },
+        true);
+    }
+
+    private final class CategoriaTreeRenderer
+        implements TreeitemRenderer<CategoriaTreeNode>
+    {
+        @Override
+        public void render(final Treeitem treeItem,
+                           final CategoriaTreeNode treeNode,
+                           final int index)
+            throws Exception
+        {
+            final CategoriaTreeNode ctn = treeNode;
+            final DTO_Categoria categ = ctn.getData();
+            final Treerow dataRow = new Treerow();
+            dataRow.setParent(treeItem);
+            treeItem.setValue(ctn);
+            treeItem.setOpen(ctn.isOpen());
+
+            final Hlayout hl = new Hlayout();
+            hl.appendChild(new Image("/widgets/tree/dynamic_tree/img/" + categ.getImagen()));
+            hl.appendChild(new Label(categ.getNombre()));
+            hl.setSclass("h-inline-block");
+            final Treecell treeCell = new Treecell();
+            treeCell.appendChild(hl);
+            dataRow.setDraggable("true");
+            dataRow.appendChild(treeCell);
+            dataRow.setDroppable("true");
+            dataRow.addEventListener(Events.ON_DROP, new EventListener<Event>() {
+                @Override
+                @SuppressWarnings("unchecked")
+                //@Override
+                public void onEvent(final Event event) throws Exception {
+                    // The dragged target is a TreeRow belongs to an
+                    // Treechildren of TreeItem.
+                    final Treeitem draggedItem = (Treeitem) ((DropEvent) event).getDragged().getParent();
+                    final CategoriaTreeNode draggedValue = (CategoriaTreeNode) draggedItem.getValue();
+                    categoriaTreeModel.remove(draggedValue);
+                    categoriaTreeModel.add((CategoriaTreeNode)treeItem.getValue(),
+                            new CategoriaTreeNodeCollection() {
+                                private static final long serialVersionUID = -4941224185260321214L;
+                            {add(draggedValue);} });
+                    //tree.renderItem(treeItem);
+                }
+            });
+        }
     }
 }

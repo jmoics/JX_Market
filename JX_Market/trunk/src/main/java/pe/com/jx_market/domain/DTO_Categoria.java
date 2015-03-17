@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package pe.com.jx_market.domain;
 
@@ -12,17 +12,18 @@ import java.io.Serializable;
 public class DTO_Categoria implements Serializable
 {
     private static final long serialVersionUID = 7736453145474958927L;
-    
+
     private Integer codigo;
     private Integer empresa;
     private String nombre;
     private Integer codigoPadre;
-    
+    private byte[] imagen;
+
     public Integer getCodigo()
     {
         return codigo;
     }
-    public void setCodigo(Integer codigo)
+    public void setCodigo(final Integer codigo)
     {
         this.codigo = codigo;
     }
@@ -30,7 +31,7 @@ public class DTO_Categoria implements Serializable
     {
         return empresa;
     }
-    public void setEmpresa(Integer empresa)
+    public void setEmpresa(final Integer empresa)
     {
         this.empresa = empresa;
     }
@@ -38,18 +39,28 @@ public class DTO_Categoria implements Serializable
     {
         return nombre;
     }
-    public void setNombre(String nombre)
+    public void setNombre(final String nombre)
     {
         this.nombre = nombre;
     }
-    
+
     public Integer getCodigoPadre()
     {
         return codigoPadre;
     }
-    
-    public void setCodigoPadre(Integer codigoPadre)
+
+    public void setCodigoPadre(final Integer codigoPadre)
     {
         this.codigoPadre = codigoPadre;
+    }
+
+    public byte[] getImagen()
+    {
+        return imagen;
+    }
+
+    public void setImagen(final byte[] imagen)
+    {
+        this.imagen = imagen;
     }
 }
