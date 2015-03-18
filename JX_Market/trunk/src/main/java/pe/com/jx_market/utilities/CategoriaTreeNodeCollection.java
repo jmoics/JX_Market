@@ -27,7 +27,7 @@ public class CategoriaTreeNodeCollection
                                         }
                                     }));
                 } else {
-                    add(new CategoriaTreeNode(child));
+                    add(new CategoriaTreeNode(child, new CategoriaTreeNodeCollection()));
                 }
             }
         }

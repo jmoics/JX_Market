@@ -112,7 +112,7 @@ extends SelectorComposer<Window>
             {
                 for (final DTO_Categoria root : roots.values()) {
                     if (!setPadres.contains(root.getCodigo())) {
-                        add(new CategoriaTreeNode(root));
+                        add(new CategoriaTreeNode(root, new CategoriaTreeNodeCollection()));
                     } else {
                         add(new CategoriaTreeNode(root,
                                         new CategoriaTreeNodeCollection()
@@ -156,8 +156,6 @@ extends SelectorComposer<Window>
             dataRow.setDroppable("true");
             dataRow.addEventListener(Events.ON_DROP, new EventListener<Event>() {
                 @Override
-                @SuppressWarnings("unchecked")
-                //@Override
                 public void onEvent(final Event event) throws Exception {
                     // The dragged target is a TreeRow belongs to an
                     // Treechildren of TreeItem.
