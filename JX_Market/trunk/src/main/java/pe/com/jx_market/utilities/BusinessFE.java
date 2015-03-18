@@ -3,15 +3,15 @@ package pe.com.jx_market.utilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class BusinessFE implements BusinessService {
-    private BusinessService service;
+public class BusinessFE<T> implements BusinessService<T> {
+    private BusinessService<T> service;
     private String name;
     private boolean reportExceptions;
     static Log logger = LogFactory.getLog(BusinessFE.class);
 
     @Override
-    public DTO_Output execute (final DTO_Input e) {
-        DTO_Output output;
+    public DTO_Output<T> execute (final DTO_Input<T> e) {
+        DTO_Output<T> output;
         try {
             if (logger.isDebugEnabled()) {
                 logger.debug("Inicio ejecucion bean " + this.name);
@@ -23,7 +23,7 @@ public class BusinessFE implements BusinessService {
             return output;
         } catch (final RuntimeException ex) {
             logger.warn("Excepcion generada por bean " + this.name, ex);
-            output = new DTO_Output();
+            output = new DTO_Output<T>();
             if (this.reportExceptions) {
                 output.setError(-1, ex.getMessage());
             } else {
@@ -33,11 +33,11 @@ public class BusinessFE implements BusinessService {
         return output;
     }
 
-    public BusinessService getService () {
+    public BusinessService<T> getService () {
         return this.service;
     }
 
-    public void setService (final BusinessService service) {
+    public void setService (final BusinessService<T> service) {
         this.service = service;
     }
 

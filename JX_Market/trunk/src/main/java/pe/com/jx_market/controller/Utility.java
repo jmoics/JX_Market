@@ -48,7 +48,7 @@ public class Utility implements ServletContextListener {
         ((Include) w.getDesktop().getPage("menup").getFellow("inc"))
                 .setSrc(destino);
     }
-    
+
     public static void saltar (final Desktop w, final String destino) {
         w.getPage("menup").getFellows();
         w.setBookmark(destino);
@@ -87,31 +87,31 @@ public class Utility implements ServletContextListener {
      * @param name El nombre del servicio
      * @return El servicio
      */
-    public static BusinessService getService (final Window w, final String name) {
+    public static BusinessService<?> getService (final Window w, final String name) {
         final ServiceProvider p = (ServiceProvider) w.getDesktop().getWebApp()
                 .getAttribute(appAttrName);
         return p.getService(name);
     }
 
-    public static BusinessService getService (final Borderlayout w, final String name) {
+    public static BusinessService<?> getService (final Borderlayout w, final String name) {
         final ServiceProvider p = (ServiceProvider) w.getDesktop().getWebApp()
                 .getAttribute(appAttrName);
         return p.getService(name);
     }
 
-    public static BusinessService getService (final Div w, final String name) {
+    public static BusinessService<?> getService (final Div w, final String name) {
         final ServiceProvider p = (ServiceProvider) w.getDesktop().getWebApp()
                 .getAttribute(appAttrName);
         return p.getService(name);
     }
-    
-    public static BusinessService getService (final Desktop w, final String name) {
+
+    public static BusinessService<?> getService (final Desktop w, final String name) {
         final ServiceProvider p = (ServiceProvider) w.getWebApp()
                 .getAttribute(appAttrName);
         return p.getService(name);
     }
 
-    public static BusinessService getService (final javax.servlet.ServletContext context, 
+    public static BusinessService<?> getService (final javax.servlet.ServletContext context,
                                               final String name) {
         final ServiceProvider p = (ServiceProvider) context.getAttribute(appAttrName);
         return p.getService(name);

@@ -41,4 +41,5 @@ public class CategoriaTreeNode
     {
         this.open = open;
     }
+
 }

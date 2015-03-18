@@ -1,7 +1,7 @@
 <?page id="menup" title="JX_Market" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
 <div align="center" height="100%">
-    <borderlayout height="100%" width="100%" id="bl" apply="pe.com.jx_market.controller.PO_EAMenuPrinc">
+    <borderlayout height="100%" width="100%" id="blEAMP" apply="pe.com.jx_market.controller.PO_EAMenuPrinc">
         <north size="13%" collapsible="false">
             <include id="inch" src="eAHeader.zul" />
         </north>

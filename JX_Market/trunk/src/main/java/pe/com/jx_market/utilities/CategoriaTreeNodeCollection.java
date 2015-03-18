@@ -13,7 +13,8 @@ public class CategoriaTreeNodeCollection
 
     protected void construirJerarquia(final Collection<DTO_Categoria> childs,
                                       final DTO_Categoria root,
-                                      final Set<Integer> setPadres)
+                                      final Set<Integer> setPadres,
+                                      final Boolean _editable)
     {
         for (final DTO_Categoria child : childs) {
             if ((child).getCodigoPadre().equals((root).getCodigo())) {
@@ -23,11 +24,15 @@ public class CategoriaTreeNodeCollection
                                     {
                                         private static final long serialVersionUID = -525877166192606505L;
                                         {
-                                            construirJerarquia(childs, child, setPadres);
+                                            construirJerarquia(childs, child, setPadres, _editable);
                                         }
-                                    }));
+                                    }, true));
                 } else {
-                    add(new CategoriaTreeNode(child, new CategoriaTreeNodeCollection()));
+                    if (_editable) {
+                        add(new CategoriaTreeNode(child, new CategoriaTreeNodeCollection(), true));
+                    } else {
+                        add(new CategoriaTreeNode(child));
+                    }
                 }
             }
         }

@@ -19,6 +19,19 @@ public class DTO_Categoria implements Serializable
     private Integer codigoPadre;
     private byte[] imagen;
 
+    public DTO_Categoria() {
+
+    }
+
+    /**
+     * Constructor solo utilizado para utilizar como raíz del arbol al editar.
+     *
+     * @param _nombre
+     */
+    public DTO_Categoria(final String _nombre) {
+        this.nombre = _nombre;
+    }
+
     public Integer getCodigo()
     {
         return codigo;

@@ -1,6 +1,5 @@
 package pe.com.jx_market.controller;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zkoss.zk.ui.Desktop;
-import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.DropEvent;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -21,6 +23,7 @@ import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Tree;
+import org.zkoss.zul.TreeNode;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.TreeitemRenderer;
@@ -37,15 +40,13 @@ import pe.com.jx_market.utilities.CategoriaTreeNodeCollection;
 import pe.com.jx_market.utilities.DTO_Input;
 import pe.com.jx_market.utilities.DTO_Output;
 
-public class PO_EAConsultaCategoria
-extends SelectorComposer<Window>
+
+public class PO_EAEditaCategoria
+    extends SelectorComposer<Window>
 {
+    private static final long serialVersionUID = 6046074628719265175L;
 
-    private static final long serialVersionUID = -1481359887612974294L;
-
-    static Log logger = LogFactory.getLog(PO_EAConsultaCategoria.class);
-    @Wire
-    private Window wEACC;
+    static Log logger = LogFactory.getLog(PO_EAEditaCategoria.class);
     @Autowired
     private BusinessService<DTO_Categoria> categoriaService;
     private DTO_Empresa empresa;
@@ -53,10 +54,11 @@ extends SelectorComposer<Window>
     private Desktop desktop;
     @Wire
     private Tree tree;
+    @Wire
+    Window wEAEC;
     private CategoriaTreeNode categoriaTreeNode;
     private AdvancedTreeModel categoriaTreeModel;
 
-    @SuppressWarnings("unchecked")
     @Override
     public void doAfterCompose(final Window comp)
         throws Exception
@@ -106,22 +108,21 @@ extends SelectorComposer<Window>
             }
         }
 
-        categoriaTreeNode = new CategoriaTreeNode(null,
+        categoriaTreeNode = new CategoriaTreeNode(new DTO_Categoria("Raíz"),
                         new CategoriaTreeNodeCollection()
         {
-
             private static final long serialVersionUID = -8249078122595873454L;
             {
                 for (final DTO_Categoria root : roots.values()) {
                     if (!setPadres.contains(root.getCodigo())) {
-                        add(new CategoriaTreeNode(root));
+                        add(new CategoriaTreeNode(root, new CategoriaTreeNodeCollection()));
                     } else {
                         add(new CategoriaTreeNode(root,
                                         new CategoriaTreeNodeCollection()
                         {
                             private static final long serialVersionUID = -5643408533240445491L;
                             {
-                                construirJerarquia(childs.values(), root, setPadres, false);
+                                construirJerarquia(childs.values(), root, setPadres, true);
                             }
                         }, true));
                     }
@@ -129,17 +130,6 @@ extends SelectorComposer<Window>
             }
         },
         true);
-    }
-
-    @Listen("onClick = #btnEditar")
-    public void lanzarWindowEditar(final MouseEvent event) {
-        final Map<String, Object> dataArgs = new HashMap<String, Object>();
-        final Window w = (Window) Executions.createComponents("eAEditaCategoria.zul", null, dataArgs);
-        w.setPage(wEACC.getPage());
-        w.setParent(wEACC);
-        //w.doOverlapped();
-        w.doModal();
-        //w.doEmbedded();
     }
 
     private final class CategoriaTreeRenderer
@@ -164,7 +154,63 @@ extends SelectorComposer<Window>
             hl.setSclass("h-inline-block");
             final Treecell treeCell = new Treecell();
             treeCell.appendChild(hl);
+            dataRow.setDraggable("true");
             dataRow.appendChild(treeCell);
+            dataRow.setDroppable("true");
+            dataRow.addEventListener(Events.ON_DROP, new EventListener<Event>() {
+                @Override
+                public void onEvent(final Event event) throws Exception {
+                    // The dragged target is a TreeRow belongs to an
+                    // Treechildren of TreeItem.
+                    final Treeitem draggedItem = (Treeitem) ((DropEvent) event).getDragged().getParent();
+                    final CategoriaTreeNode draggedValue = (CategoriaTreeNode) draggedItem.getValue();
+                    categoriaTreeModel.remove(draggedValue);
+                    categoriaTreeModel.add((CategoriaTreeNode)treeItem.getValue(),
+                            new CategoriaTreeNodeCollection() {
+                                private static final long serialVersionUID = -4941224185260321214L;
+                            {add(draggedValue);} });
+                    draggedValue.getData().setCodigoPadre(categ.getCodigo());
+                }
+            });
+        }
+    }
+
+    @Listen("onClick = #btnCerrar")
+    public void accionCerrar(final Event e) {
+        wEAEC.detach();
+    }
+
+    @Listen("onClick = #btnGrabar")
+    public void accionGrabar(final MouseEvent e) {
+        final CategoriaTreeNode raiz = categoriaTreeNode;
+
+        grabarData(raiz);
+        final Window win = (Window) wEAEC.getParent();
+        //win.invalidate();
+
+        wEAEC.detach();
+    }
+
+    private void grabarData(final CategoriaTreeNode _nodo)
+    {
+        final DTO_Categoria categ = _nodo.getData();
+        final DTO_Input<DTO_Categoria> input = new DTO_Input<DTO_Categoria>();
+        input.setVerbo(Constantes.V_REGISTER);
+        input.setObject(categ);
+        DTO_Output<DTO_Categoria> output = null;
+        if (_nodo.getParent() != null) {
+            output = categoriaService.execute(input);
+            if (Constantes.OK == output.getErrorCode()) {
+                logger.debug("Categoria '" + categ.getNombre() + "' actualizada");
+            }
+        }
+
+        if (_nodo.getChildren() != null && !_nodo.getChildren().isEmpty()) {
+            final List<TreeNode<DTO_Categoria>> hijos = _nodo.getChildren();
+            for (int i = 0; i < hijos.size(); i++) {
+                final CategoriaTreeNode hijo = (CategoriaTreeNode) hijos.get(i);
+                grabarData(hijo);
+            }
         }
     }
 }
