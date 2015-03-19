@@ -56,6 +56,15 @@ public class Utility implements ServletContextListener {
                 .setSrc(destino);
     }
 
+    public static void recargar (final Desktop w, final String destino) {
+        w.getPage("menup").getFellows();
+        w.setBookmark(destino);
+        ((Include) w.getPage("menup").getFellow("inc"))
+        .setSrc(null);
+        ((Include) w.getPage("menup").getFellow("inc"))
+                .setSrc(destino);
+    }
+
     /**
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
      */

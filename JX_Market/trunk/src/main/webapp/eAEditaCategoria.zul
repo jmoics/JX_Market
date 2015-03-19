@@ -9,30 +9,33 @@
             _display: inline;
         }
     </style>
-    <div align="center">
-        <label zclass="z-south-header"
-            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-            Edición de Categorías
-        </label>
-    </div>
-    <html:p />
-    <tree width="100%" id="tree" >
-        <treecols>
-            <treecol label="Categorias" />
-        </treecols>
-        <!-- <template name="model">
-            <treeitem>
-                <treerow>
-                    <treecell label="${each.data.nombre}"/>
-                </treerow>
-            </treeitem>
-        </template>-->
-    </tree>
-    <hbox align="center" pack="end" hflex="1" vflex="1">
-        <button id="btnGrabar" label="Grabar"
-            image="/media/filesave.png" />
-        <button id="btnCerrar" label="Cerrar"
-            image="/media/cancel.png" />
-    </hbox>
+    <vbox height="100%" width="100%">
+        <div align="center" height="10%">
+            <label zclass="z-south-header"
+                style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                Edición de Categorías
+            </label>
+        </div>
+        <div height="80%" width="100%">
+            <tree id="tree" hflex="1" vflex="1" >
+                <treecols>
+                    <treecol label="Categorias" />
+                </treecols>
+                <!-- <template name="model">
+                    <treeitem>
+                        <treerow>
+                            <treecell label="${each.data.nombre}"/>
+                        </treerow>
+                    </treeitem>
+                </template>-->
+            </tree>
+        </div>
+        <hbox align="center" pack="end" hflex="1" vflex="1" height="10%">
+            <button id="btnGrabar" label="Grabar"
+                image="/media/filesave.png" />
+            <button id="btnCerrar" label="Cerrar"
+                image="/media/cancel.png" />
+        </hbox>
+    </vbox>
 </window>
 </zk>

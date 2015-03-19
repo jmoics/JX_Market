@@ -20,6 +20,7 @@
             cat.empresa_n_codigo = 1 OR
             cat.empresa_n_codigo = #{empresa}
         </if>
+        ORDER BY cat.categoria_v_nombre
     </select>
 
     <select id="getCategoriaXCodigo" parameterType="DTO_Categoria" resultType="DTO_Categoria">

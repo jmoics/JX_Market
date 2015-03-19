@@ -59,6 +59,7 @@ public class PO_EAEditaCategoria
     private CategoriaTreeNode categoriaTreeNode;
     private AdvancedTreeModel categoriaTreeModel;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void doAfterCompose(final Window comp)
         throws Exception
@@ -69,30 +70,33 @@ public class PO_EAEditaCategoria
 
         empresa = (DTO_Empresa) desktop.getSession().getAttribute("empresa");
 
-        listarCategorias();
+        categoriaTreeNode = listarCategorias();
         categoriaTreeModel = new AdvancedTreeModel(categoriaTreeNode);
         tree.setItemRenderer(new CategoriaTreeRenderer());
         tree.setModel(categoriaTreeModel);
+        tree.getRoot().setVisible(true);
     }
 
-    public void listarCategorias()
+    public CategoriaTreeNode listarCategorias()
     {
         final DTO_Categoria cat = new DTO_Categoria();
         cat.setEmpresa(empresa.getCodigo());
         final DTO_Input<DTO_Categoria> input = new DTO_Input<DTO_Categoria>(cat);
         input.setVerbo(Constantes.V_LIST);
         final DTO_Output<DTO_Categoria> output = categoriaService.execute(input);
+        CategoriaTreeNode categoriaTreeNode = null;
         if (output.getErrorCode() == Constantes.OK) {
             // alertaInfo("", "Exito al cargar categorias", null);
             final List<DTO_Categoria> lstCat = output.getLista();
-            construirArbolCategorias(lstCat);
+            categoriaTreeNode = construirArbolCategorias(lstCat);
         } else {
             // alertaError("Error inesperado, por favor catege al administrador",
             // "Error cargando categorias", null);
         }
+        return categoriaTreeNode;
     }
 
-    private void construirArbolCategorias(final List<DTO_Categoria> _categorias)
+    private CategoriaTreeNode construirArbolCategorias(final List<DTO_Categoria> _categorias)
     {
         final Map<Integer, DTO_Categoria> mapCateg = new TreeMap<Integer, DTO_Categoria>();
         final Map<Integer, DTO_Categoria> roots = new TreeMap<Integer, DTO_Categoria>();
@@ -108,28 +112,36 @@ public class PO_EAEditaCategoria
             }
         }
 
-        categoriaTreeNode = new CategoriaTreeNode(new DTO_Categoria("Raíz"),
+        final CategoriaTreeNode categoriaTreeNode = new CategoriaTreeNode(null,
                         new CategoriaTreeNodeCollection()
         {
             private static final long serialVersionUID = -8249078122595873454L;
             {
-                for (final DTO_Categoria root : roots.values()) {
-                    if (!setPadres.contains(root.getCodigo())) {
-                        add(new CategoriaTreeNode(root, new CategoriaTreeNodeCollection()));
-                    } else {
-                        add(new CategoriaTreeNode(root,
-                                        new CategoriaTreeNodeCollection()
-                        {
-                            private static final long serialVersionUID = -5643408533240445491L;
-                            {
-                                construirJerarquia(childs.values(), root, setPadres, true);
+                // Agregamos esta Raiz ficticia para poder convertir un nodo hijo en Raiz de categorias
+                add(new CategoriaTreeNode(new DTO_Categoria(Constantes.TREE_RAIZ), new CategoriaTreeNodeCollection()
+                {
+                    private static final long serialVersionUID = 3800210198277431722L;
+                    {
+                        for (final DTO_Categoria root : roots.values()) {
+                            if (!setPadres.contains(root.getCodigo())) {
+                                add(new CategoriaTreeNode(root, new CategoriaTreeNodeCollection()));
+                            } else {
+                                add(new CategoriaTreeNode(root,
+                                                new CategoriaTreeNodeCollection()
+                                {
+                                    private static final long serialVersionUID = -5643408533240445491L;
+                                    {
+                                        construirJerarquia(childs.values(), root, setPadres, true);
+                                    }
+                                }, true));
                             }
-                        }, true));
+                        }
                     }
-                }
+                }, true));
             }
         },
         true);
+        return categoriaTreeNode;
     }
 
     private final class CategoriaTreeRenderer
@@ -183,10 +195,10 @@ public class PO_EAEditaCategoria
     @Listen("onClick = #btnGrabar")
     public void accionGrabar(final MouseEvent e) {
         final CategoriaTreeNode raiz = categoriaTreeNode;
-
         grabarData(raiz);
-        final Window win = (Window) wEAEC.getParent();
-        //win.invalidate();
+
+        desktop.getSession().setAttribute("actualizar", "actualizar");
+        Utility.recargar(desktop, "eAConsultaCategoria.zul");
 
         wEAEC.detach();
     }
@@ -198,7 +210,7 @@ public class PO_EAEditaCategoria
         input.setVerbo(Constantes.V_REGISTER);
         input.setObject(categ);
         DTO_Output<DTO_Categoria> output = null;
-        if (_nodo.getParent() != null) {
+        if (categ != null && !Constantes.TREE_RAIZ.equals(categ.getNombre())) {
             output = categoriaService.execute(input);
             if (Constantes.OK == output.getErrorCode()) {
                 logger.debug("Categoria '" + categ.getNombre() + "' actualizada");

@@ -1,7 +1,5 @@
 package pe.com.jx_market.service;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Constantes a utilizar
@@ -123,5 +121,7 @@ public class Constantes {
      */
     public static final String TIPO_PEDIDO_ENTREGA = "Entrega a Domicilio";
     public static final String TIPO_PEDIDO_RECOGE = "Recoger Producto";
-    
+
+    public static final String TREE_RAIZ = "Raiz";
+
 }

@@ -136,7 +136,7 @@ extends SelectorComposer<Window>
         final Map<String, Object> dataArgs = new HashMap<String, Object>();
         final Window w = (Window) Executions.createComponents("eAEditaCategoria.zul", null, dataArgs);
         w.setPage(wEACC.getPage());
-        w.setParent(wEACC);
+        //w.setParent(wEACC);
         //w.doOverlapped();
         w.doModal();
         //w.doEmbedded();
