@@ -12,6 +12,7 @@
         cat.categoria_n_codigo as codigo,
         cat.empresa_n_codigo as empresa,
         cat.categoria_v_nombre as nombre,
+        cat.categoria_b_estado as estado,
         cat.categoria_n_codigo_p as codigoPadre
         FROM
         T_NEG_CATEGORIA cat
@@ -31,14 +32,14 @@
         FROM
         T_NEG_CATEGORIA cat
         WHERE
-        cat.categoria_n_codigo = #{codigo}
+        cat.categoria_n_codigo = #{codigo, jdbcType=INTEGER}
     </select>
 
     <insert id="insertCategoria" parameterType="DTO_Categoria">
         INSERT INTO T_NEG_CATEGORIA
         (empresa_n_codigo,categoria_v_nombre,categoria_n_codigo_p)
         VALUES
-        (#{empresa},#{nombre},#{codigoPadre})
+        (#{empresa},#{nombre},#{codigoPadre, jdbcType=INTEGER})
     </insert>
 
     <update id="updateCategoria" parameterType="DTO_Categoria">

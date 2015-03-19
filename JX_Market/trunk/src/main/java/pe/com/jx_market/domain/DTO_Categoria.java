@@ -17,10 +17,10 @@ public class DTO_Categoria implements Serializable
     private Integer empresa;
     private String nombre;
     private Integer codigoPadre;
+    private Boolean estado;
     private byte[] imagen;
 
     public DTO_Categoria() {
-
     }
 
     /**
@@ -75,5 +75,15 @@ public class DTO_Categoria implements Serializable
     public void setImagen(final byte[] imagen)
     {
         this.imagen = imagen;
+    }
+
+    public Boolean getEstado()
+    {
+        return estado;
+    }
+
+    public void setEstado(final Boolean estado)
+    {
+        this.estado = estado;
     }
 }

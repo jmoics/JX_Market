@@ -142,6 +142,17 @@ extends SelectorComposer<Window>
         //w.doEmbedded();
     }
 
+    @Listen("onClick = #btnNuevo")
+    public void lanzarWindowNuevo(final MouseEvent event) {
+        final Map<String, Object> dataArgs = new HashMap<String, Object>();
+        final Window w = (Window) Executions.createComponents("eAIngresaCategoria.zul", null, dataArgs);
+        w.setPage(wEACC.getPage());
+        //w.setParent(wEACC);
+        //w.doOverlapped();
+        w.doModal();
+        //w.doEmbedded();
+    }
+
     private final class CategoriaTreeRenderer
         implements TreeitemRenderer<CategoriaTreeNode>
     {
