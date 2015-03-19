@@ -122,6 +122,7 @@ public class Constantes {
     public static final String TIPO_PEDIDO_ENTREGA = "Entrega a Domicilio";
     public static final String TIPO_PEDIDO_RECOGE = "Recoger Producto";
 
-    public static final String TREE_RAIZ = "Raiz";
+    public static final String TREE_EDITABLE_RAIZ = "Raiz";
+    public static final String TREE_EDITABLE_TEXTBOX = "textBox";
 
 }

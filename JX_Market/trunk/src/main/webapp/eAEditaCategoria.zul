@@ -1,5 +1,5 @@
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-<window id="wEAEC" width="600px" height="410px" 
+<window id="wEAEC" width="700px" height="500px" 
         apply="pe.com.jx_market.controller.PO_EAEditaCategoria"
         position="center,center" closable="true"
         action="show: slideDown;hide: slideUp">
@@ -16,8 +16,8 @@
                 Edición de Categorías
             </label>
         </div>
-        <div height="80%" width="100%">
-            <tree id="tree" hflex="1" vflex="1" >
+        <div width="100%">
+            <tree id="tree" hflex="1" height="430px">
                 <treecols>
                     <treecol label="Categorias" />
                 </treecols>
@@ -30,7 +30,7 @@
                 </template>-->
             </tree>
         </div>
-        <hbox align="center" pack="end" hflex="1" vflex="1" height="10%">
+        <hbox align="center" pack="end" hflex="1" vflex="1">
             <button id="btnGrabar" label="Grabar"
                 image="/media/filesave.png" />
             <button id="btnCerrar" label="Cerrar"

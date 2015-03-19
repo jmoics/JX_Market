@@ -21,7 +21,8 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Image;
-import org.zkoss.zul.Label;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.TreeNode;
 import org.zkoss.zul.Treecell;
@@ -118,13 +119,13 @@ public class PO_EAEditaCategoria
             private static final long serialVersionUID = -8249078122595873454L;
             {
                 // Agregamos esta Raiz ficticia para poder convertir un nodo hijo en Raiz de categorias
-                add(new CategoriaTreeNode(new DTO_Categoria(Constantes.TREE_RAIZ), new CategoriaTreeNodeCollection()
+                add(new CategoriaTreeNode(new DTO_Categoria(Constantes.TREE_EDITABLE_RAIZ), new CategoriaTreeNodeCollection()
                 {
                     private static final long serialVersionUID = 3800210198277431722L;
                     {
                         for (final DTO_Categoria root : roots.values()) {
                             if (!setPadres.contains(root.getCodigo())) {
-                                add(new CategoriaTreeNode(root, new CategoriaTreeNodeCollection()));
+                                add(new CategoriaTreeNode(root, new CategoriaTreeNodeCollection(), true));
                             } else {
                                 add(new CategoriaTreeNode(root,
                                                 new CategoriaTreeNodeCollection()
@@ -162,7 +163,9 @@ public class PO_EAEditaCategoria
 
             final Hlayout hl = new Hlayout();
             hl.appendChild(new Image("/widgets/tree/dynamic_tree/img/" + categ.getImagen()));
-            hl.appendChild(new Label(categ.getNombre()));
+            final Textbox textBoxCat = new Textbox(categ.getNombre());
+            textBoxCat.setId(Constantes.TREE_EDITABLE_TEXTBOX + categ.getCodigo());
+            hl.appendChild(textBoxCat);
             hl.setSclass("h-inline-block");
             final Treecell treeCell = new Treecell();
             treeCell.appendChild(hl);
@@ -176,14 +179,28 @@ public class PO_EAEditaCategoria
                     // Treechildren of TreeItem.
                     final Treeitem draggedItem = (Treeitem) ((DropEvent) event).getDragged().getParent();
                     final CategoriaTreeNode draggedValue = (CategoriaTreeNode) draggedItem.getValue();
-                    categoriaTreeModel.remove(draggedValue);
-                    categoriaTreeModel.add((CategoriaTreeNode)treeItem.getValue(),
-                            new CategoriaTreeNodeCollection() {
-                                private static final long serialVersionUID = -4941224185260321214L;
-                            {add(draggedValue);} });
-                    draggedValue.getData().setCodigoPadre(categ.getCodigo());
+                    if (!isAncestor(draggedValue, ctn)) {
+                        categoriaTreeModel.remove(draggedValue);
+                            categoriaTreeModel.add((CategoriaTreeNode)treeItem.getValue(),
+                                    new CategoriaTreeNodeCollection() {
+                                        private static final long serialVersionUID = -4941224185260321214L;
+                                    {add(draggedValue);} });
+                        draggedValue.getData().setCodigoPadre(categ.getCodigo());
+                    } else {
+                        logger.info("No puede ingresar un padre dentro de su hijo");
+                        Messagebox.show("No puede ingresar un padre dentro de su hijo", "JX_Market",
+                                        Messagebox.OK, Messagebox.ERROR);
+                    }
                 }
             });
+        }
+
+        private boolean isAncestor(final CategoriaTreeNode p, CategoriaTreeNode c) {
+            do {
+                if (p == c)
+                    return true;
+            } while ((c = (CategoriaTreeNode) c.getParent()) != null);
+            return false;
         }
     }
 
@@ -210,7 +227,11 @@ public class PO_EAEditaCategoria
         input.setVerbo(Constantes.V_REGISTER);
         input.setObject(categ);
         DTO_Output<DTO_Categoria> output = null;
-        if (categ != null && !Constantes.TREE_RAIZ.equals(categ.getNombre())) {
+        if (categ != null && !Constantes.TREE_EDITABLE_RAIZ.equals(categ.getNombre())) {
+            final String strIdTxtCateg = new StringBuilder()
+                .append(Constantes.TREE_EDITABLE_TEXTBOX).append(categ.getCodigo()).toString();
+            final Textbox txtCategName = ((Textbox) wEAEC.getFellow(strIdTxtCateg));
+            categ.setNombre(txtCategName.getValue());
             output = categoriaService.execute(input);
             if (Constantes.OK == output.getErrorCode()) {
                 logger.debug("Categoria '" + categ.getNombre() + "' actualizada");
