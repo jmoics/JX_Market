@@ -13,10 +13,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.image.AImage;
 import org.zkoss.zk.ui.Desktop;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Window;
@@ -42,7 +43,7 @@ public class PO_EAHeader extends SelectorComposer<Window>
     private DTO_Empresa empresa;
 
     @Override
-    public void doAfterCompose(Window comp)
+    public void doAfterCompose(final Window comp)
         throws Exception
     {
         super.doAfterCompose(comp);
@@ -56,7 +57,7 @@ public class PO_EAHeader extends SelectorComposer<Window>
         }
         userdata.setValue(empleado.getApellido() + " " + empleado.getNombre());
     }
-    
+
     private void setGraficoFoto()
     {
         if (imgLogoByte != null) {
@@ -69,7 +70,7 @@ public class PO_EAHeader extends SelectorComposer<Window>
         }
         imaLogo.setSrc("/media/imagProd.gif");
     }
-    
+
     private void loadPhoto(final String name) {
         final File photo = getPhotoFile(name);
         if(!photo.exists()) {
@@ -99,7 +100,7 @@ public class PO_EAHeader extends SelectorComposer<Window>
             throw new RuntimeException(ex);
         }
     }
-    
+
     private File getPhotoFile(final String name) {
         String ruta;
         if(System.getProperty("os.name").contains("Windows")){
@@ -108,5 +109,16 @@ public class PO_EAHeader extends SelectorComposer<Window>
             ruta = Constantes.RUTA_IMAGENES + File.separator + name;
         }
         return new File(ruta);
+    }
+
+    @Listen("onClick=#salir")
+    public void salir()
+    {
+        desktop.getSession().removeAttribute("login");
+        desktop.getSession().removeAttribute("actualizar");
+        desktop.getSession().removeAttribute("empresa");
+        desktop.getSession().removeAttribute("empleado");
+        // getDesktop().getSession().removeAttribute("paginaActual");
+        Executions.sendRedirect("eALogin.zul");
     }
 }

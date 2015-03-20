@@ -23,7 +23,7 @@ public class DTO_Output<E>
         super(obj);
     }
 
-    public DTO_Output(final Map<Serializable, E> m)
+    public DTO_Output(final Map<Serializable, Serializable> m)
     {
         super(m);
     }

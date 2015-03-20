@@ -20,8 +20,8 @@ import pe.com.jx_market.utilities.DTO_Output;
  *
  */
 @Service
-public class AutorizacionService
-    implements BusinessService
+public class AutorizacionService<T>
+    implements BusinessService<T>
 {
     @Autowired
     private PerfilModuloMapper perfilModuloMapper;
@@ -36,9 +36,9 @@ public class AutorizacionService
      */
     @Override
     @Transactional
-    public DTO_Output execute(final DTO_Input input)
+    public DTO_Output<T> execute(final DTO_Input<T> input)
     {
-        final DTO_Output output = new DTO_Output();
+        final DTO_Output<T> output = new DTO_Output<T>();
         final DTO_Empleado empleado = (DTO_Empleado) input.getMapa().get("empleado");
         final DTO_Perfil perfil = new DTO_Perfil();
         perfil.setCodigo(empleado.getPerfil());

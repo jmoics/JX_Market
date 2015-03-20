@@ -13,7 +13,7 @@ public class DTO_Input<E>
 
     private E object;
     private List<E> lista;
-    private Map<Serializable, E> mapa;
+    private Map<Serializable, Serializable> mapa;
     private String verbo;
 
     public DTO_Input()
@@ -32,7 +32,7 @@ public class DTO_Input<E>
         this.verbo = verbo;
     }
 
-    public DTO_Input(final Map<Serializable, E> m)
+    public DTO_Input(final Map<Serializable, Serializable> m)
     {
         this.mapa = m;
     }
@@ -43,10 +43,10 @@ public class DTO_Input<E>
     }
 
     public void addMapPair(final Serializable k,
-                           final E v)
+                           final Serializable v)
     {
         if (this.mapa == null) {
-            this.mapa = new HashMap<Serializable, E>();
+            this.mapa = new HashMap<Serializable, Serializable>();
         }
         this.mapa.put(k, v);
     }
@@ -80,12 +80,12 @@ public class DTO_Input<E>
         this.lista = lista;
     }
 
-    public Map<Serializable, E> getMapa()
+    public Map<Serializable, Serializable> getMapa()
     {
         return this.mapa;
     }
 
-    public void setMapa(final Map<Serializable, E> mapa)
+    public void setMapa(final Map<Serializable, Serializable> mapa)
     {
         this.mapa = mapa;
     }

@@ -26,7 +26,7 @@
                </div>
                <html:p />
                <div align="center">
-                  <grid hflex="1" fixedLayout="true" width="480px">
+                  <grid hflex="1" fixedLayout="true" width="400px">
                      <columns visible="false">
                         <column/><!-- se debe definir columnas sino no se muestra -->
                         <column/>

@@ -191,12 +191,18 @@ public class PO_EAIngresaCategoria
 
                     h3.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
                         @Override
-                        public void onEvent(final Event event) throws Exception {
+                        public void onEvent(final Event event)
+                            throws Exception
+                        {
                             final DTO_Categoria newCateg = new DTO_Categoria();
-                            categoriaTreeModel.add((CategoriaTreeNode)treeItem.getValue(),
-                                    new CategoriaTreeNodeCollection() {
+                            categoriaTreeModel.add((CategoriaTreeNode) treeItem.getValue(),
+                                    new CategoriaTreeNodeCollection()
+                                    {
                                         private static final long serialVersionUID = -4941224185260321214L;
-                                    {add(new CategoriaTreeNode(newCateg, new CategoriaTreeNodeCollection(), true));} });
+                                        {
+                                            add(new CategoriaTreeNode(newCateg, new CategoriaTreeNodeCollection(), true));
+                                        }
+                                    });
                             newCateg.setCodigoPadre(categ.getCodigo());
                         }
                     });
