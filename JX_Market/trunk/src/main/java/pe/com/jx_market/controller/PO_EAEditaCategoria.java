@@ -19,8 +19,10 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Image;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Tree;
@@ -162,16 +164,99 @@ public class PO_EAEditaCategoria
             treeItem.setOpen(ctn.isOpen());
 
             final Hlayout hl = new Hlayout();
-            hl.appendChild(new Image("/widgets/tree/dynamic_tree/img/" + categ.getImagen()));
-            final Textbox textBoxCat = new Textbox(categ.getNombre());
-            textBoxCat.setId(Constantes.TREE_EDITABLE_TEXTBOX + categ.getCodigo());
-            hl.appendChild(textBoxCat);
+            if (categ != null && !Constantes.TREE_EDITABLE_RAIZ.equals(categ.getNombre())) {
+                hl.appendChild(new Image("/widgets/tree/dynamic_tree/img/" + categ.getImagen()));
+                final Textbox textBoxCat = new Textbox(categ.getNombre());
+                textBoxCat.setId(Constantes.TREE_EDITABLE_TEXTBOX + categ.getCodigo());
+                hl.appendChild(textBoxCat);
+            } else {
+                hl.appendChild(new Label(categ.getNombre()));
+            }
             hl.setSclass("h-inline-block");
             final Treecell treeCell = new Treecell();
             treeCell.appendChild(hl);
             dataRow.setDraggable("true");
             dataRow.appendChild(treeCell);
             dataRow.setDroppable("true");
+
+            if (categ != null && !Constantes.TREE_EDITABLE_RAIZ.equals(categ.getNombre())) {
+                final Treecell treeCell2 = new Treecell();
+                //final Hlayout h2 = new Hlayout();
+                final Checkbox checkBoxEstado = new Checkbox(categ.getEstado()
+                                                    ? Constantes.STATUS_ACTIVO : Constantes.STATUS_INACTIVO);
+                checkBoxEstado.setValue(categ.getEstado());
+                checkBoxEstado.setChecked(categ.getEstado());
+                treeCell2.appendChild(checkBoxEstado);
+                treeCell2.setSclass("h-inline-block");
+                checkBoxEstado.addEventListener(Events.ON_CHECK, new EventListener<Event>()
+                {
+                    @Override
+                    public void onEvent(final Event event)
+                        throws Exception
+                    {
+                        final Checkbox checkBox = (Checkbox) event.getTarget();
+                        categ.setEstado(checkBox.isChecked());
+                        checkBox.setValue(checkBoxEstado.isChecked());
+                        if (checkBox.isChecked()) {
+                            checkBox.setLabel(Constantes.STATUS_ACTIVO);
+                        } else {
+                            checkBox.setLabel(Constantes.STATUS_INACTIVO);
+                        }
+                        // Modificamos los hijos siempre y cuando se este desactivando
+                        if (!checkBox.isChecked() && !treeItem.getChildren().isEmpty()) {
+                            for (int i = 0; i < treeItem.getTreechildren().getItemCount(); i++) {
+                                final Treeitem comp = (Treeitem) treeItem.getTreechildren().getChildren().get(i);
+                                if (comp instanceof Treeitem) {
+                                    final Treeitem itemChild = comp;
+                                    modificarHijos(itemChild, checkBox.isChecked());
+                                }
+                            }
+                        }
+                        // Modificamos los padres siempre y cuando se este activando
+                        if (checkBox.isChecked() && treeItem.getParentItem() != null
+                                && treeItem.getParentItem().getValue() != null
+                                && !Constantes.TREE_EDITABLE_RAIZ.equals(((CategoriaTreeNode) treeItem.getParentItem().getValue()).getData().getNombre())) {
+                            modificarPadres(treeItem.getParentItem(), checkBox.isChecked());
+                        }
+                    }
+
+                    private void modificarHijos(final Treeitem _item,
+                                                final boolean _checked)
+                    {
+                        modificarRow(_item, _checked);
+                        for (int i = 0; i < _item.getTreechildren().getItemCount(); i++) {
+                            modificarHijos((Treeitem) _item.getTreechildren().getChildren().get(i), _checked);
+                        }
+                    }
+                    private void modificarPadres(final Treeitem _item,
+                                                 final boolean _checked) {
+                        modificarRow(_item, _checked);
+                        if (_checked && _item.getParentItem() != null
+                                && _item.getParentItem().getValue() != null
+                                && !Constantes.TREE_EDITABLE_RAIZ.equals(((CategoriaTreeNode) _item.getParentItem()
+                                                .getValue()).getData().getNombre())) {
+                            modificarPadres(_item.getParentItem(), _checked);
+                        }
+                    }
+                    private void modificarRow(final Treeitem _item,
+                                              final boolean _checked) {
+                        final Treerow row = _item.getTreerow();
+                        final Treecell cell = (Treecell) row.getChildren().get(1);
+                        final Checkbox checkb = (Checkbox) cell.getChildren().get(0);
+                        ((CategoriaTreeNode) _item.getValue()).getData().setEstado(_checked);
+                        checkb.setChecked(_checked);
+                        checkb.setValue(_checked);
+                        if (_checked) {
+                            checkb.setLabel(Constantes.STATUS_ACTIVO);
+                        } else {
+                            checkb.setLabel(Constantes.STATUS_INACTIVO);
+                        }
+                    }
+                });
+                //treeCell2.appendChild(h2);
+                dataRow.appendChild(treeCell2);
+            }
+
             dataRow.addEventListener(Events.ON_DROP, new EventListener<Event>() {
                 @Override
                 public void onEvent(final Event event) throws Exception {

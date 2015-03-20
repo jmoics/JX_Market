@@ -41,9 +41,9 @@ INSERT INTO T_EMP_EMPLEADO (PERFIL_N_CODIGO, USUARIO_N_CODIGO, EMPRESA_N_CODIGO,
            VALUES (1,1,2,'Jorge','Cueva','44128463','Mi casa','4823262','945190242','jmoics@gmail.com','Lima','Lima','1987-12-01',1),
 				  (3,2,2,'jorge','cueva samames','44128463','mi house','4563423','987755443','','lima','lima',NULL,1);
 
-INSERT INTO T_NEG_CATEGORIA (EMPRESA_N_CODIGO, CATEGORIA_V_NOMBRE, CATEGORIA_N_CODIGO_P) 
-           VALUES (1,'CÃ³mputo y Videojuegos', null),(1,'CÃ³mputo', 1),(1,'Tablets y Accesorios', 1),(1,'Videojuegos', 1),
-                  (1, 'PlayStation 4', 4),(1, 'Desktop', 2),(1, 'TV, Audio y Foto', null),(1, 'TV y Video', 7);
+INSERT INTO T_NEG_CATEGORIA (EMPRESA_N_CODIGO, CATEGORIA_V_NOMBRE, CATEGORIA_B_ESTADO, CATEGORIA_N_CODIGO_P) 
+           VALUES (1,'Cómputo y Videojuegos', 1, null),(1,'Cómputo', 1, 1),(1,'Tablets y Accesorios', 1, 1),(1,'Videojuegos', 1, 1),
+                  (1, 'PlayStation 4', 1, 4),(1, 'Desktop', 1, 2),(1, 'TV, Audio y Foto', 1, null),(1, 'TV y Video', 1, 7);
 
 INSERT INTO T_NEG_ARTICULO (EMPRESA_N_CODIGO, ARTICULO_V_NOMBRE, ARTICULO_V_DESCRIPCION, ARTICULO_N_ACTIVO, ARTICULO_V_IMAGEN) 
            VALUES (2,'Ring Action','juego de video de accion basado en la trilogia del senior de los anillos',1,NULL),

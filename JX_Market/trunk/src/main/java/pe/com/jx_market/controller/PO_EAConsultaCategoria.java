@@ -176,6 +176,11 @@ extends SelectorComposer<Window>
             final Treecell treeCell = new Treecell();
             treeCell.appendChild(hl);
             dataRow.appendChild(treeCell);
+            final Treecell treeCell2 = new Treecell();
+            final Hlayout h2 = new Hlayout();
+            h2.appendChild(new Label(categ.getEstado() ? Constantes.STATUS_ACTIVO : Constantes.STATUS_INACTIVO));
+            treeCell2.appendChild(h2);
+            dataRow.appendChild(treeCell2);
         }
     }
 }

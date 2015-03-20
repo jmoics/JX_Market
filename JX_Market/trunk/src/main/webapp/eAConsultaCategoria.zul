@@ -31,7 +31,8 @@
             <center autoscroll="true" border="none">
                 <tree width="100%" id="tree" >
                     <treecols>
-                        <treecol label="Categorias" />
+                        <treecol label="Categoria" />
+                        <treecol label="Estado" />
                     </treecols>
                     <!-- <template name="model">
                         <treeitem>
