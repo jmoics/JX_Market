@@ -19,7 +19,9 @@
         <div width="100%">
             <tree id="tree" hflex="1" height="430px">
                 <treecols>
-                    <treecol label="Categorias" />
+                    <treecol label="Categoría" width="50%"/>
+                    <treecol label="Estado" />
+                    <treecol label="Nuevo" />
                 </treecols>
                 <!-- <template name="model">
                     <treeitem>

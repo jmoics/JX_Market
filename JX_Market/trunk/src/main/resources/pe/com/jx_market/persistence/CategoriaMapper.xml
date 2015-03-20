@@ -38,9 +38,9 @@
 
     <insert id="insertCategoria" parameterType="DTO_Categoria">
         INSERT INTO T_NEG_CATEGORIA
-        (empresa_n_codigo,categoria_v_nombre,categoria_b_estado,categoria_n_codigo_p)
+        (empresa_n_codigo,categoria_v_nombre,categoria_n_codigo_p)
         VALUES
-        (#{empresa},#{nombre},#{estado},#{codigoPadre, jdbcType=INTEGER})
+        (#{empresa},#{nombre},#{codigoPadre, jdbcType=INTEGER})
     </insert>
 
     <update id="updateCategoria" parameterType="DTO_Categoria">

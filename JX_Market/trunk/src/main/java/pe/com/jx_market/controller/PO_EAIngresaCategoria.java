@@ -168,27 +168,39 @@ public class PO_EAIngresaCategoria
             final Treecell treeCell = new Treecell();
             treeCell.appendChild(hl);
             dataRow.appendChild(treeCell);
-            if ((categ.getCodigo() != null && categ.getCodigo() > 0)
+
+            if ((categ.getCodigo() != null && categ.getCodigo() > 0 )
                             || Constantes.TREE_EDITABLE_RAIZ.equals(categ.getNombre())) {
                 hl.appendChild(new Label(categ.getNombre()));
 
-                final Hlayout h2 = new Hlayout();
-                h2.appendChild(new Image("/media/add.png"));
                 final Treecell treeCell2 = new Treecell();
-                treeCell2.appendChild(h2);
+                if (!Constantes.TREE_EDITABLE_RAIZ.equals(categ.getNombre())) {
+                    final Hlayout h2 = new Hlayout();
+                    h2.appendChild(new Label(categ.getEstado() ? Constantes.STATUS_ACTIVO : Constantes.STATUS_INACTIVO));
+                    treeCell2.appendChild(h2);
+                }
                 dataRow.appendChild(treeCell2);
 
-                h2.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
-                    @Override
-                    public void onEvent(final Event event) throws Exception {
-                        final DTO_Categoria newCateg = new DTO_Categoria();
-                        categoriaTreeModel.add((CategoriaTreeNode)treeItem.getValue(),
-                                new CategoriaTreeNodeCollection() {
-                                    private static final long serialVersionUID = -4941224185260321214L;
-                                {add(new CategoriaTreeNode(newCateg, new CategoriaTreeNodeCollection(), true));} });
-                        newCateg.setCodigoPadre(categ.getCodigo());
-                    }
-                });
+                if (categ.getEstado() != null && categ.getEstado()
+                                || Constantes.TREE_EDITABLE_RAIZ.equals(categ.getNombre())) {
+                    final Hlayout h3 = new Hlayout();
+                    h3.appendChild(new Image("/media/add.png"));
+                    final Treecell treeCell3 = new Treecell();
+                    treeCell3.appendChild(h3);
+                    dataRow.appendChild(treeCell3);
+
+                    h3.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+                        @Override
+                        public void onEvent(final Event event) throws Exception {
+                            final DTO_Categoria newCateg = new DTO_Categoria();
+                            categoriaTreeModel.add((CategoriaTreeNode)treeItem.getValue(),
+                                    new CategoriaTreeNodeCollection() {
+                                        private static final long serialVersionUID = -4941224185260321214L;
+                                    {add(new CategoriaTreeNode(newCateg, new CategoriaTreeNodeCollection(), true));} });
+                            newCateg.setCodigoPadre(categ.getCodigo());
+                        }
+                    });
+                }
             } else {
                 final Textbox textBoxCat = new Textbox();
                 textBoxCat.setId(new StringBuilder(Constantes.TREE_EDITABLE_TEXTBOX)
