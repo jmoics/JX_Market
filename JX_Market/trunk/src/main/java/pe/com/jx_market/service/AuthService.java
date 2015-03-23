@@ -14,32 +14,33 @@ import pe.com.jx_market.utilities.DTO_Output;
 
 /**
  * Servicio de Autenticacion de Usuarios.
- * 
+ *
  */
 @Service
 public class AuthService
-    implements BusinessService
+    implements BusinessService<DTO_Usuario>
 {
+
     static Log logger = LogFactory.getLog(AuthService.class);
     @Autowired
     private UsuarioMapper usuarioMapper;
     @Autowired
-    private BusinessService passwordHashService;
+    private BusinessService<String> passwordHashService;
 
     /**
      * El DTO_Input debe contener un objeto de tipo DTO_Login el cual contiene
      * solo los atributos username y password. En caso de autenticacion
      * positiva, el DTO_Output tiene codigo de error OK
-     * 
+     *
      * @param Objeto estandar de entrada
      * @return Objeto estandar de salida
      */
     @Override
     @Transactional
-    public DTO_Output execute(final DTO_Input input)
+    public DTO_Output<DTO_Usuario> execute(final DTO_Input<DTO_Usuario> input)
     {
-        final DTO_Output output = new DTO_Output();
-        final DTO_Usuario suposedUser = (DTO_Usuario) input.getObject();
+        final DTO_Output<DTO_Usuario> output = new DTO_Output<DTO_Usuario>();
+        final DTO_Usuario suposedUser = input.getObject();
         final String password = suposedUser.getContrasena();
         suposedUser.setContrasena("erased");
         final DTO_Usuario us = usuarioMapper.getUsuarioXUsername(suposedUser);
@@ -73,11 +74,11 @@ public class AuthService
     private String encriptacion(final String pass)
     {
         String passEncriptada = "";
-        DTO_Output output;
+        DTO_Output<String> output;
 
-        output = passwordHashService.execute(new DTO_Input(pass));
+        output = passwordHashService.execute(new DTO_Input<String>(pass));
         if (output.getErrorCode() == Constantes.OK) {
-            passEncriptada = (String) output.getObject();
+            passEncriptada = output.getObject();
         } else {
             throw new RuntimeException("Error en encriptacion hash de password");
         }
@@ -94,12 +95,12 @@ public class AuthService
         this.usuarioMapper = usuarioMapper;
     }
 
-    public BusinessService getPasswordHashService()
+    public BusinessService<String> getPasswordHashService()
     {
         return passwordHashService;
     }
 
-    public void setPasswordHashService(final BusinessService passwordHashService)
+    public void setPasswordHashService(final BusinessService<String> passwordHashService)
     {
         this.passwordHashService = passwordHashService;
     }
