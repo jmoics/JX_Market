@@ -19,7 +19,6 @@
       <location>/session.zul</location>
    </error-page>
    <system-config>
-        <label-location>/properties/jx-label_es.properties</label-location>
-        <label-location>/properties/jx-label_en.properties</label-location>
+        <label-location>/properties/jx-label.properties</label-location>
     </system-config>
 </zk>
