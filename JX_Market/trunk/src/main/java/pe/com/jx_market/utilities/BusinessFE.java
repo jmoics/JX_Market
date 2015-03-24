@@ -10,8 +10,8 @@ public class BusinessFE<T> implements BusinessService<T> {
     static Log logger = LogFactory.getLog(BusinessFE.class);
 
     @Override
-    public DTO_Output<T> execute (final DTO_Input<T> e) {
-        DTO_Output<T> output;
+    public ServiceOutput<T> execute (final ServiceInput<T> e) {
+        ServiceOutput<T> output;
         try {
             if (logger.isDebugEnabled()) {
                 logger.debug("Inicio ejecucion bean " + this.name);
@@ -23,7 +23,7 @@ public class BusinessFE<T> implements BusinessService<T> {
             return output;
         } catch (final RuntimeException ex) {
             logger.warn("Excepcion generada por bean " + this.name, ex);
-            output = new DTO_Output<T>();
+            output = new ServiceOutput<T>();
             if (this.reportExceptions) {
                 output.setError(-1, ex.getMessage());
             } else {

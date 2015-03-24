@@ -22,8 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.persistence.ArticuloMapper;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
  * @author George
@@ -39,14 +40,14 @@ public class ArticuloService implements BusinessService
     @SuppressWarnings("unchecked")
     @Override
     @Transactional
-    public DTO_Output execute(final DTO_Input input)
+    public ServiceOutput execute(final ServiceInput input)
     {
-        final DTO_Output output = new DTO_Output();
-        if (Constantes.V_LIST.equals(input.getVerbo())) {
+        final ServiceOutput output = new ServiceOutput();
+        if (Constantes.V_LIST.equals(input.getAccion())) {
             output.setLista(articuloMapper.getArticulos((DTO_Articulo)input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
+        } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
             final DTO_Articulo arti = (DTO_Articulo) input.getObject();
             if(arti.getNomimg() == null) {
                 /*arti.setNomimg(arti.getEmpresa() + "." + arti.getCategoria() + "." +
@@ -61,7 +62,7 @@ public class ArticuloService implements BusinessService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getVerbo())) {
+        } else if (Constantes.V_GET.equals(input.getAccion())) {
             final Map<String, String> map = input.getMapa();
             final DTO_Articulo art = articuloMapper.getArticuloXCodigo((DTO_Articulo) input.getObject());
             if (map == null) {
@@ -70,11 +71,11 @@ public class ArticuloService implements BusinessService
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
-        }else if (Constantes.V_USTOCK.equals(input.getVerbo())) {
+        }else if (Constantes.V_USTOCK.equals(input.getAccion())) {
             articuloMapper.updateStock((DTO_Articulo) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
-        }else if (Constantes.V_GETIMG.equals(input.getVerbo())) {
+        }else if (Constantes.V_GETIMG.equals(input.getAccion())) {
             final DTO_Articulo art = (DTO_Articulo) input.getObject();
             loadPhoto(art);
             output.setObject(art);

@@ -21,8 +21,9 @@ import pe.com.jx_market.domain.DTO_Pedido;
 import pe.com.jx_market.persistence.DetallePedidoMapper;
 import pe.com.jx_market.persistence.PedidoMapper;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
  * @author George
@@ -40,10 +41,10 @@ public class PedidosService implements BusinessService
     @SuppressWarnings("unchecked")
     @Override
     @Transactional
-    public DTO_Output execute(final DTO_Input input)
+    public ServiceOutput execute(final ServiceInput input)
     {
-        final DTO_Output output = new DTO_Output();
-        if (Constantes.V_LISTEMP.equals(input.getVerbo())) {
+        final ServiceOutput output = new ServiceOutput();
+        if (Constantes.V_LISTEMP.equals(input.getAccion())) {
             final List<DTO_Pedido> lst = pedidoMapper.getPedidos((DTO_Pedido) input.getObject());
             for (final DTO_Pedido ped : lst) {
 
@@ -51,7 +52,7 @@ public class PedidosService implements BusinessService
             //output.setLista(dao.getArticulos((DTO_Articulo)input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_LIST.equals(input.getVerbo())) {
+        } else if (Constantes.V_LIST.equals(input.getAccion())) {
             final Map<DTO_Pedido, List<DTO_DetallePedido>> mapPed = new HashMap<DTO_Pedido, List<DTO_DetallePedido>>();
             //Pedidos de JX_Market para un cliente
             final List<DTO_Pedido> lstPedCli = pedidoMapper.getPedidos((DTO_Pedido) input.getObject());
@@ -74,7 +75,7 @@ public class PedidosService implements BusinessService
             output.setMapa(mapPed);
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
+        } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
             Integer pedMainId = null;
             final BigDecimal total = (BigDecimal) input.getObject();
             final Map<Integer, Map<DTO_Pedido, List<DTO_DetallePedido>>> map = input.getMapa();
@@ -107,7 +108,7 @@ public class PedidosService implements BusinessService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getVerbo())) {
+        } else if (Constantes.V_GET.equals(input.getAccion())) {
             //final DTO_Articulo art = dao.getArticuloXCodigo((DTO_Articulo) input.getObject());
             //output.setObject(art);
             output.setErrorCode(Constantes.OK);

@@ -25,10 +25,10 @@ import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Categoria;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_CEProductos extends Window
 {
@@ -40,8 +40,8 @@ public class PO_CEProductos extends Window
     public void onCreate() {
         this.getParent();
         lstProds = (Listbox) getFellow("lstProds");
-        articuloService = Utility.getService(this, "articuloService");
-        categoriaService = Utility.getService(this, "categoriaService");
+        articuloService = ContextLoader.getService(this, "articuloService");
+        categoriaService = ContextLoader.getService(this, "categoriaService");
 
         listaProductos();
     }
@@ -59,9 +59,9 @@ public class PO_CEProductos extends Window
         if (cat != null) {
             //articulo.setCategoria(cat.getCodigo());
         }
-        final DTO_Input input = new DTO_Input(articulo);
-        input.setVerbo(Constantes.V_LIST);
-        final DTO_Output output = articuloService.execute(input);
+        final ServiceInput input = new ServiceInput(articulo);
+        input.setAccion(Constantes.V_LIST);
+        final ServiceOutput output = articuloService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Articulo> lst = output.getLista();
             for (final DTO_Articulo art : lst) {
@@ -205,9 +205,9 @@ public class PO_CEProductos extends Window
 
     private void setGraficoFoto(final DTO_Articulo articulo, final Image imgFoto)
     {
-        final DTO_Input input = new DTO_Input(articulo);
-        input.setVerbo(Constantes.V_GETIMG);
-        final DTO_Output output = articuloService.execute(input);
+        final ServiceInput input = new ServiceInput(articulo);
+        input.setAccion(Constantes.V_GETIMG);
+        final ServiceOutput output = articuloService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
             alertaInfo("", "El articulo" + articulo.getNombre() + "no posee imagen", null);
         }
@@ -226,7 +226,7 @@ public class PO_CEProductos extends Window
     {
         // getDesktop().getSession().setAttribute("paginaActual", txt);
         getDesktop().getSession().setAttribute("actualizar", "actualizar");
-        Utility.saltar(this, txt);
+        ContextLoader.saltar(this, txt);
     }
 
     public void alertaInfo(final String txt,

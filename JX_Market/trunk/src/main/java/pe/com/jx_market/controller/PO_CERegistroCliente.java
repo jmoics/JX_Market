@@ -21,11 +21,11 @@ import org.zkoss.zul.Textbox;
 import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.domain.DTO_Solicitud;
 import pe.com.jx_market.domain.DTO_Usuario;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.service.EnviarCorreo;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_CERegistroCliente
     extends Div
@@ -61,10 +61,10 @@ public class PO_CERegistroCliente
         txtMailEmp = (Textbox) getFellow("txtMailEmp");
         txtRuc = (Textbox) getFellow("txtRuc");
 
-        validationService = Utility.getService(this, "validationService");
-        usuarioService = Utility.getService(this, "usuarioService");
-        clienteService = Utility.getService(this, "clienteService");
-        solicitudService = Utility.getService(this, "solicitudService");
+        validationService = ContextLoader.getService(this, "validationService");
+        usuarioService = ContextLoader.getService(this, "usuarioService");
+        clienteService = ContextLoader.getService(this, "clienteService");
+        solicitudService = ContextLoader.getService(this, "solicitudService");
 
         try {
             datFecNacim.setValue(new SimpleDateFormat("dd/MM/yyyy").parse("01/01/1980"));
@@ -93,10 +93,10 @@ public class PO_CERegistroCliente
                     final Map<String, Object> map = new HashMap<String, Object>();
                     map.put("cliente", cliente);
                     map.put("usuario", usuario);
-                    final DTO_Input input = new DTO_Input();
-                    input.setVerbo(Constantes.V_REGISTER);
+                    final ServiceInput input = new ServiceInput();
+                    input.setAccion(Constantes.V_REGISTER);
                     input.setMapa(map);
-                    final DTO_Output output = clienteService.execute(input);
+                    final ServiceOutput output = clienteService.execute(input);
                     if (output.getErrorCode() == Constantes.OK) {
                         final int rpta = Messagebox.show("Su registro fue realizado correctamente",
                                                     "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
@@ -125,10 +125,10 @@ public class PO_CERegistroCliente
                     // alertaInfo(msg, "", null);
                     alertaInfo(msg, msg, null);
                 } else {
-                    final DTO_Input input = new DTO_Input();
-                    input.setVerbo(Constantes.V_REGISTER);
+                    final ServiceInput input = new ServiceInput();
+                    input.setAccion(Constantes.V_REGISTER);
                     input.setObject(solicitud);
-                    final DTO_Output output = solicitudService.execute(input);
+                    final ServiceOutput output = solicitudService.execute(input);
                     if (output.getErrorCode() == Constantes.OK) {
                         int rpta;
                         final EnviarCorreo correo = new EnviarCorreo();
@@ -269,8 +269,8 @@ public class PO_CERegistroCliente
     @SuppressWarnings("unchecked")
     private List<String> validacionDTO(final DTO_Cliente cliente)
     {
-        final DTO_Input input = new DTO_Input(cliente, "registraCliente");
-        final DTO_Output output = validationService.execute(input);
+        final ServiceInput input = new ServiceInput(cliente, "registraCliente");
+        final ServiceOutput output = validationService.execute(input);
         if (output.getErrorCode() == Constantes.VALIDATION_ERROR) {
             final List<String> errores = output.getLista();
             return errores;
@@ -287,8 +287,8 @@ public class PO_CERegistroCliente
     @SuppressWarnings("unchecked")
     private List<String> validacionSolicitud(final DTO_Solicitud solicitud)
     {
-        final DTO_Input input = new DTO_Input(solicitud, "registraSolicitud");
-        final DTO_Output output = validationService.execute(input);
+        final ServiceInput input = new ServiceInput(solicitud, "registraSolicitud");
+        final ServiceOutput output = validationService.execute(input);
         if (output.getErrorCode() == Constantes.VALIDATION_ERROR) {
             final List<String> errores = output.getLista();
             return errores;
@@ -332,9 +332,9 @@ public class PO_CERegistroCliente
     private boolean verificaDisponibilidad(final DTO_Usuario usuario)
     {
         boolean dis = true;
-        final DTO_Input input = new DTO_Input(usuario);
-        input.setVerbo("consultaSiEstaDisponible");
-        final DTO_Output output = usuarioService.execute(input);
+        final ServiceInput input = new ServiceInput(usuario);
+        input.setAccion("consultaSiEstaDisponible");
+        final ServiceOutput output = usuarioService.execute(input);
         if (Constantes.ALREADY_USED == output.getErrorCode()) {
             dis = false;
         } else if (Constantes.OK == output.getErrorCode()) {

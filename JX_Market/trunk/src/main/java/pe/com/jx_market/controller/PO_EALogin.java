@@ -2,13 +2,14 @@ package pe.com.jx_market.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Messagebox;
@@ -18,11 +19,13 @@ import org.zkoss.zul.Window;
 import pe.com.jx_market.domain.DTO_Empleado;
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.domain.DTO_Usuario;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
+/* Permite tener acceso a los servicios*/
+@VariableResolver(DelegatingVariableResolver.class)
 public class PO_EALogin
     extends SelectorComposer<Window>
 {
@@ -36,11 +39,12 @@ public class PO_EALogin
     private Desktop desktop;
     @Wire
     private Window wEAL;
-    @Autowired
+    // En este caso empresaService esta siendo obtenido de los beans de spring.
+    @WireVariable
     private BusinessService<DTO_Empresa> empresaService;
-    @Autowired
+    @WireVariable
     private BusinessService<DTO_Usuario> authService;
-    @Autowired
+    @WireVariable
     private BusinessService<DTO_Empleado> empleadoService;
 
     @Override
@@ -52,15 +56,14 @@ public class PO_EALogin
         txtUser.setFocus(true);
     }
 
-    @SuppressWarnings("unchecked")
     public void obtenerEmpresas()
     {
         List<DTO_Empresa> empresas;
-        empresaService = (BusinessService<DTO_Empresa>) Utility.getService(wEAL, "empresaService");
-        final DTO_Input<DTO_Empresa> input = new DTO_Input<DTO_Empresa>();
-        input.setVerbo("list");
+        //empresaService = (BusinessService<DTO_Empresa>) ContextLoader.getService(wEAL, "empresaService");
+        final ServiceInput<DTO_Empresa> input = new ServiceInput<DTO_Empresa>();
+        input.setAccion("list");
 
-        final DTO_Output<DTO_Empresa> output = empresaService.execute(input);
+        final ServiceOutput<DTO_Empresa> output = empresaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             empresas = output.getLista();
             for (final DTO_Empresa emp : empresas) {
@@ -74,7 +77,7 @@ public class PO_EALogin
         }
     }
 
-    @Listen("onClick = #btnIngresar; onOK = #btnIngresar")
+    @Listen("onClick = #btnIngresar; onOK = #txtPass")
     public void authenticate()
         throws InterruptedException
     {
@@ -111,14 +114,13 @@ public class PO_EALogin
         }
     }
 
-    @SuppressWarnings("unchecked")
     public DTO_Usuario getUsuario(final DTO_Usuario C)
     {
         DTO_Usuario usuario;
-        authService = (BusinessService<DTO_Usuario>) Utility.getService(wEAL, "authService");
-        final DTO_Input<DTO_Usuario> input = new DTO_Input<DTO_Usuario>(C);
+        //authService = (BusinessService<DTO_Usuario>) ContextLoader.getService(wEAL, "authService");
+        final ServiceInput<DTO_Usuario> input = new ServiceInput<DTO_Usuario>(C);
 
-        final DTO_Output<DTO_Usuario> output = authService.execute(input);
+        final ServiceOutput<DTO_Usuario> output = authService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             usuario = output.getObject();
         } else {
@@ -128,16 +130,15 @@ public class PO_EALogin
         return usuario;
     }
 
-    @SuppressWarnings("unchecked")
     public DTO_Empleado getEmpleado(final DTO_Usuario usu)
     {
-        empleadoService = (BusinessService<DTO_Empleado>) Utility.getService(wEAL, "empleadoService");
+        //empleadoService = (BusinessService<DTO_Empleado>) ContextLoader.getService(wEAL, "empleadoService");
         final DTO_Empleado emp = new DTO_Empleado();
         emp.setEmpresa(usu.getEmpresa());
         emp.setUsuario(usu.getCodigo());
-        final DTO_Input<DTO_Empleado> input = new DTO_Input<DTO_Empleado>(emp);
-        input.setVerbo(Constantes.V_GET);
-        final DTO_Output<DTO_Empleado> output = empleadoService.execute(input);
+        final ServiceInput<DTO_Empleado> input = new ServiceInput<DTO_Empleado>(emp);
+        input.setAccion(Constantes.V_GET);
+        final ServiceOutput<DTO_Empleado> output = empleadoService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             return output.getObject();
         } else {

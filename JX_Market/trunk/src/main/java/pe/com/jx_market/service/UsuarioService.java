@@ -10,8 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.com.jx_market.domain.DTO_Usuario;
 import pe.com.jx_market.persistence.UsuarioMapper;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
  * Servicio de Administracion de Contactos
@@ -29,13 +30,13 @@ public class UsuarioService
     private BusinessService passwordHashService;
 
     /**
-     * El DTO_Input contendrá como verbo un String: para realizar una consulta
+     * El ServiceInput contendrá como verbo un String: para realizar una consulta
      * se usará el verbo "list" y un string con el codigo de la institucion a la
      * que pertenece el contacto, para ingresar o actualizar datos se usará el
      * verbo "register" conteniendo además un objeto DTO_Contacto con los datos
      * nuevos a ingresar, y para eliminar datos se usará el verbo "delete"
      * adeḿas de contener un string con el codigo del contacto a eliminar. El
-     * DTO_Output tiene codigo de error OK; y si el verbo es "list" contendra
+     * ServiceOutput tiene codigo de error OK; y si el verbo es "list" contendra
      * una lista de objetos DTO_Contacto con todos los campos leidos de la Base
      * de Datos.
      *
@@ -45,20 +46,20 @@ public class UsuarioService
     @SuppressWarnings("rawtypes")
     @Override
     @Transactional
-    public DTO_Output execute(final DTO_Input input)
+    public ServiceOutput execute(final ServiceInput input)
     {
 
-        final DTO_Output output = new DTO_Output();
-        if (Constantes.V_LIST.equals(input.getVerbo())) {
+        final ServiceOutput output = new ServiceOutput();
+        if (Constantes.V_LIST.equals(input.getAccion())) {
             final DTO_Usuario usuario = (DTO_Usuario) input.getObject();
             output.setLista(usuarioDAO.getUsuarios(usuario));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getVerbo())) {
+        } else if (Constantes.V_GET.equals(input.getAccion())) {
             output.setObject(usuarioDAO.getUsuarioXUsername((DTO_Usuario) input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
-        }else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
+        }else if (Constantes.V_REGISTER.equals(input.getAccion())) {
             final DTO_Usuario usuario = (DTO_Usuario) input.getObject();
             usuario.setContrasena(encriptaPass(usuario.getContrasena()));
             DTO_Usuario nonused = usuarioDAO.getUsuarioXUsername(usuario);
@@ -69,11 +70,11 @@ public class UsuarioService
                 output.setErrorCode(Constantes.ERROR_RC);
             }
             return output;
-        } else if (Constantes.V_DELETE.equals(input.getVerbo())) {
+        } else if (Constantes.V_DELETE.equals(input.getAccion())) {
             usuarioDAO.eliminaUsuario((DTO_Usuario) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if ("consultaSiEstaDisponible".equals(input.getVerbo())) {
+        } else if ("consultaSiEstaDisponible".equals(input.getAccion())) {
             final DTO_Usuario us = usuarioDAO.getUsuarioXUsername((DTO_Usuario) input.getObject());
             if (us == null) {
                 output.setErrorCode(Constantes.OK);
@@ -81,7 +82,7 @@ public class UsuarioService
                 output.setErrorCode(Constantes.ALREADY_USED);
             }
             return output;
-        } else if ("chgpass".equals(input.getVerbo())) {
+        } else if ("chgpass".equals(input.getAccion())) {
             final DTO_Usuario usuario = (DTO_Usuario) input.getObject();
             final String nuevoPassword = usuario.getContrasena();
             final Map map = input.getMapa();
@@ -138,7 +139,7 @@ public class UsuarioService
         final DTO_Usuario usuario = usuarioDAO.getUsuarioXUsername(us);
         String passEncriptado;
         // encriptar password enviado
-        final DTO_Output output = passwordHashService.execute(new DTO_Input(pass));
+        final ServiceOutput output = passwordHashService.execute(new ServiceInput(pass));
         if (output.getErrorCode() == Constantes.OK) {
             passEncriptado = (String) output.getObject();
             if (passEncriptado.equals(usuario.getContrasena())) {
@@ -150,7 +151,7 @@ public class UsuarioService
 
     private String encriptaPass(final String pass)
     {
-        final DTO_Output output = passwordHashService.execute(new DTO_Input(pass));
+        final ServiceOutput output = passwordHashService.execute(new ServiceInput(pass));
         if (output.getErrorCode() == Constantes.OK) {
             return (String) output.getObject();
         }

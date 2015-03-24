@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class DTO_Output<E>
-    extends DTO_Input<E>
+public class ServiceOutput<E>
+    extends ServiceInput<E>
     implements Serializable
 {
 
@@ -13,22 +13,22 @@ public class DTO_Output<E>
     private int errorCode;
     private String errorMsg;
 
-    public DTO_Output()
+    public ServiceOutput()
     {
         this.errorMsg = "Motivo de error no especificado";
     }
 
-    public DTO_Output(final E obj)
+    public ServiceOutput(final E obj)
     {
         super(obj);
     }
 
-    public DTO_Output(final Map<Serializable, Serializable> m)
+    public ServiceOutput(final Map<Serializable, Serializable> m)
     {
         super(m);
     }
 
-    public DTO_Output(final List<E> l)
+    public ServiceOutput(final List<E> l)
     {
         super(l);
     }

@@ -21,10 +21,10 @@ import pe.com.jx_market.domain.DTO_Perfil;
 import pe.com.jx_market.domain.DTO_PerfilModulo;
 import pe.com.jx_market.domain.DTO_Solicitud;
 import pe.com.jx_market.domain.DTO_Usuario;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_EESolicitudesPendientes extends SecuredWindow
 {
@@ -36,13 +36,13 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
     void realOnCreate()
     {
         lstSolicitud = (Listbox) getFellow("lstSolicitud");
-        solicitudService = Utility.getService(this, "solicitudService");
-        empresaService = Utility.getService(this, "empresaService");
-        areaService = Utility.getService(this, "areaService");
-        perfilService = Utility.getService(this, "perfilService");
-        moduloService = Utility.getService(this, "moduloService");
-        perfilModuloService = Utility.getService(this, "perfilModuloService");
-        empleadoService = Utility.getService(this, "empleadoService");
+        solicitudService = ContextLoader.getService(this, "solicitudService");
+        empresaService = ContextLoader.getService(this, "empresaService");
+        areaService = ContextLoader.getService(this, "areaService");
+        perfilService = ContextLoader.getService(this, "perfilService");
+        moduloService = ContextLoader.getService(this, "moduloService");
+        perfilModuloService = ContextLoader.getService(this, "perfilModuloService");
+        empleadoService = ContextLoader.getService(this, "empleadoService");
         busquedaSolicitudes();
     }
 
@@ -59,10 +59,10 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         final DTO_Solicitud solAux = new DTO_Solicitud();
         solAux.setEstado(Constantes.ST_PENDIENTE);
 
-        final DTO_Input input = new DTO_Input();
-        input.setVerbo(Constantes.V_LIST);
+        final ServiceInput input = new ServiceInput();
+        input.setAccion(Constantes.V_LIST);
         input.setObject(solAux);
-        final DTO_Output output = solicitudService.execute(input);
+        final ServiceOutput output = solicitudService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Solicitud> lstSol = output.getLista();
             for (final DTO_Solicitud solicitud : lstSol) {
@@ -99,10 +99,10 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
     public void aceptarSolicitud() {
         final DTO_Solicitud sol = (DTO_Solicitud) lstSolicitud.getSelectedItem().getAttribute("solicitud");
         sol.setEstado(Constantes.ST_ACTIVO);
-        final DTO_Input input = new DTO_Input();
-        input.setVerbo(Constantes.V_REGISTER);
+        final ServiceInput input = new ServiceInput();
+        input.setAccion(Constantes.V_REGISTER);
         input.setObject(sol);
-        final DTO_Output output = solicitudService.execute(input);
+        final ServiceOutput output = solicitudService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             generarData(sol);
         }
@@ -111,10 +111,10 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
     public void rechazarSolicitud() {
         final DTO_Solicitud sol = (DTO_Solicitud) lstSolicitud.getSelectedItem().getAttribute("solicitud");
         sol.setEstado(Constantes.ST_CANCELADO);
-        final DTO_Input input = new DTO_Input();
-        input.setVerbo(Constantes.V_REGISTER);
+        final ServiceInput input = new ServiceInput();
+        input.setAccion(Constantes.V_REGISTER);
         input.setObject(sol);
-        final DTO_Output output = solicitudService.execute(input);
+        final ServiceOutput output = solicitudService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("Se cambio correctamente el estado", "estado cambiado correctamente", null);
         } else {
@@ -129,17 +129,17 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         empresa.setRazonsocial(sol.getRazon());
         empresa.setRuc(sol.getRuc());
 
-        DTO_Input input = new DTO_Input();
-        input.setVerbo(Constantes.V_REGISTER);
+        ServiceInput input = new ServiceInput();
+        input.setAccion(Constantes.V_REGISTER);
         input.setObject(empresa);
-        DTO_Output output = empresaService.execute(input);
+        ServiceOutput output = empresaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final Integer codEmp = (Integer) output.getObject();
             final DTO_Area area = new DTO_Area();
             area.setEmpresa(codEmp);
             area.setNombre("Administrator");
-            input = new DTO_Input();
-            input.setVerbo(Constantes.V_REGISTER);
+            input = new ServiceInput();
+            input.setAccion(Constantes.V_REGISTER);
             input.setObject(area);
             output = areaService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
@@ -149,8 +149,8 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
                 perf.setDescripcion("Administration");
                 perf.setEmpresa(codEmp);
                 perf.setFuncion("Administrator");
-                input = new DTO_Input();
-                input.setVerbo(Constantes.V_REGISTER);
+                input = new ServiceInput();
+                input.setAccion(Constantes.V_REGISTER);
                 input.setObject(perf);
                 output = perfilService.execute(input);
                 if (output.getErrorCode() == Constantes.OK) {
@@ -195,8 +195,8 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
                     mapUser.put("empleado", empleado);
                     mapUser.put("usuario", usuario);
 
-                    input = new DTO_Input();
-                    input.setVerbo(Constantes.V_REGISTER);
+                    input = new ServiceInput();
+                    input.setAccion(Constantes.V_REGISTER);
                     input.setMapa(mapUser);
                     output = empleadoService.execute(input);
                     if (output.getErrorCode() == Constantes.OK) {
@@ -213,10 +213,10 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         mod.setEmpresa(empresa);
         mod.setRecurso(recurso);
 
-        final DTO_Input input = new DTO_Input();
-        input.setVerbo(Constantes.V_REGISTER);
+        final ServiceInput input = new ServiceInput();
+        input.setAccion(Constantes.V_REGISTER);
         input.setObject(mod);
-        final DTO_Output output = moduloService.execute(input);
+        final ServiceOutput output = moduloService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final Integer cod = (Integer) output.getObject();
             return cod;
@@ -230,10 +230,10 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         perfMod.setModulo(mod);
         perfMod.setPerfil(perf);
 
-        final DTO_Input input = new DTO_Input();
-        input.setVerbo(Constantes.V_REGISTERPM);
+        final ServiceInput input = new ServiceInput();
+        input.setAccion(Constantes.V_REGISTERPM);
         input.setObject(perfMod);
-        final DTO_Output output = perfilModuloService.execute(input);
+        final ServiceOutput output = perfilModuloService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             return true;
         } else {

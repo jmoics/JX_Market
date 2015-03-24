@@ -28,10 +28,10 @@ import pe.com.jx_market.domain.DTO_Empleado;
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.domain.DTO_Perfil;
 import pe.com.jx_market.domain.DTO_Usuario;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_EAAdministraEmpleado
     extends SecuredWindow
@@ -84,9 +84,9 @@ public class PO_EAAdministraEmpleado
         capNombre = (Caption) getFellow("capNombre");
         capInfo = (Caption) getFellow("capInfo");
         popDetails = (Popup) getFellow("popDetails");
-        empleadoService = Utility.getService(this, "empleadoService");
-        perfilService = Utility.getService(this, "perfilService");
-        usuarioService = Utility.getService(this, "usuarioService");
+        empleadoService = ContextLoader.getService(this, "empleadoService");
+        perfilService = ContextLoader.getService(this, "perfilService");
+        usuarioService = ContextLoader.getService(this, "usuarioService");
 
         empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
         cargarPerfiles();
@@ -96,9 +96,9 @@ public class PO_EAAdministraEmpleado
     public void elimina(final DTO_Empleado empleado)
     {
 
-        final DTO_Input input = new DTO_Input(empleado);
-        input.setVerbo("delete");
-        final DTO_Output output = empleadoService.execute(input);
+        final ServiceInput input = new ServiceInput(empleado);
+        input.setAccion("delete");
+        final ServiceOutput output = empleadoService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             logger.info("El contacto se elimino correctamente");
         } else {
@@ -138,7 +138,7 @@ public class PO_EAAdministraEmpleado
         empleado.setDireccion(direccion);
         empleado.setRegion(region);
 
-        final DTO_Input input = new DTO_Input();
+        final ServiceInput input = new ServiceInput();
         final Map<String, Object> map = new HashMap<String,Object>();
         map.put("empleado", empleado);
         if(emp == null) {
@@ -161,9 +161,9 @@ public class PO_EAAdministraEmpleado
         } else {
             empleado.setCodigo(emp.getCodigo());
         }
-        input.setVerbo(Constantes.V_REGISTER);
+        input.setAccion(Constantes.V_REGISTER);
         input.setMapa(map);
-        final DTO_Output output = empleadoService.execute(input);
+        final ServiceOutput output = empleadoService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("El empleado se registro correctamente", "El contacto se registro correctamente", null);
         } else {
@@ -285,9 +285,9 @@ public class PO_EAAdministraEmpleado
         grdEmp.getRows().getChildren().clear();
         final DTO_Empleado emp = new DTO_Empleado();
         emp.setEmpresa(empresa.getCodigo());
-        final DTO_Input input = new DTO_Input(emp);
-        input.setVerbo(Constantes.V_LIST);
-        final DTO_Output output = empleadoService.execute(input);
+        final ServiceInput input = new ServiceInput(emp);
+        input.setAccion(Constantes.V_LIST);
+        final ServiceOutput output = empleadoService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Empleado> ulist = output.getLista();
             for (final DTO_Empleado uOut : ulist) {
@@ -415,9 +415,9 @@ public class PO_EAAdministraEmpleado
         final DTO_Usuario usuario = new DTO_Usuario();
         usuario.setCodigo(codigo);
         usuario.setEmpresa(empresa.getCodigo());
-        final DTO_Input input = new DTO_Input(usuario);
-        input.setVerbo(Constantes.V_LIST);
-        final DTO_Output output = usuarioService.execute(input);
+        final ServiceInput input = new ServiceInput(usuario);
+        input.setAccion(Constantes.V_LIST);
+        final ServiceOutput output = usuarioService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             return (DTO_Usuario) output.getLista().get(0);
         } else {
@@ -430,9 +430,9 @@ public class PO_EAAdministraEmpleado
         final DTO_Perfil perfil = new DTO_Perfil();
         perfil.setCodigo(codigo);
         perfil.setEmpresa(empresa.getCodigo());
-        final DTO_Input input = new DTO_Input(perfil);
-        input.setVerbo(Constantes.V_GET);
-        final DTO_Output output = perfilService.execute(input);
+        final ServiceInput input = new ServiceInput(perfil);
+        input.setAccion(Constantes.V_GET);
+        final ServiceOutput output = perfilService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             return (DTO_Perfil) output.getObject();
         } else {
@@ -444,9 +444,9 @@ public class PO_EAAdministraEmpleado
     {
         final DTO_Perfil per = new DTO_Perfil();
         per.setEmpresa(empresa.getCodigo());
-        final DTO_Input input = new DTO_Input(per);
-        input.setVerbo(Constantes.V_LIST);
-        final DTO_Output output = perfilService.execute(input);
+        final ServiceInput input = new ServiceInput(per);
+        input.setAccion(Constantes.V_LIST);
+        final ServiceOutput output = perfilService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Perfil> listado = output.getLista();
             for (final DTO_Perfil perfil : listado) {

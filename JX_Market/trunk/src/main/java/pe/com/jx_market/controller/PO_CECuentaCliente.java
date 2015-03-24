@@ -25,10 +25,10 @@ import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.domain.DTO_DetallePedido;
 import pe.com.jx_market.domain.DTO_Pedido;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_CECuentaCliente extends Window
 {
@@ -43,8 +43,8 @@ public class PO_CECuentaCliente extends Window
         lstPed = (Listbox) getFellow("lstPed");
         lstDet = (Listbox) getFellow("lstDet");
         btnReturn = (Button) getFellow("btnReturn");
-        pedidosService = Utility.getService(this, "pedidosService");
-        articuloService = Utility.getService(this, "articuloService");
+        pedidosService = ContextLoader.getService(this, "pedidosService");
+        articuloService = ContextLoader.getService(this, "articuloService");
 
         if (getDesktop().getSession().getAttribute("cliente") != null) {
             listarPedidos();
@@ -61,11 +61,11 @@ public class PO_CECuentaCliente extends Window
         pedAux.setCliente(cliente.getCodigo());
         pedAux.setEmpresa(Constantes.INSTITUCION_JX_MARKET);
 
-        final DTO_Input input = new DTO_Input();
-        input.setVerbo(Constantes.V_LIST);
+        final ServiceInput input = new ServiceInput();
+        input.setAccion(Constantes.V_LIST);
         input.setObject(pedAux);
 
-        final DTO_Output output = pedidosService.execute(input);
+        final ServiceOutput output = pedidosService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final Map<DTO_Pedido, List<DTO_DetallePedido>> mapPed = output.getMapa();
             for (final Entry<DTO_Pedido, List<DTO_DetallePedido>> entry : mapPed.entrySet()) {
@@ -147,11 +147,11 @@ public class PO_CECuentaCliente extends Window
         DTO_Articulo arti = new DTO_Articulo();
         arti.setCodigo(codArt);
 
-        final DTO_Input input = new DTO_Input();
-        input.setVerbo(Constantes.V_GET);
+        final ServiceInput input = new ServiceInput();
+        input.setAccion(Constantes.V_GET);
         input.setMapa(new HashMap<String, String>());
         input.setObject(arti);
-        final DTO_Output output = articuloService.execute(input);
+        final ServiceOutput output = articuloService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             arti = (DTO_Articulo) output.getObject();
         }
@@ -168,7 +168,7 @@ public class PO_CECuentaCliente extends Window
     {
         // getDesktop().getSession().setAttribute("paginaActual", txt);
         getDesktop().getSession().setAttribute("actualizar", "actualizar");
-        Utility.saltar(this, txt);
+        ContextLoader.saltar(this, txt);
     }
 
     public void alertaInfo(final String txt,

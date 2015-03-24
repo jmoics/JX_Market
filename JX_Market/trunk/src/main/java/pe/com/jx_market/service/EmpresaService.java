@@ -12,8 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.persistence.EmpresaMapper;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
  * @author George
@@ -27,13 +28,13 @@ public class EmpresaService
     private EmpresaMapper empresaMapper;
 
     /* (non-Javadoc)
-     * @see pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities.DTO_Input)
+     * @see pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities.ServiceInput)
      */
     @Override
     @Transactional
-    public DTO_Output execute (final DTO_Input input) {
-        final DTO_Output output = new DTO_Output();
-        if ("list".equals(input.getVerbo())) {
+    public ServiceOutput execute (final ServiceInput input) {
+        final ServiceOutput output = new ServiceOutput();
+        if ("list".equals(input.getAccion())) {
             String nombre = null;
             String ruc = null;
             if (input.getMapa() != null) {
@@ -44,7 +45,7 @@ public class EmpresaService
             output.setLista(empresaMapper.getEmpresas(nombre, ruc));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
+        } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
             final DTO_Empresa empresa = (DTO_Empresa) input.getObject();
             DTO_Empresa empTmp = empresaMapper.getEmpresaXRuc(empresa);
             if (empTmp == null) {
@@ -56,7 +57,7 @@ public class EmpresaService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if ("delete".equals(input.getVerbo())) {
+        } else if ("delete".equals(input.getAccion())) {
             empresaMapper.deleteEmpresa((String) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;

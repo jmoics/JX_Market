@@ -7,10 +7,10 @@ import org.zkoss.zul.Textbox;
 
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.domain.DTO_Usuario;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_EACambiarContrasenia
     extends SecuredWindow
@@ -27,8 +27,8 @@ public class PO_EACambiarContrasenia
         txtPassActual = (Textbox) getFellow("txtPassActual");
         txtPassNew1 = (Textbox) getFellow("txtPassNew1");
         txtPassNew2 = (Textbox) getFellow("txtPassNew2");
-        usuarioService = Utility.getService(this, "usuarioService");
-        passwordHashService = Utility.getService(this, "passwordHashService");
+        usuarioService = ContextLoader.getService(this, "usuarioService");
+        passwordHashService = ContextLoader.getService(this, "passwordHashService");
 
         empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
     }
@@ -36,9 +36,9 @@ public class PO_EACambiarContrasenia
     public String encriptacion(final String pass)
     {
         String passEncriptada = "";
-        DTO_Output output;
+        ServiceOutput output;
 
-        output = passwordHashService.execute(new DTO_Input(pass));
+        output = passwordHashService.execute(new ServiceInput(pass));
         if (output.getErrorCode() == Constantes.OK) {
             passEncriptada = (String) output.getObject();
         } else {
@@ -53,14 +53,14 @@ public class PO_EACambiarContrasenia
         final DTO_Usuario usuario = (DTO_Usuario) getDesktop().getSession().getAttribute("login");
         if (encriptacion(txtPassActual.getValue()).equals(usuario.getContrasena())) {
             if (txtPassNew1.getValue().equals(txtPassNew2.getValue())) {
-                final DTO_Input input = new DTO_Input();
+                final ServiceInput input = new ServiceInput();
                 final DTO_Usuario user = new DTO_Usuario();
                 user.setUsername(usuario.getUsername());
                 user.setEmpresa(empresa.getCodigo());
                 user.setContrasena(txtPassNew1.getValue());
                 input.setObject(user);
-                input.setVerbo("chgpass");
-                final DTO_Output output = usuarioService.execute(input);
+                input.setAccion("chgpass");
+                final ServiceOutput output = usuarioService.execute(input);
                 if (output.getErrorCode() == Constantes.OK) {
                     alertaInfo("Contraseña cambiada satisfactoriamente", "se cambio la contraseña satisfactoriamente", null);
                     onLimpiar();

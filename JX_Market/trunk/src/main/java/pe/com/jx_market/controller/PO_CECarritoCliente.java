@@ -29,10 +29,10 @@ import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.domain.DTO_DetallePedido;
 import pe.com.jx_market.domain.DTO_Pedido;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_CECarritoCliente extends Window
 {
@@ -44,9 +44,9 @@ public class PO_CECarritoCliente extends Window
     public void onCreate() {
         this.getParent();
         grdProds = (Grid) getFellow("grdProds");
-        articuloService = Utility.getService(this, "articuloService");
-        categoriaService = Utility.getService(this, "categoriaService");
-        pedidosService = Utility.getService(this, "pedidosService");
+        articuloService = ContextLoader.getService(this, "articuloService");
+        categoriaService = ContextLoader.getService(this, "categoriaService");
+        pedidosService = ContextLoader.getService(this, "pedidosService");
 
         if (getDesktop().getSession().getAttribute("carrito") != null) {
             listaProductos();
@@ -210,11 +210,11 @@ public class PO_CECarritoCliente extends Window
             }
         }
 
-        final DTO_Input input = new DTO_Input();
-        input.setVerbo(Constantes.V_REGISTER);
+        final ServiceInput input = new ServiceInput();
+        input.setAccion(Constantes.V_REGISTER);
         input.setMapa(mapPed);
         input.setObject((BigDecimal)((Map) getDesktop().getSession().getAttribute("totales")).get("total"));
-        final DTO_Output output = pedidosService.execute(input);
+        final ServiceOutput output = pedidosService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             resetearAtributos();
             final int rpta = Messagebox.show("Su pedido fue realizado correctamente, " +
@@ -251,7 +251,7 @@ public class PO_CECarritoCliente extends Window
     {
         // getDesktop().getSession().setAttribute("paginaActual", txt);
         getDesktop().getSession().setAttribute("actualizar", "actualizar");
-        Utility.saltar(this, txt);
+        ContextLoader.saltar(this, txt);
     }
 
     public void alertaInfo(final String txt,

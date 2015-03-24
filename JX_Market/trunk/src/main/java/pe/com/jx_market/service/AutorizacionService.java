@@ -10,8 +10,9 @@ import pe.com.jx_market.domain.DTO_Empleado;
 import pe.com.jx_market.domain.DTO_Perfil;
 import pe.com.jx_market.persistence.PerfilModuloMapper;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
  * Servicio de Autorizacion de recursos por perfil
@@ -27,8 +28,8 @@ public class AutorizacionService<T>
     private PerfilModuloMapper perfilModuloMapper;
 
     /**
-     * El DTO_Input contendrá un objeto DTO_Contacto y un objeto con un recurso
-     * especifico o varios, devolviendo en el DTO_Output OK si tiene
+     * El ServiceInput contendrá un objeto DTO_Contacto y un objeto con un recurso
+     * especifico o varios, devolviendo en el ServiceOutput OK si tiene
      * autorizacion para acceder a ese recurso y AUTH_ERROR si no la tiene.
      *
      * @param Objeto estándar de entrada
@@ -36,9 +37,9 @@ public class AutorizacionService<T>
      */
     @Override
     @Transactional
-    public DTO_Output<T> execute(final DTO_Input<T> input)
+    public ServiceOutput<T> execute(final ServiceInput<T> input)
     {
-        final DTO_Output<T> output = new DTO_Output<T>();
+        final ServiceOutput<T> output = new ServiceOutput<T>();
         final DTO_Empleado empleado = (DTO_Empleado) input.getMapa().get("empleado");
         final DTO_Perfil perfil = new DTO_Perfil();
         perfil.setCodigo(empleado.getPerfil());

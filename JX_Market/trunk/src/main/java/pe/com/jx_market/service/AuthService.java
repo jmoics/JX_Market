@@ -9,8 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.com.jx_market.domain.DTO_Usuario;
 import pe.com.jx_market.persistence.UsuarioMapper;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
  * Servicio de Autenticacion de Usuarios.
@@ -28,18 +29,18 @@ public class AuthService
     private BusinessService<String> passwordHashService;
 
     /**
-     * El DTO_Input debe contener un objeto de tipo DTO_Login el cual contiene
+     * El ServiceInput debe contener un objeto de tipo DTO_Login el cual contiene
      * solo los atributos username y password. En caso de autenticacion
-     * positiva, el DTO_Output tiene codigo de error OK
+     * positiva, el ServiceOutput tiene codigo de error OK
      *
      * @param Objeto estandar de entrada
      * @return Objeto estandar de salida
      */
     @Override
     @Transactional
-    public DTO_Output<DTO_Usuario> execute(final DTO_Input<DTO_Usuario> input)
+    public ServiceOutput<DTO_Usuario> execute(final ServiceInput<DTO_Usuario> input)
     {
-        final DTO_Output<DTO_Usuario> output = new DTO_Output<DTO_Usuario>();
+        final ServiceOutput<DTO_Usuario> output = new ServiceOutput<DTO_Usuario>();
         final DTO_Usuario suposedUser = input.getObject();
         final String password = suposedUser.getContrasena();
         suposedUser.setContrasena("erased");
@@ -74,9 +75,9 @@ public class AuthService
     private String encriptacion(final String pass)
     {
         String passEncriptada = "";
-        DTO_Output<String> output;
+        ServiceOutput<String> output;
 
-        output = passwordHashService.execute(new DTO_Input<String>(pass));
+        output = passwordHashService.execute(new ServiceInput<String>(pass));
         if (output.getErrorCode() == Constantes.OK) {
             passEncriptada = output.getObject();
         } else {

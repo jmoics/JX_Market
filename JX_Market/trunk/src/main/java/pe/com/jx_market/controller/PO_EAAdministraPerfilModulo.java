@@ -28,10 +28,10 @@ import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.domain.DTO_Modulo;
 import pe.com.jx_market.domain.DTO_Perfil;
 import pe.com.jx_market.domain.DTO_PerfilModulo;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_EAAdministraPerfilModulo
     extends SecuredWindow
@@ -54,8 +54,8 @@ public class PO_EAAdministraPerfilModulo
         b_cancel = (Button) getFellow("b_cancel");
         f_buttons = (Foot) getFellow("f_buttons");
         cmbArea = (Combobox) getFellow("cmbArea");
-        perfilModuloService = Utility.getService(this, "perfilModuloService");
-        areaService = Utility.getService(this, "areaService");
+        perfilModuloService = ContextLoader.getService(this, "perfilModuloService");
+        areaService = ContextLoader.getService(this, "areaService");
         empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
         cargarAreas(cmbArea);
         //CargarTabla();
@@ -126,11 +126,11 @@ public class PO_EAAdministraPerfilModulo
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("perfil", perL);
         map.put("modulo", modL);
-        final DTO_Input input = new DTO_Input();
+        final ServiceInput input = new ServiceInput();
         input.setMapa(map);
-        input.setVerbo(Constantes.V_LIST);
+        input.setAccion(Constantes.V_LIST);
 
-        final DTO_Output output = perfilModuloService.execute(input);
+        final ServiceOutput output = perfilModuloService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Modulo> listaMod = output.getLista();
             for (final DTO_Modulo dto : listaMod) {
@@ -220,10 +220,10 @@ public class PO_EAAdministraPerfilModulo
 
         }
 
-        final DTO_Input input = new DTO_Input();
-        input.setVerbo(Constantes.V_REGISTER);
+        final ServiceInput input = new ServiceInput();
+        input.setAccion(Constantes.V_REGISTER);
         input.setMapa(mapa);
-        final DTO_Output output = perfilModuloService.execute(input);
+        final ServiceOutput output = perfilModuloService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             CargarTabla();
             b_edit.setVisible(true);
@@ -240,9 +240,9 @@ public class PO_EAAdministraPerfilModulo
     {
         final DTO_Area ar = new DTO_Area();
         ar.setEmpresa(empresa.getCodigo());
-        final DTO_Input input = new DTO_Input(ar);
-        input.setVerbo(Constantes.V_LIST);
-        final DTO_Output output = areaService.execute(input);
+        final ServiceInput input = new ServiceInput(ar);
+        input.setAccion(Constantes.V_LIST);
+        final ServiceOutput output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Area> listado = output.getLista();
             for (final DTO_Area area : listado) {

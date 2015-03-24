@@ -14,10 +14,10 @@ import org.zkoss.zul.Textbox;
 import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.domain.DTO_Usuario;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_CELoginCliente extends Div
 {
@@ -28,9 +28,9 @@ public class PO_CELoginCliente extends Div
     public void onCreate() {
         txtUser = (Textbox) getFellow("txtUser");
         txtPass = (Textbox) getFellow("txtPass");
-        validationService = Utility.getService(this, "validationService");
-        usuarioService = Utility.getService(this, "usuarioService");
-        clienteService = Utility.getService(this, "clienteService");
+        validationService = ContextLoader.getService(this, "validationService");
+        usuarioService = ContextLoader.getService(this, "usuarioService");
+        clienteService = ContextLoader.getService(this, "clienteService");
     }
 
     public void iniciarSesion() {
@@ -68,9 +68,9 @@ public class PO_CELoginCliente extends Div
         final DTO_Cliente cli = new DTO_Cliente();
         cli.setEmpresa(usu.getEmpresa());
         cli.setUsuario(usu.getCodigo());
-        final DTO_Input input = new DTO_Input(cli);
-        input.setVerbo(Constantes.V_GET);
-        final DTO_Output output = clienteService.execute(input);
+        final ServiceInput input = new ServiceInput(cli);
+        input.setAccion(Constantes.V_GET);
+        final ServiceOutput output = clienteService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             return (DTO_Cliente) output.getObject();
         } else {
@@ -81,10 +81,10 @@ public class PO_CELoginCliente extends Div
     public DTO_Usuario getUsuario(final DTO_Usuario C)
     {
         DTO_Usuario usuario;
-        final BusinessService authService = Utility.getService(this, "authService");
-        final DTO_Input input = new DTO_Input(C);
+        final BusinessService authService = ContextLoader.getService(this, "authService");
+        final ServiceInput input = new ServiceInput(C);
 
-        final DTO_Output output = authService.execute(input);
+        final ServiceOutput output = authService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             usuario = (DTO_Usuario) output.getObject();
         } else {

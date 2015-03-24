@@ -7,8 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.com.jx_market.domain.DTO_Solicitud;
 import pe.com.jx_market.persistence.SolicitudMapper;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 @Service
 public class SolicitudService
@@ -19,15 +20,15 @@ public class SolicitudService
 
     @Override
     @Transactional
-    public DTO_Output execute(final DTO_Input input)
+    public ServiceOutput execute(final ServiceInput input)
     {
-        final DTO_Output output = new DTO_Output();
+        final ServiceOutput output = new ServiceOutput();
 
-        if (Constantes.V_LIST.equals(input.getVerbo())) {
+        if (Constantes.V_LIST.equals(input.getAccion())) {
             output.setLista(solicitudMapper.getSolicitudes((DTO_Solicitud) input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
+        } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
             DTO_Solicitud solTmp = solicitudMapper.getSolicitudxCodigo((DTO_Solicitud) input.getObject());
             if (solTmp == null) {
                 solicitudMapper.insertSolicitud((DTO_Solicitud) input.getObject());
@@ -36,12 +37,12 @@ public class SolicitudService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getVerbo())) {
+        } else if (Constantes.V_GET.equals(input.getAccion())) {
             final DTO_Solicitud art = solicitudMapper.getSolicitudxCodigo((DTO_Solicitud) input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_DELETE.equals(input.getVerbo())) {
+        } else if (Constantes.V_DELETE.equals(input.getAccion())) {
             solicitudMapper.deleteSolicitud((DTO_Solicitud) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;

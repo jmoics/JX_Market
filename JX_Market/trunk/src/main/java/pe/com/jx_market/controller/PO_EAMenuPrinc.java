@@ -19,10 +19,10 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Borderlayout;
 
 import pe.com.jx_market.domain.DTO_Empleado;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
  * @author George
@@ -68,7 +68,7 @@ public class PO_EAMenuPrinc extends SelectorComposer<Borderlayout>
         throws Exception
     {
         super.doAfterCompose(comp);
-        autorizacionService = (BusinessService<DTO_Empleado>) Utility.getService(comp, "autorizacionService");
+        autorizacionService = (BusinessService<DTO_Empleado>) ContextLoader.getService(comp, "autorizacionService");
         incluir("eAFondo.zul");
 
         final DTO_Empleado empleado = (DTO_Empleado) comp.getDesktop().getSession().getAttribute("empleado");
@@ -112,10 +112,10 @@ public class PO_EAMenuPrinc extends SelectorComposer<Borderlayout>
                                          final DTO_Empleado empleado)
     {
 
-        final DTO_Input<DTO_Empleado> input = new DTO_Input<DTO_Empleado>();
+        final ServiceInput<DTO_Empleado> input = new ServiceInput<DTO_Empleado>();
         input.addMapPair("empleado", empleado);
         input.addMapPair("modulo", modulo);
-        final DTO_Output<DTO_Empleado> output = autorizacionService.execute(input);
+        final ServiceOutput<DTO_Empleado> output = autorizacionService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
             comp.getFellow(widget).setVisible(false);
         }
@@ -130,13 +130,13 @@ public class PO_EAMenuPrinc extends SelectorComposer<Borderlayout>
     {
         // getDesktop().getSession().setAttribute("paginaActual", txt);
         desktop.getSession().setAttribute("actualizar", "actualizar");
-        Utility.saltar(desktop, PO_EAMenuPrinc.MAPA_MENU.get(event.getTarget().getId()));
+        ContextLoader.saltar(desktop, PO_EAMenuPrinc.MAPA_MENU.get(event.getTarget().getId()));
     }
 
     public void incluir(final String _txt)
     {
         // getDesktop().getSession().setAttribute("paginaActual", txt);
         desktop.getSession().setAttribute("actualizar", "actualizar");
-        Utility.saltar(desktop, _txt);
+        ContextLoader.saltar(desktop, _txt);
     }
 }

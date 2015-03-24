@@ -35,13 +35,13 @@ import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Empresa;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.AdvancedTreeModel;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.CategoriaTreeNode;
 import pe.com.jx_market.utilities.CategoriaTreeNodeCollection;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 
 public class PO_EAEditaCategoria
@@ -69,7 +69,7 @@ public class PO_EAEditaCategoria
     {
         super.doAfterCompose(comp);
 
-        categoriaService = (BusinessService<DTO_Categoria>) Utility.getService(comp, "categoriaService");
+        categoriaService = (BusinessService<DTO_Categoria>) ContextLoader.getService(comp, "categoriaService");
 
         empresa = (DTO_Empresa) desktop.getSession().getAttribute("empresa");
 
@@ -84,9 +84,9 @@ public class PO_EAEditaCategoria
     {
         final DTO_Categoria cat = new DTO_Categoria();
         cat.setEmpresa(empresa.getCodigo());
-        final DTO_Input<DTO_Categoria> input = new DTO_Input<DTO_Categoria>(cat);
-        input.setVerbo(Constantes.V_LIST);
-        final DTO_Output<DTO_Categoria> output = categoriaService.execute(input);
+        final ServiceInput<DTO_Categoria> input = new ServiceInput<DTO_Categoria>(cat);
+        input.setAccion(Constantes.V_LIST);
+        final ServiceOutput<DTO_Categoria> output = categoriaService.execute(input);
         CategoriaTreeNode categoriaTreeNode = null;
         if (output.getErrorCode() == Constantes.OK) {
             // alertaInfo("", "Exito al cargar categorias", null);
@@ -300,7 +300,7 @@ public class PO_EAEditaCategoria
         grabarData(raiz);
 
         desktop.getSession().setAttribute("actualizar", "actualizar");
-        Utility.recargar(desktop, "eAConsultaCategoria.zul");
+        ContextLoader.recargar(desktop, "eAConsultaCategoria.zul");
 
         wEAEC.detach();
     }
@@ -308,10 +308,10 @@ public class PO_EAEditaCategoria
     private void grabarData(final CategoriaTreeNode _nodo)
     {
         final DTO_Categoria categ = _nodo.getData();
-        final DTO_Input<DTO_Categoria> input = new DTO_Input<DTO_Categoria>();
-        input.setVerbo(Constantes.V_REGISTER);
+        final ServiceInput<DTO_Categoria> input = new ServiceInput<DTO_Categoria>();
+        input.setAccion(Constantes.V_REGISTER);
         input.setObject(categ);
-        DTO_Output<DTO_Categoria> output = null;
+        ServiceOutput<DTO_Categoria> output = null;
         if (categ != null && !Constantes.TREE_EDITABLE_RAIZ.equals(categ.getNombre())) {
             final String strIdTxtCateg = new StringBuilder()
                 .append(Constantes.TREE_EDITABLE_TEXTBOX).append(categ.getCodigo()).toString();

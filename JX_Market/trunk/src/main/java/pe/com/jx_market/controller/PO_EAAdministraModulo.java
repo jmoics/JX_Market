@@ -18,10 +18,10 @@ import org.zkoss.zul.Textbox;
 
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.domain.DTO_Modulo;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_EAAdministraModulo
     extends SecuredWindow
@@ -37,7 +37,7 @@ public class PO_EAAdministraModulo
     @Override
     public void realOnCreate()
     {
-        moduloService = Utility.getService(this, "moduloService");
+        moduloService = ContextLoader.getService(this, "moduloService");
         txtRecurso = (Textbox) getFellow("txtRecurso");
         txtDescripcion = (Textbox) getFellow("txtDescripcion");
         grdModulo = (Grid) getFellow("grdModulo");
@@ -62,10 +62,10 @@ public class PO_EAAdministraModulo
         unew.setEmpresa(empresa.getCodigo());
 
         if (!txtRecurso.getValue().isEmpty() && !txtDescripcion.getValue().isEmpty()) {
-            final DTO_Input input = new DTO_Input(unew);
-            input.setVerbo(Constantes.V_REGISTER);
+            final ServiceInput input = new ServiceInput(unew);
+            input.setAccion(Constantes.V_REGISTER);
 
-            final DTO_Output output = moduloService.execute(input);
+            final ServiceOutput output = moduloService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 alertaInfo("", "Modulo creado correctamente", null);
                 onLimpiar();
@@ -83,9 +83,9 @@ public class PO_EAAdministraModulo
     {
         final DTO_Modulo mod = new DTO_Modulo();
         mod.setEmpresa(empresa.getCodigo());
-        final DTO_Input input = new DTO_Input(mod);
-        input.setVerbo(Constantes.V_LIST);
-        final DTO_Output output = moduloService.execute(input);
+        final ServiceInput input = new ServiceInput(mod);
+        input.setAccion(Constantes.V_LIST);
+        final ServiceOutput output = moduloService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Modulo> ulist = output.getLista();
             for (final DTO_Modulo sOut : ulist) {
@@ -265,10 +265,10 @@ public class PO_EAAdministraModulo
 
     public void actualizaModulo(final DTO_Modulo rec)
     {
-        final DTO_Input input = new DTO_Input(rec);
-        input.setVerbo(Constantes.V_REGISTER);
+        final ServiceInput input = new ServiceInput(rec);
+        input.setAccion(Constantes.V_REGISTER);
 
-        final DTO_Output output = moduloService.execute(input);
+        final ServiceOutput output = moduloService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("", "El Modulo se actualizo correctamente", null);
         } else {
@@ -282,9 +282,9 @@ public class PO_EAAdministraModulo
     public void eliminaFila(final DTO_Modulo rec)
         throws UiException
     {
-        final DTO_Input input = new DTO_Input(rec);
-        input.setVerbo(Constantes.V_DELETE);
-        final DTO_Output output = moduloService.execute(input);
+        final ServiceInput input = new ServiceInput(rec);
+        input.setAccion(Constantes.V_DELETE);
+        final ServiceOutput output = moduloService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("", "El Modulo se elimino correctamente", null);
             onLimpiar();

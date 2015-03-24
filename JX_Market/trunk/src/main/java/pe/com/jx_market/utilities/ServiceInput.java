@@ -6,38 +6,39 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DTO_Input<E>
+public class ServiceInput<E>
     implements Serializable
 {
+
     private static final long serialVersionUID = 8163067441458677824L;
 
     private E object;
     private List<E> lista;
     private Map<Serializable, Serializable> mapa;
-    private String verbo;
+    private String accion;
 
-    public DTO_Input()
+    public ServiceInput()
     {
     }
 
-    public DTO_Input(final E obj)
-    {
-        this.object = obj;
-    }
-
-    public DTO_Input(final E obj,
-                     final String verbo)
+    public ServiceInput(final E obj)
     {
         this.object = obj;
-        this.verbo = verbo;
     }
 
-    public DTO_Input(final Map<Serializable, Serializable> m)
+    public ServiceInput(final E obj,
+                        final String accion)
+    {
+        this.object = obj;
+        this.accion = accion;
+    }
+
+    public ServiceInput(final Map<Serializable, Serializable> m)
     {
         this.mapa = m;
     }
 
-    public DTO_Input(final List<E> l)
+    public ServiceInput(final List<E> l)
     {
         this.lista = l;
     }
@@ -90,13 +91,13 @@ public class DTO_Input<E>
         this.mapa = mapa;
     }
 
-    public String getVerbo()
+    public String getAccion()
     {
-        return this.verbo;
+        return this.accion;
     }
 
-    public void setVerbo(final String verbo)
+    public void setAccion(final String _accion)
     {
-        this.verbo = verbo;
+        this.accion = _accion;
     }
 }

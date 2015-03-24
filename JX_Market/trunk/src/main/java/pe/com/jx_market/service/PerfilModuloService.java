@@ -17,8 +17,9 @@ import pe.com.jx_market.persistence.ModuloMapper;
 import pe.com.jx_market.persistence.PerfilMapper;
 import pe.com.jx_market.persistence.PerfilModuloMapper;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
  * Servicio de Administración de Recursos por Perfil
@@ -35,15 +36,15 @@ public class PerfilModuloService implements BusinessService
     @Autowired
     private ModuloMapper moduloMapper;
 
-    /**El DTO_Input debe contener un Verbo, el cual es un String en el cual se específica la acción a realizar
+    /**El ServiceInput debe contener un Verbo, el cual es un String en el cual se específica la acción a realizar
      * ya sea consulta, registro o eliminación ("list", "register" o "delete" respectivamente)
      */
     @Override
     @Transactional
-    public DTO_Output execute(final DTO_Input input) {
+    public ServiceOutput execute(final ServiceInput input) {
 
-        final DTO_Output output = new DTO_Output();
-        if(Constantes.V_LIST.equals(input.getVerbo())) {
+        final ServiceOutput output = new ServiceOutput();
+        if(Constantes.V_LIST.equals(input.getAccion())) {
             // obtener los perfiles
             final Map<String, Object> map = input.getMapa();
             final DTO_Perfil perfil = (DTO_Perfil) map.get("perfil");
@@ -58,7 +59,7 @@ public class PerfilModuloService implements BusinessService
             output.setMapa(perfXMod);
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if(Constantes.V_REGISTER.equals(input.getVerbo())) {
+        } else if(Constantes.V_REGISTER.equals(input.getAccion())) {
             final Map<DTO_Perfil, Set<DTO_PerfilModulo>> mapa = input.getMapa();
             final Iterator<DTO_Perfil> perfilIterator = mapa.keySet().iterator();
             while(perfilIterator.hasNext()) {
@@ -74,7 +75,7 @@ public class PerfilModuloService implements BusinessService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if(Constantes.V_REGISTERPM.equals(input.getVerbo())) {
+        } else if(Constantes.V_REGISTERPM.equals(input.getAccion())) {
             final DTO_PerfilModulo perfMod = (DTO_PerfilModulo) input.getObject();
             perfilModuloMapper.insertModuloPerfil(perfMod);
             output.setErrorCode(Constantes.OK);

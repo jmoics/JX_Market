@@ -12,8 +12,9 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
  *
@@ -38,7 +39,7 @@ public class PasswordHashService
     }
 
     @Override
-    public DTO_Output<String> execute(final DTO_Input<String> e)
+    public ServiceOutput<String> execute(final ServiceInput<String> e)
     {
         final String arg = e.getObject();
         final byte[] defaultBytes = arg.getBytes();
@@ -54,7 +55,7 @@ public class PasswordHashService
             hexString.append(hex);
         }
         final String answer = hexString.toString();
-        final DTO_Output<String> output = new DTO_Output<String>();
+        final ServiceOutput<String> output = new ServiceOutput<String>();
         output.setObject(answer.substring(0, 32));
         output.setErrorCode(Constantes.OK);
         return output;

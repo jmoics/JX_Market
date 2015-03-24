@@ -19,10 +19,10 @@ import org.zkoss.zul.Textbox;
 
 import pe.com.jx_market.domain.DTO_Area;
 import pe.com.jx_market.domain.DTO_Empresa;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_EAAdministraArea
     extends SecuredWindow
@@ -41,7 +41,7 @@ public class PO_EAAdministraArea
         txtNombre = (Textbox) getFellow("txtNombre");
         grpNuevo = (Groupbox) getFellow("grpNuevo");
         grdArea = (Grid) getFellow("grdArea");
-        areaService = Utility.getService(this, "areaService");
+        areaService = ContextLoader.getService(this, "areaService");
         popEmpleados = (Popup) getFellow("popEmpleados");
         empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
         mostrarAreas();
@@ -57,9 +57,9 @@ public class PO_EAAdministraArea
             unew.setNombre(txtNombre.getValue());
             unew.setEmpresa(empresa.getCodigo());
 
-            final DTO_Input input = new DTO_Input(unew);
-            input.setVerbo(Constantes.V_REGISTER);
-            final DTO_Output output = areaService.execute(input);
+            final ServiceInput input = new ServiceInput(unew);
+            input.setAccion(Constantes.V_REGISTER);
+            final ServiceOutput output = areaService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 alertaInfo("", "area creada correctamente", null);
                 onLimpiar();
@@ -76,9 +76,9 @@ public class PO_EAAdministraArea
     {
         final DTO_Area are = new DTO_Area();
         are.setEmpresa(empresa.getCodigo());
-        final DTO_Input input = new DTO_Input(are);
-        input.setVerbo(Constantes.V_LIST);
-        final DTO_Output output = areaService.execute(input);
+        final ServiceInput input = new ServiceInput(are);
+        input.setAccion(Constantes.V_LIST);
+        final ServiceOutput output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Area> ulist = output.getLista();
 
@@ -288,10 +288,10 @@ public class PO_EAAdministraArea
 
     public void actualizaArea(final DTO_Area are)
     {
-        final DTO_Input input = new DTO_Input(are);
-        input.setVerbo(Constantes.V_REGISTER);
+        final ServiceInput input = new ServiceInput(are);
+        input.setAccion(Constantes.V_REGISTER);
 
-        final DTO_Output output = areaService.execute(input);
+        final ServiceOutput output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("", "El area se actualizo correctamente", null);
         } else {
@@ -305,9 +305,9 @@ public class PO_EAAdministraArea
     public void eliminaFila(final DTO_Area are)
         throws UiException
     {
-        final DTO_Input input = new DTO_Input(are);
-        input.setVerbo(Constantes.V_DELETE);
-        final DTO_Output output = areaService.execute(input);
+        final ServiceInput input = new ServiceInput(are);
+        input.setAccion(Constantes.V_DELETE);
+        final ServiceOutput output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("", "El area se elimino correctamente", null);
             onLimpiar();

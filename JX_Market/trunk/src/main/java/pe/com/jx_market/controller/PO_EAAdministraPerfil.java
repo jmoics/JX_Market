@@ -21,10 +21,10 @@ import org.zkoss.zul.Textbox;
 import pe.com.jx_market.domain.DTO_Area;
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.domain.DTO_Perfil;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_EAAdministraPerfil
     extends SecuredWindow
@@ -45,8 +45,8 @@ public class PO_EAAdministraPerfil
         cmbArea = (Combobox) getFellow("cmbArea");
         grpNuevo = (Groupbox) getFellow("grpNuevo");
         grdPerfil = (Grid) getFellow("grdPerfil");
-        areaService = Utility.getService(this, "areaService");
-        perfilService = Utility.getService(this, "perfilService");
+        areaService = ContextLoader.getService(this, "areaService");
+        perfilService = ContextLoader.getService(this, "perfilService");
 
         empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
         cargarAreas(cmbArea);
@@ -65,9 +65,9 @@ public class PO_EAAdministraPerfil
             unew.setArea(((DTO_Area) cmbArea.getSelectedItem().getAttribute("area")).getCodigo());
             unew.setEmpresa(empresa.getCodigo());
 
-            final DTO_Input input = new DTO_Input(unew);
-            input.setVerbo(Constantes.V_REGISTER);
-            final DTO_Output output = perfilService.execute(input);
+            final ServiceInput input = new ServiceInput(unew);
+            input.setAccion(Constantes.V_REGISTER);
+            final ServiceOutput output = perfilService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 alertaInfo("", "perfil creado correctamente", null);
                 onLimpiar();
@@ -84,10 +84,10 @@ public class PO_EAAdministraPerfil
     {
         final DTO_Perfil perf = new DTO_Perfil();
         perf.setEmpresa(empresa.getCodigo());
-        final DTO_Input input = new DTO_Input(perf);
+        final ServiceInput input = new ServiceInput(perf);
 
-        input.setVerbo(Constantes.V_LIST);
-        final DTO_Output output = perfilService.execute(input);
+        input.setAccion(Constantes.V_LIST);
+        final ServiceOutput output = perfilService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Perfil> ulist = output.getLista();
 
@@ -323,10 +323,10 @@ public class PO_EAAdministraPerfil
 
     public void actualizaPerfil(final DTO_Perfil perf)
     {
-        final DTO_Input input = new DTO_Input(perf);
-        input.setVerbo(Constantes.V_REGISTER);
+        final ServiceInput input = new ServiceInput(perf);
+        input.setAccion(Constantes.V_REGISTER);
 
-        final DTO_Output output = perfilService.execute(input);
+        final ServiceOutput output = perfilService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("", "El perfil se actualizo correctamente", null);
         } else {
@@ -340,9 +340,9 @@ public class PO_EAAdministraPerfil
     public void eliminaFila(final DTO_Perfil perf)
         throws UiException
     {
-        final DTO_Input input = new DTO_Input(perf.getCodigo());
-        input.setVerbo("delete");
-        final DTO_Output output = perfilService.execute(input);
+        final ServiceInput input = new ServiceInput(perf.getCodigo());
+        input.setAccion("delete");
+        final ServiceOutput output = perfilService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("", "El perfil se elimino correctamente", null);
             onLimpiar();
@@ -356,9 +356,9 @@ public class PO_EAAdministraPerfil
     {
         final DTO_Area ar = new DTO_Area();
         ar.setEmpresa(empresa.getCodigo());
-        final DTO_Input input = new DTO_Input(ar);
-        input.setVerbo(Constantes.V_LIST);
-        final DTO_Output output = areaService.execute(input);
+        final ServiceInput input = new ServiceInput(ar);
+        input.setAccion(Constantes.V_LIST);
+        final ServiceOutput output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Area> listado = output.getLista();
             for (final DTO_Area area : listado) {
@@ -377,9 +377,9 @@ public class PO_EAAdministraPerfil
         final DTO_Area area = new DTO_Area();
         area.setCodigo(codigo);
         area.setEmpresa(empresa.getCodigo());
-        final DTO_Input input = new DTO_Input(area);
-        input.setVerbo(Constantes.V_GET);
-        final DTO_Output output = areaService.execute(input);
+        final ServiceInput input = new ServiceInput(area);
+        input.setAccion(Constantes.V_GET);
+        final ServiceOutput output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             return (DTO_Area) output.getObject();
         } else {

@@ -14,8 +14,9 @@ import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.domain.DTO_Usuario;
 import pe.com.jx_market.persistence.ClienteMapper;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
  * Servicio de Administracion de Contactos
@@ -34,13 +35,13 @@ public class ClienteService
     private BusinessService usuarioService;
 
     /**
-     * El DTO_Input contendrá como verbo un String: para realizar una consulta
+     * El ServiceInput contendrá como verbo un String: para realizar una consulta
      * se usará el verbo "list" y un string con el codigo de la institucion a
      * la que pertenece el contacto, para ingresar o actualizar datos se usará
      * el verbo "register" conteniendo además un objeto DTO_Contacto con los
      * datos nuevos a ingresar, y para eliminar datos se usará el verbo
      * "delete" adeḿas de contener un string con el codigo del contacto a
-     * eliminar. El DTO_Output tiene codigo de error OK; y si el verbo es "list"
+     * eliminar. El ServiceOutput tiene codigo de error OK; y si el verbo es "list"
      * contendra una lista de objetos DTO_Contacto con todos los campos leidos
      * de la Base de Datos.
      *
@@ -50,15 +51,15 @@ public class ClienteService
      */
     @Override
     @Transactional
-    public DTO_Output execute (final DTO_Input input) {
+    public ServiceOutput execute (final ServiceInput input) {
 
-        final DTO_Output output = new DTO_Output();
-        if (Constantes.V_LIST.equals(input.getVerbo())) {
+        final ServiceOutput output = new ServiceOutput();
+        if (Constantes.V_LIST.equals(input.getAccion())) {
             final DTO_Cliente cliente = (DTO_Cliente) input.getObject();
             output.setLista(clienteMapper.getClientes(cliente));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getVerbo())) {
+        } else if (Constantes.V_GET.equals(input.getAccion())) {
             final DTO_Cliente cliente = (DTO_Cliente) input.getObject();
             List<DTO_Cliente> cliLstTmp = clienteMapper.getClientes(cliente);
             if (cliLstTmp != null && !cliLstTmp.isEmpty()) {
@@ -66,15 +67,15 @@ public class ClienteService
                 output.setErrorCode(Constantes.OK);
             }
             return output;
-        }else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
+        }else if (Constantes.V_REGISTER.equals(input.getAccion())) {
             final Map map = input.getMapa();
             final DTO_Cliente cliente = (DTO_Cliente) map.get("cliente");
             DTO_Usuario usuario = (DTO_Usuario) map.get("usuario");
-            final DTO_Input inp = new DTO_Input(usuario);
+            final ServiceInput inp = new ServiceInput(usuario);
             if(usuario != null) {
                 if (usuario.getCodigo() == null) {
-                    inp.setVerbo(Constantes.V_REGISTER);
-                    final DTO_Output out = usuarioService.execute(inp);
+                    inp.setAccion(Constantes.V_REGISTER);
+                    final ServiceOutput out = usuarioService.execute(inp);
                     if (out.getErrorCode() == Constantes.OK) {
                         usuario = getUsuario(usuario);
                         cliente.setUsuario(usuario.getCodigo());
@@ -85,8 +86,8 @@ public class ClienteService
                     map2.put("nonPass", "nonPass");
                     map2.put("oldPass", null);
                     inp.setMapa(map2);
-                    inp.setVerbo("chgpass");
-                    final DTO_Output out = usuarioService.execute(inp);
+                    inp.setAccion("chgpass");
+                    final ServiceOutput out = usuarioService.execute(inp);
                     if (out.getErrorCode() == Constantes.OK) {
                         logger.info("El password fue cambiado correctamente");
                     } else {
@@ -103,7 +104,7 @@ public class ClienteService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_DELETE.equals(input.getVerbo())) {
+        } else if (Constantes.V_DELETE.equals(input.getAccion())) {
             clienteMapper.eliminaCliente((DTO_Cliente) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
@@ -113,9 +114,9 @@ public class ClienteService
     }
 
     private DTO_Usuario getUsuario(final DTO_Usuario user) {
-        final DTO_Input inp = new DTO_Input(user);
-        inp.setVerbo(Constantes.V_GET);
-        final DTO_Output out = usuarioService.execute(inp);
+        final ServiceInput inp = new ServiceInput(user);
+        inp.setAccion(Constantes.V_GET);
+        final ServiceOutput out = usuarioService.execute(inp);
         if(out.getErrorCode() == Constantes.OK) {
             return (DTO_Usuario) out.getObject();
         } else {

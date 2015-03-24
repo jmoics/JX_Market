@@ -7,8 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.com.jx_market.domain.DTO_Perfil;
 import pe.com.jx_market.persistence.PerfilMapper;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 @Service
 public class PerfilService
@@ -19,14 +20,14 @@ public class PerfilService
 
     @Override
     @Transactional
-    public DTO_Output execute(final DTO_Input input)
+    public ServiceOutput execute(final ServiceInput input)
     {
-        final DTO_Output output = new DTO_Output();
-        if (Constantes.V_LIST.equals(input.getVerbo())) {
+        final ServiceOutput output = new ServiceOutput();
+        if (Constantes.V_LIST.equals(input.getAccion())) {
             output.setLista(perfilMapper.getPerfiles((DTO_Perfil) input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
+        } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
             DTO_Perfil perfTmp = perfilMapper.getPerfilXCodigo((DTO_Perfil) input.getObject());
             if (perfTmp == null) {
                 final Integer cod = perfilMapper.insertPerfil((DTO_Perfil) input.getObject());
@@ -37,12 +38,12 @@ public class PerfilService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getVerbo())) {
+        } else if (Constantes.V_GET.equals(input.getAccion())) {
             final DTO_Perfil art = perfilMapper.getPerfilXCodigo((DTO_Perfil) input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_DELETE.equals(input.getVerbo())) {
+        } else if (Constantes.V_DELETE.equals(input.getAccion())) {
             perfilMapper.deletePerfil((DTO_Perfil) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;

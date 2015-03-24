@@ -10,8 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.persistence.CategoriaMapper;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
  * @author George
@@ -25,18 +26,18 @@ public class CategoriaService
     private CategoriaMapper categoriaMapper;
 
     /* (non-Javadoc)
-     * @see pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities.DTO_Input)
+     * @see pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities.ServiceInput)
      */
     @Override
     @Transactional
-    public DTO_Output<DTO_Categoria> execute(final DTO_Input<DTO_Categoria> input)
+    public ServiceOutput<DTO_Categoria> execute(final ServiceInput<DTO_Categoria> input)
     {
-        final DTO_Output<DTO_Categoria> output = new DTO_Output<DTO_Categoria>();
-        if (Constantes.V_LIST.equals(input.getVerbo())) {
+        final ServiceOutput<DTO_Categoria> output = new ServiceOutput<DTO_Categoria>();
+        if (Constantes.V_LIST.equals(input.getAccion())) {
             output.setLista(categoriaMapper.getCategorias(input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTER.equals(input.getVerbo())) {
+        } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
             final DTO_Categoria categTmp = categoriaMapper.getCategoriaXCodigo(input.getObject());
             if (categTmp == null) {
                 categoriaMapper.insertCategoria(input.getObject());
@@ -45,12 +46,12 @@ public class CategoriaService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getVerbo())) {
+        } else if (Constantes.V_GET.equals(input.getAccion())) {
             final DTO_Categoria art = categoriaMapper.getCategoriaXCodigo(input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
-        }else if (Constantes.V_DELETE.equals(input.getVerbo())) {
+        }else if (Constantes.V_DELETE.equals(input.getAccion())) {
             categoriaMapper.deleteCategoria(input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;

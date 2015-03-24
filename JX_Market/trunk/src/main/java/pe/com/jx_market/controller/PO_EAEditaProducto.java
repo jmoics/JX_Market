@@ -21,10 +21,10 @@ import org.zkoss.zul.Textbox;
 import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Empresa;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
  * @author George
@@ -55,15 +55,15 @@ public class PO_EAEditaProducto
         decPrec = (Decimalbox) getFellow("decPrec");
         decPrec.setValue(BigDecimal.ZERO);
 
-        articuloService = Utility.getService(this, "articuloService");
-        categoriaService = Utility.getService(this, "categoriaService");
+        articuloService = ContextLoader.getService(this, "articuloService");
+        categoriaService = ContextLoader.getService(this, "categoriaService");
 
         empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
 
         articulo = (DTO_Articulo) getDesktop().getSession().getAttribute("producto");
-        final DTO_Input input = new DTO_Input(articulo);
-        input.setVerbo(Constantes.V_GETIMG);
-        final DTO_Output output = articuloService.execute(input);
+        final ServiceInput input = new ServiceInput(articulo);
+        input.setAccion(Constantes.V_GETIMG);
+        final ServiceOutput output = articuloService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
             alertaInfo("", "El articulo" + articulo.getNombre() + "no posee imagen", null);
         }
@@ -93,9 +93,9 @@ public class PO_EAEditaProducto
                 articulo.setImagen(imgProducto);
                 articulo.setNomimg(null);
             }
-            final DTO_Input input = new DTO_Input(articulo);
-            input.setVerbo(Constantes.V_REGISTER);
-            final DTO_Output output = articuloService.execute(input);
+            final ServiceInput input = new ServiceInput(articulo);
+            input.setAccion(Constantes.V_REGISTER);
+            final ServiceOutput output = articuloService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 alertaInfo("Los datos del producto se actualizaron correctamente",
                                 "Los datos del producto se actualizaron correctamente", null);
@@ -174,9 +174,9 @@ public class PO_EAEditaProducto
     {
         final DTO_Categoria cat = new DTO_Categoria();
         cat.setEmpresa(empresa.getCodigo());
-        final DTO_Input input = new DTO_Input(cat);
-        input.setVerbo(Constantes.V_LIST);
-        final DTO_Output output = categoriaService.execute(input);
+        final ServiceInput input = new ServiceInput(cat);
+        input.setAccion(Constantes.V_LIST);
+        final ServiceOutput output = categoriaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("", "Exito al cargar categorias", null);
             final List<DTO_Categoria> lstCat = output.getLista();
@@ -216,7 +216,7 @@ public class PO_EAEditaProducto
     {
         // getDesktop().getSession().setAttribute("paginaActual", txt);
         getDesktop().getSession().setAttribute("actualizar", "actualizar");
-        Utility.saltar(this, txt);
+        ContextLoader.saltar(this, txt);
     }
 
     public void alertaInfo(final String txt,

@@ -20,10 +20,10 @@ import org.zkoss.zul.Messagebox;
 
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Cliente;
-import pe.com.jx_market.service.Constantes;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.DTO_Input;
-import pe.com.jx_market.utilities.DTO_Output;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_Index
     extends Div
@@ -36,7 +36,7 @@ public class PO_Index
 
     public void onCreate()
     {
-        categoriaService = Utility.getService(this, "categoriaService");
+        categoriaService = ContextLoader.getService(this, "categoriaService");
         ulCategorias = (Ul) getFellow("ulCategorias");
         lbUser = (Label) getFellow("lbUser");
         lbTotal = (Label) getFellow("lbTotal");
@@ -82,9 +82,9 @@ public class PO_Index
     public void listarCategorias()
     {
         final DTO_Categoria cat = new DTO_Categoria();
-        final DTO_Input input = new DTO_Input(cat);
-        input.setVerbo(Constantes.V_LIST);
-        final DTO_Output output = categoriaService.execute(input);
+        final ServiceInput input = new ServiceInput(cat);
+        input.setAccion(Constantes.V_LIST);
+        final ServiceOutput output = categoriaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("", "Exito al cargar categorias", null);
             final List<DTO_Categoria> lstCat = output.getLista();
@@ -131,7 +131,7 @@ public class PO_Index
     {
         // getDesktop().getSession().setAttribute("paginaActual", txt);
         getDesktop().getSession().setAttribute("actualizar", "actualizar");
-        Utility.saltar(this, txt);
+        ContextLoader.saltar(this, txt);
     }
 
     public void saltarPagina(final String txt,

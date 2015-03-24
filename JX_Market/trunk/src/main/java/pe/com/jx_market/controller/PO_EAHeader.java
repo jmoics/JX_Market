@@ -24,7 +24,7 @@ import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Empleado;
 import pe.com.jx_market.domain.DTO_Empresa;
-import pe.com.jx_market.service.Constantes;
+import pe.com.jx_market.utilities.Constantes;
 
 /**
  * @author <._.>

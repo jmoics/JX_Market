@@ -6,11 +6,12 @@ import javax.servlet.http.HttpServlet;
 public class DataBaseInitialize
     extends HttpServlet
 {
+    @Override
     public void init()
         throws ServletException
     {
         System.out.println("----------");
-        System.out.println("---------- CrunchifyExample Servlet Initialized successfully ----------");
+        System.out.println("---------- Servlet para Carga de Base de Datos inicializado satisfactoriamente ----------");
         System.out.println("----------");
     }
 }

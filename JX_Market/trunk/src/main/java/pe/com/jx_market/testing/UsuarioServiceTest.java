@@ -1,6 +1,6 @@
 package pe.com.jx_market.testing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,10 +9,12 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.domain.DTO_Usuario;
-import pe.com.jx_market.service.Constantes;
-import pe.com.jx_market.utilities.*;
+import pe.com.jx_market.utilities.BusinessService;
+import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceOutput;
+import pe.com.jx_market.utilities.ServiceProvider;
 
 public class UsuarioServiceTest {
 
@@ -20,7 +22,6 @@ public class UsuarioServiceTest {
 
     @BeforeClass
     public static void setUpBeforeClass () throws Exception {
-        ServiceProvider.setConfigurationMode(ServiceProvider.MODE_JDBC);
         // de este modo se deben obtener todos los servicios
         usuarioService = ServiceProvider.getServiceProvider().getService("usuarioService");
         passwordHashService = ServiceProvider.getServiceProvider()
@@ -33,48 +34,48 @@ public class UsuarioServiceTest {
     public void registrarUsuarios () {
 
         // nuevo usuario
-        DTO_Usuario unew = new DTO_Usuario();
+        final DTO_Usuario unew = new DTO_Usuario();
         unew.setUsername("jcueva");
         unew.setContrasena("jcueva");
         unew.setEmpresa(3);
 
-        DTO_Input input = new DTO_Input(unew);
-        input.setVerbo("register");
-        DTO_Output output = usuarioService.execute(input);
+        final ServiceInput input = new ServiceInput(unew);
+        input.setAccion("register");
+        final ServiceOutput output = usuarioService.execute(input);
         assertEquals(Constantes.OK, output.getErrorCode());
 
         // ahora debe aparecer en el listado
-        DTO_Input inputList = new DTO_Input(unew.getEmpresa());
-        inputList.setVerbo("list");
-        DTO_Output outputList = usuarioService.execute(inputList);
+        final ServiceInput inputList = new ServiceInput(unew.getEmpresa());
+        inputList.setAccion("list");
+        final ServiceOutput outputList = usuarioService.execute(inputList);
         assertEquals(Constantes.OK, outputList.getErrorCode());
 
-        List<DTO_Usuario> ulist = outputList.getLista();
+        final List<DTO_Usuario> ulist = outputList.getLista();
         boolean hallado = false;
-        for (DTO_Usuario uOut : ulist) {
+        for (final DTO_Usuario uOut : ulist) {
             if (uOut.getCodigo().equals("jmoics")) {
                 hallado = true;
             }
         }
         assertEquals(true, hallado);
     }
-    
+
     @Test
     public void registraCSeq (){
-        
+
     }
 
     @Test
     public void authUsuarios () {
 
         // nuevo usuario
-        DTO_Usuario unew = new DTO_Usuario();
+        final DTO_Usuario unew = new DTO_Usuario();
         unew.setUsername("mdiaz");
         unew.setContrasena("mdiaz");
         unew.setEmpresa(1);
 
-        DTO_Input input = new DTO_Input(unew);
-        DTO_Output output = authService.execute(input);
+        final ServiceInput input = new ServiceInput(unew);
+        final ServiceOutput output = authService.execute(input);
         assertEquals(Constantes.OK, output.getErrorCode());
 
     }
@@ -82,16 +83,16 @@ public class UsuarioServiceTest {
     @Test
     public void cambiaPassword () {
 
-        DTO_Usuario user = new DTO_Usuario();
+        final DTO_Usuario user = new DTO_Usuario();
         user.setUsername("jmoics");
         user.setContrasena("xyz");
         user.setEmpresa(1);
-        DTO_Input input = new DTO_Input(user);
-        input.setVerbo("chgpass");
-        Map<String, String> mapa = new HashMap<String, String>();
+        final ServiceInput input = new ServiceInput(user);
+        input.setAccion("chgpass");
+        final Map<String, String> mapa = new HashMap<String, String>();
         mapa.put("oldPass", "jmoics");
         input.setMapa(mapa);
-        DTO_Output output = usuarioService.execute(input);
+        ServiceOutput output = usuarioService.execute(input);
         // password muy debil
         assertEquals(Constantes.BAD_PASS, output.getErrorCode());
 
@@ -102,11 +103,11 @@ public class UsuarioServiceTest {
 
     }
 
-    public String encriptacion (String pass) {
+    public String encriptacion (final String pass) {
         String passEncriptada = "";
-        DTO_Output output;
+        ServiceOutput output;
 
-        output = passwordHashService.execute(new DTO_Input(pass));
+        output = passwordHashService.execute(new ServiceInput(pass));
         if (output.getErrorCode() == Constantes.OK) {
             passEncriptada = (String) output.getObject();
         }
