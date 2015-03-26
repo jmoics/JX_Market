@@ -1,7 +1,7 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
 <div align="center">
-<window id="winEACP" width="720px" use="pe.com.jx_market.controller.PO_EAConsultaProducto">
+<window id="winEACP" width="100%" use="pe.com.jx_market.controller.PO_EAProducts">
    <div align="center">
       <vbox>
          <html:p />
@@ -22,13 +22,13 @@
                         <label value="Categoria"/>
                         <combobox id="cmbCat" width="150px"/>
                         <label value="Nombre Producto"/>
-                        <textbox id="txtNomProd" width="150px"/>
+                        <textbox id="txtProdName" width="150px"/>
                      </row>
                      <row>
                         <label value="Estado"/>
                         <combobox id="cmbEstad" width="150px"/>
-                        <label value="Marca"/>
-                        <textbox id="txtMarc" width="150px"/>
+                        <!-- <label value="Marca"/>
+                        <textbox id="txtMarc" width="150px"/> -->
                      </row>
                   </rows>
                </grid>
@@ -46,8 +46,9 @@
                   <listhead>
                      <listheader label="Categoria"/>
                      <listheader label="Nombre" sort="auto"/>
-                     <listheader label="Marca" sort="auto"/>
-                     <listheader label="Precio" sort="auto"/>
+                     <listheader label="Descripción" sort="auto"/>
+                     <!-- <listheader label="Marca" sort="auto"/> -->
+                     <!-- <listheader label="Precio" sort="auto"/> -->
                      <listheader label="Estado" sort="auto"/>
                   </listhead>
                </listbox>
