@@ -1,14 +1,15 @@
 <?page id="headerpage" title="" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-    <window id="wh" apply="pe.com.jx_market.controller.PO_EAHeader" >
-        <hbox width="100%" spacing="100%" align="center">
-            <image id="imaLogo" width="200px" height="100px" />
-            <vbox align="right">
-                <image id="salir" src="media/salir.gif" style="cursor:pointer" />
+    <window id="wh" apply="pe.com.jx_market.controller.PO_EAHeader" width="100%" height="100%" >
+        <hbox spacing="100%" vflex="1" hflex="1">
+            <image id="imaLogo" width="200px" vflex="1"/>
+            <vbox align="right" pack="end" vflex="1">
+                <!-- <image id="salir" src="media/salir.gif" style="cursor:pointer" />-->
+                <button id="btnSalir" width="100px">${labels.pe.com.jx_market.eAHeader.btnSalir.Label}</button>
                 <div width="280px" align="right">
                     <label zclass="z-south-header"
                         style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:12px; font-weight:normal"
-                        value="Bienvenido:" />
+                        value="${labels.pe.com.jx_market.eAHeader.Bienvenido.Label}:" />
                     <label zclass="z-south-header"
                         style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:12px; font-weight:normal"
                         id="userdata" />

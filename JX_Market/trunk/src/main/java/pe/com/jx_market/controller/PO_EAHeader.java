@@ -1,6 +1,4 @@
-/**
- *
- */
+
 package pe.com.jx_market.controller;
 
 import java.io.BufferedInputStream;
@@ -111,7 +109,7 @@ public class PO_EAHeader extends SelectorComposer<Window>
         return new File(ruta);
     }
 
-    @Listen("onClick=#salir")
+    @Listen("onClick=#btnSalir")
     public void salir()
     {
         desktop.getSession().removeAttribute("login");

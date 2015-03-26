@@ -138,7 +138,7 @@ extends SelectorComposer<Window>
         w.setPage(wEACC.getPage());
         //w.setParent(wEACC);
         //w.doOverlapped();
-        w.doModal();
+        w.doHighlighted();
         //w.doEmbedded();
     }
 
