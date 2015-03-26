@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.jx_market.domain.DTO_Categoria;
-import pe.com.jx_market.persistence.CategoriaMapper;
+import pe.com.jx_market.persistence.CategoryMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -19,11 +19,11 @@ import pe.com.jx_market.utilities.ServiceOutput;
  *
  */
 @Service
-public class CategoriaService
+public class CategoryService
     implements BusinessService<DTO_Categoria>
 {
     @Autowired
-    private CategoriaMapper categoriaMapper;
+    private CategoryMapper categoriaMapper;
 
     /* (non-Javadoc)
      * @see pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities.ServiceInput)
@@ -60,12 +60,12 @@ public class CategoriaService
         }
     }
 
-    public CategoriaMapper getDao()
+    public CategoryMapper getDao()
     {
         return categoriaMapper;
     }
 
-    public void setDao(final CategoriaMapper categoriaMapper)
+    public void setDao(final CategoryMapper categoriaMapper)
     {
         this.categoriaMapper = categoriaMapper;
     }

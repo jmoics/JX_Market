@@ -1,6 +1,6 @@
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-<window id="wEAIC" width="700px" height="500px" 
-        apply="pe.com.jx_market.controller.PO_EAIngresaCategoria"
+<window id="wEAEC" width="700px" height="500px"
+        apply="pe.com.jx_market.controller.PO_EACategoryEdit"
         position="center,center" closable="true"
         action="show: slideDown;hide: slideUp">
     <style>
@@ -13,15 +13,14 @@
         <div align="center" height="10%">
             <label zclass="z-south-header"
                 style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                Creación de Categorías
+                Edición de Categorías
             </label>
         </div>
         <div width="100%">
             <tree id="tree" hflex="1" height="430px">
                 <treecols>
-                    <treecol label="Categoría" width="50%"/>
+                    <treecol label="Categoría" />
                     <treecol label="Estado" />
-                    <treecol label="Nuevo" />
                 </treecols>
                 <!-- <template name="model">
                     <treeitem>
@@ -33,9 +32,9 @@
             </tree>
         </div>
         <hbox align="center" pack="end" hflex="1" vflex="1">
-            <button id="btnGrabar" label="Grabar"
+            <button id="btnSave" label="Grabar"
                 image="/media/filesave.png" />
-            <button id="btnCerrar" label="Cerrar"
+            <button id="btnClose" label="Cerrar"
                 image="/media/cancel.png" />
         </hbox>
     </vbox>

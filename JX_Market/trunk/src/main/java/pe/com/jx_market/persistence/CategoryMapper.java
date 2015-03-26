@@ -11,7 +11,7 @@ import pe.com.jx_market.domain.DTO_Categoria;
  * @author George
  * 
  */
-public interface CategoriaMapper
+public interface CategoryMapper
 {
     /**
      * @param categoria

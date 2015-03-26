@@ -6,8 +6,8 @@ import java.util.Set;
 
 import pe.com.jx_market.domain.DTO_Categoria;
 
-public class CategoriaTreeNodeCollection
-    extends LinkedList<CategoriaTreeNode>
+public class CategoryTreeNodeCollection
+    extends LinkedList<CategoryTreeNode>
 {
     private static final long serialVersionUID = 5118244589333582131L;
 
@@ -19,8 +19,8 @@ public class CategoriaTreeNodeCollection
         for (final DTO_Categoria child : childs) {
             if ((child).getCodigoPadre().equals((root).getCodigo())) {
                 if (setPadres.contains(child.getCodigo())) {
-                    add(new CategoriaTreeNode(child,
-                                    new CategoriaTreeNodeCollection()
+                    add(new CategoryTreeNode(child,
+                                    new CategoryTreeNodeCollection()
                                     {
                                         private static final long serialVersionUID = -525877166192606505L;
                                         {
@@ -29,9 +29,9 @@ public class CategoriaTreeNodeCollection
                                     }, true));
                 } else {
                     if (_editable) {
-                        add(new CategoriaTreeNode(child, new CategoriaTreeNodeCollection(), true));
+                        add(new CategoryTreeNode(child, new CategoryTreeNodeCollection(), true));
                     } else {
-                        add(new CategoriaTreeNode(child));
+                        add(new CategoryTreeNode(child));
                     }
                 }
             }

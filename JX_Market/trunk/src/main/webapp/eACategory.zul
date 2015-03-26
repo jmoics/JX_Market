@@ -1,7 +1,7 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-<window id="wEACC" width="100%" height="100%" 
-        apply="pe.com.jx_market.controller.PO_EAConsultaCategoria">
+<window id="wEACC" width="100%" height="100%"
+        apply="pe.com.jx_market.controller.PO_EACategory">
     <style>
             .h-inline-block {
                 display: inline-block;
@@ -45,9 +45,9 @@
             </center>
             <south size="5%" style="visibility:visible;">
                 <hbox align="center" pack="end" hflex="1" vflex="1">
-                    <button id="btnNuevo" label="Nuevo"
+                    <button id="btnCreate" label="Nuevo"
                         image="/media/filenew.png" />
-                    <button id="btnEditar" label="Editar"
+                    <button id="btnEdit" label="Editar"
                         image="/media/edit.png" />
                 </hbox>
             </south>

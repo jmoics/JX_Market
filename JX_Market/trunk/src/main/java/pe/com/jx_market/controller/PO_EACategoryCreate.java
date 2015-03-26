@@ -34,21 +34,21 @@ import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.utilities.AdvancedTreeModel;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.CategoriaTreeNode;
-import pe.com.jx_market.utilities.CategoriaTreeNodeCollection;
+import pe.com.jx_market.utilities.CategoryTreeNode;
+import pe.com.jx_market.utilities.CategoryTreeNodeCollection;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
 
-public class PO_EAIngresaCategoria
+public class PO_EACategoryCreate
     extends SelectorComposer<Window>
 {
     private static final long serialVersionUID = 6046074628719265175L;
 
-    static Log logger = LogFactory.getLog(PO_EAIngresaCategoria.class);
+    static Log logger = LogFactory.getLog(PO_EACategoryCreate.class);
     @Autowired
-    private BusinessService<DTO_Categoria> categoriaService;
+    private BusinessService<DTO_Categoria> categoryService;
     private DTO_Empresa empresa;
     @WireVariable
     private Desktop desktop;
@@ -56,8 +56,8 @@ public class PO_EAIngresaCategoria
     private Tree tree;
     @Wire
     private Window wEAIC;
-    private CategoriaTreeNode categoriaTreeNode;
-    private AdvancedTreeModel categoriaTreeModel;
+    private CategoryTreeNode categoryTreeNode;
+    private AdvancedTreeModel categoryTreeModel;
     private int seqTxtId;
 
     @SuppressWarnings("unchecked")
@@ -67,38 +67,38 @@ public class PO_EAIngresaCategoria
     {
         super.doAfterCompose(comp);
 
-        categoriaService = (BusinessService<DTO_Categoria>) ContextLoader.getService(comp, "categoriaService");
+        categoryService = (BusinessService<DTO_Categoria>) ContextLoader.getService(comp, "categoryService");
 
         empresa = (DTO_Empresa) desktop.getSession().getAttribute("empresa");
 
-        categoriaTreeNode = listarCategorias();
-        categoriaTreeModel = new AdvancedTreeModel(categoriaTreeNode);
+        categoryTreeNode = listarCategorias();
+        categoryTreeModel = new AdvancedTreeModel(categoryTreeNode);
         tree.setItemRenderer(new CategoriaTreeRenderer());
-        tree.setModel(categoriaTreeModel);
+        tree.setModel(categoryTreeModel);
         tree.getRoot().setVisible(true);
         seqTxtId = 1;
     }
 
-    public CategoriaTreeNode listarCategorias()
+    public CategoryTreeNode listarCategorias()
     {
         final DTO_Categoria cat = new DTO_Categoria();
         cat.setEmpresa(empresa.getCodigo());
         final ServiceInput<DTO_Categoria> input = new ServiceInput<DTO_Categoria>(cat);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput<DTO_Categoria> output = categoriaService.execute(input);
-        CategoriaTreeNode categoriaTreeNode = null;
+        final ServiceOutput<DTO_Categoria> output = categoryService.execute(input);
+        CategoryTreeNode categoryTreeNode = null;
         if (output.getErrorCode() == Constantes.OK) {
             // alertaInfo("", "Exito al cargar categorias", null);
             final List<DTO_Categoria> lstCat = output.getLista();
-            categoriaTreeNode = construirArbolCategorias(lstCat);
+            categoryTreeNode = construirArbolCategorias(lstCat);
         } else {
             // alertaError("Error inesperado, por favor catege al administrador",
             // "Error cargando categorias", null);
         }
-        return categoriaTreeNode;
+        return categoryTreeNode;
     }
 
-    private CategoriaTreeNode construirArbolCategorias(final List<DTO_Categoria> _categorias)
+    private CategoryTreeNode construirArbolCategorias(final List<DTO_Categoria> _categorias)
     {
         final Map<Integer, DTO_Categoria> mapCateg = new TreeMap<Integer, DTO_Categoria>();
         final Map<Integer, DTO_Categoria> roots = new TreeMap<Integer, DTO_Categoria>();
@@ -114,22 +114,22 @@ public class PO_EAIngresaCategoria
             }
         }
 
-        final CategoriaTreeNode categoriaTreeNode = new CategoriaTreeNode(null,
-                        new CategoriaTreeNodeCollection()
+        final CategoryTreeNode categoryTreeNode = new CategoryTreeNode(null,
+                        new CategoryTreeNodeCollection()
         {
             private static final long serialVersionUID = -8249078122595873454L;
             {
                 // Agregamos esta Raiz ficticia para poder convertir un nodo hijo en Raiz de categorias
-                add(new CategoriaTreeNode(new DTO_Categoria(Constantes.TREE_EDITABLE_RAIZ), new CategoriaTreeNodeCollection()
+                add(new CategoryTreeNode(new DTO_Categoria(Constantes.TREE_EDITABLE_RAIZ), new CategoryTreeNodeCollection()
                 {
                     private static final long serialVersionUID = 3800210198277431722L;
                     {
                         for (final DTO_Categoria root : roots.values()) {
                             if (!setPadres.contains(root.getCodigo())) {
-                                add(new CategoriaTreeNode(root, new CategoriaTreeNodeCollection(), true));
+                                add(new CategoryTreeNode(root, new CategoryTreeNodeCollection(), true));
                             } else {
-                                add(new CategoriaTreeNode(root,
-                                                new CategoriaTreeNodeCollection()
+                                add(new CategoryTreeNode(root,
+                                                new CategoryTreeNodeCollection()
                                 {
                                     private static final long serialVersionUID = -5643408533240445491L;
                                     {
@@ -143,19 +143,19 @@ public class PO_EAIngresaCategoria
             }
         },
         true);
-        return categoriaTreeNode;
+        return categoryTreeNode;
     }
 
     private final class CategoriaTreeRenderer
-        implements TreeitemRenderer<CategoriaTreeNode>
+        implements TreeitemRenderer<CategoryTreeNode>
     {
         @Override
         public void render(final Treeitem treeItem,
-                           final CategoriaTreeNode treeNode,
+                           final CategoryTreeNode treeNode,
                            final int index)
             throws Exception
         {
-            final CategoriaTreeNode ctn = treeNode;
+            final CategoryTreeNode ctn = treeNode;
             final DTO_Categoria categ = ctn.getData();
             final Treerow dataRow = new Treerow();
             dataRow.setParent(treeItem);
@@ -195,12 +195,12 @@ public class PO_EAIngresaCategoria
                             throws Exception
                         {
                             final DTO_Categoria newCateg = new DTO_Categoria();
-                            categoriaTreeModel.add((CategoriaTreeNode) treeItem.getValue(),
-                                    new CategoriaTreeNodeCollection()
+                            categoryTreeModel.add((CategoryTreeNode) treeItem.getValue(),
+                                    new CategoryTreeNodeCollection()
                                     {
                                         private static final long serialVersionUID = -4941224185260321214L;
                                         {
-                                            add(new CategoriaTreeNode(newCateg, new CategoriaTreeNodeCollection(), true));
+                                            add(new CategoryTreeNode(newCateg, new CategoryTreeNodeCollection(), true));
                                         }
                                     });
                             newCateg.setCodigoPadre(categ.getCodigo());
@@ -218,23 +218,23 @@ public class PO_EAIngresaCategoria
         }
     }
 
-    @Listen("onClick = #btnCerrar")
+    @Listen("onClick = #btnClose")
     public void accionCerrar(final Event e) {
         wEAIC.detach();
     }
 
-    @Listen("onClick = #btnGrabar")
+    @Listen("onClick = #btnSave")
     public void accionGrabar(final MouseEvent e) {
-        final CategoriaTreeNode raiz = categoriaTreeNode;
+        final CategoryTreeNode raiz = categoryTreeNode;
         grabarData(raiz);
 
         desktop.getSession().setAttribute("actualizar", "actualizar");
-        ContextLoader.recargar(desktop, "eAConsultaCategoria.zul");
+        ContextLoader.recargar(desktop, "eACategory.zul");
 
         wEAIC.detach();
     }
 
-    private void grabarData(final CategoriaTreeNode _nodo)
+    private void grabarData(final CategoryTreeNode _nodo)
     {
         final DTO_Categoria categ = _nodo.getData();
         final ServiceInput<DTO_Categoria> input = new ServiceInput<DTO_Categoria>();
@@ -247,7 +247,7 @@ public class PO_EAIngresaCategoria
             final Textbox txtCategName = ((Textbox) wEAIC.getFellow(strIdTxtCateg));
             categ.setNombre(txtCategName.getValue());
             categ.setEmpresa(empresa.getCodigo());
-            output = categoriaService.execute(input);
+            output = categoryService.execute(input);
             if (Constantes.OK == output.getErrorCode()) {
                 logger.debug("Categoria '" + categ.getNombre() + "' actualizada");
             }
@@ -255,7 +255,7 @@ public class PO_EAIngresaCategoria
         if (_nodo.getChildren() != null && !_nodo.getChildren().isEmpty()) {
             final List<TreeNode<DTO_Categoria>> hijos = _nodo.getChildren();
             for (int i = 0; i < hijos.size(); i++) {
-                final CategoriaTreeNode hijo = (CategoriaTreeNode) hijos.get(i);
+                final CategoryTreeNode hijo = (CategoryTreeNode) hijos.get(i);
                 grabarData(hijo);
             }
         }

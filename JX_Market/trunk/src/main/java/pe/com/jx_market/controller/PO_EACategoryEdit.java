@@ -37,21 +37,21 @@ import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.utilities.AdvancedTreeModel;
 import pe.com.jx_market.utilities.BusinessService;
-import pe.com.jx_market.utilities.CategoriaTreeNode;
-import pe.com.jx_market.utilities.CategoriaTreeNodeCollection;
+import pe.com.jx_market.utilities.CategoryTreeNode;
+import pe.com.jx_market.utilities.CategoryTreeNodeCollection;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
 
-public class PO_EAEditaCategoria
+public class PO_EACategoryEdit
     extends SelectorComposer<Window>
 {
     private static final long serialVersionUID = 6046074628719265175L;
 
-    static Log logger = LogFactory.getLog(PO_EAEditaCategoria.class);
+    static Log logger = LogFactory.getLog(PO_EACategoryEdit.class);
     @Autowired
-    private BusinessService<DTO_Categoria> categoriaService;
+    private BusinessService<DTO_Categoria> categoryService;
     private DTO_Empresa empresa;
     @WireVariable
     private Desktop desktop;
@@ -59,8 +59,8 @@ public class PO_EAEditaCategoria
     private Tree tree;
     @Wire
     Window wEAEC;
-    private CategoriaTreeNode categoriaTreeNode;
-    private AdvancedTreeModel categoriaTreeModel;
+    private CategoryTreeNode categoryTreeNode;
+    private AdvancedTreeModel categoryTreeModel;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -69,37 +69,37 @@ public class PO_EAEditaCategoria
     {
         super.doAfterCompose(comp);
 
-        categoriaService = (BusinessService<DTO_Categoria>) ContextLoader.getService(comp, "categoriaService");
+        categoryService = (BusinessService<DTO_Categoria>) ContextLoader.getService(comp, "categoryService");
 
         empresa = (DTO_Empresa) desktop.getSession().getAttribute("empresa");
 
-        categoriaTreeNode = listarCategorias();
-        categoriaTreeModel = new AdvancedTreeModel(categoriaTreeNode);
+        categoryTreeNode = listarCategorias();
+        categoryTreeModel = new AdvancedTreeModel(categoryTreeNode);
         tree.setItemRenderer(new CategoriaTreeRenderer());
-        tree.setModel(categoriaTreeModel);
+        tree.setModel(categoryTreeModel);
         tree.getRoot().setVisible(true);
     }
 
-    public CategoriaTreeNode listarCategorias()
+    public CategoryTreeNode listarCategorias()
     {
         final DTO_Categoria cat = new DTO_Categoria();
         cat.setEmpresa(empresa.getCodigo());
         final ServiceInput<DTO_Categoria> input = new ServiceInput<DTO_Categoria>(cat);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput<DTO_Categoria> output = categoriaService.execute(input);
-        CategoriaTreeNode categoriaTreeNode = null;
+        final ServiceOutput<DTO_Categoria> output = categoryService.execute(input);
+        CategoryTreeNode categoryTreeNode = null;
         if (output.getErrorCode() == Constantes.OK) {
             // alertaInfo("", "Exito al cargar categorias", null);
             final List<DTO_Categoria> lstCat = output.getLista();
-            categoriaTreeNode = construirArbolCategorias(lstCat);
+            categoryTreeNode = construirArbolCategorias(lstCat);
         } else {
             // alertaError("Error inesperado, por favor catege al administrador",
             // "Error cargando categorias", null);
         }
-        return categoriaTreeNode;
+        return categoryTreeNode;
     }
 
-    private CategoriaTreeNode construirArbolCategorias(final List<DTO_Categoria> _categorias)
+    private CategoryTreeNode construirArbolCategorias(final List<DTO_Categoria> _categorias)
     {
         final Map<Integer, DTO_Categoria> mapCateg = new TreeMap<Integer, DTO_Categoria>();
         final Map<Integer, DTO_Categoria> roots = new TreeMap<Integer, DTO_Categoria>();
@@ -115,22 +115,22 @@ public class PO_EAEditaCategoria
             }
         }
 
-        final CategoriaTreeNode categoriaTreeNode = new CategoriaTreeNode(null,
-                        new CategoriaTreeNodeCollection()
+        final CategoryTreeNode categoryTreeNode = new CategoryTreeNode(null,
+                        new CategoryTreeNodeCollection()
         {
             private static final long serialVersionUID = -8249078122595873454L;
             {
                 // Agregamos esta Raiz ficticia para poder convertir un nodo hijo en Raiz de categorias
-                add(new CategoriaTreeNode(new DTO_Categoria(Constantes.TREE_EDITABLE_RAIZ), new CategoriaTreeNodeCollection()
+                add(new CategoryTreeNode(new DTO_Categoria(Constantes.TREE_EDITABLE_RAIZ), new CategoryTreeNodeCollection()
                 {
                     private static final long serialVersionUID = 3800210198277431722L;
                     {
                         for (final DTO_Categoria root : roots.values()) {
                             if (!setPadres.contains(root.getCodigo())) {
-                                add(new CategoriaTreeNode(root, new CategoriaTreeNodeCollection(), true));
+                                add(new CategoryTreeNode(root, new CategoryTreeNodeCollection(), true));
                             } else {
-                                add(new CategoriaTreeNode(root,
-                                                new CategoriaTreeNodeCollection()
+                                add(new CategoryTreeNode(root,
+                                                new CategoryTreeNodeCollection()
                                 {
                                     private static final long serialVersionUID = -5643408533240445491L;
                                     {
@@ -144,19 +144,19 @@ public class PO_EAEditaCategoria
             }
         },
         true);
-        return categoriaTreeNode;
+        return categoryTreeNode;
     }
 
     private final class CategoriaTreeRenderer
-        implements TreeitemRenderer<CategoriaTreeNode>
+        implements TreeitemRenderer<CategoryTreeNode>
     {
         @Override
         public void render(final Treeitem treeItem,
-                           final CategoriaTreeNode treeNode,
+                           final CategoryTreeNode treeNode,
                            final int index)
             throws Exception
         {
-            final CategoriaTreeNode ctn = treeNode;
+            final CategoryTreeNode ctn = treeNode;
             final DTO_Categoria categ = ctn.getData();
             final Treerow dataRow = new Treerow();
             dataRow.setParent(treeItem);
@@ -215,7 +215,7 @@ public class PO_EAEditaCategoria
                         // Modificamos los padres siempre y cuando se este activando
                         if (checkBox.isChecked() && treeItem.getParentItem() != null
                                 && treeItem.getParentItem().getValue() != null
-                                && !Constantes.TREE_EDITABLE_RAIZ.equals(((CategoriaTreeNode) treeItem.getParentItem().getValue()).getData().getNombre())) {
+                                && !Constantes.TREE_EDITABLE_RAIZ.equals(((CategoryTreeNode) treeItem.getParentItem().getValue()).getData().getNombre())) {
                             modificarPadres(treeItem.getParentItem(), checkBox.isChecked());
                         }
                     }
@@ -233,7 +233,7 @@ public class PO_EAEditaCategoria
                         modificarRow(_item, _checked);
                         if (_checked && _item.getParentItem() != null
                                 && _item.getParentItem().getValue() != null
-                                && !Constantes.TREE_EDITABLE_RAIZ.equals(((CategoriaTreeNode) _item.getParentItem()
+                                && !Constantes.TREE_EDITABLE_RAIZ.equals(((CategoryTreeNode) _item.getParentItem()
                                                 .getValue()).getData().getNombre())) {
                             modificarPadres(_item.getParentItem(), _checked);
                         }
@@ -243,7 +243,7 @@ public class PO_EAEditaCategoria
                         final Treerow row = _item.getTreerow();
                         final Treecell cell = (Treecell) row.getChildren().get(1);
                         final Checkbox checkb = (Checkbox) cell.getChildren().get(0);
-                        ((CategoriaTreeNode) _item.getValue()).getData().setEstado(_checked);
+                        ((CategoryTreeNode) _item.getValue()).getData().setEstado(_checked);
                         checkb.setChecked(_checked);
                         checkb.setValue(_checked);
                         if (_checked) {
@@ -263,11 +263,11 @@ public class PO_EAEditaCategoria
                     // The dragged target is a TreeRow belongs to an
                     // Treechildren of TreeItem.
                     final Treeitem draggedItem = (Treeitem) ((DropEvent) event).getDragged().getParent();
-                    final CategoriaTreeNode draggedValue = (CategoriaTreeNode) draggedItem.getValue();
+                    final CategoryTreeNode draggedValue = (CategoryTreeNode) draggedItem.getValue();
                     if (!isAncestor(draggedValue, ctn)) {
-                        categoriaTreeModel.remove(draggedValue);
-                            categoriaTreeModel.add((CategoriaTreeNode)treeItem.getValue(),
-                                    new CategoriaTreeNodeCollection() {
+                        categoryTreeModel.remove(draggedValue);
+                            categoryTreeModel.add((CategoryTreeNode)treeItem.getValue(),
+                                    new CategoryTreeNodeCollection() {
                                         private static final long serialVersionUID = -4941224185260321214L;
                                     {add(draggedValue);} });
                         draggedValue.getData().setCodigoPadre(categ.getCodigo());
@@ -280,32 +280,32 @@ public class PO_EAEditaCategoria
             });
         }
 
-        private boolean isAncestor(final CategoriaTreeNode p, CategoriaTreeNode c) {
+        private boolean isAncestor(final CategoryTreeNode p, CategoryTreeNode c) {
             do {
                 if (p == c)
                     return true;
-            } while ((c = (CategoriaTreeNode) c.getParent()) != null);
+            } while ((c = (CategoryTreeNode) c.getParent()) != null);
             return false;
         }
     }
 
-    @Listen("onClick = #btnCerrar")
+    @Listen("onClick = #btnClose")
     public void accionCerrar(final Event e) {
         wEAEC.detach();
     }
 
-    @Listen("onClick = #btnGrabar")
+    @Listen("onClick = #btnSave")
     public void accionGrabar(final MouseEvent e) {
-        final CategoriaTreeNode raiz = categoriaTreeNode;
+        final CategoryTreeNode raiz = categoryTreeNode;
         grabarData(raiz);
 
         desktop.getSession().setAttribute("actualizar", "actualizar");
-        ContextLoader.recargar(desktop, "eAConsultaCategoria.zul");
+        ContextLoader.recargar(desktop, "eACategory.zul");
 
         wEAEC.detach();
     }
 
-    private void grabarData(final CategoriaTreeNode _nodo)
+    private void grabarData(final CategoryTreeNode _nodo)
     {
         final DTO_Categoria categ = _nodo.getData();
         final ServiceInput<DTO_Categoria> input = new ServiceInput<DTO_Categoria>();
@@ -317,7 +317,7 @@ public class PO_EAEditaCategoria
                 .append(Constantes.TREE_EDITABLE_TEXTBOX).append(categ.getCodigo()).toString();
             final Textbox txtCategName = ((Textbox) wEAEC.getFellow(strIdTxtCateg));
             categ.setNombre(txtCategName.getValue());
-            output = categoriaService.execute(input);
+            output = categoryService.execute(input);
             if (Constantes.OK == output.getErrorCode()) {
                 logger.debug("Categoria '" + categ.getNombre() + "' actualizada");
             }
@@ -326,7 +326,7 @@ public class PO_EAEditaCategoria
         if (_nodo.getChildren() != null && !_nodo.getChildren().isEmpty()) {
             final List<TreeNode<DTO_Categoria>> hijos = _nodo.getChildren();
             for (int i = 0; i < hijos.size(); i++) {
-                final CategoriaTreeNode hijo = (CategoriaTreeNode) hijos.get(i);
+                final CategoryTreeNode hijo = (CategoryTreeNode) hijos.get(i);
                 grabarData(hijo);
             }
         }

@@ -28,7 +28,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
  * @author George
  *
  */
-public class PO_EAMenuPrincipal extends SelectorComposer<Borderlayout>
+public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
 {
     private static final long serialVersionUID = -3447722983065558278L;
 
@@ -37,19 +37,19 @@ public class PO_EAMenuPrincipal extends SelectorComposer<Borderlayout>
      */
     public static final Map<String, String> MAPA_MENU = new HashMap<String, String>();
     {
-        PO_EAMenuPrincipal.MAPA_MENU.put("id_option_prod_categ", "eAConsultaCategoria.zul");
-        PO_EAMenuPrincipal.MAPA_MENU.put("id_option_prod_products", "eAIngresaProducto.zul");
-        PO_EAMenuPrincipal.MAPA_MENU.put("id_option_prod_amount", "");
-        PO_EAMenuPrincipal.MAPA_MENU.put("id_option_prod_inventory","");
-        PO_EAMenuPrincipal.MAPA_MENU.put("id_option_adm_areas", "eAAdministraArea.zul");
-        PO_EAMenuPrincipal.MAPA_MENU.put("id_option_adm_emp", "eAAdministraEmpleado.zul");
-        PO_EAMenuPrincipal.MAPA_MENU.put("id_option_adm_perf", "eAAdministraPerfil.zul");
-        PO_EAMenuPrincipal.MAPA_MENU.put("id_option_adm_mod", "eAAdministraModulo.zul");
-        PO_EAMenuPrincipal.MAPA_MENU.put("id_option_adm_perfi_modulo", "eAAdministraPerfilModulo.zul");
-        PO_EAMenuPrincipal.MAPA_MENU.put("id_option_chgpass", "eACambiarContrasenia.zul");
+        PO_EAMainMenu.MAPA_MENU.put("id_option_prod_categ", "eACategory.zul");
+        PO_EAMainMenu.MAPA_MENU.put("id_option_prod_products", "eAIngresaProducto.zul");
+        PO_EAMainMenu.MAPA_MENU.put("id_option_prod_amount", "");
+        PO_EAMainMenu.MAPA_MENU.put("id_option_prod_inventory","");
+        PO_EAMainMenu.MAPA_MENU.put("id_option_adm_areas", "eAAdministraArea.zul");
+        PO_EAMainMenu.MAPA_MENU.put("id_option_adm_emp", "eAAdministraEmpleado.zul");
+        PO_EAMainMenu.MAPA_MENU.put("id_option_adm_perf", "eAAdministraPerfil.zul");
+        PO_EAMainMenu.MAPA_MENU.put("id_option_adm_mod", "eAAdministraModulo.zul");
+        PO_EAMainMenu.MAPA_MENU.put("id_option_adm_perfi_modulo", "eAAdministraPerfilModulo.zul");
+        PO_EAMainMenu.MAPA_MENU.put("id_option_chgpass", "eACambiarContrasenia.zul");
     }
 
-    static Log logger = LogFactory.getLog(PO_EAMenuPrincipal.class);
+    static Log logger = LogFactory.getLog(PO_EAMainMenu.class);
 
     @WireVariable
     private Desktop desktop;
@@ -131,7 +131,7 @@ public class PO_EAMenuPrincipal extends SelectorComposer<Borderlayout>
     {
         // getDesktop().getSession().setAttribute("paginaActual", txt);
         desktop.getSession().setAttribute("actualizar", "actualizar");
-        ContextLoader.saltar(desktop, PO_EAMenuPrincipal.MAPA_MENU.get(event.getTarget().getId()));
+        ContextLoader.saltar(desktop, PO_EAMainMenu.MAPA_MENU.get(event.getTarget().getId()));
     }
 
     public void incluir(final String _txt)

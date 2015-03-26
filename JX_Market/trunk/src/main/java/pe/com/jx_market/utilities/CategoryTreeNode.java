@@ -4,7 +4,7 @@ import org.zkoss.zul.DefaultTreeNode;
 
 import pe.com.jx_market.domain.DTO_Categoria;
 
-public class CategoriaTreeNode
+public class CategoryTreeNode
     extends DefaultTreeNode<DTO_Categoria>
 {
 
@@ -13,21 +13,21 @@ public class CategoriaTreeNode
     // Node Control the default open
     private boolean open = false;
 
-    public CategoriaTreeNode(final DTO_Categoria data,
-                             final CategoriaTreeNodeCollection children,
+    public CategoryTreeNode(final DTO_Categoria data,
+                             final CategoryTreeNodeCollection children,
                              final boolean open)
     {
         super(data, children);
         this.setOpen(open);
     }
 
-    public CategoriaTreeNode(final DTO_Categoria data,
-                             final CategoriaTreeNodeCollection children)
+    public CategoryTreeNode(final DTO_Categoria data,
+                             final CategoryTreeNodeCollection children)
     {
         super(data, children);
     }
 
-    public CategoriaTreeNode(final DTO_Categoria data)
+    public CategoryTreeNode(final DTO_Categoria data)
     {
         super(data);
     }
