@@ -251,6 +251,6 @@ public class PO_EAEditaProducto
     @Override
     String[] requiredResources()
     {
-        return new String[] { Constantes.MODULO_PROD_EDICION };
+        return new String[] { Constantes.MODULO_PROD_PRODUCT };
     }
 }

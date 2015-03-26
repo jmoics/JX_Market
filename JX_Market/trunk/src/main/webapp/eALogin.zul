@@ -33,16 +33,16 @@
                     </columns>
                      <rows>
                         <row>
-                           <label class="desc">${labels.pe.com.jx_market.eALogin.Empresa.Label}:</label>
+                           <label class="desc">${labels.pe.com.jx_market.eALogin.Company.Label}:</label>
                            <!-- Por el momento sera combobox despues sera bandbox -->
                            <combobox id="cmbEmp" hflex="1"/>
                         </row>
                         <row>
-                           <label class="desc">${labels.pe.com.jx_market.eALogin.Usuario.Label}:</label>
+                           <label class="desc">${labels.pe.com.jx_market.eALogin.User.Label}:</label>
                            <textbox id="txtUser" hflex="1"></textbox>
                         </row>
                         <row>
-                           <label class="desc">${labels.pe.com.jx_market.eALogin.Contrasenha.Label}:</label>
+                           <label class="desc">${labels.pe.com.jx_market.eALogin.Password.Label}:</label>
                            <textbox id="txtPass" hflex="1" type="password"/>
                         </row>
                      </rows>
@@ -53,7 +53,7 @@
                <div class="btndiv" align="center">
                   <button id="btnIngresar" height="38px" sclass="myBlack" width="106px"
                      style="font-family: sans-serif; font-weight:bold; color:#222222"
-                     label="${labels.pe.com.jx_market.eALogin.Ingresar.Label}" />
+                     label="${labels.pe.com.jx_market.eALogin.Login.Label}" />
                </div>
 
             </vbox>

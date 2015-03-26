@@ -98,7 +98,7 @@ public class PO_EALogin
                     if (empresa.getCodigo().equals(Constantes.INSTITUCION_JX_MARKET)) {
                         Executions.sendRedirect("eESolicitudesPendientes.zul");
                     } else {
-                        Executions.sendRedirect("eAMenuPrinc.zul");
+                        Executions.sendRedirect("eAMenuPrincipal.zul");
                     }
                 } else {
                     txtUser.setText("");

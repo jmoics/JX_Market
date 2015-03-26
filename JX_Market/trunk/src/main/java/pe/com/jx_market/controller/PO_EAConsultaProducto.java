@@ -5,24 +5,18 @@ package pe.com.jx_market.controller;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.zkoss.zk.ui.UiException;
-import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 
-import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.utilities.BusinessService;
@@ -87,11 +81,11 @@ public class PO_EAConsultaProducto
             alertaError("Error inesperado, por favor contacte al administrador", "Error cargando categorias", null);
         }
     }
-    
-    private void armarTreeCategorias(List<DTO_Categoria> categorias) {
-        List<DTO_Categoria> roots = new ArrayList<DTO_Categoria>();
-        List<DTO_Categoria> childs = new ArrayList<DTO_Categoria>();
-        for (DTO_Categoria cat : categorias) {
+
+    private void armarTreeCategorias(final List<DTO_Categoria> categorias) {
+        final List<DTO_Categoria> roots = new ArrayList<DTO_Categoria>();
+        final List<DTO_Categoria> childs = new ArrayList<DTO_Categoria>();
+        for (final DTO_Categoria cat : categorias) {
             if (cat.getCodigoPadre() == null) {
                 roots.add(cat);
             } else {
@@ -239,6 +233,6 @@ public class PO_EAConsultaProducto
     @Override
     String[] requiredResources()
     {
-        return new String[] { Constantes.MODULO_PROD_CONSULTA };
+        return new String[] { Constantes.MODULO_PROD_PRODUCT };
     }
 }

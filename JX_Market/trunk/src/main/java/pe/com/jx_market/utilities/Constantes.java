@@ -99,11 +99,11 @@ public class Constantes {
     /*
      * Modulos para accesos
      */
-    public static final String MODULO_PRODUCTOS = "MODULO_PRODUCTOS";
-    public static final String MODULO_PROD_INGRESO = "MODULO_PROD_INGRESO";
-    public static final String MODULO_PROD_CONSULTA = "MODULO_PROD_CONSULTA";
-    public static final String MODULO_PROD_EDICION = "MODULO_PROD_EDICION";
-    public static final String MODULO_PROD_INVENTARIO = "MODULO_PROD_INVENTARIO";
+    public static final String MODULO_PRODUCTS = "MODULO_PRODUCTS";
+    public static final String MODULO_PROD_CATEGORY = "MODULO_PROD_CATEGORY";
+    public static final String MODULO_PROD_PRODUCT = "MODULO_PROD_PRODUCT";
+    public static final String MODULO_PROD_AMOUNT = "MODULO_PROD_AMOUNUT";
+    public static final String MODULO_PROD_INVENTORY = "MODULO_PROD_INVENTORY";
 
     public static final String MODULO_ADMINISTRACION = "MODULO_ADMINISTRACION";
     public static final String MODULO_ADM_PERFIL = "MODULO_ADM_PERFIL";

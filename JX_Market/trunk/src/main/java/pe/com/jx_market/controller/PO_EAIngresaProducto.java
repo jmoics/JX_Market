@@ -203,6 +203,6 @@ public class PO_EAIngresaProducto
     @Override
     String[] requiredResources()
     {
-        return new String[] { Constantes.MODULO_PROD_INGRESO };
+        return new String[] { Constantes.MODULO_PROD_PRODUCT };
     }
 }

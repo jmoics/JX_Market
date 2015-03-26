@@ -1,0 +1,131 @@
+<?page id="menup" title="JX_Market" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+<div align="center" height="100%">
+    <borderlayout height="100%" width="100%" id="blEAMP" apply="pe.com.jx_market.controller.PO_EAMenuPrincipal">
+        <north size="10%" collapsible="false">
+            <include id="inch" src="eAHeader.zul" />
+        </north>
+        <west size="16%" title="Menu" maxsize="240" splittable="true" collapsible="true" autoscroll="true" >
+            <vbox hflex="1">
+                <html:p />
+                <div align="right">
+                    <div align="left">
+                        <label zclass="z-south-header" id="id_option_products"
+                            style="background:transparent; font-family: sans-serif; font-weight:normal; font-size:14px">
+                            &#160;${labels.pe.com.jx_market.eAMenuPrincipal.products.Label }
+                        </label>
+                    </div>
+                    <html:p />
+                    <menubar style="text-align:left" orient="vertical" autodrop="true">
+                        <menuitem src="/media/viewmag.png" id="id_option_prod_categ"
+                                  label="${labels.pe.com.jx_market.eAMenuPrincipal.products.category.Label }" />
+                        <menuitem src="/media/viewmag.png" id="id_option__prod_inventory"
+                                  label="${labels.pe.com.jx_market.eAMenuPrincipal.products.inventory.Label }" />
+                        <menuitem src="/media/logviewer.png" id="id_option__prod_products"
+                                  label="${labels.pe.com.jx_market.eAMenuPrincipal.products.product.Label }" />
+                        <menu src="/media/logviewer.png" id="id_option_prod_amount"
+                            label="${labels.pe.com.jx_market.eAMenuPrincipal.products.amount.Label }" >
+                            <menupopup>
+                                <menuitem src="/media/edit-find.png" id="id_option_amount_prices"
+                                          label="${labels.pe.com.jx_market.eAMenuPrincipal.products.amount.precios.Label }" />
+                                <menuitem src="/media/viewmag.png" id="id_option_amount_costs"
+                                          label="${labels.pe.com.jx_market.eAMenuPrincipal.products.amount.costos.Label }" />
+                                <menuitem src="/media/viewmag.png" id="id_option_amount_oferts"
+                                          label="${labels.pe.com.jx_market.eAMenuPrincipal.products.amount.ofertas.Label }" />
+                            </menupopup>
+                        </menu>
+                    </menubar>
+                    <html:p />
+                    <div align="left">
+                        <label zclass="z-south-header" id="id_option_sales"
+                            style="background:transparent; font-family: sans-serif; font-weight:normal; font-size:14px">
+                            &#160;${labels.pe.com.jx_market.eAMenuPrincipal.sales.Label }
+                        </label>
+                    </div>
+                    <html:p />
+                    <menubar style="text-align:left" orient="vertical" autodrop="true">
+                        <menuitem src="/media/filenew.png" id="id_option_order"
+                                          label="${labels.pe.com.jx_market.eAMenuPrincipal.sales.order.Label }"/>
+                        <menuitem src="/media/filenew.png" id=""
+                                  label="${labels.pe.com.jx_market.eAMenuPrincipal.sales.sales.Label }" />
+                        <menuitem src="/media/configure_shortcuts.png" id=""
+                                  label="${labels.pe.com.jx_market.eAMenuPrincipal.sales.validate.Label }" />
+                        <!-- <menuitem src="/media/contents.png" label="Algo mas" id="" />-->
+                        <menuitem src="/media/report_icon.gif" id=""
+                                  label="${labels.pe.com.jx_market.eAMenuPrincipal.sales.statistics.Label }" />
+                        <menu src="/media/search.png" id="id_option_busqueda_sicf"
+                              label="${labels.pe.com.jx_market.eAMenuPrincipal.clients.Label }">
+                            <menupopup>
+                                <menuitem src="/media/search.png" id=""
+                                          label="${labels.pe.com.jx_market.eAMenuPrincipal.clients.client.Label }" />
+                                <menuitem src="/media/search.png" id=""
+                                          label="${labels.pe.com.jx_market.eAMenuPrincipal.clients.frequent.Label }" />
+                                <menuitem src="/media/search2.png" id=""
+                                          label="${labels.pe.com.jx_market.eAMenuPrincipal.clients.rejected.Label }" />
+                            </menupopup>
+                        </menu>
+                    </menubar>
+                    <html:p />
+                    <div align="left">
+                        <label zclass="z-south-header"
+                            style="background:transparent; font-family: sans-serif; font-weight:normal; font-size:14px ">
+                            &#160;${labels.pe.com.jx_market.eAMenuPrincipal.admin.Label }:
+                        </label>
+                    </div>
+                    <html:p />
+                    <menubar style="text-align:left" orient="vertical" autodrop="true">
+                        <menuitem src="/media/gtk-edit.png" label="Reporte Gerencial" id="" />
+                        <menu src="/media/configure.png" label="Administrar..." id="id_option_administracion">
+                            <menupopup>
+                                <menuitem src="/media/history.png" id="id_option_adm_areas"
+                                          label="${labels.pe.com.jx_market.eAMenuPrincipal.admin.area.Label }" />
+                                <menuitem src="/media/icon_users.png" id="id_option_adm_emp"
+                                          label="${labels.pe.com.jx_market.eAMenuPrincipal.admin.employee.Label }" />
+                                <menuitem src="/media/perfiles.png" id="id_option_adm_perf"
+                                          label="${labels.pe.com.jx_market.eAMenuPrincipal.admin.position.Label }" />
+                                <menuitem src="/media/recursos.png" id="id_option_adm_mod"
+                                          label="${labels.pe.com.jx_market.eAMenuPrincipal.admin.resource.Label }"  />
+                                <menuitem src="/media/perfiles.png" id="id_option_adm_perfi_modulo"
+                                          label="${labels.pe.com.jx_market.eAMenuPrincipal.admin.resource4position.Label }" />
+                            </menupopup>
+                        </menu>
+                        <menuitem src="/media/keys.png" id="id_option_chgpass"
+                                  label="${labels.pe.com.jx_market.eAMenuPrincipal.admin.changePass.Label }" />
+                        <!--<menuitem src="/media/paint.png"
+                            label="Cambiar su tema" onClick='bl.incluir("cambiarTema.zul")'
+                            id="id_option_chgtheme" />-->
+                    </menubar>
+                    <html:p />
+
+                    <div align="left">
+                        <label zclass="z-south-header"
+                            style="background:transparent; font-family: sans-serif; font-weight:normal; font-size:14px">
+                            &#160;${labels.pe.com.jx_market.eAMenuPrincipal.reports.Label }:
+                        </label>
+                    </div>
+                    <html:p />
+                    <menubar style="text-align:left" orient="vertical">
+                        <menuitem width="200px" src="/media/report_icon.gif" id="id_option_repReclam"
+                                  label="${labels.pe.com.jx_market.eAMenuPrincipal.reports.salesOrder.Label }" />
+                        <menuitem src="/media/icon_transaction.gif" id="id_option_repReclamTrans"
+                                  label="${labels.pe.com.jx_market.eAMenuPrincipal.reports.transaction.Label }" />
+                        <menuitem src="/media/events.png" id="id_option_consEvento"
+                                  label="${labels.pe.com.jx_market.eAMenuPrincipal.reports.events.Label }" />
+                    </menubar>
+                </div>
+            </vbox>
+        </west>
+        <center autoscroll="true">
+            <include id="inc" hflex="1" />
+        </center>
+        <south size="4%" style="visibility:visible;">
+            <toolbar mold="panel" align="center">
+                <label zclass="z-south-header"
+                    style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:14px; font-weight:normal ">
+                    ${labels.pe.com.jx_market.companyName.Label }
+                </label>
+            </toolbar>
+        </south>
+    </borderlayout>
+    </div>
+</zk>
