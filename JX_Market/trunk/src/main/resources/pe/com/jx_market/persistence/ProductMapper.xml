@@ -8,11 +8,11 @@
 
     <!-- MANTENIMIENTO DE PRODUCTOS -->
 
-    <select id="getArticulos" parameterType="DTO_Articulo" resultType="DTO_Articulo">
+    <select id="getArticulos" parameterType="map" resultType="DTO_Articulo">
         SELECT
             art.articulo_n_codigo as codigo,
             art.empresa_n_codigo as empresa,
-            art.categoria_n_codigo as categoria,
+            cart.categoria_v_nombre as categoria,
             art.articulo_v_nombre as nombre,
             art.articulo_v_marca as marca,
             art.articulo_v_descripcion as descripcion,
@@ -28,7 +28,11 @@
         <if test="empresa != null">AND
                 art.empresa_n_codigo = #{empresa}
             <if test="categoria != null">AND
-                art.categoria_n_codigo in (#{categoria})
+                art.categoria_n_codigo in
+                <foreach item="item" index="index" collection="list"
+                         open="(" separator="," close=")">
+                        #{item}
+                </foreach>
             </if>
             <if test="nombre != null">AND
                 art.articulo_v_nombre LIKE #{nombre}

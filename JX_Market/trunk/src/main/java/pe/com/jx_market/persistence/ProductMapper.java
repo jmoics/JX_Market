@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package pe.com.jx_market.persistence;
 
@@ -11,9 +11,9 @@ import pe.com.jx_market.domain.DTO_Articulo;
  * @author George
  *
  */
-public interface ArticuloMapper
+public interface ProductMapper
 {
-    public List<DTO_Articulo> getArticulos (DTO_Articulo art);
+    public List<DTO_Articulo> getArticulos (DTO_Articulo art, List<Integer> catIds);
     public DTO_Articulo getArticuloXCodigo (DTO_Articulo art);
     public boolean insertArticulo (DTO_Articulo art);
     public boolean updateArticulo (DTO_Articulo art);

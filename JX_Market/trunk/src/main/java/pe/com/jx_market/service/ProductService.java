@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.jx_market.domain.DTO_Articulo;
-import pe.com.jx_market.persistence.ArticuloMapper;
+import pe.com.jx_market.persistence.ProductMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -31,11 +31,11 @@ import pe.com.jx_market.utilities.ServiceOutput;
  *
  */
 @Service
-public class ArticuloService implements BusinessService
+public class ProductService implements BusinessService
 {
-    static Log logger = LogFactory.getLog(ArticuloService.class);
+    static Log logger = LogFactory.getLog(ProductService.class);
     @Autowired
-    private ArticuloMapper articuloMapper;
+    private ProductMapper articuloMapper;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -44,7 +44,7 @@ public class ArticuloService implements BusinessService
     {
         final ServiceOutput output = new ServiceOutput();
         if (Constantes.V_LIST.equals(input.getAccion())) {
-            output.setLista(articuloMapper.getArticulos((DTO_Articulo)input.getObject()));
+            output.setLista(articuloMapper.getArticulos((DTO_Articulo)input.getObject(), input.getLista()));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
@@ -54,7 +54,7 @@ public class ArticuloService implements BusinessService
                                 arti.getNombre().trim() + "." + generarNombreAleatorio());*/
                 savePhoto(arti);
             }
-            DTO_Articulo artiTmp = articuloMapper.getArticuloXCodigo(arti);
+            final DTO_Articulo artiTmp = articuloMapper.getArticuloXCodigo(arti);
             if (artiTmp == null) {
                 articuloMapper.insertArticulo(arti);
             } else {
@@ -149,11 +149,11 @@ public class ArticuloService implements BusinessService
         }
     }
 
-    public ArticuloMapper getDao () {
+    public ProductMapper getDao () {
         return articuloMapper;
     }
 
-    public void setDao (final ArticuloMapper articuloMapper) {
+    public void setDao (final ProductMapper articuloMapper) {
         this.articuloMapper = articuloMapper;
     }
 
