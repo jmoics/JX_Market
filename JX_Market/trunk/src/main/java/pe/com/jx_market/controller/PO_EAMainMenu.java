@@ -38,7 +38,7 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
     public static final Map<String, String> MAPA_MENU = new HashMap<String, String>();
     {
         PO_EAMainMenu.MAPA_MENU.put("id_option_prod_categ", "eACategory.zul");
-        PO_EAMainMenu.MAPA_MENU.put("id_option_prod_products", "eAIngresaProducto.zul");
+        PO_EAMainMenu.MAPA_MENU.put("id_option_prod_products", "eAProducts.zul");
         PO_EAMainMenu.MAPA_MENU.put("id_option_prod_amount", "");
         PO_EAMainMenu.MAPA_MENU.put("id_option_prod_inventory","");
         PO_EAMainMenu.MAPA_MENU.put("id_option_adm_areas", "eAAdministraArea.zul");

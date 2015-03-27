@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="pe.com.jx_market.persistence.ArticuloMapper">
+<mapper namespace="pe.com.jx_market.persistence.ProductMapper">
 
     <cache />
 
@@ -21,30 +21,23 @@
             art.articulo_n_activo as activo,
             art.articulo_v_imagen as nomimg
         FROM
-            T_NEG_ARTICULO art
-        <if test="empresa != null">
-            WHERE
+            T_NEG_ARTICULO art,
+            T_NEG_CATEG2ARTIC cart
+        WHERE
+            art.articulo_n_codigo = cart.arti_n_id
+        <if test="empresa != null">AND
                 art.empresa_n_codigo = #{empresa}
             <if test="categoria != null">AND
-                art.categoria_n_codigo = #{categoria}
+                art.categoria_n_codigo in (#{categoria})
             </if>
             <if test="nombre != null">AND
                 art.articulo_v_nombre LIKE #{nombre}
-            </if>
-            <if test="marca != null">AND
-                art.articulo_v_marca LIKE #{marca}
             </if>
             <if test="activo != null">AND
                 art.articulo_n_activo = #{activo}
             </if>
         </if>
-        <if test="empresa == null">
-            <if test="categoria != null">
-            WHERE
-                art.categoria_n_codigo = #{categoria}
-            </if>
-        </if>
-        
+
     </select>
 
     <select id="getArticuloXCodigo" parameterType="DTO_Articulo" resultType="DTO_Articulo">
@@ -75,7 +68,7 @@
             #{marca},#{descripcion},#{precio},
             #{stock},#{activo},#{nomimg})
     </insert>
-    
+
     <update id="updateStock" parameterType="DTO_Articulo">
         UPDATE T_NEG_ARTICULO
         SET
@@ -85,7 +78,7 @@
         AND
             articulo_n_codigo = #{codigo}
     </update>
-    
+
     <update id="updateArticulo" parameterType="DTO_Articulo">
         UPDATE T_NEG_ARTICULO
         SET

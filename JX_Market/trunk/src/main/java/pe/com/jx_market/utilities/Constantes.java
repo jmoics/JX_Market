@@ -125,4 +125,7 @@ public class Constantes {
     public static final String TREE_EDITABLE_RAIZ = "Raiz";
     public static final String TREE_EDITABLE_TEXTBOX = "textBox";
 
+    public static final String EMPTY_STRING = "";
+    public static final String SEPARATOR_STRING = "..";
+
 }

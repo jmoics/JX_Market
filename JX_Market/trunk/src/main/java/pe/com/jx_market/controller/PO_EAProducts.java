@@ -4,9 +4,13 @@
 package pe.com.jx_market.controller;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,19 +19,24 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zkmax.zul.Chosenbox;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Groupbox;
+import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.TreeNode;
 import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.utilities.BusinessService;
+import pe.com.jx_market.utilities.CategoryTreeNode;
+import pe.com.jx_market.utilities.CategoryTreeNodeCollection;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
@@ -46,7 +55,9 @@ public class PO_EAProducts
     @Wire
     private Textbox txtProdName;
     @Wire
-    private Combobox cmbCat, cmbEstad;
+    private Combobox cmbEstad;
+    @Wire
+    private Chosenbox chbCat;
     @Wire
     private Groupbox grpCons, grpBusq;
     @Wire
@@ -68,6 +79,7 @@ public class PO_EAProducts
         empresa = (DTO_Empresa) _comp.getDesktop().getSession().getAttribute("empresa");
 
         listCategories();
+
         listarEstados();
     }
 
@@ -81,27 +93,79 @@ public class PO_EAProducts
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("", "Exito al cargar categorias", null);
             final List<DTO_Categoria> lstCat = output.getLista();
-            /*
-             * for (final DTO_Categoria categ : lstCat) { final Comboitem item =
-             * new Comboitem(); item.setLabel(categ.getNombre());
-             * item.setAttribute("categoria", categ); cmbCat.appendChild(item);
-             * }
-             */
-            buildCategoryList(lstCat);
+            final CategoryTreeNode categoryTreeNode = buildCategoryTree(lstCat);
+
+            final List<DTO_Categoria> lstCat2 = new LinkedList<DTO_Categoria>();
+            buildChosenBox(categoryTreeNode, lstCat2, Constantes.EMPTY_STRING);
+            final ListModelList<DTO_Categoria> modelCat = new ListModelList<DTO_Categoria>(lstCat2);
+            //chbCat.setModel(ListModels.toListSubModel(modelCat));
+            chbCat.setModel(modelCat);
         } else {
             alertaError("Error inesperado, por favor contacte al administrador", "Error cargando categorias", null);
         }
     }
 
-    private void buildCategoryList(final List<DTO_Categoria> categorias)
+    private CategoryTreeNode buildCategoryTree(final List<DTO_Categoria> _categorias)
     {
-        final List<DTO_Categoria> roots = new ArrayList<DTO_Categoria>();
-        final List<DTO_Categoria> childs = new ArrayList<DTO_Categoria>();
-        for (final DTO_Categoria cat : categorias) {
+        final Map<Integer, DTO_Categoria> mapCateg = new TreeMap<Integer, DTO_Categoria>();
+        final Map<Integer, DTO_Categoria> roots = new TreeMap<Integer, DTO_Categoria>();
+        final Map<Integer, DTO_Categoria> childs = new TreeMap<Integer, DTO_Categoria>();
+        final Set<Integer> setPadres = new HashSet<Integer>();
+        for (final DTO_Categoria cat : _categorias) {
+            mapCateg.put(cat.getCodigo(), cat);
+            setPadres.add(cat.getCodigoPadre());
             if (cat.getCodigoPadre() == null) {
-                roots.add(cat);
+                roots.put(cat.getCodigo(), cat);
             } else {
-                childs.add(cat);
+                childs.put(cat.getCodigo(), cat);
+            }
+        }
+
+        final CategoryTreeNode categoryTreeNode = new CategoryTreeNode(null,
+                        new CategoryTreeNodeCollection()
+        {
+
+            private static final long serialVersionUID = -8249078122595873454L;
+            {
+                for (final DTO_Categoria root : roots.values()) {
+                    if (!setPadres.contains(root.getCodigo())) {
+                        add(new CategoryTreeNode(root));
+                    } else {
+                        add(new CategoryTreeNode(root,
+                                        new CategoryTreeNodeCollection()
+                        {
+                            private static final long serialVersionUID = -5643408533240445491L;
+                            {
+                                construirJerarquia(childs.values(), root, setPadres, false);
+                            }
+                        }, true));
+                    }
+                }
+            }
+        },
+        true);
+        return categoryTreeNode;
+    }
+
+    private void buildChosenBox(final CategoryTreeNode _nodo,
+                                final List<DTO_Categoria> _lstCat,
+                                final String _space) {
+        final DTO_Categoria categ = _nodo.getData();
+        if (categ != null) {
+            if (categ.getCodigoPadre() != null) {
+                categ.setNombre(_space.concat(categ.getNombre()));
+            }
+            _lstCat.add(categ);
+        }
+        if (_nodo.getChildren() != null && !_nodo.getChildren().isEmpty()) {
+            String space = _space;
+            if (categ != null) {
+                space = _space.concat(Constantes.SEPARATOR_STRING);
+            }
+            final List<TreeNode<DTO_Categoria>> hijos = _nodo.getChildren();
+            for (int i = 0; i < hijos.size(); i++) {
+                final CategoryTreeNode hijo = (CategoryTreeNode) hijos.get(i);
+                buildChosenBox(hijo, _lstCat, space);
             }
         }
     }
@@ -109,11 +173,11 @@ public class PO_EAProducts
     private void listarEstados()
     {
         Comboitem item = new Comboitem();
-        item.setLabel("Activo");
+        item.setLabel(Constantes.STATUS_ACTIVO);
         item.setValue(Constantes.ST_ACTIVO);
         cmbEstad.appendChild(item);
         item = new Comboitem();
-        item.setLabel("Inactivo");
+        item.setLabel(Constantes.STATUS_INACTIVO);
         item.setValue(Constantes.ST_INACTIVO);
         cmbEstad.appendChild(item);
     }
@@ -181,20 +245,6 @@ public class PO_EAProducts
         grpBusq.setVisible(false);*/
     }
 
-    private String getCategoria(final Integer codCat)
-    {
-        final DTO_Categoria cat = new DTO_Categoria();
-        cat.setCodigo(codCat);
-        final ServiceInput input = new ServiceInput(cat);
-        input.setAccion(Constantes.V_GET);
-        final ServiceOutput output = categoryService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            return ((DTO_Categoria) output.getObject()).getNombre();
-        } else {
-            return null;
-        }
-    }
-
     public void incluir(final String txt)
     {
         // getDesktop().getSession().setAttribute("paginaActual", txt);
@@ -205,8 +255,8 @@ public class PO_EAProducts
     public void limpiarConsulta()
     {
         txtProdName.setValue("");
-        cmbCat.setValue("");
-        cmbCat.setSelectedItem(null);
+        //chbCat.setValue("");
+        //chbCat.setSelectedItem(null);
         cmbEstad.setValue("");
         cmbEstad.setSelectedItem(null);
         grpCons.setVisible(false);

@@ -19,9 +19,9 @@
                     <menubar style="text-align:left" orient="vertical" autodrop="true">
                         <menuitem src="/media/viewmag.png" id="id_option_prod_categ"
                                   label="${labels.pe.com.jx_market.eAMainMenu.products.category.Label }" />
-                        <menuitem src="/media/viewmag.png" id="id_option__prod_inventory"
+                        <menuitem src="/media/viewmag.png" id="id_option_prod_inventory"
                                   label="${labels.pe.com.jx_market.eAMainMenu.products.inventory.Label }" />
-                        <menuitem src="/media/logviewer.png" id="id_option__prod_products"
+                        <menuitem src="/media/logviewer.png" id="id_option_prod_products"
                                   label="${labels.pe.com.jx_market.eAMainMenu.products.product.Label }" />
                         <menu src="/media/logviewer.png" id="id_option_prod_amount"
                             label="${labels.pe.com.jx_market.eAMainMenu.products.amount.Label }" >
