@@ -83,7 +83,7 @@ public class PO_CEProductos extends Window
 
                 final Div divProdTitle = new Div();
                 divProdTitle.setSclass("product_title");
-                final Label nomProd = new Label(art.getNombre());
+                final Label nomProd = new Label(art.getProductName());
                 nomProd.addEventListener("onClick",
                         new org.zkoss.zk.ui.event.EventListener() {
                             @Override
@@ -192,10 +192,10 @@ public class PO_CEProductos extends Window
             final Map<Integer, Map<DTO_Articulo, Integer>> map = (Map<Integer, Map<DTO_Articulo, Integer>>) getDesktop()
                                                                                     .getSession().getAttribute("carrito");
 
-            if (!map.containsKey(prod.getCodigo())) {
+            if (!map.containsKey(prod.getId())) {
                 final Map<DTO_Articulo, Integer> map2 = new HashMap<DTO_Articulo, Integer>();
                 map2.put(prod, 1);
-                map.put(prod.getCodigo(), map2);
+                map.put(prod.getId(), map2);
             }
             incluir("cECarritoCliente.zul");
         } else {
@@ -209,7 +209,7 @@ public class PO_CEProductos extends Window
         input.setAccion(Constantes.V_GETIMG);
         final ServiceOutput output = articuloService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
-            alertaInfo("", "El articulo" + articulo.getNombre() + "no posee imagen", null);
+            alertaInfo("", "El articulo" + articulo.getProductName() + "no posee imagen", null);
         }
         if (articulo.getImagen() != null) {
             try {

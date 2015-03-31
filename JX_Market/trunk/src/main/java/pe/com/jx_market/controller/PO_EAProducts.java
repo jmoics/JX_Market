@@ -4,6 +4,7 @@
 package pe.com.jx_market.controller;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +16,12 @@ import java.util.TreeMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.zk.ui.Desktop;
+import org.zkoss.zk.ui.UiException;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
@@ -23,9 +29,10 @@ import org.zkoss.zkmax.zul.Chosenbox;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
-import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.TreeNode;
@@ -49,6 +56,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
 public class PO_EAProducts
     extends SelectorComposer<Window>
 {
+    private static final long serialVersionUID = -1744564334999015662L;
 
     static Log logger = LogFactory.getLog(PO_EAProducts.class);
     private final NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
@@ -59,11 +67,9 @@ public class PO_EAProducts
     @Wire
     private Chosenbox chbCat;
     @Wire
-    private Groupbox grpCons, grpBusq;
-    @Wire
     private Listbox lstProd;
     @WireVariable
-    private BusinessService<DTO_Articulo> articuloService;
+    private BusinessService<DTO_Articulo> productService;
     @WireVariable
     private BusinessService<DTO_Categoria> categoryService;
     private DTO_Empresa empresa;
@@ -112,12 +118,12 @@ public class PO_EAProducts
         final Map<Integer, DTO_Categoria> childs = new TreeMap<Integer, DTO_Categoria>();
         final Set<Integer> setPadres = new HashSet<Integer>();
         for (final DTO_Categoria cat : _categorias) {
-            mapCateg.put(cat.getCodigo(), cat);
-            setPadres.add(cat.getCodigoPadre());
-            if (cat.getCodigoPadre() == null) {
-                roots.put(cat.getCodigo(), cat);
+            mapCateg.put(cat.getId(), cat);
+            setPadres.add(cat.getCategoryParentId());
+            if (cat.getCategoryParentId() == null) {
+                roots.put(cat.getId(), cat);
             } else {
-                childs.put(cat.getCodigo(), cat);
+                childs.put(cat.getId(), cat);
             }
         }
 
@@ -128,7 +134,7 @@ public class PO_EAProducts
             private static final long serialVersionUID = -8249078122595873454L;
             {
                 for (final DTO_Categoria root : roots.values()) {
-                    if (!setPadres.contains(root.getCodigo())) {
+                    if (!setPadres.contains(root.getId())) {
                         add(new CategoryTreeNode(root));
                     } else {
                         add(new CategoryTreeNode(root,
@@ -152,8 +158,8 @@ public class PO_EAProducts
                                 final String _space) {
         final DTO_Categoria categ = _nodo.getData();
         if (categ != null) {
-            if (categ.getCodigoPadre() != null) {
-                categ.setNombre(_space.concat(categ.getNombre()));
+            if (categ.getCategoryParentId() != null) {
+                categ.setCategoryName(_space.concat(categ.getCategoryName()));
             }
             _lstCat.add(categ);
         }
@@ -182,40 +188,50 @@ public class PO_EAProducts
         cmbEstad.appendChild(item);
     }
 
+    @Listen("onClick = #btnSearch")
     public void buscarProductos()
     {
-        /*final DTO_Articulo articulo = new DTO_Articulo();
-        articulo.setEmpresa(empresa.getCodigo());
-        if (cmbCat.getSelectedItem() != null) {
-            articulo.setCategoria(((DTO_Categoria)
-                            cmbCat.getSelectedItem().getAttribute("categoria")).getCodigo());
+        final ArrayList<Integer> listCat = new ArrayList<Integer>();
+        final ServiceInput<DTO_Articulo> input = new ServiceInput<DTO_Articulo>();
+        if (chbCat.getSelectedObjects() != null && !chbCat.getSelectedObjects().isEmpty()) {
+            final Set<DTO_Categoria> setCateg = chbCat.getSelectedObjects();
+            for (final DTO_Categoria categ : setCateg) {
+                listCat.add(categ.getId());
+            }
+            input.addMapPair("lstCategory", listCat);
         }
         if (txtProdName.getValue().length() > 0) {
-            articulo.setNombre(txtProdName.getValue());
-        }
-        if (txtMarc.getValue().length() > 0) {
-            articulo.setMarca(txtMarc.getValue());
+            input.addMapPair("nombre", txtProdName.getValue());
         }
         if (cmbEstad.getSelectedItem() != null) {
-            articulo.setActivo((Integer)
-                            cmbEstad.getSelectedItem().getValue());
+            input.addMapPair("activo", cmbEstad.getSelectedItem().getValue());
         }
-        final ServiceInput input =
-                        new ServiceInput(articulo);
+        input.addMapPair("empresa", empresa.getCodigo());
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = articuloService.execute(input);
+        final ServiceOutput<DTO_Articulo> output = productService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Articulo> lst = output.getLista();
             for (final DTO_Articulo art : lst) {
                 final Listitem item = new Listitem();
-                Listcell cell = new Listcell(getCategoria(art.getCategoria()));
+                final List<DTO_Categoria> categs = art.getCategories();
+                Listcell cell = new Listcell();
+                int cont = 1;
+                final StringBuilder strB = new StringBuilder();
+                for (final DTO_Categoria cat : categs) {
+                    strB.append(cat.getCategoryName());
+                    if (cont < categs.size()) {
+                        strB.append(", ");
+                    }
+                    cont++;
+                }
+                cell.setLabel(strB.toString());
                 item.appendChild(cell);
-                cell = new Listcell(art.getNombre());
+                cell = new Listcell(art.getProductName());
                 item.appendChild(cell);
-                cell = new Listcell(art.getMarca());
+                cell = new Listcell(art.getProductDescription());
                 item.appendChild(cell);
-                cell = new Listcell(formateador.format(art.getPrecio()));
-                item.appendChild(cell);
+                /*cell = new Listcell(formateador.format(art.getPrecio()));
+                item.appendChild(cell);*/
                 if (art.getActivo().equals(Constantes.ST_ACTIVO)) {
                     cell = new Listcell("Activo");
                 } else {
@@ -223,26 +239,22 @@ public class PO_EAProducts
                 }
                 item.appendChild(cell);
                 item.setAttribute("producto", art);
-                item.addEventListener("onClick", new
-                                org.zkoss.zk.ui.event.EventListener()
-                                {
-
-                                    @Override
-                                    public void onEvent(final Event e)
-                                        throws UiException
-                                    {
-                                        desktop.getSession().setAttribute("producto",
-                                                        e.getTarget().getAttribute("producto"));
-                                        incluir("eAEditaProducto.zul");
-                                    }
-                                });
+                item.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+                {
+                    @Override
+                    public void onEvent(final Event e)
+                        throws UiException
+                    {
+                        desktop.getSession().setAttribute("producto",
+                                        e.getTarget().getAttribute("producto"));
+                        incluir("eAEditaProducto.zul");
+                    }
+                });
                 lstProd.appendChild(item);
             }
         }
         else {
         }
-        grpCons.setVisible(true);
-        grpBusq.setVisible(false);*/
     }
 
     public void incluir(final String txt)
@@ -259,8 +271,6 @@ public class PO_EAProducts
         //chbCat.setSelectedItem(null);
         cmbEstad.setValue("");
         cmbEstad.setSelectedItem(null);
-        grpCons.setVisible(false);
-        grpBusq.setVisible(true);
     }
 
     public void cancelarBusqueda()

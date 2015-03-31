@@ -1,35 +1,35 @@
 /**
- * 
+ *
  */
 package pe.com.jx_market.domain;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @author George
- * 
+ *
  */
 public class DTO_Articulo implements Serializable
 {
-    private Integer codigo;
+    private Integer id;
     private Integer empresa;
-    //private Integer categoria;
-    private String nombre;
-    private String descripcion;
+    private List<DTO_Categoria> categories;
+    private String productName;
+    private String productDescription;
     //private String marca;
     //private BigDecimal precio;
     //private Integer stock;
     private Integer activo;
     private byte[] imagen;
     private String nomimg;
-    
-    
+
+
     public String getNomimg()
     {
         return nomimg;
     }
-    public void setNomimg(String nomImg)
+    public void setNomimg(final String nomImg)
     {
         this.nomimg = nomImg;
     }
@@ -37,49 +37,49 @@ public class DTO_Articulo implements Serializable
     {
         return imagen;
     }
-    public void setImagen(byte[] imagen)
+    public void setImagen(final byte[] imagen)
     {
         this.imagen = imagen;
     }
-    public Integer getCodigo()
+    public Integer getId()
     {
-        return codigo;
+        return id;
     }
-    public void setCodigo(Integer codigo)
+    public void setId(final Integer id)
     {
-        this.codigo = codigo;
+        this.id = id;
     }
     public Integer getEmpresa()
     {
         return empresa;
     }
-    public void setEmpresa(Integer empresa)
+    public void setEmpresa(final Integer empresa)
     {
         this.empresa = empresa;
     }
-    /*public Integer getCategoria()
+    public List<DTO_Categoria> getCategories()
     {
-        return categoria;
+        return categories;
     }
-    public void setCategoria(Integer categoria)
+    public void setCategories(final List<DTO_Categoria> categories)
     {
-        this.categoria = categoria;
-    }*/
-    public String getNombre()
-    {
-        return nombre;
+        this.categories = categories;
     }
-    public void setNombre(String nombre)
+    public String getProductName()
     {
-        this.nombre = nombre;
+        return productName;
     }
-    public String getDescripcion()
+    public void setProductName(final String productName)
     {
-        return descripcion;
+        this.productName = productName;
     }
-    public void setDescripcion(String descripcion)
+    public String getProductDescription()
     {
-        this.descripcion = descripcion;
+        return productDescription;
+    }
+    public void setProductDescription(final String productDescription)
+    {
+        this.productDescription = productDescription;
     }
     /*public String getMarca()
     {
@@ -109,7 +109,7 @@ public class DTO_Articulo implements Serializable
     {
         return activo;
     }
-    public void setActivo(Integer activo)
+    public void setActivo(final Integer activo)
     {
         this.activo = activo;
     }

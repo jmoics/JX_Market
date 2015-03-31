@@ -96,7 +96,7 @@ public class PO_Index
                 } else {
                     item.setSclass("odd");
                 }
-                item.appendChild((new Label(categ.getNombre())));
+                item.appendChild((new Label(categ.getCategoryName())));
                 item.setAttribute("categoria", categ);
                 item.addEventListener("onClick",
                                 new org.zkoss.zk.ui.event.EventListener() {

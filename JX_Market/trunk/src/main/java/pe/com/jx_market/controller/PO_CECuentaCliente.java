@@ -1,6 +1,5 @@
 package pe.com.jx_market.controller;
 
-import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -124,11 +123,11 @@ public class PO_CECuentaCliente extends Window
             final DTO_Articulo art = obtenerArticulo(det.getArticulo());
 
             cell = new Listcell();
-            cell.setLabel(art.getNombre());
+            cell.setLabel(art.getProductName());
             cell.setParent(item);
 
             cell = new Listcell();
-            cell.setLabel(art.getDescripcion());
+            cell.setLabel(art.getProductDescription());
             cell.setParent(item);
 
             cell = new Listcell();
@@ -145,7 +144,7 @@ public class PO_CECuentaCliente extends Window
 
     private DTO_Articulo obtenerArticulo(final Integer codArt) {
         DTO_Articulo arti = new DTO_Articulo();
-        arti.setCodigo(codArt);
+        arti.setId(codArt);
 
         final ServiceInput input = new ServiceInput();
         input.setAccion(Constantes.V_GET);

@@ -1,67 +1,71 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-    <window id="winEACP" width="100%" height="100%" apply="pe.com.jx_market.controller.PO_EAProducts">
-        <div align="center" height="100%">
-            <vbox>
+<window id="winEACP" hflex="1" vflex="1" apply="pe.com.jx_market.controller.PO_EAProducts">
+    <style>
+        .z-grid {
+            border-left-width: 0px;
+            border-right-width: 0px;
+        }
+    </style>
+    <borderlayout id="bl" hflex="1" vflex="1">
+        <north size="25%" collapsible="false">
+            <div align="center">
+                <label zclass="z-south-header"
+                    style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                    Consulta de Productos
+                </label>
                 <html:p />
-                <div align="center">
-                    <label zclass="z-south-header"
-                        style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                        Consulta de Productos
-                    </label>
-                </div>
+                <grid fixedLayout="true" width="100%" visible="true">
+                    <auxhead>
+                        <auxheader label="Búsqueda de Productos" colspan="4" />
+                    </auxhead>
+                    <columns>
+                        <column hflex="1" />
+                        <column hflex="2" />
+                        <column hflex="1" />
+                        <column hflex="2" />
+                    </columns>
+                    <rows>
+                        <row spans="1,3">
+                            <label value="Categoria" />
+                            <chosenbox id="chbCat" hflex="1" />
+                        </row>
+                        <row>
+                            <label value="Nombre Producto" />
+                            <textbox id="txtProdName" hflex="1" />
+                            <label value="Estado" />
+                            <combobox id="cmbEstad" hflex="1" />
+                            <!-- <label value="Marca"/>
+                                <textbox id="txtMarc" width="150px"/> -->
+                        </row>
+                    </rows>
+                </grid>
                 <html:p />
-                <groupbox mold="3d" id="grpBusq" hflex="1">
-                    <caption label="Busqueda de Productos" />
-                    <div align="center">
-                        <html:p />
-                        <grid fixedLayout="true" width="100%" visible="true">
-                            <columns>
-                                <column hflex="1" />
-                                <column hflex="2" />
-                                <column hflex="1" />
-                                <column hflex="2" />
-                            </columns>
-                            <rows>
-                                <row spans="1,3">
-                                    <label value="Categoria" />
-                                    <chosenbox id="chbCat" hflex="1" />
-                                </row>
-                                <row>
-                                    <label value="Nombre Producto" />
-                                    <textbox id="txtProdName" hflex="1" />
-                                    <label value="Estado" />
-                                    <combobox id="cmbEstad" hflex="1" />
-                                    <!-- <label value="Marca"/>
-                                        <textbox id="txtMarc" width="150px"/> -->
-                                </row>
-                            </rows>
-                        </grid>
-                        <html:p />
-                        <button label="Buscar" onClick="winEACP.buscarProductos()" />
-                        <button label="Limpiar" onClick="winEACP.limpiarConsulta()" />
-                        <html:p />
-                    </div>
-                </groupbox>
-                <groupbox mold="3d" id="grpCons" width="720px" visible="false">
-                    <caption label="Productos" />
-                    <div align="center">
-                        <html:p />
-                        <listbox id="lstProd" width="670px">
-                            <listhead>
-                                <listheader label="Categoria" />
-                                <listheader label="Nombre" sort="auto" />
-                                <listheader label="Descripción" sort="auto" />
-                                <!-- <listheader label="Marca" sort="auto"/> -->
-                                <!-- <listheader label="Precio" sort="auto"/> -->
-                                <listheader label="Estado" sort="auto" />
-                            </listhead>
-                        </listbox>
-                        <html:p />
-                        <button label="Cancelar" onClick="winEACP.cancelarBusqueda()" />
-                    </div>
-                </groupbox>
-            </vbox>
-        </div>
-    </window>
+                <button id="btnSearch" label="Buscar" />
+                <button id="btnClean" label="Limpiar" />
+                <html:p />
+            </div>
+        </north>
+        <center autoscroll="true" border="none">
+            <listbox id="lstProd" pagingPosition="bottom" mold="paging" autopaging="true" hflex="1" vflex="1">
+                <listhead>
+                    <listheader label="Categoria" hflex="2"/>
+                    <listheader label="Nombre" sort="auto" hflex="2"/>
+                    <listheader label="Descripción" sort="auto" hflex="4"/>
+                    <!-- <listheader label="Marca" sort="auto"/> -->
+                    <!-- <listheader label="Precio" sort="auto"/> -->
+                    <listheader label="Estado" sort="auto" hflex="1"/>
+                </listhead>
+            </listbox>
+        </center>
+        <south size="5%" style="visibility:visible;">
+            <hbox align="center" pack="end" hflex="1" vflex="1">
+                <button id="btnCreate" label="Nuevo"
+                    image="/media/filenew.png" />
+                <button id="btnEdit" label="Editar"
+                    image="/media/edit.png" />
+            </hbox>
+        </south>
+    </borderlayout>
+</window>
 </zk>

@@ -1,32 +1,46 @@
 package pe.com.jx_market.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class DTO_Categoria2Articulo
     implements Serializable
 {
-    private Integer categoriaId;
-    private Integer articuloId;
-    
-    public Integer getCategoriaId()
+    private Integer id;
+    private Integer categoryId;
+    private Integer productId;
+    private List<DTO_Categoria> categories;
+
+    public Integer getCategoryId()
     {
-        return categoriaId;
+        return categoryId;
     }
-    
-    public void setCategoriaId(Integer categoriaId)
+    public void setCategoryId(final Integer categoryId)
     {
-        this.categoriaId = categoriaId;
+        this.categoryId = categoryId;
     }
-    
-    public Integer getArticuloId()
+    public Integer getProductId()
     {
-        return articuloId;
+        return productId;
     }
-    
-    public void setArticuloId(Integer articuloId)
+    public void setProductId(final Integer productId)
     {
-        this.articuloId = articuloId;
+        this.productId = productId;
     }
-    
-    
+    public List<DTO_Categoria> getCategories()
+    {
+        return categories;
+    }
+    public void setCategories(final List<DTO_Categoria> categories)
+    {
+        this.categories = categories;
+    }
+    public Integer getId()
+    {
+        return id;
+    }
+    public void setId(final Integer id)
+    {
+        this.id = id;
+    }
 }

@@ -106,12 +106,12 @@ public class PO_EACategoryEdit
         final Map<Integer, DTO_Categoria> childs = new TreeMap<Integer, DTO_Categoria>();
         final Set<Integer> setPadres = new HashSet<Integer>();
         for (final DTO_Categoria cat : _categorias) {
-            mapCateg.put(cat.getCodigo(), cat);
-            setPadres.add(cat.getCodigoPadre());
-            if (cat.getCodigoPadre() == null) {
-                roots.put(cat.getCodigo(), cat);
+            mapCateg.put(cat.getId(), cat);
+            setPadres.add(cat.getCategoryParentId());
+            if (cat.getCategoryParentId() == null) {
+                roots.put(cat.getId(), cat);
             } else {
-                childs.put(cat.getCodigo(), cat);
+                childs.put(cat.getId(), cat);
             }
         }
 
@@ -126,7 +126,7 @@ public class PO_EACategoryEdit
                     private static final long serialVersionUID = 3800210198277431722L;
                     {
                         for (final DTO_Categoria root : roots.values()) {
-                            if (!setPadres.contains(root.getCodigo())) {
+                            if (!setPadres.contains(root.getId())) {
                                 add(new CategoryTreeNode(root, new CategoryTreeNodeCollection(), true));
                             } else {
                                 add(new CategoryTreeNode(root,
@@ -164,13 +164,13 @@ public class PO_EACategoryEdit
             treeItem.setOpen(ctn.isOpen());
 
             final Hlayout hl = new Hlayout();
-            if (categ != null && !Constantes.TREE_EDITABLE_RAIZ.equals(categ.getNombre())) {
+            if (categ != null && !Constantes.TREE_EDITABLE_RAIZ.equals(categ.getCategoryName())) {
                 hl.appendChild(new Image("/widgets/tree/dynamic_tree/img/" + categ.getImagen()));
-                final Textbox textBoxCat = new Textbox(categ.getNombre());
-                textBoxCat.setId(Constantes.TREE_EDITABLE_TEXTBOX + categ.getCodigo());
+                final Textbox textBoxCat = new Textbox(categ.getCategoryName());
+                textBoxCat.setId(Constantes.TREE_EDITABLE_TEXTBOX + categ.getId());
                 hl.appendChild(textBoxCat);
             } else {
-                hl.appendChild(new Label(categ.getNombre()));
+                hl.appendChild(new Label(categ.getCategoryName()));
             }
             hl.setSclass("h-inline-block");
             final Treecell treeCell = new Treecell();
@@ -179,7 +179,7 @@ public class PO_EACategoryEdit
             dataRow.appendChild(treeCell);
             dataRow.setDroppable("true");
 
-            if (categ != null && !Constantes.TREE_EDITABLE_RAIZ.equals(categ.getNombre())) {
+            if (categ != null && !Constantes.TREE_EDITABLE_RAIZ.equals(categ.getCategoryName())) {
                 final Treecell treeCell2 = new Treecell();
                 //final Hlayout h2 = new Hlayout();
                 final Checkbox checkBoxEstado = new Checkbox(categ.getEstado()
@@ -215,7 +215,7 @@ public class PO_EACategoryEdit
                         // Modificamos los padres siempre y cuando se este activando
                         if (checkBox.isChecked() && treeItem.getParentItem() != null
                                 && treeItem.getParentItem().getValue() != null
-                                && !Constantes.TREE_EDITABLE_RAIZ.equals(((CategoryTreeNode) treeItem.getParentItem().getValue()).getData().getNombre())) {
+                                && !Constantes.TREE_EDITABLE_RAIZ.equals(((CategoryTreeNode) treeItem.getParentItem().getValue()).getData().getCategoryName())) {
                             modificarPadres(treeItem.getParentItem(), checkBox.isChecked());
                         }
                     }
@@ -234,7 +234,7 @@ public class PO_EACategoryEdit
                         if (_checked && _item.getParentItem() != null
                                 && _item.getParentItem().getValue() != null
                                 && !Constantes.TREE_EDITABLE_RAIZ.equals(((CategoryTreeNode) _item.getParentItem()
-                                                .getValue()).getData().getNombre())) {
+                                                .getValue()).getData().getCategoryName())) {
                             modificarPadres(_item.getParentItem(), _checked);
                         }
                     }
@@ -270,7 +270,7 @@ public class PO_EACategoryEdit
                                     new CategoryTreeNodeCollection() {
                                         private static final long serialVersionUID = -4941224185260321214L;
                                     {add(draggedValue);} });
-                        draggedValue.getData().setCodigoPadre(categ.getCodigo());
+                        draggedValue.getData().setCategoryParentId(categ.getId());
                     } else {
                         logger.info("No puede ingresar un padre dentro de su hijo");
                         Messagebox.show("No puede ingresar un padre dentro de su hijo", "JX_Market",
@@ -312,14 +312,14 @@ public class PO_EACategoryEdit
         input.setAccion(Constantes.V_REGISTER);
         input.setObject(categ);
         ServiceOutput<DTO_Categoria> output = null;
-        if (categ != null && !Constantes.TREE_EDITABLE_RAIZ.equals(categ.getNombre())) {
+        if (categ != null && !Constantes.TREE_EDITABLE_RAIZ.equals(categ.getCategoryName())) {
             final String strIdTxtCateg = new StringBuilder()
-                .append(Constantes.TREE_EDITABLE_TEXTBOX).append(categ.getCodigo()).toString();
+                .append(Constantes.TREE_EDITABLE_TEXTBOX).append(categ.getId()).toString();
             final Textbox txtCategName = ((Textbox) wEAEC.getFellow(strIdTxtCateg));
-            categ.setNombre(txtCategName.getValue());
+            categ.setCategoryName(txtCategName.getValue());
             output = categoryService.execute(input);
             if (Constantes.OK == output.getErrorCode()) {
-                logger.debug("Categoria '" + categ.getNombre() + "' actualizada");
+                logger.debug("Categoria '" + categ.getCategoryName() + "' actualizada");
             }
         }
 

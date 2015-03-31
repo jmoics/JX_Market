@@ -4,6 +4,7 @@
 package pe.com.jx_market.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author George
@@ -13,12 +14,13 @@ public class DTO_Categoria implements Serializable
 {
     private static final long serialVersionUID = 7736453145474958927L;
 
-    private Integer codigo;
+    private Integer id;
     private Integer empresa;
-    private String nombre;
-    private Integer codigoPadre;
+    private String categoryName;
+    private Integer categoryParentId;
     private Boolean estado;
     private byte[] imagen;
+    private List<DTO_Articulo> articulos;
 
     public DTO_Categoria() {
     }
@@ -28,17 +30,17 @@ public class DTO_Categoria implements Serializable
      *
      * @param _nombre
      */
-    public DTO_Categoria(final String _nombre) {
-        this.nombre = _nombre;
+    public DTO_Categoria(final String _categoryName) {
+        this.categoryName = _categoryName;
     }
 
-    public Integer getCodigo()
+    public Integer getId()
     {
-        return codigo;
+        return id;
     }
-    public void setCodigo(final Integer codigo)
+    public void setId(final Integer id)
     {
-        this.codigo = codigo;
+        this.id = id;
     }
     public Integer getEmpresa()
     {
@@ -48,23 +50,23 @@ public class DTO_Categoria implements Serializable
     {
         this.empresa = empresa;
     }
-    public String getNombre()
+    public String getCategoryName()
     {
-        return nombre;
+        return categoryName;
     }
-    public void setNombre(final String nombre)
+    public void setCategoryName(final String categoryName)
     {
-        this.nombre = nombre;
-    }
-
-    public Integer getCodigoPadre()
-    {
-        return codigoPadre;
+        this.categoryName = categoryName;
     }
 
-    public void setCodigoPadre(final Integer codigoPadre)
+    public Integer getCategoryParentId()
     {
-        this.codigoPadre = codigoPadre;
+        return categoryParentId;
+    }
+
+    public void setCategoryParentId(final Integer categoryParentId)
+    {
+        this.categoryParentId = categoryParentId;
     }
 
     public byte[] getImagen()
@@ -86,10 +88,18 @@ public class DTO_Categoria implements Serializable
     {
         this.estado = estado;
     }
+    public List<DTO_Articulo> getArticulos()
+    {
+        return articulos;
+    }
+    public void setArticulos(final List<DTO_Articulo> articulos)
+    {
+        this.articulos = articulos;
+    }
 
     @Override
     public String toString()
     {
-        return this.nombre;
+        return this.categoryName;
     }
 }

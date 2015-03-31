@@ -35,8 +35,8 @@ public class ArticuloServiceTest
         final DTO_Articulo art = new DTO_Articulo();
         //art.setCategoria(1);
         art.setActivo(Constantes.ST_ACTIVO);
-        art.setDescripcion("juego de video de accion basado en la trilogia del senior de los anillos");
-        art.setNombre("Ring Action");
+        art.setProductDescription("juego de video de accion basado en la trilogia del senior de los anillos");
+        art.setProductName("Ring Action");
         art.setEmpresa(2);
         //art.setMarca("Capcom");
         //art.setPrecio(new BigDecimal(24.5));
@@ -51,7 +51,7 @@ public class ArticuloServiceTest
     @Test
     public void getArticulo() {
         DTO_Articulo art = new DTO_Articulo();
-        art.setCodigo(1);
+        art.setId(1);
         art.setEmpresa(2);
         final ServiceInput input = new ServiceInput(art);
         input.setAccion(Constantes.V_GET);
@@ -60,6 +60,6 @@ public class ArticuloServiceTest
 
         art = (DTO_Articulo)output.getObject();
         //assertEquals(new BigDecimal(24.50), art.getPrecio());
-        assertEquals("Ring Action", art.getNombre());
+        assertEquals("Ring Action", art.getProductName());
     }
 }

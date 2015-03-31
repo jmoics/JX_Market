@@ -69,10 +69,10 @@ public class PO_EAIngresaProducto
             final DTO_Articulo articulo = new DTO_Articulo();
             //articulo.setCategoria(((DTO_Categoria) cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
             articulo.setActivo(Constantes.ST_ACTIVO);
-            articulo.setDescripcion(txtDesc.getValue());
+            articulo.setProductDescription(txtDesc.getValue());
             articulo.setEmpresa(empresa.getCodigo());
             //articulo.setMarca(txtMarca.getValue());
-            articulo.setNombre(txtNombre.getValue());
+            articulo.setProductName(txtNombre.getValue());
             //articulo.setPrecio(decPrec.getValue());
             if (imgProducto != null) {
                 articulo.setImagen(imgProducto);
@@ -105,7 +105,7 @@ public class PO_EAIngresaProducto
             final List<DTO_Categoria> lstCat = output.getLista();
             for (final DTO_Categoria categ : lstCat) {
                 final Comboitem item = new Comboitem();
-                item.setLabel(categ.getNombre());
+                item.setLabel(categ.getCategoryName());
                 item.setAttribute("categoria", categ);
                 cmbCateg.appendChild(item);
             }

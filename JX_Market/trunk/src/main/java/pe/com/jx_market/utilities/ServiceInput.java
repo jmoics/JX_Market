@@ -14,7 +14,7 @@ public class ServiceInput<E>
 
     private E object;
     private List<E> lista;
-    private Map<Serializable, Serializable> mapa;
+    private Map<Object, Object> mapa;
     private String accion;
 
     public ServiceInput()
@@ -33,7 +33,7 @@ public class ServiceInput<E>
         this.accion = accion;
     }
 
-    public ServiceInput(final Map<Serializable, Serializable> m)
+    public ServiceInput(final Map<Object, Object> m)
     {
         this.mapa = m;
     }
@@ -43,11 +43,11 @@ public class ServiceInput<E>
         this.lista = l;
     }
 
-    public void addMapPair(final Serializable k,
-                           final Serializable v)
+    public void addMapPair(final Object k,
+                           final Object v)
     {
         if (this.mapa == null) {
-            this.mapa = new HashMap<Serializable, Serializable>();
+            this.mapa = new HashMap<Object, Object>();
         }
         this.mapa.put(k, v);
     }
@@ -81,12 +81,12 @@ public class ServiceInput<E>
         this.lista = lista;
     }
 
-    public Map<Serializable, Serializable> getMapa()
+    public Map<Object, Object> getMapa()
     {
         return this.mapa;
     }
 
-    public void setMapa(final Map<Serializable, Serializable> mapa)
+    public void setMapa(final Map<Object, Object> mapa)
     {
         this.mapa = mapa;
     }

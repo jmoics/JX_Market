@@ -65,7 +65,7 @@ public class PO_EAEditaProducto
         input.setAccion(Constantes.V_GETIMG);
         final ServiceOutput output = articuloService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
-            alertaInfo("", "El articulo" + articulo.getNombre() + "no posee imagen", null);
+            alertaInfo("", "El articulo" + articulo.getProductName() + "no posee imagen", null);
         }
 
         if (articulo == null) {
@@ -84,10 +84,10 @@ public class PO_EAEditaProducto
                         && decPrec.getValue() != null && decPrec.getValue() != BigDecimal.ZERO) {
             //articulo.setCategoria(((DTO_Categoria) cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
             articulo.setActivo((Integer) cmbEstado.getSelectedItem().getValue());
-            articulo.setDescripcion(txtDesc.getValue());
+            articulo.setProductDescription(txtDesc.getValue());
             articulo.setEmpresa(empresa.getCodigo());
             //articulo.setMarca(txtMarca.getValue());
-            articulo.setNombre(txtNombre.getValue());
+            articulo.setProductName(txtNombre.getValue());
             //articulo.setPrecio(decPrec.getValue());
             if (imgProducto != null && !imgProducto.equals(articulo.getImagen())) {
                 articulo.setImagen(imgProducto);
@@ -117,9 +117,9 @@ public class PO_EAEditaProducto
     {
         listarEstados();
         listarCategorias();
-        txtNombre.setValue(articulo.getNombre());
+        txtNombre.setValue(articulo.getProductName());
         //txtMarca.setValue(articulo.getMarca());
-        txtDesc.setValue(articulo.getDescripcion());
+        txtDesc.setValue(articulo.getProductDescription());
         //decPrec.setValue(articulo.getPrecio());
         imgProducto = articulo.getImagen();
         setGraficoFoto();
@@ -182,7 +182,7 @@ public class PO_EAEditaProducto
             final List<DTO_Categoria> lstCat = output.getLista();
             for (final DTO_Categoria categ : lstCat) {
                 final Comboitem item = new Comboitem();
-                item.setLabel(categ.getNombre());
+                item.setLabel(categ.getCategoryName());
                 item.setAttribute("categoria", categ);
                 cmbCateg.appendChild(item);
                 /*if (articulo.getCategoria().equals(categ.getCodigo())) {

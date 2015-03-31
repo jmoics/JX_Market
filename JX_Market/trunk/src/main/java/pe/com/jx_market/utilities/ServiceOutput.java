@@ -23,7 +23,7 @@ public class ServiceOutput<E>
         super(obj);
     }
 
-    public ServiceOutput(final Map<Serializable, Serializable> m)
+    public ServiceOutput(final Map<Object, Object> m)
     {
         super(m);
     }

@@ -105,12 +105,12 @@ public class PO_EACategoryCreate
         final Map<Integer, DTO_Categoria> childs = new TreeMap<Integer, DTO_Categoria>();
         final Set<Integer> setPadres = new HashSet<Integer>();
         for (final DTO_Categoria cat : _categorias) {
-            mapCateg.put(cat.getCodigo(), cat);
-            setPadres.add(cat.getCodigoPadre());
-            if (cat.getCodigoPadre() == null) {
-                roots.put(cat.getCodigo(), cat);
+            mapCateg.put(cat.getId(), cat);
+            setPadres.add(cat.getCategoryParentId());
+            if (cat.getCategoryParentId() == null) {
+                roots.put(cat.getId(), cat);
             } else {
-                childs.put(cat.getCodigo(), cat);
+                childs.put(cat.getId(), cat);
             }
         }
 
@@ -125,7 +125,7 @@ public class PO_EACategoryCreate
                     private static final long serialVersionUID = 3800210198277431722L;
                     {
                         for (final DTO_Categoria root : roots.values()) {
-                            if (!setPadres.contains(root.getCodigo())) {
+                            if (!setPadres.contains(root.getId())) {
                                 add(new CategoryTreeNode(root, new CategoryTreeNodeCollection(), true));
                             } else {
                                 add(new CategoryTreeNode(root,
@@ -169,12 +169,12 @@ public class PO_EACategoryCreate
             treeCell.appendChild(hl);
             dataRow.appendChild(treeCell);
 
-            if ((categ.getCodigo() != null && categ.getCodigo() > 0 )
-                            || Constantes.TREE_EDITABLE_RAIZ.equals(categ.getNombre())) {
-                hl.appendChild(new Label(categ.getNombre()));
+            if ((categ.getId() != null && categ.getId() > 0 )
+                            || Constantes.TREE_EDITABLE_RAIZ.equals(categ.getCategoryName())) {
+                hl.appendChild(new Label(categ.getCategoryName()));
 
                 final Treecell treeCell2 = new Treecell();
-                if (!Constantes.TREE_EDITABLE_RAIZ.equals(categ.getNombre())) {
+                if (!Constantes.TREE_EDITABLE_RAIZ.equals(categ.getCategoryName())) {
                     final Hlayout h2 = new Hlayout();
                     h2.appendChild(new Label(categ.getEstado() ? Constantes.STATUS_ACTIVO : Constantes.STATUS_INACTIVO));
                     treeCell2.appendChild(h2);
@@ -182,7 +182,7 @@ public class PO_EACategoryCreate
                 dataRow.appendChild(treeCell2);
 
                 if (categ.getEstado() != null && categ.getEstado()
-                                || Constantes.TREE_EDITABLE_RAIZ.equals(categ.getNombre())) {
+                                || Constantes.TREE_EDITABLE_RAIZ.equals(categ.getCategoryName())) {
                     final Hlayout h3 = new Hlayout();
                     h3.appendChild(new Image("/media/add.png"));
                     final Treecell treeCell3 = new Treecell();
@@ -203,7 +203,7 @@ public class PO_EACategoryCreate
                                             add(new CategoryTreeNode(newCateg, new CategoryTreeNodeCollection(), true));
                                         }
                                     });
-                            newCateg.setCodigoPadre(categ.getCodigo());
+                            newCateg.setCategoryParentId(categ.getId());
                         }
                     });
                 }
@@ -212,7 +212,7 @@ public class PO_EACategoryCreate
                 textBoxCat.setId(new StringBuilder(Constantes.TREE_EDITABLE_TEXTBOX)
                                     .append(-seqTxtId).toString());
                 hl.appendChild(textBoxCat);
-                categ.setCodigo(-seqTxtId); //codigo temporal para marcar que es nueva categoria
+                categ.setId(-seqTxtId); //codigo temporal para marcar que es nueva categoria
                 seqTxtId++;
             }
         }
@@ -241,15 +241,15 @@ public class PO_EACategoryCreate
         input.setAccion(Constantes.V_REGISTER);
         input.setObject(categ);
         ServiceOutput<DTO_Categoria> output = null;
-        if (categ != null && categ.getCodigo() != null && categ.getCodigo() < 0) {
+        if (categ != null && categ.getId() != null && categ.getId() < 0) {
             final String strIdTxtCateg = new StringBuilder(Constantes.TREE_EDITABLE_TEXTBOX)
-                .append(categ.getCodigo()).toString();
+                .append(categ.getId()).toString();
             final Textbox txtCategName = ((Textbox) wEAIC.getFellow(strIdTxtCateg));
-            categ.setNombre(txtCategName.getValue());
+            categ.setCategoryName(txtCategName.getValue());
             categ.setEmpresa(empresa.getCodigo());
             output = categoryService.execute(input);
             if (Constantes.OK == output.getErrorCode()) {
-                logger.debug("Categoria '" + categ.getNombre() + "' actualizada");
+                logger.debug("Categoria '" + categ.getCategoryName() + "' actualizada");
             }
         }
         if (_nodo.getChildren() != null && !_nodo.getChildren().isEmpty()) {

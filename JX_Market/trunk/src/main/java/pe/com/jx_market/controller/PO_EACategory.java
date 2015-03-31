@@ -97,12 +97,12 @@ extends SelectorComposer<Window>
         final Map<Integer, DTO_Categoria> childs = new TreeMap<Integer, DTO_Categoria>();
         final Set<Integer> setPadres = new HashSet<Integer>();
         for (final DTO_Categoria cat : _categorias) {
-            mapCateg.put(cat.getCodigo(), cat);
-            setPadres.add(cat.getCodigoPadre());
-            if (cat.getCodigoPadre() == null) {
-                roots.put(cat.getCodigo(), cat);
+            mapCateg.put(cat.getId(), cat);
+            setPadres.add(cat.getCategoryParentId());
+            if (cat.getCategoryParentId() == null) {
+                roots.put(cat.getId(), cat);
             } else {
-                childs.put(cat.getCodigo(), cat);
+                childs.put(cat.getId(), cat);
             }
         }
 
@@ -113,7 +113,7 @@ extends SelectorComposer<Window>
             private static final long serialVersionUID = -8249078122595873454L;
             {
                 for (final DTO_Categoria root : roots.values()) {
-                    if (!setPadres.contains(root.getCodigo())) {
+                    if (!setPadres.contains(root.getId())) {
                         add(new CategoryTreeNode(root));
                     } else {
                         add(new CategoryTreeNode(root,
@@ -171,7 +171,7 @@ extends SelectorComposer<Window>
 
             final Hlayout hl = new Hlayout();
             hl.appendChild(new Image("/widgets/tree/dynamic_tree/img/" + categ.getImagen()));
-            hl.appendChild(new Label(categ.getNombre()));
+            hl.appendChild(new Label(categ.getCategoryName()));
             hl.setSclass("h-inline-block");
             final Treecell treeCell = new Treecell();
             treeCell.appendChild(hl);

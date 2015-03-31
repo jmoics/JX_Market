@@ -60,7 +60,7 @@ public class PO_CECarritoCliente extends Window
         final Map<Integer, Map<DTO_Articulo, Integer>> map = (Map<Integer, Map<DTO_Articulo, Integer>>) getDesktop()
                                                                                 .getSession().getAttribute("carrito");
         Integer cantTot = new Integer(0);
-        BigDecimal precTotal = BigDecimal.ZERO;
+        final BigDecimal precTotal = BigDecimal.ZERO;
 
         for (final Entry<Integer, Map<DTO_Articulo, Integer>> entry : map.entrySet()) {
             for (final Entry<DTO_Articulo, Integer> entry2 : entry.getValue().entrySet()) {
@@ -75,7 +75,7 @@ public class PO_CECarritoCliente extends Window
 
                 cantTot = cantTot + entry2.getValue();
 
-                final Label desc = new Label(producto.getNombre() + " " + producto.getDescripcion());
+                final Label desc = new Label(producto.getProductName() + " " + producto.getProductDescription());
                 desc.setParent(row);
 
                 final Label prec = new Label();
@@ -137,7 +137,7 @@ public class PO_CECarritoCliente extends Window
     private void actualizarCarrito(final DTO_Articulo producto, final Integer cantNew) {
         final Map<Integer, Map<DTO_Articulo, Integer>> map = (Map<Integer, Map<DTO_Articulo, Integer>>) getDesktop()
                                                                                 .getSession().getAttribute("carrito");
-        map.get(producto.getCodigo()).put(producto, cantNew);
+        map.get(producto.getId()).put(producto, cantNew);
         listaProductos();
         //Executions.sendRedirect("index.zul");
         final Map<String, Object> map2 = (Map<String, Object>) getDesktop().getSession().getAttribute("totales");
@@ -151,7 +151,7 @@ public class PO_CECarritoCliente extends Window
     private void quitarCarrito(final DTO_Articulo producto) {
         final Map<Integer, Map<DTO_Articulo, Integer>> map = (Map<Integer, Map<DTO_Articulo, Integer>>) getDesktop()
                                                                                 .getSession().getAttribute("carrito");
-        map.remove(producto.getCodigo());
+        map.remove(producto.getId());
         listaProductos();
         //Executions.sendRedirect("index.zul");
         final Map<String, Object> map2 = (Map<String, Object>) getDesktop().getSession().getAttribute("totales");
@@ -175,12 +175,12 @@ public class PO_CECarritoCliente extends Window
                     final Map<DTO_Pedido, List<DTO_DetallePedido>> mapAux = mapPed.get(arti.getEmpresa());
                     for (final Entry<DTO_Pedido, List<DTO_DetallePedido>> entry3 : mapAux.entrySet()) {
                         final DTO_Pedido pedAux = entry3.getKey();
-                        BigDecimal total = pedAux.getTotal();
+                        final BigDecimal total = pedAux.getTotal();
                         //total = total.add(arti.getPrecio().multiply(new BigDecimal(entry2.getValue())));
 
                         final List<DTO_DetallePedido> lstDet = entry3.getValue();
                         final DTO_DetallePedido det = new DTO_DetallePedido();
-                        det.setArticulo(arti.getCodigo());
+                        det.setArticulo(arti.getId());
                         det.setCantidad(entry2.getValue());
                         lstDet.add(det);
 
@@ -198,7 +198,7 @@ public class PO_CECarritoCliente extends Window
 
                     final List<DTO_DetallePedido> lstDet = new ArrayList<DTO_DetallePedido>();
                     final DTO_DetallePedido det = new DTO_DetallePedido();
-                    det.setArticulo(arti.getCodigo());
+                    det.setArticulo(arti.getId());
                     det.setCantidad(entry2.getValue());
                     lstDet.add(det);
 
@@ -213,7 +213,7 @@ public class PO_CECarritoCliente extends Window
         final ServiceInput input = new ServiceInput();
         input.setAccion(Constantes.V_REGISTER);
         input.setMapa(mapPed);
-        input.setObject((BigDecimal)((Map) getDesktop().getSession().getAttribute("totales")).get("total"));
+        input.setObject(((Map) getDesktop().getSession().getAttribute("totales")).get("total"));
         final ServiceOutput output = pedidosService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             resetearAtributos();

@@ -45,11 +45,17 @@ INSERT INTO T_EMP_EMPLEADO (PERFIL_N_CODIGO, USUARIO_N_CODIGO, EMPRESA_N_CODIGO,
            VALUES (1,4,2,'Jorge','Cueva','44128463','Mi casa','4823262','945190242','jmoics@gmail.com','Lima','Lima','1987-12-01',1),
 				  (3,2,2,'jorge','cueva samames','44128463','mi house','4563423','987755443','','lima','lima',NULL,1);
 
-INSERT INTO T_NEG_CATEGORIA (EMPRESA_N_CODIGO, CATEGORIA_V_NOMBRE, CATEGORIA_B_ESTADO, CATEGORIA_N_CODIGO_P)
-           VALUES (1,'C�mputo y Videojuegos', 1, null),(1,'C�mputo', 1, 1),(1,'Tablets y Accesorios', 1, 1),(1,'Videojuegos', 1, 1),
-                  (1, 'PlayStation 4', 1, 4),(1, 'Desktop', 1, 2),(1, 'TV, Audio y Foto', 1, null),(1, 'TV y Video', 1, 7);
+INSERT INTO T_NEG_CATEGORIA (EMPRESAID, NOMBRE, ESTADO, PARENTID)
+           VALUES (2, 'Cómputo y Videojuegos', true, null),
+                  (2, 'Cómputo', true, 1),
+                  (2, 'Tablets y Accesorios', true, 1),
+                  (2, 'Videojuegos', true, 1),
+                  (2, 'PlayStation', true, 4),
+                  (2, 'Desktop', true, 2),
+                  (2, 'TV, Audio y Foto', true, null),
+                  (2, 'TV y Video', true, 7);
 
-INSERT INTO T_NEG_ARTICULO (EMPRESA_N_CODIGO, ARTICULO_V_NOMBRE, ARTICULO_V_DESCRIPCION, ARTICULO_N_ACTIVO, ARTICULO_V_IMAGEN)
+INSERT INTO T_NEG_ARTICULO (EMPRESAID, NOMBRE, DESCRIPCION, ACTIVO, IMAGEN)
            VALUES (2,'Ring Action','juego de video de accion basado en la trilogia del senior de los anillos',1,NULL),
 				  (2,'Final Fantasy X','Juego de ROL, para consola Play Station 2',1,NULL),
 				  (2,'PS2','play station 2 color azul con un mando y una memory card',1,'2.1.PS2.22589'),
@@ -58,15 +64,15 @@ INSERT INTO T_NEG_ARTICULO (EMPRESA_N_CODIGO, ARTICULO_V_NOMBRE, ARTICULO_V_DESC
 				  (3,'Final Fantasy XII','Juego Final Fantasy XII original algo rayadito XD',1,'3.1.Final Fantasy XII.180339'),
 				  (3,'PS2','consola ps2',1,'3.3.PS2.918564');
 
-INSERT INTO T_NEG_CATEG2ARTIC (CATE_N_ID, ARTI_N_ID)
+INSERT INTO T_NEG_CATEG2ARTIC (CATEGORYID, PRODUCTID)
            VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(2,1),(2,2),(4,3),(4,4),(2,5),(2,6),(4,7);
 
-INSERT INTO T_NEG_PRECIO (ARTI_N_ID, PREC_F_DESDE, PREC_F_HASTA, PREC_D_MONTO)
+INSERT INTO T_NEG_PRECIO (PRODUCTID, DESDE, HASTA, MONTO)
            VALUES (1,'01/01/2015','31/03/2015',24.50), (2,'01/01/2015','31/03/2015',25.90), (3,'01/01/2015','31/03/2015',550.00),
                   (4,'01/01/2015','31/03/2015',540.00),(5,'01/01/2015','31/03/2015',35.00), (6,'01/01/2015','31/03/2015',40.00),
                   (7,'01/01/2015','31/03/2015',500.00);
 
-INSERT INTO T_NEG_COSTO (ARTI_N_ID, COST_F_DESDE, COST_F_HASTA, COST_D_MONTO)
+INSERT INTO T_NEG_COSTO (PRODUCTID, DESDE, HASTA, MONTO)
            VALUES (1,'01/01/2015','31/03/2015',19.50), (2,'01/01/2015','31/03/2015',18.40), (3,'01/01/2015','31/03/2015',490.00),
                   (4,'01/01/2015','31/03/2015',500.00),(5,'01/01/2015','31/03/2015',28.00), (6,'01/01/2015','31/03/2015',32.00),
                   (7,'01/01/2015','31/03/2015',450.00);

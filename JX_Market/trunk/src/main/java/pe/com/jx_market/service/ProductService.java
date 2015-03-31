@@ -31,24 +31,23 @@ import pe.com.jx_market.utilities.ServiceOutput;
  *
  */
 @Service
-public class ProductService implements BusinessService
+public class ProductService implements BusinessService<DTO_Articulo>
 {
     static Log logger = LogFactory.getLog(ProductService.class);
     @Autowired
     private ProductMapper articuloMapper;
 
-    @SuppressWarnings("unchecked")
     @Override
     @Transactional
-    public ServiceOutput execute(final ServiceInput input)
+    public ServiceOutput<DTO_Articulo> execute(final ServiceInput<DTO_Articulo> input)
     {
-        final ServiceOutput output = new ServiceOutput();
+        final ServiceOutput<DTO_Articulo> output = new ServiceOutput<DTO_Articulo>();
         if (Constantes.V_LIST.equals(input.getAccion())) {
-            output.setLista(articuloMapper.getArticulos((DTO_Articulo)input.getObject(), input.getLista()));
+            output.setLista(articuloMapper.getArticulos(input.getMapa()));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
-            final DTO_Articulo arti = (DTO_Articulo) input.getObject();
+            final DTO_Articulo arti = input.getObject();
             if(arti.getNomimg() == null) {
                 /*arti.setNomimg(arti.getEmpresa() + "." + arti.getCategoria() + "." +
                                 arti.getNombre().trim() + "." + generarNombreAleatorio());*/
@@ -63,8 +62,8 @@ public class ProductService implements BusinessService
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getAccion())) {
-            final Map<String, String> map = input.getMapa();
-            final DTO_Articulo art = articuloMapper.getArticuloXCodigo((DTO_Articulo) input.getObject());
+            final Map<?, ?> map = input.getMapa();
+            final DTO_Articulo art = articuloMapper.getArticuloXCodigo(input.getObject());
             if (map == null) {
                 loadPhoto(art);
             }
@@ -72,11 +71,11 @@ public class ProductService implements BusinessService
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_USTOCK.equals(input.getAccion())) {
-            articuloMapper.updateStock((DTO_Articulo) input.getObject());
+            articuloMapper.updateStock(input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_GETIMG.equals(input.getAccion())) {
-            final DTO_Articulo art = (DTO_Articulo) input.getObject();
+            final DTO_Articulo art = input.getObject();
             loadPhoto(art);
             output.setObject(art);
             output.setErrorCode(Constantes.OK);

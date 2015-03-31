@@ -3,21 +3,21 @@
 <window id="wEACC" width="100%" height="100%"
         apply="pe.com.jx_market.controller.PO_EACategory">
     <style>
-            .h-inline-block {
-                display: inline-block;
-                _display: inline;
-            }
-            .z-north {
-                border-top-width: 0px;
-                border-bottom-width: 0px;
-            }
-            .z-south {
-                border-bottom-width: 0px;
-            }
-            .z-hbox {
-                -webkit-border-horizontal-spacing: 3px;
-            }
-        </style>
+        .h-inline-block {
+            display: inline-block;
+            _display: inline;
+        }
+        .z-north {
+            border-top-width: 1px;
+            border-bottom-width: 0px;
+        }
+        .z-south {
+            border-bottom-width: 1px;
+        }
+        .z-hbox {
+            -webkit-border-horizontal-spacing: 3px;
+        }
+    </style>
     <div align="center" height="100%">
         <borderlayout id="bl" width="100%" height="100%">
             <north size="6%" collapsible="false">

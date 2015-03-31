@@ -8,40 +8,46 @@
 
     <!-- MANTENIMIENTO DE PRODUCTOS -->
 
-    <select id="getArticulos" parameterType="map" resultType="DTO_Articulo">
+    <select id="getArticulos" parameterType="java.util.Map" resultMap="productResultMap">
         SELECT
-            art.articulo_n_codigo as codigo,
-            art.empresa_n_codigo as empresa,
-            cart.categoria_v_nombre as categoria,
-            art.articulo_v_nombre as nombre,
-            art.articulo_v_marca as marca,
-            art.articulo_v_descripcion as descripcion,
-            art.articulo_n_precio as precio,
-            art.articulo_n_stock as stock,
-            art.articulo_n_activo as activo,
-            art.articulo_v_imagen as nomimg
+            art.id as productId,
+            art.empresaid as productEmpresaId,
+            art.nombre as productName,
+            art.descripcion as productDescription,
+            art.activo as productActivo,
+            art.imagen as nomimg,
+            cart.id as catProdId,
+            cart.categoryid as categoryId,
+            cart.productid as productId,
+            cat.id as categoryId,
+            cat.empresaid as categoryEmpresaId,
+            cat.nombre as categoryName,
+            cat.estado as categoryEstado,
+            cat.parentid as categoryParentId
         FROM
             T_NEG_ARTICULO art,
-            T_NEG_CATEG2ARTIC cart
-        WHERE
-            art.articulo_n_codigo = cart.arti_n_id
-        <if test="empresa != null">AND
-                art.empresa_n_codigo = #{empresa}
-            <if test="categoria != null">AND
-                art.categoria_n_codigo in
-                <foreach item="item" index="index" collection="list"
-                         open="(" separator="," close=")">
-                        #{item}
-                </foreach>
+            T_NEG_CATEG2ARTIC cart,
+            T_NEG_CATEGORIA cat
+        <where>
+            art.id = cart.productid AND
+            cart.categoryid = cat.id
+            <if test="empresa != null">AND
+                art.empresaid = #{empresa}
+                <if test="lstCategory != null">AND
+                    cart.categoryid in
+                    <foreach item="id" index="index" collection="lstCategory"
+                             open="(" separator="," close=")">
+                            #{id, jdbcType=INTEGER}
+                    </foreach>
+                </if>
+                <if test="nombre != null">AND
+                    art.nombre LIKE %#{nombre}%
+                </if>
+                <if test="activo != null">AND
+                    art.activo = #{activo}
+                </if>
             </if>
-            <if test="nombre != null">AND
-                art.articulo_v_nombre LIKE #{nombre}
-            </if>
-            <if test="activo != null">AND
-                art.articulo_n_activo = #{activo}
-            </if>
-        </if>
-
+        </where>
     </select>
 
     <select id="getArticuloXCodigo" parameterType="DTO_Articulo" resultType="DTO_Articulo">
@@ -105,5 +111,56 @@
         WHERE
             articulo_n_codigo = #{value}
    </delete>
+
+
+    <resultMap id="productResultMap" type="DTO_Articulo">
+        <id property="id" column="productId" />
+        <result property="empresa" column="productEmpresaId" />
+        <result property="productName" column="productName" />
+        <result property="productDescription" column="productDescription" />
+        <result property="activo" column="productActivo" />
+        <result property="nomimg" column="nomimg" />
+        <!-- <collection property="categorias2Articulos" column="catProdId"
+                    ofType="DTO_Categoria2Articulo" javaType="ArrayList" resultMap="category2ProductMap">
+        </collection> -->
+        <collection property="categories" column="catProdId"
+                    ofType="DTO_Categoria" javaType="ArrayList" resultMap="categoryResultMap">
+        </collection>
+    </resultMap>
+
+    <!-- <resultMap id="category2ProductMap" type="DTO_Categoria2Articulo">
+        <id property="id" column="catProdId" />
+        <result property="categoryId" column="categoryId" />
+        <result property="productId" column="productId" />
+    </resultMap>-->
+    <resultMap id="categoryResultMap" type="DTO_Categoria">
+        <id property="id" column="categoryId" />
+        <result property="empresa" column="categoryEmpresaId" />
+        <result property="categoryName" column="categoryName" />
+        <result property="estado" column="categoryStatus" />
+        <result property="categoryParentId" column="categoryParentId" />
+    </resultMap>
+
+    <select id="selectCategoriasForArticulos" resultType="DTO_Categoria">
+        SELECT
+            cat.id as categoryId,
+            cat.empresaid as empresa,
+            cat.nombre as categoryName,
+            cat.estado as estado,
+            cat.parentid as categoryParentId
+        FROM
+            T_NEG_CATEGORIA cat,
+            T_NEG_CATEG2ARTIC cart
+        WHERE
+            cart.cate_n_id = cat.categoria_n_codigo
+        AND cart.arti_n_id = #{articulo_n_codigo}
+    </select>
+
+    <!-- <select id="getObject" parameterType="Map" resultType="hashmap">
+        select * from TABL where
+        <foreach  collection="dataMap"  index="key" item="value"  open=""  separator=" and "  close="">
+            #{key}=#{value}
+        </foreach>
+    </select>-->
 
 </mapper>

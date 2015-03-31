@@ -17,8 +17,8 @@ public class CategoryTreeNodeCollection
                                       final Boolean _editable)
     {
         for (final DTO_Categoria child : childs) {
-            if ((child).getCodigoPadre().equals((root).getCodigo())) {
-                if (setPadres.contains(child.getCodigo())) {
+            if ((child).getCategoryParentId().equals((root).getId())) {
+                if (setPadres.contains(child.getId())) {
                     add(new CategoryTreeNode(child,
                                     new CategoryTreeNodeCollection()
                                     {
