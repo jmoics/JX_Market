@@ -1,21 +1,24 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-<window id="winEACP" hflex="1" vflex="1" apply="pe.com.jx_market.controller.PO_EAProducts">
+<window id="wEACP" hflex="1" vflex="1" apply="pe.com.jx_market.controller.PO_EAProducts" >
     <style>
         .z-grid {
             border-left-width: 0px;
             border-right-width: 0px;
         }
+        .z-window-content {
+            padding: 1px;
+        }
     </style>
     <borderlayout id="bl" hflex="1" vflex="1">
-        <north size="25%" collapsible="false">
-            <div align="center">
+        <north size="26%" collapsible="false">
+            <vbox hflex="1" vflex="1" align="center">
                 <label zclass="z-south-header"
                     style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
                     Consulta de Productos
                 </label>
                 <html:p />
-                <grid fixedLayout="true" width="100%" visible="true">
+                <grid fixedLayout="true" width="100%" visible="true" hflex="1">
                     <auxhead>
                         <auxheader label="Búsqueda de Productos" colspan="4" />
                     </auxhead>
@@ -40,11 +43,11 @@
                         </row>
                     </rows>
                 </grid>
-                <html:p />
-                <button id="btnSearch" label="Buscar" />
-                <button id="btnClean" label="Limpiar" />
-                <html:p />
-            </div>
+                <hbox align="center" pack="end" hflex="1" vflex="1">
+                    <button id="btnSearch" label="Buscar" image="/media/search4.png" />
+                    <button id="btnClean" label="Limpiar" image="/media/filenew.png" />
+                </hbox>
+            </vbox>
         </north>
         <center autoscroll="true" border="none">
             <listbox id="lstProd" pagingPosition="bottom" mold="paging" autopaging="true" hflex="1" vflex="1">

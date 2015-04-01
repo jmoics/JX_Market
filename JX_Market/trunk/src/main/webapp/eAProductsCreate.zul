@@ -1,0 +1,73 @@
+<?page title="JX_Market" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+<window id="wEAPC" apply="pe.com.jx_market.controller.PO_EAProductsCreate"
+        width="700px" height="500px" position="center,center" closable="true"
+        action="show: slideDown;hide: slideUp">
+    <style>
+        .z-grid {
+            border-left-width: 1px;
+            border-right-width: 1px;
+        }
+    </style>
+    <tabbox hflex="1" vflex="1">
+        <tabs>
+            <tab id="tabProduct" label="Artículo" />
+            <tab id="tabCategory" label="Categorías" />
+            <tab id="tabPrices" label="Precios" />
+        </tabs>
+        <tabpanels>
+            <tabpanel >
+                <vbox height="100%" width="100%">
+                    <div align="center">
+                        <label zclass="z-south-header"
+                            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                            Ingreso de Productos
+                        </label>
+                    </div>
+                    <html:p />
+                    <grid width="100%" fixedLayout="true">
+                        <auxhead>
+                            <auxheader label="Nuevo Producto" colspan="3" />
+                        </auxhead>
+                        <columns>
+                            <column hflex="1" />
+                            <column hflex="3" />
+                        </columns>
+                        <rows>
+                            <row>
+                                <label value="Imagen" />
+                                <vbox>
+                                    <image src="/media/imagProd.gif" id="imgFoto" width="100px" height="110px" />
+                                    <button label="Cargar Imagen" upload="true"
+                                        onUpload="winEAIP.cargaFoto(this.event)" />
+                                </vbox>
+                            </row>
+                            <row>
+                                <label value="Nombre" />
+                                <textbox id="txtNombre" hflex="1" />
+                            </row>
+                            <!-- <row>
+                                <label value="Marca"/>
+                                <textbox id="txtMarca" width="170px"/>
+                                </row> -->
+                            <!-- <row>
+                                <label value="Precio"/>
+                                <decimalbox id="decPrec" width="170px"/>
+                                </row> -->
+                            <row>
+                                <label value="Descripcion" />
+                                <textbox id="txtDesc" hflex="1" multiline="true" rows="3" />
+                            </row>
+                        </rows>
+                    </grid>
+                    <html:p />
+                    <button label="Crear Producto" />
+                    <button label="Limpiar" />
+                </vbox>
+            </tabpanel>
+            <tabpanel></tabpanel>
+            <tabpanel></tabpanel>
+        </tabpanels>
+    </tabbox>
+</window>
+</zk>

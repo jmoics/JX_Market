@@ -17,6 +17,9 @@
         .z-hbox {
             -webkit-border-horizontal-spacing: 3px;
         }
+        .z-window-content {
+            padding: 1px;
+        }
     </style>
     <div align="center" height="100%">
         <borderlayout id="bl" width="100%" height="100%">

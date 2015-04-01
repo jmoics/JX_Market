@@ -4,19 +4,23 @@
 package pe.com.jx_market.controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.image.AImage;
+import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.event.UploadEvent;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
-import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Categoria;
@@ -30,42 +34,39 @@ import pe.com.jx_market.utilities.ServiceOutput;
  * @author George
  *
  */
-public class PO_EAIngresaProducto
-    extends SecuredWindow
+@VariableResolver(DelegatingVariableResolver.class)
+public class PO_EAProductsCreate
+    extends SecuredComposer<Window>
 {
-    static Log logger = LogFactory.getLog(PO_EAIngresaProducto.class);
+    static Log logger = LogFactory.getLog(PO_EAProductsCreate.class);
     private Combobox cmbCateg;
+    @Wire
     private Textbox txtNombre, txtDesc, txtMarca;
-    private Decimalbox decPrec;
+    @Wire
     private Image imgFoto;
-    private BusinessService articuloService, categoriaService;
+    @WireVariable
+    private BusinessService<DTO_Articulo> productService;
+    @WireVariable
+    private BusinessService<DTO_Categoria> categoryService;
     private DTO_Empresa empresa;
     private byte[] imgProducto;
+    @WireVariable
+    private Desktop desktop;
+    @Wire
+    private Window wEAPC;
 
     @Override
-    public void realOnCreate()
+    public void doAfterCompose(final Window _comp)
     {
-        imgFoto = (Image) getFellow("imgFoto");
-        cmbCateg = (Combobox) getFellow("cmbCateg");
-        txtNombre = (Textbox) getFellow("txtNombre");
-        txtDesc = (Textbox) getFellow("txtDesc");
-        txtMarca = (Textbox) getFellow("txtMarca");
-        decPrec = (Decimalbox) getFellow("decPrec");
-        decPrec.setValue(BigDecimal.ZERO);
+        empresa = (DTO_Empresa) desktop.getSession().getAttribute("empresa");
 
-        articuloService = ContextLoader.getService(this, "articuloService");
-        categoriaService = ContextLoader.getService(this, "categoriaService");
-
-        empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
-
-        listarCategorias();
+        //listarCategorias();
     }
 
     public void crearProducto()
     {
         if (cmbCateg.getSelectedItem() != null && !txtNombre.getValue().equals("")
-                        && !txtDesc.getValue().equals("") && !txtMarca.getValue().equals("")
-                        && decPrec.getValue() != null && decPrec.getValue() != BigDecimal.ZERO) {
+                        && !txtDesc.getValue().equals("") && !txtMarca.getValue().equals("")) {
             final DTO_Articulo articulo = new DTO_Articulo();
             //articulo.setCategoria(((DTO_Categoria) cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
             articulo.setActivo(Constantes.ST_ACTIVO);
@@ -79,17 +80,17 @@ public class PO_EAIngresaProducto
             }
             final ServiceInput input = new ServiceInput(articulo);
             input.setAccion(Constantes.V_REGISTER);
-            final ServiceOutput output = articuloService.execute(input);
+            final ServiceOutput output = productService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo("Los datos del nuevo producto fueron guardados correctamente",
+                alertaInfo(logger, "Los datos del nuevo producto fueron guardados correctamente",
                                 "Los datos del nuevo producto fueron guardados correctamente", null);
                 limpiarCampos();
             } else {
-                alertaError("Ocurrio un error inesperado al guardar el producto, consulte al Administrador",
+                alertaError(logger, "Ocurrio un error inesperado al guardar el producto, consulte al Administrador",
                                 "Ocurrio un error inesperado al guardar el producto, consulte al Administrador", null);
             }
         } else {
-            alertaInfo("Debe ingresar datos en todos los campos", "No se ingreso data en todos los campos", null);
+            alertaInfo(logger, "Debe ingresar datos en todos los campos", "No se ingreso data en todos los campos", null);
         }
     }
 
@@ -99,9 +100,9 @@ public class PO_EAIngresaProducto
         cat.setEmpresa(empresa.getCodigo());
         final ServiceInput input = new ServiceInput(cat);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = categoriaService.execute(input);
+        final ServiceOutput output = categoryService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "Exito al cargar categorias", null);
+            alertaInfo(logger, "", "Exito al cargar categorias", null);
             final List<DTO_Categoria> lstCat = output.getLista();
             for (final DTO_Categoria categ : lstCat) {
                 final Comboitem item = new Comboitem();
@@ -110,7 +111,7 @@ public class PO_EAIngresaProducto
                 cmbCateg.appendChild(item);
             }
         } else {
-            alertaError("Error inesperado, por favor contacte al administrador", "Error cargando categorias", null);
+            alertaError(logger, "Error inesperado, por favor contacte al administrador", "Error cargando categorias", null);
         }
     }
 
@@ -166,38 +167,8 @@ public class PO_EAIngresaProducto
         txtNombre.setValue("");
         txtDesc.setValue("");
         txtMarca.setValue("");
-        decPrec.setValue(BigDecimal.ZERO);
         imgProducto = null;
         setGraficoFoto();
-    }
-
-    public void alertaInfo(final String txt,
-                           final String txt2,
-                           final Throwable t)
-    {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.INFORMATION);
-        }
-        if (t != null) {
-            logger.info(txt2, t);
-        } else {
-            logger.info(txt2);
-        }
-    }
-
-    public void alertaError(final String txt,
-                            final String txt2,
-                            final Throwable t)
-    {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
-        }
-        if (t != null) {
-            logger.error(txt2, t);
-        } else {
-            logger.error(txt2);
-        }
-
     }
 
     @Override

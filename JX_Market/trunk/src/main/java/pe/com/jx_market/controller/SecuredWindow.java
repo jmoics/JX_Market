@@ -8,9 +8,11 @@ import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-public abstract class SecuredWindow
-    extends Window
+
+public abstract class SecuredWindow extends Window
 {
+    private static final long serialVersionUID = 3258515575680520815L;
+    private BusinessService autorizacionService;
 
     public void onCreate()
     {
@@ -26,15 +28,15 @@ public abstract class SecuredWindow
 
     private void checkResources(final DTO_Empleado empleado)
     {
+        autorizacionService = ContextLoader.getService(this, "autorizacionService");
         final String[] resources = requiredResources();
         if (resources == null || resources.length == 0) {
             return;
         }
-        final BusinessService autorizacionService = ContextLoader.getService(this, "autorizacionService");
-        final ServiceInput input = new ServiceInput();
+        final ServiceInput<DTO_Empleado> input = new ServiceInput<DTO_Empleado>();
         input.addMapPair("empleado", empleado);
         input.addMapPair("modulo-array", resources);
-        final ServiceOutput output = autorizacionService.execute(input);
+        final ServiceOutput<DTO_Empleado> output = autorizacionService.execute(input);
         if (output.getErrorCode() == Constantes.AUTH_ERROR) {
             throw new RuntimeException("Acceso no autorizado!");
         }

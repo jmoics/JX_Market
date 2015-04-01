@@ -5,6 +5,7 @@ package pe.com.jx_market.controller;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,11 +17,12 @@ import java.util.TreeMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.zk.ui.Desktop;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -33,7 +35,6 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.TreeNode;
 import org.zkoss.zul.Window;
@@ -54,7 +55,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
  */
 @VariableResolver(DelegatingVariableResolver.class)
 public class PO_EAProducts
-    extends SelectorComposer<Window>
+    extends SecuredComposer<Window>
 {
     private static final long serialVersionUID = -1744564334999015662L;
 
@@ -75,6 +76,8 @@ public class PO_EAProducts
     private DTO_Empresa empresa;
     @WireVariable
     private Desktop desktop;
+    @Wire
+    private Window wEACP;
 
     @Override
     public void doAfterCompose(final Window _comp)
@@ -97,7 +100,7 @@ public class PO_EAProducts
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_Categoria> output = categoryService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "Exito al cargar categorias", null);
+            alertaInfo(logger, "", "Exito al cargar categorias", null);
             final List<DTO_Categoria> lstCat = output.getLista();
             final CategoryTreeNode categoryTreeNode = buildCategoryTree(lstCat);
 
@@ -107,7 +110,8 @@ public class PO_EAProducts
             //chbCat.setModel(ListModels.toListSubModel(modelCat));
             chbCat.setModel(modelCat);
         } else {
-            alertaError("Error inesperado, por favor contacte al administrador", "Error cargando categorias", null);
+            alertaError(logger,
+                            "Error inesperado, por favor contacte al administrador", "Error cargando categorias", null);
         }
     }
 
@@ -191,6 +195,7 @@ public class PO_EAProducts
     @Listen("onClick = #btnSearch")
     public void buscarProductos()
     {
+        lstProd.getItems().clear();
         final ArrayList<Integer> listCat = new ArrayList<Integer>();
         final ServiceInput<DTO_Articulo> input = new ServiceInput<DTO_Articulo>();
         if (chbCat.getSelectedObjects() != null && !chbCat.getSelectedObjects().isEmpty()) {
@@ -267,44 +272,38 @@ public class PO_EAProducts
     public void limpiarConsulta()
     {
         txtProdName.setValue("");
-        //chbCat.setValue("");
-        //chbCat.setSelectedItem(null);
+        chbCat.clearSelection();
         cmbEstad.setValue("");
         cmbEstad.setSelectedItem(null);
     }
 
-    public void cancelarBusqueda()
-    {
-        lstProd.getItems().clear();
-        limpiarConsulta();
+    @Listen("onClick = #btnEdit")
+    public void lanzarWindowEditar(final MouseEvent event) {
+        final Map<String, Object> dataArgs = new HashMap<String, Object>();
+        final Window w = (Window) Executions.createComponents("eACategoryEdit.zul", null, dataArgs);
+        w.setPage(wEACP.getPage());
+        //w.setParent(wEACC);
+        //w.doOverlapped();
+        w.doHighlighted();
+        //w.doEmbedded();
     }
 
-    public void alertaInfo(final String txt,
-                           final String txt2,
-                           final Throwable t)
-    {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.INFORMATION);
-        }
-        if (t != null) {
-            logger.info(txt2, t);
-        } else {
-            logger.info(txt2);
-        }
+    @Listen("onClick = #btnCreate")
+    public void lanzarWindowNuevo(final MouseEvent event) {
+        final Map<String, Object> dataArgs = new HashMap<String, Object>();
+        final Window w = (Window) Executions.createComponents("eAProductsCreate.zul", null, dataArgs);
+        w.setPage(wEACP.getPage());
+        //w.setParent(wEACC);
+        //w.doOverlapped();
+        w.doModal();
+        //w.doEmbedded();
     }
 
-    public void alertaError(final String txt,
-                            final String txt2,
-                            final Throwable t)
+    @Override
+    String[] requiredResources()
     {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
-        }
-        if (t != null) {
-            logger.error(txt2, t);
-        } else {
-            logger.error(txt2);
-        }
+        // TODO Auto-generated method stub
+        return null;
     }
 
     /*
