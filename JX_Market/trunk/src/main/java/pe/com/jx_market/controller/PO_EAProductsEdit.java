@@ -10,13 +10,17 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.image.AImage;
+import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.event.UploadEvent;
+import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Categoria;
@@ -30,40 +34,42 @@ import pe.com.jx_market.utilities.ServiceOutput;
  * @author George
  *
  */
-public class PO_EAEditaProducto
-    extends SecuredWindow
+public class PO_EAProductsEdit
+    extends SecuredComposer<Window>
 {
-    static Log logger = LogFactory.getLog(PO_EAEditaProducto.class);
+    static Log logger = LogFactory.getLog(PO_EAProductsEdit.class);
+    @Wire
     private Combobox cmbCateg, cmbEstado;
+    @Wire
     private Textbox txtNombre, txtDesc, txtMarca;
+    @Wire
     private Decimalbox decPrec;
+    @Wire
     private Image imgFoto;
     private byte[] imgProducto;
-    private BusinessService articuloService, categoriaService;
+    @WireVariable
+    private BusinessService<DTO_Articulo> productService;
+    @WireVariable
+    private BusinessService<DTO_Categoria> categoryService;
     private DTO_Empresa empresa;
     private DTO_Articulo articulo;
+    @WireVariable
+    private Desktop desktop;
+    @Wire
+    private Window wEAEP;
 
     @Override
-    public void realOnCreate()
+    public void doAfterCompose(final Window _comp) throws Exception
     {
-        imgFoto = (Image) getFellow("imgFoto");
-        cmbCateg = (Combobox) getFellow("cmbCateg");
-        cmbEstado = (Combobox) getFellow("cmbEstado");
-        txtNombre = (Textbox) getFellow("txtNombre");
-        txtDesc = (Textbox) getFellow("txtDesc");
-        txtMarca = (Textbox) getFellow("txtMarca");
-        decPrec = (Decimalbox) getFellow("decPrec");
+        super.doAfterCompose(_comp);
         decPrec.setValue(BigDecimal.ZERO);
 
-        articuloService = ContextLoader.getService(this, "articuloService");
-        categoriaService = ContextLoader.getService(this, "categoriaService");
+        empresa = (DTO_Empresa) desktop.getSession().getAttribute("empresa");
 
-        empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
-
-        articulo = (DTO_Articulo) getDesktop().getSession().getAttribute("producto");
+        articulo = (DTO_Articulo) desktop.getSession().getAttribute("producto");
         final ServiceInput input = new ServiceInput(articulo);
         input.setAccion(Constantes.V_GETIMG);
-        final ServiceOutput output = articuloService.execute(input);
+        final ServiceOutput output = productService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
             alertaInfo("", "El articulo" + articulo.getProductName() + "no posee imagen", null);
         }
@@ -72,7 +78,7 @@ public class PO_EAEditaProducto
             alertaInfo("", "No se encontro producto, retornando a busqueda", null);
             incluir("eAConsultaProducto.zul");
         } else {
-            getDesktop().getSession().removeAttribute("producto");
+            desktop.getSession().removeAttribute("producto");
             cargarDatos();
         }
     }
@@ -95,7 +101,7 @@ public class PO_EAEditaProducto
             }
             final ServiceInput input = new ServiceInput(articulo);
             input.setAccion(Constantes.V_REGISTER);
-            final ServiceOutput output = articuloService.execute(input);
+            final ServiceOutput output = productService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 alertaInfo("Los datos del producto se actualizaron correctamente",
                                 "Los datos del producto se actualizaron correctamente", null);
@@ -176,7 +182,7 @@ public class PO_EAEditaProducto
         cat.setEmpresa(empresa.getCodigo());
         final ServiceInput input = new ServiceInput(cat);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = categoriaService.execute(input);
+        final ServiceOutput output = categoryService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("", "Exito al cargar categorias", null);
             final List<DTO_Categoria> lstCat = output.getLista();
@@ -215,8 +221,8 @@ public class PO_EAEditaProducto
     public void incluir(final String txt)
     {
         // getDesktop().getSession().setAttribute("paginaActual", txt);
-        getDesktop().getSession().setAttribute("actualizar", "actualizar");
-        ContextLoader.saltar(this, txt);
+        desktop.getSession().setAttribute("actualizar", "actualizar");
+        ContextLoader.saltar(desktop, txt);
     }
 
     public void alertaInfo(final String txt,

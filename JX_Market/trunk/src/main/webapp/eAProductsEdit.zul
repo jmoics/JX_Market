@@ -1,7 +1,7 @@
 <?page title="JX_Market" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
 <div align="center">
-   <window id="winEAEP" use="pe.com.jx_market.controller.PO_EAEditaProducto">
+   <window id="wEAEP" apply="pe.com.jx_market.controller.PO_EAProductsEdit">
       <vbox>
          <html:p />
          <div align="center">
@@ -50,7 +50,7 @@
                         <label value="Descripcion"/>
                         <textbox id="txtDesc" width="300px" multiline="true" rows="3"/>
                      </row>
-                     
+
                   </rows>
                </grid>
                <html:p />
