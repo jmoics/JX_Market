@@ -13,14 +13,14 @@
         <div align="center" height="10%">
             <label zclass="z-south-header"
                 style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                Edición de Categorías
+                ${labels.pe.com.jx_market.eACategoryEdit.Title}
             </label>
         </div>
         <div width="100%">
             <tree id="tree" hflex="1" height="430px">
                 <treecols>
-                    <treecol label="Categoría" />
-                    <treecol label="Estado" />
+                    <treecol label="${labels.pe.com.jx_market.eACategoryEdit.category.Label}" />
+                    <treecol label="${labels.pe.com.jx_market.eACategoryEdit.status.Label}" />
                 </treecols>
                 <!-- <template name="model">
                     <treeitem>
@@ -32,9 +32,9 @@
             </tree>
         </div>
         <hbox align="center" pack="end" hflex="1" vflex="1">
-            <button id="btnSave" label="Grabar"
+            <button id="btnSave" label="${labels.pe.com.jx_market.eACategoryCreate.save.Label}"
                 image="/media/filesave.png" />
-            <button id="btnClose" label="Cerrar"
+            <button id="btnClose" label="${labels.pe.com.jx_market.eACategoryCreate.close.Label}"
                 image="/media/cancel.png" />
         </hbox>
     </vbox>

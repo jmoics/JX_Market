@@ -18,13 +18,12 @@
         <tabpanels>
             <tabpanel >
                 <vbox height="100%" width="100%">
-                    <div align="center">
+                    <div align="center" height="10%">
                         <label zclass="z-south-header"
                             style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
                             Ingreso de Productos
                         </label>
                     </div>
-                    <html:p />
                     <grid width="100%" fixedLayout="true">
                         <auxhead>
                             <auxheader label="Nuevo Producto" colspan="3" />
@@ -60,9 +59,12 @@
                             </row>
                         </rows>
                     </grid>
-                    <html:p />
-                    <button label="Crear Producto" />
-                    <button label="Limpiar" />
+                    <hbox align="center" pack="end" hflex="1" vflex="1">
+                        <button id="btnSave" label="Grabar"
+                            image="/media/filesave.png" />
+                        <button id="btnClose" label="Cerrar"
+                            image="/media/cancel.png" />
+                    </hbox>
                 </vbox>
             </tabpanel>
             <tabpanel></tabpanel>

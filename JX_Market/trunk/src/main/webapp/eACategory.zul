@@ -27,15 +27,15 @@
                 <div align="center">
                     <label zclass="z-south-header"
                         style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                        Consulta de Categorías
+                        ${labels.pe.com.jx_market.eACategory.Title}
                     </label>
                 </div>
             </north>
             <center autoscroll="true" border="none">
                 <tree width="100%" id="tree" >
                     <treecols>
-                        <treecol label="Categoria" />
-                        <treecol label="Estado" />
+                        <treecol label="${labels.pe.com.jx_market.eACategory.category.Label}" />
+                        <treecol label="${labels.pe.com.jx_market.eACategory.status.Label}" />
                     </treecols>
                     <!-- <template name="model">
                         <treeitem>
@@ -48,9 +48,9 @@
             </center>
             <south size="5%" style="visibility:visible;">
                 <hbox align="center" pack="end" hflex="1" vflex="1">
-                    <button id="btnCreate" label="Nuevo"
+                    <button id="btnCreate" label="${labels.pe.com.jx_market.eACategory.btnCreate.Label}"
                         image="/media/filenew.png" />
-                    <button id="btnEdit" label="Editar"
+                    <button id="btnEdit" label="${labels.pe.com.jx_market.eACategory.btnEdit.Label}"
                         image="/media/edit.png" />
                 </hbox>
             </south>
