@@ -34,7 +34,7 @@ public class ArticuloServiceTest
     {
         final DTO_Articulo art = new DTO_Articulo();
         //art.setCategoria(1);
-        art.setActivo(Constantes.ST_ACTIVO);
+        art.setActivo(Constantes.STB_ACTIVO);
         art.setProductDescription("juego de video de accion basado en la trilogia del senior de los anillos");
         art.setProductName("Ring Action");
         art.setEmpresa(2);

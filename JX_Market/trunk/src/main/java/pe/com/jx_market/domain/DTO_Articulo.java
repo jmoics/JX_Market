@@ -20,7 +20,7 @@ public class DTO_Articulo implements Serializable
     //private String marca;
     //private BigDecimal precio;
     //private Integer stock;
-    private Integer activo;
+    private Boolean activo;
     private byte[] imagen;
     private String nomimg;
 
@@ -105,11 +105,11 @@ public class DTO_Articulo implements Serializable
     {
         this.stock = stock;
     }*/
-    public Integer getActivo()
+    public Boolean getActivo()
     {
         return activo;
     }
-    public void setActivo(final Integer activo)
+    public void setActivo(final Boolean activo)
     {
         this.activo = activo;
     }

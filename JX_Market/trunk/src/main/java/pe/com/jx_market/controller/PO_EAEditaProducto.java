@@ -83,7 +83,7 @@ public class PO_EAEditaProducto
                         && !txtDesc.getValue().equals("") && !txtMarca.getValue().equals("")
                         && decPrec.getValue() != null && decPrec.getValue() != BigDecimal.ZERO) {
             //articulo.setCategoria(((DTO_Categoria) cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
-            articulo.setActivo((Integer) cmbEstado.getSelectedItem().getValue());
+            articulo.setActivo((Boolean) cmbEstado.getSelectedItem().getValue());
             articulo.setProductDescription(txtDesc.getValue());
             articulo.setEmpresa(empresa.getCodigo());
             //articulo.setMarca(txtMarca.getValue());
@@ -200,14 +200,14 @@ public class PO_EAEditaProducto
         item.setLabel("Activo");
         item.setValue(Constantes.ST_ACTIVO);
         cmbEstado.appendChild(item);
-        if (articulo.getActivo() == Constantes.ST_ACTIVO) {
+        if (articulo.getActivo() == Constantes.STB_ACTIVO) {
             cmbEstado.setSelectedItem(item);
         }
         item = new Comboitem();
         item.setLabel("Inactivo");
         item.setValue(Constantes.ST_INACTIVO);
         cmbEstado.appendChild(item);
-        if (articulo.getActivo() == Constantes.ST_INACTIVO) {
+        if (articulo.getActivo() == Constantes.STB_INACTIVO) {
             cmbEstado.setSelectedItem(item);
         }
     }

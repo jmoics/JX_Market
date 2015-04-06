@@ -49,8 +49,7 @@ public class ProductService implements BusinessService<DTO_Articulo>
         } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
             final DTO_Articulo arti = input.getObject();
             if(arti.getNomimg() == null) {
-                /*arti.setNomimg(arti.getEmpresa() + "." + arti.getCategoria() + "." +
-                                arti.getNombre().trim() + "." + generarNombreAleatorio());*/
+                arti.setNomimg(arti.getEmpresa() + "." + arti.getProductName().trim() + "." + generarNombreAleatorio());
                 savePhoto(arti);
             }
             final DTO_Articulo artiTmp = articuloMapper.getArticuloXCodigo(arti);

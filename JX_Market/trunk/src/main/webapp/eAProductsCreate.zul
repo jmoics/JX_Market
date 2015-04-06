@@ -8,6 +8,9 @@
             border-left-width: 1px;
             border-right-width: 1px;
         }
+        .z-hbox {
+            -webkit-border-horizontal-spacing: 0px;
+        }
     </style>
     <tabbox hflex="1" vflex="1">
         <tabs>
@@ -35,31 +38,26 @@
                         <rows>
                             <row>
                                 <label value="Imagen" />
-                                <vbox>
+                                <vbox hflex="1">
                                     <image src="/media/imagProd.gif" id="imgFoto" width="100px" height="110px" />
-                                    <button label="Cargar Imagen" upload="true"
-                                        onUpload="winEAIP.cargaFoto(this.event)" />
+                                    <button label="Cargar Imagen" upload="true" id="btnUpload" />
                                 </vbox>
                             </row>
                             <row>
                                 <label value="Nombre" />
-                                <textbox id="txtNombre" hflex="1" />
+                                <textbox id="txtNombre" width="60%" />
                             </row>
-                            <!-- <row>
-                                <label value="Marca"/>
-                                <textbox id="txtMarca" width="170px"/>
-                                </row> -->
-                            <!-- <row>
-                                <label value="Precio"/>
-                                <decimalbox id="decPrec" width="170px"/>
-                                </row> -->
                             <row>
                                 <label value="Descripcion" />
                                 <textbox id="txtDesc" hflex="1" multiline="true" rows="3" />
                             </row>
+                            <row>
+                                <label value="Estado" />
+                                <combobox id="cmbStatus" />
+                            </row>
                         </rows>
                     </grid>
-                    <hbox align="center" pack="end" hflex="1" vflex="1">
+                    <hbox align="end" pack="end" hflex="1" vflex="1">
                         <button id="btnSave" label="Grabar"
                             image="/media/filesave.png" />
                         <button id="btnClose" label="Cerrar"

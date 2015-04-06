@@ -18,7 +18,7 @@
             -webkit-border-horizontal-spacing: 3px;
         }
         .z-window-content {
-            padding: 1px;
+            padding: 3px;
         }
     </style>
     <div align="center" height="100%">

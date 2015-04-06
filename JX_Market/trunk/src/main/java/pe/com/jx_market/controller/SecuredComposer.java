@@ -1,12 +1,15 @@
 package pe.com.jx_market.controller;
 
 import org.apache.commons.logging.Log;
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Messagebox;
 
 import pe.com.jx_market.domain.DTO_Empleado;
@@ -88,5 +91,17 @@ public abstract class SecuredComposer<T extends Component>
         } else {
             _logger.error(txt2);
         }
+    }
+
+    public void buildActiveCombo(final Combobox _combo)
+    {
+        Comboitem item = new Comboitem();
+        item.setLabel(Labels.getLabel("pe.com.jx_market.Active.TRUE"));
+        item.setValue(Constantes.STB_ACTIVO);
+        _combo.appendChild(item);
+        item = new Comboitem();
+        item.setLabel(Labels.getLabel("pe.com.jx_market.Active.FALSE"));
+        item.setValue(Constantes.STB_INACTIVO);
+        _combo.appendChild(item);
     }
 }

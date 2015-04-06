@@ -67,6 +67,9 @@ public class Constantes {
     public static final Integer ST_CANCELADO = 3;
     public static final Integer ST_PENDIENTE = 4;
 
+    public static final Boolean STB_ACTIVO = true;
+    public static final Boolean STB_INACTIVO = false;
+
     /*
      * Strings para estados
      */

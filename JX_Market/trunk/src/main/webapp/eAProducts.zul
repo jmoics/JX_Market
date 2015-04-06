@@ -9,6 +9,9 @@
         .z-window-content {
             padding: 1px;
         }
+        .z-hbox {
+            -webkit-border-horizontal-spacing: 3px;
+        }
     </style>
     <borderlayout id="bl" hflex="1" vflex="1">
         <north size="26%" collapsible="false">

@@ -4,19 +4,20 @@
 package pe.com.jx_market.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.image.AImage;
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Desktop;
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.UploadEvent;
+import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
@@ -38,10 +39,13 @@ import pe.com.jx_market.utilities.ServiceOutput;
 public class PO_EAProductsCreate
     extends SecuredComposer<Window>
 {
+    private static final long serialVersionUID = -5294436527686469836L;
+
     static Log logger = LogFactory.getLog(PO_EAProductsCreate.class);
-    private Combobox cmbCateg;
     @Wire
-    private Textbox txtNombre, txtDesc, txtMarca;
+    private Combobox cmbStatus;
+    @Wire
+    private Textbox txtNombre, txtDesc;
     @Wire
     private Image imgFoto;
     @WireVariable
@@ -57,19 +61,23 @@ public class PO_EAProductsCreate
 
     @Override
     public void doAfterCompose(final Window _comp)
+        throws Exception
     {
-        empresa = (DTO_Empresa) desktop.getSession().getAttribute("empresa");
+        super.doAfterCompose(_comp);
 
-        //listarCategorias();
+        empresa = (DTO_Empresa) desktop.getSession().getAttribute("empresa");
+        buildActiveCombo(cmbStatus);
+
+        // listarCategorias();
     }
 
-    public void crearProducto()
+    @Listen("onClick = #btnSave")
+    public void createProduct()
     {
-        if (cmbCateg.getSelectedItem() != null && !txtNombre.getValue().equals("")
-                        && !txtDesc.getValue().equals("") && !txtMarca.getValue().equals("")) {
+        if (!txtNombre.getValue().equals("") && !txtDesc.getValue().equals("")) {
             final DTO_Articulo articulo = new DTO_Articulo();
             //articulo.setCategoria(((DTO_Categoria) cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
-            articulo.setActivo(Constantes.ST_ACTIVO);
+            articulo.setActivo((Boolean) cmbStatus.getSelectedItem().getValue());
             articulo.setProductDescription(txtDesc.getValue());
             articulo.setEmpresa(empresa.getCodigo());
             //articulo.setMarca(txtMarca.getValue());
@@ -78,23 +86,29 @@ public class PO_EAProductsCreate
             if (imgProducto != null) {
                 articulo.setImagen(imgProducto);
             }
-            final ServiceInput input = new ServiceInput(articulo);
+            final ServiceInput<DTO_Articulo> input = new ServiceInput<DTO_Articulo>(articulo);
             input.setAccion(Constantes.V_REGISTER);
-            final ServiceOutput output = productService.execute(input);
+            final ServiceOutput<DTO_Articulo> output = productService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo(logger, "Los datos del nuevo producto fueron guardados correctamente",
-                                "Los datos del nuevo producto fueron guardados correctamente", null);
+                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"),
+                                Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"), null);
                 limpiarCampos();
             } else {
-                alertaError(logger, "Ocurrio un error inesperado al guardar el producto, consulte al Administrador",
-                                "Ocurrio un error inesperado al guardar el producto, consulte al Administrador", null);
+                alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Error.Label"),
+                                Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Error.Label"), null);
             }
         } else {
-            alertaInfo(logger, "Debe ingresar datos en todos los campos", "No se ingreso data en todos los campos", null);
+            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info2.Label"),
+                            Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info2.Label"), null);
         }
     }
 
-    public void listarCategorias()
+    @Listen("onClick = #btnClose")
+    public void accionCerrar(final Event e) {
+        wEAPC.detach();
+    }
+
+    /*public void listarCategorias()
     {
         final DTO_Categoria cat = new DTO_Categoria();
         cat.setEmpresa(empresa.getCodigo());
@@ -113,7 +127,7 @@ public class PO_EAProductsCreate
         } else {
             alertaError(logger, "Error inesperado, por favor contacte al administrador", "Error cargando categorias", null);
         }
-    }
+    }*/
 
     private void setGraficoFoto()
     {
@@ -128,6 +142,7 @@ public class PO_EAProductsCreate
         imgFoto.setSrc("/media/silueta.gif");
     }
 
+    @Listen("onUpload = #btnUpload")
     public void cargaFoto(final UploadEvent event)
         throws Exception
     {
@@ -162,11 +177,10 @@ public class PO_EAProductsCreate
 
     public void limpiarCampos()
     {
-        cmbCateg.setSelectedItem(null);
-        cmbCateg.setValue("");
+        cmbStatus.setSelectedItem(null);
+        cmbStatus.setValue(null);
         txtNombre.setValue("");
         txtDesc.setValue("");
-        txtMarca.setValue("");
         imgProducto = null;
         setGraficoFoto();
     }

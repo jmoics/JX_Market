@@ -89,7 +89,7 @@ public class PO_EAProducts
 
         listCategories();
 
-        listarEstados();
+        buildActiveCombo(cmbEstad);
     }
 
     private void listCategories()
