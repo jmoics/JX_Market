@@ -25,13 +25,11 @@
             cat.estado as categoryEstado,
             cat.parentid as categoryParentId
         FROM
-            T_NEG_ARTICULO art,
-            T_NEG_CATEG2ARTIC cart,
-            T_NEG_CATEGORIA cat
+            T_NEG_ARTICULO art LEFT JOIN 
+            T_NEG_CATEG2ARTIC cart ON art.id = cart.productid LEFT JOIN
+            T_NEG_CATEGORIA cat ON cart.categoryid = cat.id 
         <where>
-            art.id = cart.productid AND
-            cart.categoryid = cat.id
-            <if test="empresa != null">AND
+            <if test="empresa != null">
                 art.empresaid = #{empresa}
                 <if test="lstCategory != null">AND
                     cart.categoryid in

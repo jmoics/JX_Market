@@ -225,7 +225,7 @@ public class PO_EAProducts
                 item.appendChild(cell);
                 /*cell = new Listcell(formateador.format(art.getPrecio()));
                 item.appendChild(cell);*/
-                if (art.getActivo().equals(Constantes.ST_ACTIVO)) {
+                if (art.getActivo()) {
                     cell = new Listcell(Labels.getLabel("pe.com.jx_market.Active.TRUE"));
                 } else {
                     cell = new Listcell(Labels.getLabel("pe.com.jx_market.Active.FALSE"));
@@ -238,8 +238,6 @@ public class PO_EAProducts
                     public void onEvent(final Event e)
                         throws UiException
                     {
-                        desktop.getSession().setAttribute(Constantes.ATTRIBUTE_PRODUCT,
-                                        e.getTarget().getAttribute(Constantes.ATTRIBUTE_PRODUCT));
                         runWindowEdit((MouseEvent) e);
                         //incluir("eAEditaProducto.zul");
                     }
@@ -261,13 +259,19 @@ public class PO_EAProducts
 
     @Listen("onClick = #btnEdit")
     public void runWindowEdit(final MouseEvent event) {
-        final Map<String, Object> dataArgs = new HashMap<String, Object>();
-        final Window w = (Window) Executions.createComponents(Constantes.Form.PRODUCTS_EDIT_FORM.getForm(), null, dataArgs);
-        w.setPage(wEACP.getPage());
-        //w.setParent(wEACC);
-        //w.doOverlapped();
-        w.doHighlighted();
-        //w.doEmbedded();
+        if (lstProd.getSelectedItem() != null) {
+            desktop.getSession().setAttribute(Constantes.ATTRIBUTE_PRODUCT,
+                            lstProd.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_PRODUCT));
+            final Map<String, Object> dataArgs = new HashMap<String, Object>();
+            final Window w = (Window) Executions.createComponents(Constantes.Form.PRODUCTS_EDIT_FORM.getForm(), null, dataArgs);
+            w.setPage(wEACP.getPage());
+            //w.setParent(wEACC);
+            //w.doOverlapped();
+            w.doHighlighted();
+            //w.doEmbedded();
+        } else {
+            alertaInfo(logger, "Debe seleecionar un registro previamente", "No se selecciono un registro a editar", null);
+        }
     }
 
     @Listen("onClick = #btnCreate")

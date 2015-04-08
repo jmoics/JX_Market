@@ -60,9 +60,9 @@ INSERT INTO T_NEG_ARTICULO (EMPRESAID, NOMBRE, DESCRIPCION, ACTIVO, IMAGEN)
 				  (2,'Final Fantasy X','Juego de ROL, para consola Play Station 2',true,NULL),
 				  (2,'PS2','play station 2 color azul con un mando y una memory card',true,'2.1.PS2.22589'),
 				  (2,'PS2','play station 2 azul y negro mas un mando',true,'2.1.PS2.938193'),
-				  (3,'Final fantasy x-2','Juego rpg final fantasy x-2 original en caja',true,'3.1.Final fantasy x-2.950467'),
-				  (3,'Final Fantasy XII','Juego Final Fantasy XII original algo rayadito XD',true,'3.1.Final Fantasy XII.180339'),
-				  (3,'PS2','consola ps2',true,'3.3.PS2.918564');
+				  (2,'Final fantasy x-2','Juego rpg final fantasy x-2 original en caja',true,'3.1.Final fantasy x-2.950467'),
+				  (2,'Final Fantasy XII','Juego Final Fantasy XII original algo rayadito XD',true,'3.1.Final Fantasy XII.180339'),
+				  (2,'PS2','consola ps2',true,'3.3.PS2.918564');
 
 INSERT INTO T_NEG_CATEG2ARTIC (CATEGORYID, PRODUCTID)
            VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(2,1),(2,2),(4,3),(4,4),(2,5),(2,6),(4,7);
