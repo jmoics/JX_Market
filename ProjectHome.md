@@ -1,0 +1,1 @@
+El proyecto esta basado en una empresa que ofrece servicios de comercio electronico a otras empresas, permitiendole a la empresa que se llegue a asociar, la posibilidad de manejar sus productos, inventario, ventas, accesos, etc.
