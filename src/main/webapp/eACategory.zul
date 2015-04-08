@@ -1,0 +1,60 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+<window id="wEACC" width="100%" height="100%"
+        apply="pe.com.jx_market.controller.PO_EACategory">
+    <style>
+        .h-inline-block {
+            display: inline-block;
+            _display: inline;
+        }
+        .z-north {
+            border-top-width: 1px;
+            border-bottom-width: 0px;
+        }
+        .z-south {
+            border-bottom-width: 1px;
+        }
+        .z-hbox {
+            -webkit-border-horizontal-spacing: 3px;
+        }
+        .z-window-content {
+            padding: 3px;
+        }
+    </style>
+    <div align="center" height="100%">
+        <borderlayout id="bl" width="100%" height="100%">
+            <north size="6%" collapsible="false">
+                <div align="center">
+                    <label zclass="z-south-header"
+                        style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                        ${labels.pe.com.jx_market.eACategory.Title}
+                    </label>
+                </div>
+            </north>
+            <center autoscroll="true" border="none">
+                <tree width="100%" id="tree" >
+                    <treecols>
+                        <treecol label="${labels.pe.com.jx_market.eACategory.category.Label}" />
+                        <treecol label="${labels.pe.com.jx_market.eACategory.status.Label}" />
+                    </treecols>
+                    <!-- <template name="model">
+                        <treeitem>
+                            <treerow>
+                                <treecell label="${each.data.nombre}"/>
+                            </treerow>
+                        </treeitem>
+                    </template>-->
+                </tree>
+            </center>
+            <south size="5%" style="visibility:visible;">
+                <hbox align="center" pack="end" hflex="1" vflex="1">
+                    <button id="btnCreate" label="${labels.pe.com.jx_market.eACategory.btnCreate.Label}"
+                        image="/media/filenew.png" />
+                    <button id="btnEdit" label="${labels.pe.com.jx_market.eACategory.btnEdit.Label}"
+                        image="/media/edit.png" />
+                </hbox>
+            </south>
+        </borderlayout>
+    </div>
+</window>
+</zk>

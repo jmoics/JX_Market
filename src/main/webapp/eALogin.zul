@@ -1,0 +1,69 @@
+<?page title="JX-Market" contentType="text/html;charset=UTF-8"?>
+
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+   <div align="center">
+      <style>
+         .desc { color:#545454;font-weight:bold;font-family:Sans-serif; }
+         .btndiv .z-button-cr,
+         .btndiv .z-button-cl, .btndiv .z-button-bl, .btndiv .z-button-bm, .btndiv .z-button-br,
+         .btndiv .z-button-tl, .btndiv .z-button-tm, .btndiv .z-button-tr { background-image:none; }
+         .btndiv .z-button-cm { background : transparent url('') no-repeat 0 0 ; } .myBlack
+         .z-button-cm { background-image : url(media/button.png); } .z-button-focus .z-button-cm {
+         background-position: 0 -62px } .z-button-over .z-button-cm { background-position: 0 -30px }
+         .z-button-clk .z-button-cm { background-position: 0 -93px }
+      </style>
+      <image src="media/jx_market.gif" onClick='Executions.sendRedirect("index.zul")' style="cursor: pointer"/>
+      <html:p />
+      <window id="wEAL" width="600px" apply="pe.com.jx_market.controller.PO_EALogin">
+         <div align="left">
+            <vbox width="600px">
+               <html:p />
+               <div align="center">
+                  <label zclass="z-south-header"
+                     style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                     ${labels.pe.com.jx_market.eALogin.Header.Label}
+                  </label>
+               </div>
+               <html:p />
+               <div align="center">
+                  <grid fixedLayout="true" width="400px">
+                     <columns visible="false">
+                        <column/><!-- se debe definir columnas sino no se muestra -->
+                        <column/>
+                    </columns>
+                     <rows>
+                        <row>
+                           <label class="desc">${labels.pe.com.jx_market.eALogin.Company.Label}:</label>
+                           <!-- Por el momento sera combobox despues sera bandbox -->
+                           <combobox id="cmbEmp" hflex="1"/>
+                        </row>
+                        <row>
+                           <label class="desc">${labels.pe.com.jx_market.eALogin.User.Label}:</label>
+                           <textbox id="txtUser" hflex="1"></textbox>
+                        </row>
+                        <row>
+                           <label class="desc">${labels.pe.com.jx_market.eALogin.Password.Label}:</label>
+                           <textbox id="txtPass" hflex="1" type="password"/>
+                        </row>
+                     </rows>
+                  </grid>
+
+               </div>
+               <html:p />
+               <div class="btndiv" align="center">
+                  <button id="btnIngresar" height="38px" sclass="myBlack" width="106px"
+                     style="font-family: sans-serif; font-weight:bold; color:#222222"
+                     label="${labels.pe.com.jx_market.eALogin.Login.Label}" />
+               </div>
+
+            </vbox>
+         </div>
+         <html:p />
+         <div id="badauth" visible="false" style="color: #ff0000">
+            El usuario o contraseña ingresados no son válidos. Intente nuevamente. Si el problema
+            persiste, por favor contacte al área de Servicios al Cliente JX-Market.
+         </div>
+      </window>
+   </div>
+
+</zk>
