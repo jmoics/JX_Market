@@ -131,4 +131,21 @@ public class Constantes {
     public static final String EMPTY_STRING = "";
     public static final String SEPARATOR_STRING = "..";
 
+    public enum Form {
+        PRODUCTS_EDIT_FORM("eAProductsEdit.zul"),
+        PRODUCTS_CREATE_FORM("eAProductsCreate.zul");
+
+        private final String form;
+
+        private Form(final String _form) {
+            this.form = _form;
+        }
+
+        public String getForm() {
+            return this.form;
+        }
+    }
+
+    public static final String ATTRIBUTE_COMPANY = "empresa";
+    public static final String ATTRIBUTE_PRODUCT = "product";
 }

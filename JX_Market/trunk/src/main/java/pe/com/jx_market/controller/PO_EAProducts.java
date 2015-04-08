@@ -16,6 +16,7 @@ import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.UiException;
@@ -30,7 +31,6 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zkmax.zul.Chosenbox;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -180,18 +180,6 @@ public class PO_EAProducts
         }
     }
 
-    private void listarEstados()
-    {
-        Comboitem item = new Comboitem();
-        item.setLabel(Constantes.STATUS_ACTIVO);
-        item.setValue(Constantes.ST_ACTIVO);
-        cmbEstad.appendChild(item);
-        item = new Comboitem();
-        item.setLabel(Constantes.STATUS_INACTIVO);
-        item.setValue(Constantes.ST_INACTIVO);
-        cmbEstad.appendChild(item);
-    }
-
     @Listen("onClick = #btnSearch")
     public void buscarProductos()
     {
@@ -238,21 +226,22 @@ public class PO_EAProducts
                 /*cell = new Listcell(formateador.format(art.getPrecio()));
                 item.appendChild(cell);*/
                 if (art.getActivo().equals(Constantes.ST_ACTIVO)) {
-                    cell = new Listcell("Activo");
+                    cell = new Listcell(Labels.getLabel("pe.com.jx_market.Active.TRUE"));
                 } else {
-                    cell = new Listcell("Inactivo");
+                    cell = new Listcell(Labels.getLabel("pe.com.jx_market.Active.FALSE"));
                 }
                 item.appendChild(cell);
-                item.setAttribute("producto", art);
-                item.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+                item.setAttribute(Constantes.ATTRIBUTE_PRODUCT, art);
+                item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>()
                 {
                     @Override
                     public void onEvent(final Event e)
                         throws UiException
                     {
-                        desktop.getSession().setAttribute("producto",
-                                        e.getTarget().getAttribute("producto"));
-                        incluir("eAEditaProducto.zul");
+                        desktop.getSession().setAttribute(Constantes.ATTRIBUTE_PRODUCT,
+                                        e.getTarget().getAttribute(Constantes.ATTRIBUTE_PRODUCT));
+                        runWindowEdit((MouseEvent) e);
+                        //incluir("eAEditaProducto.zul");
                     }
                 });
                 lstProd.appendChild(item);
@@ -260,13 +249,6 @@ public class PO_EAProducts
         }
         else {
         }
-    }
-
-    public void incluir(final String txt)
-    {
-        // getDesktop().getSession().setAttribute("paginaActual", txt);
-        desktop.getSession().setAttribute("actualizar", "actualizar");
-        ContextLoader.saltar(desktop, txt);
     }
 
     public void limpiarConsulta()
@@ -278,9 +260,9 @@ public class PO_EAProducts
     }
 
     @Listen("onClick = #btnEdit")
-    public void lanzarWindowEditar(final MouseEvent event) {
+    public void runWindowEdit(final MouseEvent event) {
         final Map<String, Object> dataArgs = new HashMap<String, Object>();
-        final Window w = (Window) Executions.createComponents("eACategoryEdit.zul", null, dataArgs);
+        final Window w = (Window) Executions.createComponents(Constantes.Form.PRODUCTS_EDIT_FORM.getForm(), null, dataArgs);
         w.setPage(wEACP.getPage());
         //w.setParent(wEACC);
         //w.doOverlapped();
@@ -289,9 +271,9 @@ public class PO_EAProducts
     }
 
     @Listen("onClick = #btnCreate")
-    public void lanzarWindowNuevo(final MouseEvent event) {
+    public void runWindowCreate(final MouseEvent event) {
         final Map<String, Object> dataArgs = new HashMap<String, Object>();
-        final Window w = (Window) Executions.createComponents("eAProductsCreate.zul", null, dataArgs);
+        final Window w = (Window) Executions.createComponents(Constantes.Form.PRODUCTS_CREATE_FORM.getForm(), null, dataArgs);
         w.setPage(wEACP.getPage());
         //w.setParent(wEACC);
         //w.doOverlapped();

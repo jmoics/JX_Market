@@ -19,7 +19,7 @@
             <tab id="tabPrices" label="Precios" />
         </tabs>
         <tabpanels>
-            <tabpanel >
+            <tabpanel>
                 <vbox height="100%" width="100%">
                     <div align="center" height="10%">
                         <label zclass="z-south-header"

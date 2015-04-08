@@ -1,64 +1,72 @@
 <?page title="JX_Market" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-<div align="center">
-   <window id="wEAEP" apply="pe.com.jx_market.controller.PO_EAProductsEdit">
-      <vbox>
-         <html:p />
-         <div align="center">
-            <label zclass="z-south-header"
-               style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-               Edicion de Productos
-            </label>
-         </div>
-         <html:p />
-         <groupbox mold="3d" width="720px">
-            <caption label="Modificar Producto"/>
-            <div align="center">
-               <html:p />
-               <grid width="500px" fixedLayout="false">
-                  <columns>
-                     <column width="220px"/>
-                     <column width="220px"/>
-                     <column/>
-                  </columns>
-                  <rows>
-                     <row>
-                        <label value="Categoria"/>
-                        <combobox id="cmbCateg" width="170px" autodrop="true"/>
-                        <cell rowspan="5">
-                           <image src="/media/imagProd.gif" id="imgFoto" width="100px" height="110px"/>
-                           <button label="Cargar Imagen" upload="true" onUpload="winEAEP.cargaFoto(this.event)"/>
-                        </cell>
-                     </row>
-                     <row>
-                        <label value="Nombre"/>
-                        <textbox id="txtNombre" width="170px"/>
-                     </row>
-                     <row>
-                        <label value="Marca"/>
-                        <textbox id="txtMarca" width="170px"/>
-                     </row>
-                     <row>
-                        <label value="Precio"/>
-                        <decimalbox id="decPrec" width="170px"/>
-                     </row>
-                     <row>
-                        <label value="Estado"/>
-                        <combobox id="cmbEstado" width="170px" autodrop="true"/>
-                     </row>
-                     <row spans="1,2">
-                        <label value="Descripcion"/>
-                        <textbox id="txtDesc" width="300px" multiline="true" rows="3"/>
-                     </row>
-
-                  </rows>
-               </grid>
-               <html:p />
-               <button label="Volver" onClick="winEAEP.volverConsulta()"/>
-               <button label="Editar" onClick="winEAEP.editarProducto()"/>
-            </div>
-         </groupbox>
-      </vbox>
-   </window>
-</div>
+<window id="wEAEP" apply="pe.com.jx_market.controller.PO_EAProductsEdit" width="700px" height="500px"
+        position="center,center" closable="true" action="show: slideDown;hide: slideUp" sizable="true">
+    <style>
+        .z-grid {
+            border-left-width: 1px;
+            border-right-width: 1px;
+        }
+        .z-hbox {
+            -webkit-border-horizontal-spacing: 0px;
+        }
+    </style>
+    <tabbox hflex="1" vflex="1">
+        <tabs>
+            <tab id="tabProduct" label="Artículo" />
+            <tab id="tabCategory" label="Categorías" />
+            <tab id="tabPrices" label="Precios" />
+        </tabs>
+        <tabpanels>
+            <tabpanel>
+                <vbox height="100%" width="100%">
+                    <div align="center" height="10%">
+                        <label zclass="z-south-header"
+                            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                            Edicion de Productos
+                        </label>
+                    </div>
+                    <grid width="100%" fixedLayout="true">
+                        <auxhead>
+                            <auxheader label="Edición de Producto" colspan="3" />
+                        </auxhead>
+                        <columns>
+                            <column hflex="1" />
+                            <column hflex="3" />
+                        </columns>
+                        <rows>
+                            <row>
+                                <label value="Imagen" />
+                                <vbox hflex="1">
+                                    <image src="/media/imagProd.gif" id="imgFoto" width="100px" height="110px" />
+                                    <button label="Cargar Imagen" upload="true" id="btnUpload" />
+                                </vbox>
+                            </row>
+                            <row>
+                                <label value="Nombre" />
+                                <textbox id="txtNombre" width="60%" />
+                            </row>
+                            <row>
+                                <label value="Descripcion" />
+                                <textbox id="txtDesc" hflex="1" multiline="true" rows="3" />
+                            </row>
+                            <row>
+                                <label value="Estado" />
+                                <combobox id="cmbStatus" />
+                            </row>
+                        </rows>
+                    </grid>
+                    <hbox align="end" pack="end" hflex="1" vflex="1">
+                        <button id="btnSave" label="Grabar"
+                            image="/media/filesave.png" />
+                        <button id="btnClose" label="Cerrar"
+                            image="/media/cancel.png" />
+                    </hbox>
+                </vbox>
+            </tabpanel>
+            <tabpanel></tabpanel>
+            <tabpanel></tabpanel>
+        </tabpanels>
+    </tabbox>
+</window>
 </zk>
