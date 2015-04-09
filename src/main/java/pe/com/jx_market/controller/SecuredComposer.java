@@ -69,7 +69,7 @@ public abstract class SecuredComposer<T extends Component>
                            final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.INFORMATION);
+            Messagebox.show(txt, empresa.getRazonsocial(), Messagebox.OK, Messagebox.INFORMATION);
         }
         if (t != null) {
             _logger.info(txt2, t);
@@ -84,7 +84,7 @@ public abstract class SecuredComposer<T extends Component>
                             final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
+            Messagebox.show(txt, empresa.getRazonsocial(), Messagebox.OK, Messagebox.EXCLAMATION);
         }
         if (t != null) {
             _logger.error(txt2, t);

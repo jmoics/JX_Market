@@ -143,7 +143,7 @@ public class PO_EAProductsCreate
     }
 
     @Listen("onUpload = #btnUpload")
-    public void cargaFoto(final UploadEvent event)
+    public void uploadPhoto(final UploadEvent event)
         throws Exception
     {
         org.zkoss.util.media.Media media;

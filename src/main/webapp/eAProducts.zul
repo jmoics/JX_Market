@@ -18,12 +18,12 @@
             <vbox hflex="1" vflex="1" align="center">
                 <label zclass="z-south-header"
                     style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                    Consulta de Productos
+                    ${labels.pe.com.jx_market.eAProducts.Title}
                 </label>
                 <html:p />
                 <grid fixedLayout="true" width="100%" visible="true" hflex="1">
                     <auxhead>
-                        <auxheader label="Búsqueda de Productos" colspan="4" />
+                        <auxheader label="${labels.pe.com.jx_market.eAProducts.SubTitle}" colspan="4" />
                     </auxhead>
                     <columns>
                         <column hflex="1" />
@@ -33,13 +33,13 @@
                     </columns>
                     <rows>
                         <row spans="1,3">
-                            <label value="Categoria" />
+                            <label value="${labels.pe.com.jx_market.eAProducts.chbCat.Label}" />
                             <chosenbox id="chbCat" hflex="1" />
                         </row>
                         <row>
-                            <label value="Nombre Producto" />
+                            <label value="${labels.pe.com.jx_market.eAProducts.txtProdName.Label}" />
                             <textbox id="txtProdName" hflex="1" />
-                            <label value="Estado" />
+                            <label value="${labels.pe.com.jx_market.eAProducts.cmbEstad.Label}" />
                             <combobox id="cmbEstad" hflex="1" />
                             <!-- <label value="Marca"/>
                                 <textbox id="txtMarc" width="150px"/> -->
@@ -47,28 +47,28 @@
                     </rows>
                 </grid>
                 <hbox align="center" pack="end" hflex="1" vflex="1">
-                    <button id="btnSearch" label="Buscar" image="/media/search4.png" />
-                    <button id="btnClean" label="Limpiar" image="/media/filenew.png" />
+                    <button id="btnSearch" label="${labels.pe.com.jx_market.eAProducts.btnSearch.Label}"
+                            image="/media/search4.png" />
+                    <button id="btnClean" label="${labels.pe.com.jx_market.eAProducts.btnClean.Label}"
+                            image="/media/filenew.png" />
                 </hbox>
             </vbox>
         </north>
         <center autoscroll="true" border="none">
             <listbox id="lstProd" pagingPosition="bottom" mold="paging" autopaging="true" hflex="1" vflex="1">
                 <listhead>
-                    <listheader label="Categoria" hflex="2"/>
-                    <listheader label="Nombre" sort="auto" hflex="2"/>
-                    <listheader label="Descripción" sort="auto" hflex="4"/>
-                    <!-- <listheader label="Marca" sort="auto"/> -->
-                    <!-- <listheader label="Precio" sort="auto"/> -->
-                    <listheader label="Estado" sort="auto" hflex="1"/>
+                    <listheader label="${labels.pe.com.jx_market.eAProducts.Category.Label}" hflex="2"/>
+                    <listheader label="${labels.pe.com.jx_market.eAProducts.ProductName.Label}" sort="auto" hflex="2"/>
+                    <listheader label="${labels.pe.com.jx_market.eAProducts.ProductDesc.Label}" sort="auto" hflex="4"/>
+                    <listheader label="${labels.pe.com.jx_market.eAProducts.Status.Label}" sort="auto" hflex="1"/>
                 </listhead>
             </listbox>
         </center>
         <south size="5%" style="visibility:visible;">
             <hbox align="center" pack="end" hflex="1" vflex="1">
-                <button id="btnCreate" label="Nuevo"
+                <button id="btnCreate" label="${labels.pe.com.jx_market.eAProducts.btnCreate.Label}"
                     image="/media/filenew.png" />
-                <button id="btnEdit" label="Editar"
+                <button id="btnEdit" label="${labels.pe.com.jx_market.eAProducts.btnEdit.Label}"
                     image="/media/edit.png" />
             </hbox>
         </south>

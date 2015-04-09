@@ -27,12 +27,12 @@
                     <div align="center" height="10%">
                         <label zclass="z-south-header"
                             style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                            Edicion de Productos
+                            ${labels.pe.com.jx_market.eAProductsEdit.Title}
                         </label>
                     </div>
                     <grid width="100%" fixedLayout="true">
                         <auxhead>
-                            <auxheader label="Edición de Producto" colspan="3" />
+                            <auxheader label="${labels.pe.com.jx_market.eAProductsEdit.SubTitle}" colspan="3" />
                         </auxhead>
                         <columns>
                             <column hflex="1" />
@@ -40,30 +40,31 @@
                         </columns>
                         <rows>
                             <row>
-                                <label value="Imagen" />
+                                <label value="${labels.pe.com.jx_market.eAProductsEdit.Image.Label}" />
                                 <vbox hflex="1">
                                     <image src="/media/imagProd.gif" id="imgFoto" width="100px" height="110px" />
-                                    <button label="Cargar Imagen" upload="true" id="btnUpload" />
+                                    <button label="${labels.pe.com.jx_market.eAProductsEdit.LoadImage.Label}"
+                                            upload="true" id="btnUpload" />
                                 </vbox>
                             </row>
                             <row>
-                                <label value="Nombre" />
+                                <label value="${labels.pe.com.jx_market.eAProductsEdit.txtNombre.Label}" />
                                 <textbox id="txtNombre" width="60%" />
                             </row>
                             <row>
-                                <label value="Descripcion" />
+                                <label value="${labels.pe.com.jx_market.eAProductsEdit.txtDesc.Label}" />
                                 <textbox id="txtDesc" hflex="1" multiline="true" rows="3" />
                             </row>
                             <row>
-                                <label value="Estado" />
+                                <label value="${labels.pe.com.jx_market.eAProductsEdit.cmbStatus.Label}" />
                                 <combobox id="cmbStatus" />
                             </row>
                         </rows>
                     </grid>
                     <hbox align="end" pack="end" hflex="1" vflex="1">
-                        <button id="btnSave" label="Grabar"
+                        <button id="btnSave" label="${labels.pe.com.jx_market.eAProductsEdit.btnSave.Label}"
                             image="/media/filesave.png" />
-                        <button id="btnClose" label="Cerrar"
+                        <button id="btnClose" label="${labels.pe.com.jx_market.eAProductsEdit.btnClose.Label}"
                             image="/media/cancel.png" />
                     </hbox>
                 </vbox>
@@ -92,10 +93,8 @@
                         </tree>
                     </div>
                     <hbox align="center" pack="end" hflex="1" vflex="1">
-                        <button id="btnSave2" label="${labels.pe.com.jx_market.eAProductsEdit.Categories.save.Label}"
+                        <button id="btnSave2" label="${labels.pe.com.jx_market.eAProductsEdit.btnSave2.Label}"
                             image="/media/filesave.png" />
-                        <button id="btnClose2" label="${labels.pe.com.jx_market.eAProductsEdit.Categories.close.Label}"
-                            image="/media/cancel.png" />
                     </hbox>
                 </vbox>
             </tabpanel>

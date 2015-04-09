@@ -15,6 +15,7 @@ import java.util.TreeMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.image.AImage;
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -29,7 +30,6 @@ import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treecell;
@@ -131,15 +131,16 @@ public class PO_EAProductsEdit
             input.setAccion(Constantes.V_REGISTER);
             final ServiceOutput<DTO_Articulo> output = productService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo(logger, "Los datos del producto se actualizaron correctamente",
+                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editProduct.Info.Label",
+                                articulo.getProductName()),
                                 "Los datos del producto se actualizaron correctamente", null);
             } else {
-                alertaError(logger, "Ocurrio un error inesperado al guardar el producto, consulte al Administrador",
+                alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editProduct.Error.Label"),
                                 "Ocurrio un error inesperado al guardar el producto, consulte al Administrador", null);
             }
         } else {
-            alertaInfo(logger, "Debe ingresar datos en todos los campos", "No se ingreso data en todos los campos",
-                            null);
+            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editProduct.Info2.Label"),
+                                "No se ingreso data en todos los campos", null);
         }
         ContextLoader.recargar(desktop, Constantes.Form.PRODUCTS_FORM.getForm());
 
@@ -165,22 +166,23 @@ public class PO_EAProductsEdit
             ServiceInput<DTO_Articulo> input = new ServiceInput<DTO_Articulo>(articulo);
             input.setAccion(Constantes.V_REGISTERCAT4PROD);
             ServiceOutput<DTO_Articulo> output = productService.execute(input);
-            if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo(logger, "Las categorias para el producto se actualizaron correctamente",
-                                "Las categorias para el producto se actualizaron correctamente", null);
-            } else {
-                alertaError(logger, "Ocurrio un error inesperado al guardar las categorias, consulte al Administrador",
-                                "Error al guardar nuevas categorias para el producto", null);
+            boolean correct = true;
+            if (output.getErrorCode() != Constantes.OK) {
+                alertaError(logger, "", "Error al guardar nuevas categorias para el producto", null);
+                correct = false;
             }
             input = new ServiceInput<DTO_Articulo>(prod4DelCat);
-            input.setAccion(Constantes.V_REGISTERCAT4PROD);
+            input.setAccion(Constantes.V_DELETECAT4PROD);
             output = productService.execute(input);
-            if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo(logger, "Las categorias para el producto se actualizaron correctamente",
-                                "Las categorias para el producto se actualizaron correctamente", null);
+            if (output.getErrorCode() != Constantes.OK) {
+                alertaError(logger, "", "Error al eliminar categorias para el producto", null);
+                correct = false;
+            }
+            if (correct) {
+                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editCategories.Info.Label"), "", null);
             } else {
-                alertaError(logger, "Ocurrio un error inesperado al guardar las categorias, consulte al Administrador",
-                                "Error al eliminar categorias para el producto", null);
+                alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editCategories.Error.Label"),
+                                "Error al guardar o eliminar categorias para el producto", null);
             }
         }
     }
@@ -209,7 +211,7 @@ public class PO_EAProductsEdit
         }
     }
 
-    @Listen("onClick = #btnClose, #btnClose2")
+    @Listen("onClick = #btnClose")
     public void accionCerrar(final Event e) {
         ContextLoader.recargar(desktop, Constantes.Form.PRODUCTS_FORM.getForm());
         wEAEP.detach();
@@ -245,7 +247,8 @@ public class PO_EAProductsEdit
         imgFoto.setSrc("/media/imagProd.gif");
     }
 
-    public void cargaFoto(final UploadEvent event)
+    @Listen("onUpload = #btnUpload")
+    public void uploadPhoto(final UploadEvent event)
         throws Exception
     {
         org.zkoss.util.media.Media media;
@@ -255,27 +258,24 @@ public class PO_EAProductsEdit
                 return;
             }
         } catch (final Exception ex) {
-            Messagebox.show("Hubo un problema con el archivo proporcionado.", empresa.getRazonsocial(), Messagebox.OK,
-                            Messagebox.ERROR);
+            alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.uploadPhoto.Error.Label"),
+                                "Hubo un problema con el archivo proporcionado.", ex);
             return;
         }
         // System.out.println(media.getName());
         if (media instanceof org.zkoss.image.Image) {
             if (media.getByteData().length > 102400) {
-                Messagebox.show("El archivo seleccionado es muy grande. Maximo permitido = 100k",
-                                empresa.getRazonsocial(), Messagebox.OK,
-                                Messagebox.ERROR);
+                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.uploadPhoto.Info.Label"),
+                                    "El archivo seleccionado es muy grande. Maximo permitido = 100k", null);
                 return;
             }
             imgProducto = media.getByteData();
             setGraficoFoto();
 
             // imgFoto.setContent((org.zkoss.image.Image)media);
-
         } else {
-            Messagebox.show("El archivo seleccionado " + media + " no es una imagen", empresa.getRazonsocial(),
-                            Messagebox.OK,
-                            Messagebox.ERROR);
+            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.uploadPhoto.Info2.Label", media.getName()),
+                                "El archivo seleccionado " + media.getName() + " no es una imagen", null);
             return;
         }
     }

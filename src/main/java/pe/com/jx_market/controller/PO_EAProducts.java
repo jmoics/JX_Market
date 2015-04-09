@@ -110,8 +110,7 @@ public class PO_EAProducts
             //chbCat.setModel(ListModels.toListSubModel(modelCat));
             chbCat.setModel(modelCat);
         } else {
-            alertaError(logger,
-                            "Error inesperado, por favor contacte al administrador", "Error cargando categorias", null);
+            alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"), "Error cargando categorias", null);
         }
     }
 
@@ -134,7 +133,6 @@ public class PO_EAProducts
         final CategoryTreeNode categoryTreeNode = new CategoryTreeNode(null,
                         new CategoryTreeNodeCollection()
         {
-
             private static final long serialVersionUID = -8249078122595873454L;
             {
                 for (final DTO_Categoria root : roots.values()) {
@@ -270,7 +268,8 @@ public class PO_EAProducts
             w.doHighlighted();
             //w.doEmbedded();
         } else {
-            alertaInfo(logger, "Debe seleecionar un registro previamente", "No se selecciono un registro a editar", null);
+            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProducts.runWindowEdit.Info.Label"),
+                                "No se selecciono un registro a editar", null);
         }
     }
 
