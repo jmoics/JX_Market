@@ -211,7 +211,7 @@ public class PO_EAProductsEdit
         }
     }
 
-    @Listen("onClick = #btnClose")
+    @Listen("onClick = #btnClose, #btnClose2")
     public void accionCerrar(final Event e) {
         ContextLoader.recargar(desktop, Constantes.Form.PRODUCTS_FORM.getForm());
         wEAEP.detach();
@@ -300,12 +300,11 @@ public class PO_EAProductsEdit
         final ServiceOutput<DTO_Categoria> output = categoryService.execute(input);
         CategoryTreeNode categoryTreeNode = null;
         if (output.getErrorCode() == Constantes.OK) {
-            // alertaInfo("", "Exito al cargar categorias", null);
             final List<DTO_Categoria> lstCat = output.getLista();
             categoryTreeNode = buildCategoriesTree(lstCat);
         } else {
-            // alertaError("Error inesperado, por favor catege al administrador",
-            // "Error cargando categorias", null);
+            alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"),
+                            "Error cargando categorias", null);
         }
         return categoryTreeNode;
     }

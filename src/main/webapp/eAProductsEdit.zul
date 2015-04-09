@@ -95,6 +95,8 @@
                     <hbox align="center" pack="end" hflex="1" vflex="1">
                         <button id="btnSave2" label="${labels.pe.com.jx_market.eAProductsEdit.btnSave2.Label}"
                             image="/media/filesave.png" />
+                        <button id="btnClose2" label="${labels.pe.com.jx_market.eAProductsEdit.btnClose2.Label}"
+                            image="/media/cancel.png" />
                     </hbox>
                 </vbox>
             </tabpanel>

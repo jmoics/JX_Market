@@ -25,9 +25,9 @@
             cat.estado as categoryEstado,
             cat.parentid as categoryParentId
         FROM
-            T_NEG_ARTICULO art LEFT JOIN 
+            T_NEG_ARTICULO art LEFT JOIN
             T_NEG_CATEG2ARTIC cart ON art.id = cart.productid LEFT JOIN
-            T_NEG_CATEGORIA cat ON cart.categoryid = cat.id 
+            T_NEG_CATEGORIA cat ON cart.categoryid = cat.id
         <where>
             <if test="empresa != null">
                 art.empresaid = #{empresa}
@@ -66,7 +66,7 @@
             art.id = #{id, jdbcType=INTEGER}
     </select>
 
-    <insert id="insertArticulo" parameterType="DTO_Articulo">
+    <insert id="insertArticulo" parameterType="DTO_Articulo" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
         INSERT INTO T_NEG_ARTICULO
             (empresaid,nombre,
             descripcion,
@@ -106,7 +106,7 @@
         WHERE
         id = #{value}
     </delete>
-    
+
     <select id="getCategories4Product" parameterType="DTO_Categoria2Articulo" resultType="int">
         SELECT
             count(*)
@@ -116,14 +116,14 @@
             cat4art.productid = #{productId} AND
             cat4art.categoryid = #{categoryId}
     </select>
-    
+
     <insert id="insertCategory4Product" parameterType="DTO_Categoria2Articulo">
         INSERT INTO T_NEG_CATEG2ARTIC
             (productid,categoryid)
         VALUES
             (#{productId},#{categoryId})
     </insert>
-    
+
     <delete id="deleteCategory4Product" parameterType="DTO_Categoria2Articulo">
         DELETE FROM
             T_NEG_CATEG2ARTIC
