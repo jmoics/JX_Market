@@ -1,7 +1,6 @@
 package pe.com.jx_market.domain;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class DTO_Categoria2Articulo
     implements Serializable
@@ -9,7 +8,6 @@ public class DTO_Categoria2Articulo
     private Integer id;
     private Integer categoryId;
     private Integer productId;
-    private List<DTO_Categoria> categories;
 
     public Integer getCategoryId()
     {
@@ -26,14 +24,6 @@ public class DTO_Categoria2Articulo
     public void setProductId(final Integer productId)
     {
         this.productId = productId;
-    }
-    public List<DTO_Categoria> getCategories()
-    {
-        return categories;
-    }
-    public void setCategories(final List<DTO_Categoria> categories)
-    {
-        this.categories = categories;
     }
     public Integer getId()
     {

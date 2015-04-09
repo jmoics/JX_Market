@@ -106,6 +106,31 @@
         WHERE
         id = #{value}
     </delete>
+    
+    <select id="getCategories4Product" parameterType="DTO_Categoria2Articulo" resultType="int">
+        SELECT
+            count(*)
+        FROM
+            T_NEG_CATEG2ARTIC cat4art
+        WHERE
+            cat4art.productid = #{productId} AND
+            cat4art.categoryid = #{categoryId}
+    </select>
+    
+    <insert id="insertCategory4Product" parameterType="DTO_Categoria2Articulo">
+        INSERT INTO T_NEG_CATEG2ARTIC
+            (productid,categoryid)
+        VALUES
+            (#{productId},#{categoryId})
+    </insert>
+    
+    <delete id="deleteCategory4Product" parameterType="DTO_Categoria2Articulo">
+        DELETE FROM
+            T_NEG_CATEG2ARTIC
+        WHERE
+            productid = #{productId} AND
+            categoryid = #{categoryId}
+    </delete>
 
     <resultMap id="productResultMap" type="DTO_Articulo">
         <id property="id" column="productId" />

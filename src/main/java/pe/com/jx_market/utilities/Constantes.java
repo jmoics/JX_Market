@@ -50,11 +50,13 @@ public class Constantes {
      * Constantes para verbos
      */
     public static final String V_REGISTER = "register";
+    public static final String V_REGISTERCAT4PROD = "registerCat4Prod";
     public static final String V_REGISTERPM = "registerPM";
     public static final String V_GET = "get";
     public static final String V_LIST = "list";
     public static final String V_LISTEMP = "listEmp";
     public static final String V_DELETE = "delete";
+    public static final String V_DELETECAT4PROD = "deleteCat4Prod";
     public static final String V_USTOCK = "upStock";
     public static final String V_GETIMG = "getimg";
     public static final String V_UPDATE = "update";
@@ -132,6 +134,7 @@ public class Constantes {
     public static final String SEPARATOR_STRING = "..";
 
     public enum Form {
+        PRODUCTS_FORM("eAProducts.zul"),
         PRODUCTS_EDIT_FORM("eAProductsEdit.zul"),
         PRODUCTS_CREATE_FORM("eAProductsCreate.zul");
 

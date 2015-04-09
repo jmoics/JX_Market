@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.jx_market.domain.DTO_Articulo;
+import pe.com.jx_market.domain.DTO_Categoria;
+import pe.com.jx_market.domain.DTO_Categoria2Articulo;
 import pe.com.jx_market.persistence.ProductMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -69,14 +71,40 @@ public class ProductService implements BusinessService<DTO_Articulo>
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
-        }else if (Constantes.V_USTOCK.equals(input.getAccion())) {
+        } else if (Constantes.V_USTOCK.equals(input.getAccion())) {
             articuloMapper.updateStock(input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
-        }else if (Constantes.V_GETIMG.equals(input.getAccion())) {
+        } else if (Constantes.V_GETIMG.equals(input.getAccion())) {
             final DTO_Articulo art = input.getObject();
             loadPhoto(art);
             output.setObject(art);
+            output.setErrorCode(Constantes.OK);
+            return output;
+        } else if (Constantes.V_REGISTERCAT4PROD.equals(input.getAccion())) {
+            final DTO_Articulo arti = input.getObject();
+            for (final DTO_Categoria categ : arti.getCategories()) {
+                final DTO_Categoria2Articulo cat2Prod = new DTO_Categoria2Articulo();
+                cat2Prod.setProductId(arti.getId());
+                cat2Prod.setCategoryId(categ.getId());
+                final int count = articuloMapper.getCategories4Product(cat2Prod);
+                if (count == 0) {
+                    articuloMapper.insertCategory4Product(cat2Prod);
+                }
+            }
+            output.setErrorCode(Constantes.OK);
+            return output;
+        }else if (Constantes.V_DELETECAT4PROD.equals(input.getAccion())) {
+            final DTO_Articulo arti = input.getObject();
+            for (final DTO_Categoria categ : arti.getCategories()) {
+                final DTO_Categoria2Articulo cat2Prod = new DTO_Categoria2Articulo();
+                cat2Prod.setProductId(arti.getId());
+                cat2Prod.setCategoryId(categ.getId());
+                final int count = articuloMapper.getCategories4Product(cat2Prod);
+                if (count > 0) {
+                    articuloMapper.deleteCategory4Product(cat2Prod);
+                }
+            }
             output.setErrorCode(Constantes.OK);
             return output;
         } else {

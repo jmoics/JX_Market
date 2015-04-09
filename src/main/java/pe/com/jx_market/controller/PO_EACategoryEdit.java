@@ -204,7 +204,7 @@ public class PO_EACategoryEdit
                         }
                         // Modificamos los hijos siempre y cuando se este desactivando
                         if (!checkBox.isChecked() && !treeItem.getChildren().isEmpty()) {
-                            for (int i = 0; i < treeItem.getTreechildren().getItemCount(); i++) {
+                            for (int i = 0; i < treeItem.getTreechildren().getChildren().size(); i++) {
                                 final Treeitem comp = (Treeitem) treeItem.getTreechildren().getChildren().get(i);
                                 if (comp instanceof Treeitem) {
                                     final Treeitem itemChild = comp;
@@ -224,7 +224,7 @@ public class PO_EACategoryEdit
                                                 final boolean _checked)
                     {
                         modificarRow(_item, _checked);
-                        for (int i = 0; i < _item.getTreechildren().getItemCount(); i++) {
+                        for (int i = 0; i < _item.getTreechildren().getChildren().size(); i++) {
                             modificarHijos((Treeitem) _item.getTreechildren().getChildren().get(i), _checked);
                         }
                     }
