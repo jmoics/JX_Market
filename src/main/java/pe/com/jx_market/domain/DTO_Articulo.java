@@ -17,7 +17,7 @@ public class DTO_Articulo implements Serializable
     private List<DTO_Categoria> categories;
     private String productName;
     private String productDescription;
-    //private String marca;
+    private DTO_Marca marca;
     //private BigDecimal precio;
     //private Integer stock;
     private Boolean activo;
@@ -112,5 +112,13 @@ public class DTO_Articulo implements Serializable
     public void setActivo(final Boolean activo)
     {
         this.activo = activo;
+    }
+    public DTO_Marca getMarca()
+    {
+        return marca;
+    }
+    public void setMarca(final DTO_Marca marca)
+    {
+        this.marca = marca;
     }
 }

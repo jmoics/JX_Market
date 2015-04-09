@@ -31,6 +31,7 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zkmax.zul.Chosenbox;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -42,6 +43,7 @@ import org.zkoss.zul.Window;
 import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Empresa;
+import pe.com.jx_market.domain.DTO_Marca;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.CategoryTreeNode;
 import pe.com.jx_market.utilities.CategoryTreeNodeCollection;
@@ -64,7 +66,7 @@ public class PO_EAProducts
     @Wire
     private Textbox txtProdName;
     @Wire
-    private Combobox cmbEstad;
+    private Combobox cmbEstad, cmbMarca;
     @Wire
     private Chosenbox chbCat;
     @Wire
@@ -73,6 +75,8 @@ public class PO_EAProducts
     private BusinessService<DTO_Articulo> productService;
     @WireVariable
     private BusinessService<DTO_Categoria> categoryService;
+    @WireVariable
+    private BusinessService<DTO_Marca> marcaService;
     private DTO_Empresa empresa;
     @WireVariable
     private Desktop desktop;
@@ -90,6 +94,27 @@ public class PO_EAProducts
         listCategories();
 
         buildActiveCombo(cmbEstad);
+        buildMarcaCombo();
+    }
+
+    private void buildMarcaCombo()
+    {
+        final DTO_Marca marFi = new DTO_Marca();
+        marFi.setEmpresa(empresa.getCodigo());
+        final ServiceInput<DTO_Marca> input = new ServiceInput<DTO_Marca>(marFi);
+        input.setAccion(Constantes.V_LIST);
+        final ServiceOutput<DTO_Marca> output = marcaService.execute(input);
+        if (output.getErrorCode() == Constantes.OK) {
+            final List<DTO_Marca> lstMar = output.getLista();
+            for (final DTO_Marca marIt : lstMar) {
+                final Comboitem item = new Comboitem();
+                item.setLabel(marIt.getMarcaName());
+                item.setValue(marIt);
+                cmbMarca.appendChild(item);
+            }
+        } else {
+            alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"), "Error cargando marcas", null);
+        }
     }
 
     private void listCategories()
@@ -221,8 +246,8 @@ public class PO_EAProducts
                 item.appendChild(cell);
                 cell = new Listcell(art.getProductDescription());
                 item.appendChild(cell);
-                /*cell = new Listcell(formateador.format(art.getPrecio()));
-                item.appendChild(cell);*/
+                cell = new Listcell(art.getMarca().getMarcaName());
+                item.appendChild(cell);
                 if (art.getActivo()) {
                     cell = new Listcell(Labels.getLabel("pe.com.jx_market.Active.TRUE"));
                 } else {

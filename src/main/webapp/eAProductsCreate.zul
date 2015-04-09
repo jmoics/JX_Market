@@ -40,20 +40,24 @@
                             <column hflex="3" />
                         </columns>
                         <rows>
-                            <row>
+                            <!-- <row>
                                 <label value="Imagen" />
                                 <vbox hflex="1">
                                     <image src="/media/imagProd.gif" id="imgFoto" width="100px" height="110px" />
                                     <button label="Cargar Imagen" upload="true" id="btnUpload" />
                                 </vbox>
-                            </row>
+                            </row>-->
                             <row>
                                 <label value="Nombre" />
                                 <textbox id="txtNombre" width="60%" />
                             </row>
                             <row>
                                 <label value="Descripcion" />
-                                <textbox id="txtDesc" hflex="1" multiline="true" rows="3" />
+                                <textbox id="txtDesc" hflex="1" multiline="true" rows="8" />
+                            </row>
+                            <row>
+                                <label value="${labels.pe.com.jx_market.eAProductsCreate.cmbMarca.Label}"/>
+                                <combobox id="cmbMarca" />
                             </row>
                             <row>
                                 <label value="Estado" />
@@ -100,7 +104,9 @@
                     </hbox>
                 </vbox>
             </tabpanel>
-            <tabpanel></tabpanel>
+            <tabpanel>
+                
+            </tabpanel>
         </tabpanels>
     </tabbox>
 </window>

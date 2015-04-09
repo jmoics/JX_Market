@@ -41,6 +41,7 @@ import org.zkoss.zul.Window;
 import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Empresa;
+import pe.com.jx_market.domain.DTO_Marca;
 import pe.com.jx_market.utilities.AdvancedTreeModel;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.CategoryTreeNode;
@@ -59,7 +60,7 @@ public class PO_EAProductsEdit
 
     static Log logger = LogFactory.getLog(PO_EAProductsEdit.class);
     @Wire
-    private Combobox cmbCateg, cmbStatus;
+    private Combobox cmbCateg, cmbStatus, cmbMarca;
     @Wire
     private Textbox txtNombre, txtDesc, txtMarca;
     @Wire
@@ -71,6 +72,8 @@ public class PO_EAProductsEdit
     private BusinessService<DTO_Articulo> productService;
     @WireVariable
     private BusinessService<DTO_Categoria> categoryService;
+    @WireVariable
+    private BusinessService<DTO_Marca> marcaService;
     private DTO_Empresa empresa;
     private DTO_Articulo articulo;
     @WireVariable
@@ -106,18 +109,43 @@ public class PO_EAProductsEdit
             tree.setCheckmark(true);
             tree.setMultiple(true);
             cargarDatos();
+            buildMarcaCombo();
+        }
+    }
+
+    private void buildMarcaCombo()
+    {
+        final DTO_Marca marFi = new DTO_Marca();
+        marFi.setEmpresa(empresa.getCodigo());
+        final ServiceInput<DTO_Marca> input = new ServiceInput<DTO_Marca>(marFi);
+        input.setAccion(Constantes.V_LIST);
+        final ServiceOutput<DTO_Marca> output = marcaService.execute(input);
+        if (output.getErrorCode() == Constantes.OK) {
+            alertaInfo(logger, "", "Exito al cargar categorias", null);
+            final List<DTO_Marca> lstMar = output.getLista();
+            for (final DTO_Marca marIt : lstMar) {
+                final Comboitem item = new Comboitem();
+                item.setLabel(marIt.getMarcaName());
+                item.setValue(marIt);
+                cmbMarca.appendChild(item);
+                if (articulo.getMarca().getId().equals(marIt.getId())) {
+                    cmbMarca.setSelectedItem(item);
+                }
+            }
+        } else {
+            alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"), "Error cargando marcas", null);
         }
     }
 
     @Listen("onClick = #btnSave")
     public void editProduct()
     {
-        if (cmbCateg.getSelectedItem() != null && cmbStatus.getSelectedItem() != null
-                        && !txtNombre.getValue().equals("")
-                        && !txtDesc.getValue().equals("")) {
+        if (cmbStatus.getSelectedItem() != null && cmbMarca.getSelectedItem() != null
+                        && !txtNombre.getValue().equals("") && !txtDesc.getValue().equals("")) {
             // articulo.setCategoria(((DTO_Categoria)
             // cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
             articulo.setActivo((Boolean) cmbStatus.getSelectedItem().getValue());
+            articulo.setMarca((DTO_Marca) cmbMarca.getSelectedItem().getValue());
             articulo.setProductDescription(txtDesc.getValue());
             articulo.setEmpresa(empresa.getCodigo());
             // articulo.setMarca(txtMarca.getValue());
@@ -225,7 +253,7 @@ public class PO_EAProductsEdit
         txtDesc.setValue(articulo.getProductDescription());
         // decPrec.setValue(articulo.getPrecio());
         imgProducto = articulo.getImagen();
-        setGraficoFoto();
+        //setGraficoFoto();
 
         categoryTreeNode = getCategories();
         categoryTreeModel = new AdvancedTreeModel(categoryTreeNode);
