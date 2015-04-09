@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.MarcaMapper">
+
+  <cache />
+    <!-- MANTENIMIENTO DE MARCAS -->
+
+    <select id="getMarcas" parameterType="DTO_Marca" resultType="DTO_Marca">
+        SELECT
+            mar.id as id,
+            mar.empresaid as empresa,
+            mar.nombre as marcaName,
+            mar.activo as active,
+            mar.imagen as imageName
+        FROM
+            T_NEG_MARCA mar
+        <where>
+            <if test="empresa != null">
+                mar.empresaId = #{empresa}
+            </if>
+        </where>
+        ORDER BY mar.nombre
+    </select>
+
+    <select id="getMarcaXCodigo" parameterType="DTO_Marca" resultType="DTO_Marca">
+        SELECT
+            mar.id as id,
+            mar.empresaid as empresa,
+            mar.nombre as marcaName,
+            mar.activo as active,
+            mar.imagen as imageName
+        FROM
+            T_NEG_MARCA cat
+        WHERE
+            mar.id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertMarca" parameterType="DTO_Marca">
+        INSERT INTO T_NEG_MARCA
+            (empresaId,nombre,activo,imagen)
+        VALUES
+            (#{empresa},#{marcaName},#{active},#{imageName})
+    </insert>
+
+    <update id="updateMarca" parameterType="DTO_Marca">
+        UPDATE T_NEG_MARCA
+        SET
+            nombre = #{marcaName},
+            activo = #{active},
+            imagen = #{imageName}
+        WHERE
+            id = #{id}
+        AND
+            empresaId = #{empresa}
+    </update>
+
+    <delete id="deleteMarca" parameterType="DTO_Marca">
+        DELETE FROM T_NEG_MARCA
+        WHERE
+        id = #{id}
+    </delete>
+
+</mapper>
