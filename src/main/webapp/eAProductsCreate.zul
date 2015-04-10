@@ -1,7 +1,7 @@
 <?page title="JX_Market" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-<window id="wEAPC" apply="pe.com.jx_market.controller.PO_EAProductsCreate"
-        width="700px" height="500px" position="center,center" closable="true"
+<window id="wEAPC" apply="pe.com.jx_market.controller.PO_EAProductsCreate" sizable="true"
+        width="700px" height="540px" position="center,center" closable="true"
         action="show: slideDown;hide: slideUp">
     <style>
         .h-inline-block {
@@ -20,6 +20,7 @@
         <tabs>
             <tab id="tabProduct" label="Artículo" />
             <tab id="tabCategory" label="Categorías" />
+            <tab id="tabImages" label="Imágenes" />
             <tab id="tabPrices" label="Precios" />
         </tabs>
         <tabpanels>
@@ -74,29 +75,27 @@
                 </vbox>
             </tabpanel>
             <tabpanel>
-                <vbox height="100%" width="100%">
-                    <div align="center" height="10%">
+                <vbox height="100%" width="100%" vflex="1">
+                    <div align="center" height="10%" >
                         <label zclass="z-south-header"
                             style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
                             ${labels.pe.com.jx_market.eAProductsCreate.Categories.Title}
                         </label>
                     </div>
-                    <div width="100%">
-                        <tree id="tree" hflex="1" height="400px" multiple="true" checkmark="true" >
-                            <treecols>
-                                <treecol label="${labels.pe.com.jx_market.eAProductsCreate.category.Label}" />
-                                <treecol label="${labels.pe.com.jx_market.eAProductsCreate.status.Label}" />
-                            </treecols>
-                            <!-- <template name="model">
-                                <treeitem>
-                                    <treerow>
-                                        <treecell label="${each.data.nombre}"/>
-                                    </treerow>
-                                </treeitem>
-                            </template>-->
-                        </tree>
-                    </div>
-                    <hbox align="center" pack="end" hflex="1" vflex="1">
+                    <tree id="tree" hflex="1" multiple="true" checkmark="true" height="390px">
+                        <treecols>
+                            <treecol label="${labels.pe.com.jx_market.eAProductsCreate.category.Label}" />
+                            <treecol label="${labels.pe.com.jx_market.eAProductsCreate.status.Label}" />
+                        </treecols>
+                        <!-- <template name="model">
+                            <treeitem>
+                                <treerow>
+                                    <treecell label="${each.data.nombre}"/>
+                                </treerow>
+                            </treeitem>
+                        </template>-->
+                    </tree>
+                    <hbox align="end" pack="end" hflex="1" vflex="1">
                         <button id="btnSave2" label="${labels.pe.com.jx_market.eAProductsCreate.btnSave2.Label}"
                             image="/media/filesave.png" />
                         <button id="btnClose2" label="${labels.pe.com.jx_market.eAProductsCreate.btnClose2.Label}"
@@ -105,7 +104,46 @@
                 </vbox>
             </tabpanel>
             <tabpanel>
-                
+                <vlayout height="100%" width="100%" vflex="1">
+                    <hlayout spacing="4px" vflex="10">
+                        <listbox sclass="employee-list" vflex="1" hflex="2">
+                            <auxhead>
+                                <auxheader colspan="2" class="topic">Imágenes Cargadas</auxheader>
+                            </auxhead>
+                            <listhead>
+                                <listheader label="Nombre" hflex="1" align="center" />
+                                <listheader label="Tamaño" hflex="1" align="center" />
+                            </listhead>
+                        </listbox>
+                        <groupbox sclass="card-pre" mold="3d" hflex="3" vflex="1" >
+                            <div sclass="card">
+                                <image src="/media/imagProd.gif" id="imgFoto" width="100%" height="100%" />
+                            </div>
+                        </groupbox>
+                    </hlayout>
+                    <grid vflex="2">
+                        <columns>
+                            <column label="Nombre" align="center" />
+                            <column label="Tamaño" align="center" />
+                            <column label="Cargar Imagen" align="center" />
+                        </columns>
+                        <rows>
+                            <row valign="middle">
+                                <label id="lbImageName" />
+                                <label id="lbImageSize" />
+                                <button id="btnUpload" upload="true" label="Cargar Imagen" />
+                            </row>
+                        </rows>
+                    </grid>
+                    <hbox align="end" pack="end" hflex="1" vflex="1">
+                        <button id="btnSave3" label="${labels.pe.com.jx_market.eAProductsCreate.btnSave3.Label}"
+                            image="/media/filesave.png" />
+                        <button id="btnClose3" label="${labels.pe.com.jx_market.eAProductsCreate.btnClose3.Label}"
+                            image="/media/cancel.png" />
+                    </hbox>
+                </vlayout>
+            </tabpanel>
+            <tabpanel>
             </tabpanel>
         </tabpanels>
     </tabbox>
