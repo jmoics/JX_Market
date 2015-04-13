@@ -19,6 +19,7 @@
         <tabs>
             <tab id="tabProduct" label="Artículo" />
             <tab id="tabCategory" label="Categorías" />
+            <tab id="tabImages" label="Imágenes" />
             <tab id="tabPrices" label="Precios" />
         </tabs>
         <tabpanels>
@@ -104,7 +105,48 @@
                     </hbox>
                 </vbox>
             </tabpanel>
-            <tabpanel></tabpanel>
+            <tabpanel>
+                <vlayout height="100%" width="100%" vflex="1">
+                    <hlayout spacing="4px" vflex="10">
+                        <listbox id="lstImages" sclass="employee-list" vflex="1" hflex="2">
+                            <auxhead>
+                                <auxheader colspan="2" class="topic">Imágenes Cargadas</auxheader>
+                            </auxhead>
+                            <listhead>
+                                <listheader label="Nombre" hflex="1" align="center" />
+                                <listheader label="Tamaño" hflex="1" align="center" />
+                            </listhead>
+                        </listbox>
+                        <groupbox sclass="card-pre" mold="3d" hflex="3" vflex="1" >
+                            <div sclass="card">
+                                <image src="/media/imagProd.gif" id="imgFoto" hflex="1" vflex="1" />
+                            </div>
+                        </groupbox>
+                    </hlayout>
+                    <grid vflex="2">
+                        <columns>
+                            <column label="Nombre" align="center" />
+                            <column label="Tamaño" align="center" />
+                            <column label="Cargar Imagen" align="center" />
+                        </columns>
+                        <rows>
+                            <row valign="middle">
+                                <label id="lbImageName" />
+                                <label id="lbImageSize" />
+                                <button id="btnUpload" upload="true" label="Cargar Imagen" />
+                            </row>
+                        </rows>
+                    </grid>
+                    <hbox align="end" pack="end" hflex="1" vflex="1">
+                        <button id="btnSave3" label="${labels.pe.com.jx_market.eAProductsCreate.btnSave3.Label}"
+                            image="/media/filesave.png" />
+                        <button id="btnClose3" label="${labels.pe.com.jx_market.eAProductsCreate.btnClose3.Label}"
+                            image="/media/cancel.png" />
+                    </hbox>
+                </vlayout>
+            </tabpanel>
+            <tabpanel>
+            </tabpanel>
         </tabpanels>
     </tabbox>
 </window>

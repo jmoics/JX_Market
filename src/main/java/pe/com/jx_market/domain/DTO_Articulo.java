@@ -21,26 +21,8 @@ public class DTO_Articulo implements Serializable
     //private BigDecimal precio;
     //private Integer stock;
     private Boolean activo;
-    private byte[] imagen;
-    private String nomimg;
+    private List<DTO_ArticuloImage> images;
 
-
-    public String getNomimg()
-    {
-        return nomimg;
-    }
-    public void setNomimg(final String nomImg)
-    {
-        this.nomimg = nomImg;
-    }
-    public byte[] getImagen()
-    {
-        return imagen;
-    }
-    public void setImagen(final byte[] imagen)
-    {
-        this.imagen = imagen;
-    }
     public Integer getId()
     {
         return id;
@@ -120,5 +102,14 @@ public class DTO_Articulo implements Serializable
     public void setMarca(final DTO_Marca marca)
     {
         this.marca = marca;
+    }
+
+    public List<DTO_ArticuloImage> getImages()
+    {
+        return images;
+    }
+    public void setImages(final List<DTO_ArticuloImage> images)
+    {
+        this.images = images;
     }
 }

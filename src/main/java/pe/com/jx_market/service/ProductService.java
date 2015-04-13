@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.jx_market.domain.DTO_Articulo;
+import pe.com.jx_market.domain.DTO_ArticuloImage;
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Categoria2Articulo;
 import pe.com.jx_market.persistence.ProductMapper;
@@ -33,8 +34,10 @@ import pe.com.jx_market.utilities.ServiceOutput;
  *
  */
 @Service
-public class ProductService implements BusinessService<DTO_Articulo>
+public class ProductService
+    implements BusinessService<DTO_Articulo>
 {
+
     static Log logger = LogFactory.getLog(ProductService.class);
     @Autowired
     private ProductMapper articuloMapper;
@@ -50,10 +53,6 @@ public class ProductService implements BusinessService<DTO_Articulo>
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
             final DTO_Articulo arti = input.getObject();
-            if(arti.getNomimg() == null) {
-                arti.setNomimg(arti.getEmpresa() + "." + arti.getProductName().trim() + "." + generarNombreAleatorio());
-                savePhoto(arti);
-            }
             final DTO_Articulo artiTmp = articuloMapper.getArticuloXCodigo(arti);
             if (artiTmp == null) {
                 articuloMapper.insertArticulo(arti);
@@ -66,7 +65,9 @@ public class ProductService implements BusinessService<DTO_Articulo>
             final Map<?, ?> map = input.getMapa();
             final DTO_Articulo art = articuloMapper.getArticuloXCodigo(input.getObject());
             if (map == null) {
-                loadPhoto(art);
+                for (final DTO_ArticuloImage img : art.getImages()) {
+                    loadPhoto(img);
+                }
             }
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
@@ -77,7 +78,7 @@ public class ProductService implements BusinessService<DTO_Articulo>
             return output;
         } else if (Constantes.V_GETIMG.equals(input.getAccion())) {
             final DTO_Articulo art = input.getObject();
-            loadPhoto(art);
+            // loadPhoto(art);
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
@@ -94,7 +95,7 @@ public class ProductService implements BusinessService<DTO_Articulo>
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        }else if (Constantes.V_DELETECAT4PROD.equals(input.getAccion())) {
+        } else if (Constantes.V_DELETECAT4PROD.equals(input.getAccion())) {
             final DTO_Articulo arti = input.getObject();
             for (final DTO_Categoria categ : arti.getCategories()) {
                 final DTO_Categoria2Articulo cat2Prod = new DTO_Categoria2Articulo();
@@ -107,79 +108,96 @@ public class ProductService implements BusinessService<DTO_Articulo>
             }
             output.setErrorCode(Constantes.OK);
             return output;
+        } else if (Constantes.V_REGISTERIMG4PROD.equals(input.getAccion())) {
+            final DTO_Articulo arti = input.getObject();
+            for (final DTO_ArticuloImage img : arti.getImages()) {
+                // if(img.getImageName() == null) {
+                img.setImageName(arti.getEmpresa() + "." + arti.getId() + "." + generarNombreAleatorio());
+                savePhoto(img);
+                // }
+                articuloMapper.insertImage4Product(img);
+            }
+            output.setErrorCode(Constantes.OK);
+            return output;
         } else {
             throw new RuntimeException("No se especifico verbo adecuado");
         }
     }
 
-    private String generarNombreAleatorio() {
+    private String generarNombreAleatorio()
+    {
         final Random rnd = new Random();
-        final Integer nomImg = ((int)(rnd.nextDouble() * 1000000.0));
+        final Integer nomImg = ((int) (rnd.nextDouble() * 1000000.0));
         return nomImg.toString();
     }
 
-    private File getPhotoFile(final DTO_Articulo art) {
-    	String ruta;
-    	if(System.getProperty("os.name").contains("Windows")){
-    		ruta = Constantes.RUTA_IMAGENES_WINDOWS + File.separator + art.getNomimg();
-    	} else{
-    		ruta = Constantes.RUTA_IMAGENES + File.separator + art.getNomimg();
-    	}
+    private File getPhotoFile(final DTO_ArticuloImage _image)
+    {
+        String ruta;
+        if (System.getProperty("os.name").contains("Windows")) {
+            ruta = Constantes.RUTA_IMAGENES_WINDOWS + File.separator + _image.getImageName();
+        } else {
+            ruta = Constantes.RUTA_IMAGENES + File.separator + _image.getImageName();
+        }
         return new File(ruta);
     }
 
-    private void savePhoto(final DTO_Articulo art) {
-        final File photo = getPhotoFile(art);
-        if(art.getImagen() == null) {
-            if(photo.exists()) {
+    private void savePhoto(final DTO_ArticuloImage _image)
+    {
+        final File photo = getPhotoFile(_image);
+        if (_image.getImage() == null) {
+            if (photo.exists()) {
                 photo.delete();
             }
         } else {
             try {
                 final BufferedOutputStream bof = new BufferedOutputStream(new FileOutputStream(photo));
-                bof.write(art.getImagen());
+                bof.write(_image.getImage());
                 bof.close();
-            } catch(final IOException ex) {
+            } catch (final IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
     }
 
-    private void loadPhoto(final DTO_Articulo art) {
-        final File photo = getPhotoFile(art);
-        if(!photo.exists()) {
-            if(logger.isDebugEnabled()) {
+    private void loadPhoto(final DTO_ArticuloImage _image)
+    {
+        final File photo = getPhotoFile(_image);
+        if (!photo.exists()) {
+            if (logger.isDebugEnabled()) {
                 logger.debug("No existe archivo de foto " + photo.getName());
             }
-            art.setImagen(null);
+            _image.setImage(null);
             return;
         }
-        if(logger.isDebugEnabled()) {
+        if (logger.isDebugEnabled()) {
             logger.debug("Existe archivo de foto " + photo.getName());
         }
         try {
             final BufferedInputStream bis = new BufferedInputStream(new FileInputStream(photo));
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             int n;
-            while((n = bis.read()) != -1) {
+            while ((n = bis.read()) != -1) {
                 baos.write(n);
             }
             bis.close();
             baos.close();
-            art.setImagen(baos.toByteArray());
-            if(logger.isDebugEnabled()) {
-                logger.debug("Cargamos bytes en foto "+ art.getImagen().length);
+            _image.setImage(baos.toByteArray());
+            if (logger.isDebugEnabled()) {
+                logger.debug("Cargamos bytes en foto " + _image.getImage().length);
             }
-        } catch(final IOException ex) {
+        } catch (final IOException ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    public ProductMapper getDao () {
+    public ProductMapper getDao()
+    {
         return articuloMapper;
     }
 
-    public void setDao (final ProductMapper articuloMapper) {
+    public void setDao(final ProductMapper articuloMapper)
+    {
         this.articuloMapper = articuloMapper;
     }
 

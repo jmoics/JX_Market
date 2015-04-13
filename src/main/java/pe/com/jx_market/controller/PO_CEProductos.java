@@ -1,6 +1,5 @@
 package pe.com.jx_market.controller;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.HashMap;
@@ -10,7 +9,6 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.zkoss.image.AImage;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
@@ -211,14 +209,14 @@ public class PO_CEProductos extends Window
         if (output.getErrorCode() != Constantes.OK) {
             alertaInfo("", "El articulo" + articulo.getProductName() + "no posee imagen", null);
         }
-        if (articulo.getImagen() != null) {
+        /*if (articulo.getImagen() != null) {
             try {
                 imgFoto.setContent(new AImage("foto", articulo.getImagen()));
                 return;
             } catch (final IOException ex) {
                 throw new RuntimeException(ex);
             }
-        }
+        }*/
         imgFoto.setSrc("/media/imagProd.gif");
     }
 

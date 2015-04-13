@@ -60,9 +60,9 @@
             <listbox id="lstProd" pagingPosition="bottom" mold="paging" autopaging="true" hflex="1" vflex="1">
                 <listhead>
                     <listheader label="${labels.pe.com.jx_market.eAProducts.Category.Label}" hflex="2"/>
+                    <listheader label="${labels.pe.com.jx_market.eAProducts.Marca.Label}" sort="auto" hflex="2"/>
                     <listheader label="${labels.pe.com.jx_market.eAProducts.ProductName.Label}" sort="auto" hflex="2"/>
                     <listheader label="${labels.pe.com.jx_market.eAProducts.ProductDesc.Label}" sort="auto" hflex="4"/>
-                    <listheader label="${labels.pe.com.jx_market.eAProducts.Marca.Label}" sort="auto" hflex="2"/>
                     <listheader label="${labels.pe.com.jx_market.eAProducts.Status.Label}" sort="auto" hflex="1"/>
                 </listhead>
             </listbox>

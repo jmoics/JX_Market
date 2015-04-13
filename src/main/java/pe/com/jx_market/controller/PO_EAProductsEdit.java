@@ -15,6 +15,7 @@ import java.util.TreeMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.image.AImage;
+import org.zkoss.util.media.Media;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.event.Event;
@@ -30,6 +31,10 @@ import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treecell;
@@ -39,6 +44,7 @@ import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Articulo;
+import pe.com.jx_market.domain.DTO_ArticuloImage;
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.domain.DTO_Marca;
@@ -67,7 +73,15 @@ public class PO_EAProductsEdit
     private Decimalbox decPrec;
     @Wire
     private Image imgFoto;
-    private byte[] imgProducto;
+    @Wire
+    private Label lbImageName, lbImageSize;
+    @Wire
+    private Window wEAEP;
+    @Wire
+    private Tree tree;
+    @Wire
+    private Listbox lstImages;
+    //private byte[] imgProducto;
     @WireVariable
     private BusinessService<DTO_Articulo> productService;
     @WireVariable
@@ -78,10 +92,6 @@ public class PO_EAProductsEdit
     private DTO_Articulo articulo;
     @WireVariable
     private Desktop desktop;
-    @Wire
-    private Window wEAEP;
-    @Wire
-    private Tree tree;
     private CategoryTreeNode categoryTreeNode;
     private AdvancedTreeModel categoryTreeModel;
 
@@ -142,26 +152,27 @@ public class PO_EAProductsEdit
     {
         if (cmbStatus.getSelectedItem() != null && cmbMarca.getSelectedItem() != null
                         && !txtNombre.getValue().equals("") && !txtDesc.getValue().equals("")) {
-            // articulo.setCategoria(((DTO_Categoria)
-            // cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
             articulo.setActivo((Boolean) cmbStatus.getSelectedItem().getValue());
             articulo.setMarca((DTO_Marca) cmbMarca.getSelectedItem().getValue());
             articulo.setProductDescription(txtDesc.getValue());
             articulo.setEmpresa(empresa.getCodigo());
-            // articulo.setMarca(txtMarca.getValue());
             articulo.setProductName(txtNombre.getValue());
             // articulo.setPrecio(decPrec.getValue());
-            if (imgProducto != null && !imgProducto.equals(articulo.getImagen())) {
+            /*if (imgProducto != null && !imgProducto.equals(articulo.getImagen())) {
                 articulo.setImagen(imgProducto);
                 articulo.setNomimg(null);
-            }
+            }*/
             final ServiceInput<DTO_Articulo> input = new ServiceInput<DTO_Articulo>(articulo);
             input.setAccion(Constantes.V_REGISTER);
             final ServiceOutput<DTO_Articulo> output = productService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editProduct.Info.Label",
+                final int resp = alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editProduct.Info.Label",
                                 articulo.getProductName()),
                                 "Los datos del producto se actualizaron correctamente", null);
+                if (resp == Messagebox.OK) {
+                    desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
+                    ContextLoader.recargar(desktop, Constantes.Form.PRODUCTS_FORM.getForm());
+                }
             } else {
                 alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editProduct.Error.Label"),
                                 "Ocurrio un error inesperado al guardar el producto, consulte al Administrador", null);
@@ -241,7 +252,7 @@ public class PO_EAProductsEdit
 
     @Listen("onClick = #btnClose, #btnClose2")
     public void accionCerrar(final Event e) {
-        ContextLoader.recargar(desktop, Constantes.Form.PRODUCTS_FORM.getForm());
+        //ContextLoader.recargar(desktop, Constantes.Form.PRODUCTS_FORM.getForm());
         wEAEP.detach();
     }
 
@@ -249,11 +260,10 @@ public class PO_EAProductsEdit
     {
         buildActiveCombo(cmbStatus);
         txtNombre.setValue(articulo.getProductName());
-        // txtMarca.setValue(articulo.getMarca());
         txtDesc.setValue(articulo.getProductDescription());
         // decPrec.setValue(articulo.getPrecio());
-        imgProducto = articulo.getImagen();
-        //setGraficoFoto();
+        //imgProducto = articulo.getImagen();
+        loadPhotos();
 
         categoryTreeNode = getCategories();
         categoryTreeModel = new AdvancedTreeModel(categoryTreeNode);
@@ -262,48 +272,109 @@ public class PO_EAProductsEdit
         tree.setModel(categoryTreeModel);
     }
 
-    private void setGraficoFoto()
+    private void loadPhotos() {
+        for (final DTO_ArticuloImage img : articulo.getImages()) {
+            final Listitem item = new Listitem();
+            item.setDisabled(true);
+            item.setValue(img);
+            Listcell cell = new Listcell();
+            cell.setLabel(img.getImageName());
+            item.appendChild(cell);
+            cell = new Listcell();
+            cell.setLabel("" + img.getImage().length);
+            item.appendChild(cell);
+            item.setParent(lstImages);
+            item.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+            {
+                @Override
+                public void onEvent(final Event event)
+                    throws Exception
+                {
+                    final Listitem lItem = (Listitem) event.getTarget();
+                    final DTO_ArticuloImage img = lItem.getValue();
+                    lbImageName.setValue(img.getImageName());
+                    lbImageSize.setValue("" + img.getImage().length);
+                    imgFoto.setContent(new AImage("foto", img.getImage()));
+                }
+            });
+        }
+    }
+
+    private void setGraficoFoto(final Media _media)
     {
-        if (imgProducto != null) {
-            try {
-                imgFoto.setContent(new AImage("foto", imgProducto));
-                return;
-            } catch (final IOException ex) {
-                throw new RuntimeException(ex);
+        if (_media != null) {
+            final byte[] imgProducto = _media.getByteData();
+            if (imgProducto != null) {
+                try {
+                    imgFoto.setContent(new AImage("foto", imgProducto));
+                    lbImageName.setValue(_media.getName());
+                    lbImageSize.setValue("" + _media.getByteData().length);
+
+                    final DTO_ArticuloImage img4Prod = new DTO_ArticuloImage();
+                    img4Prod.setCompany(empresa.getCodigo());
+                    img4Prod.setImage(imgFoto.getContent().getByteData());
+                    img4Prod.setImageName(_media.getName());
+
+                    final Listitem item = new Listitem();
+                    item.setValue(img4Prod);
+                    Listcell cell = new Listcell();
+                    cell.setLabel(_media.getName());
+                    item.appendChild(cell);
+                    cell = new Listcell();
+                    cell.setLabel("" + _media.getByteData().length);
+                    item.appendChild(cell);
+                    item.setParent(lstImages);
+                    item.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+                    {
+                        @Override
+                        public void onEvent(final Event event)
+                            throws Exception
+                        {
+                            final Listitem lItem = (Listitem) event.getTarget();
+                            final DTO_ArticuloImage img = lItem.getValue();
+                            lbImageName.setValue(img.getImageName());
+                            lbImageSize.setValue("" + img.getImage().length);
+                            imgFoto.setContent(new AImage("foto", img.getImage()));
+                        }
+                    });
+                    return;
+                } catch (final IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
-        imgFoto.setSrc("/media/imagProd.gif");
+        imgFoto.setSrc("/media/silueta.gif");
     }
 
     @Listen("onUpload = #btnUpload")
-    public void uploadPhoto(final UploadEvent event)
+    public void uploadPhoto(final UploadEvent _event)
         throws Exception
     {
-        org.zkoss.util.media.Media media;
+        Media media;
         try {
-            media = event.getMedia();
+            media = _event.getMedia();
             if (media == null) {
                 return;
             }
         } catch (final Exception ex) {
-            alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.uploadPhoto.Error.Label"),
-                                "Hubo un problema con el archivo proporcionado.", ex);
+            alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.uploadPhoto.Error.Label"),
+                            "Hubo un problema con el archivo proporcionado.", ex);
             return;
         }
-        // System.out.println(media.getName());
+        System.out.println(media.getName());
         if (media instanceof org.zkoss.image.Image) {
             if (media.getByteData().length > 102400) {
-                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.uploadPhoto.Info.Label"),
-                                    "El archivo seleccionado es muy grande. Maximo permitido = 100k", null);
+                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.uploadPhoto.Info.Label"),
+                                "El archivo seleccionado es muy grande. Maximo permitido = 100k", null);
                 return;
             }
-            imgProducto = media.getByteData();
-            setGraficoFoto();
+            setGraficoFoto(media);
 
             // imgFoto.setContent((org.zkoss.image.Image)media);
         } else {
-            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.uploadPhoto.Info2.Label", media.getName()),
-                                "El archivo seleccionado " + media.getName() + " no es una imagen", null);
+            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.uploadPhoto.Info2.Label",
+                                                media.getName()),
+                            "El archivo seleccionado " + media.getName() + " no es una imagen", null);
             return;
         }
     }

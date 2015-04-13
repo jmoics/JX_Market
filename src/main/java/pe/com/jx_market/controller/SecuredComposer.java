@@ -63,19 +63,21 @@ public abstract class SecuredComposer<T extends Component>
 
     abstract String[] requiredResources();
 
-    public void alertaInfo(final Log _logger,
+    public int alertaInfo(final Log _logger,
                            final String txt,
                            final String txt2,
                            final Throwable t)
     {
+        int ret = 0;
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), Messagebox.OK, Messagebox.INFORMATION);
+            ret = Messagebox.show(txt, empresa.getRazonsocial(), Messagebox.OK, Messagebox.INFORMATION);
         }
         if (t != null) {
             _logger.info(txt2, t);
         } else {
             _logger.info(txt2);
         }
+         return ret;
     }
 
     public void alertaError(final Log _logger,

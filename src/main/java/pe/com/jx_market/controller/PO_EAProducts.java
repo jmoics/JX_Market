@@ -95,6 +95,10 @@ public class PO_EAProducts
 
         buildActiveCombo(cmbEstad);
         buildMarcaCombo();
+
+        if ((Boolean) desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD)) {
+            buscarProductos();
+        }
     }
 
     private void buildMarcaCombo()
@@ -242,11 +246,11 @@ public class PO_EAProducts
                 }
                 cell.setLabel(strB.toString());
                 item.appendChild(cell);
+                cell = new Listcell(art.getMarca().getMarcaName());
+                item.appendChild(cell);
                 cell = new Listcell(art.getProductName());
                 item.appendChild(cell);
                 cell = new Listcell(art.getProductDescription());
-                item.appendChild(cell);
-                cell = new Listcell(art.getMarca().getMarcaName());
                 item.appendChild(cell);
                 if (art.getActivo()) {
                     cell = new Listcell(Labels.getLabel("pe.com.jx_market.Active.TRUE"));

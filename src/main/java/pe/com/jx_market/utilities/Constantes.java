@@ -51,6 +51,7 @@ public class Constantes {
      */
     public static final String V_REGISTER = "register";
     public static final String V_REGISTERCAT4PROD = "registerCat4Prod";
+    public static final String V_REGISTERIMG4PROD = "registerImg4Prod";
     public static final String V_REGISTERPM = "registerPM";
     public static final String V_GET = "get";
     public static final String V_LIST = "list";
@@ -149,6 +150,7 @@ public class Constantes {
         }
     }
 
+    public static final String ATTRIBUTE_RELOAD = "reloadPage";
     public static final String ATTRIBUTE_COMPANY = "empresa";
     public static final String ATTRIBUTE_PRODUCT = "product";
 }
