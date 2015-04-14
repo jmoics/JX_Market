@@ -11,7 +11,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Textbox;
 
-import pe.com.jx_market.domain.DTO_Articulo;
+import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.domain.DTO_Usuario;
 import pe.com.jx_market.utilities.BusinessService;
@@ -44,7 +44,7 @@ public class PO_CELoginCliente extends Div
             final DTO_Cliente cliente = getCliente(validado);
             if (cliente != null) {
                 getDesktop().getSession().setAttribute("cliente", cliente);
-                final Map<Integer, Map<DTO_Articulo, Integer>> map = new HashMap<Integer, Map<DTO_Articulo, Integer>>();
+                final Map<Integer, Map<DTO_Product, Integer>> map = new HashMap<Integer, Map<DTO_Product, Integer>>();
                 getDesktop().getSession().setAttribute("carrito", map);
                 final Map<String, Object> map2 = new HashMap<String, Object>();
                 map2.put("total", BigDecimal.ZERO);

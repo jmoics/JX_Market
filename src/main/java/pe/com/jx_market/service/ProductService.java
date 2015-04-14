@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -19,10 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.domain.DTO_Articulo;
-import pe.com.jx_market.domain.DTO_ArticuloImage;
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Categoria2Articulo;
+import pe.com.jx_market.domain.DTO_Product;
+import pe.com.jx_market.domain.DTO_ProductImage;
 import pe.com.jx_market.persistence.ProductMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -35,87 +36,97 @@ import pe.com.jx_market.utilities.ServiceOutput;
  */
 @Service
 public class ProductService
-    implements BusinessService<DTO_Articulo>
+    implements BusinessService<DTO_Product>
 {
 
     static Log logger = LogFactory.getLog(ProductService.class);
     @Autowired
-    private ProductMapper articuloMapper;
+    private ProductMapper productMapper;
 
     @Override
     @Transactional
-    public ServiceOutput<DTO_Articulo> execute(final ServiceInput<DTO_Articulo> input)
+    public ServiceOutput<DTO_Product> execute(final ServiceInput<DTO_Product> input)
     {
-        final ServiceOutput<DTO_Articulo> output = new ServiceOutput<DTO_Articulo>();
+        final ServiceOutput<DTO_Product> output = new ServiceOutput<DTO_Product>();
         if (Constantes.V_LIST.equals(input.getAccion())) {
-            output.setLista(articuloMapper.getArticulos(input.getMapa()));
+            final List<DTO_Product> lstProds = productMapper.getArticulos(input.getMapa());
+            for (final DTO_Product prod : lstProds) {
+                for (final DTO_ProductImage img : prod.getImages()) {
+                    loadPhoto(img);
+                }
+            }
+            output.setLista(lstProds);
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
-            final DTO_Articulo arti = input.getObject();
-            final DTO_Articulo artiTmp = articuloMapper.getArticuloXCodigo(arti);
-            if (artiTmp == null) {
-                articuloMapper.insertArticulo(arti);
+            final DTO_Product prod = input.getObject();
+            final DTO_Product prodTmp = productMapper.getArticuloXCodigo(prod);
+            if (prodTmp == null) {
+                productMapper.insertArticulo(prod);
             } else {
-                articuloMapper.updateArticulo(arti);
+                productMapper.updateArticulo(prod);
             }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getAccion())) {
             final Map<?, ?> map = input.getMapa();
-            final DTO_Articulo art = articuloMapper.getArticuloXCodigo(input.getObject());
+            final DTO_Product prod = productMapper.getArticuloXCodigo(input.getObject());
             if (map == null) {
-                for (final DTO_ArticuloImage img : art.getImages()) {
+                for (final DTO_ProductImage img : prod.getImages()) {
                     loadPhoto(img);
                 }
             }
-            output.setObject(art);
+            output.setObject(prod);
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_USTOCK.equals(input.getAccion())) {
-            articuloMapper.updateStock(input.getObject());
+            productMapper.updateStock(input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GETIMG.equals(input.getAccion())) {
-            final DTO_Articulo art = input.getObject();
+            final DTO_Product prod = input.getObject();
             // loadPhoto(art);
-            output.setObject(art);
+            output.setObject(prod);
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTERCAT4PROD.equals(input.getAccion())) {
-            final DTO_Articulo arti = input.getObject();
-            for (final DTO_Categoria categ : arti.getCategories()) {
+            final DTO_Product prod = input.getObject();
+            for (final DTO_Categoria categ : prod.getCategories()) {
                 final DTO_Categoria2Articulo cat2Prod = new DTO_Categoria2Articulo();
-                cat2Prod.setProductId(arti.getId());
+                cat2Prod.setProductId(prod.getId());
                 cat2Prod.setCategoryId(categ.getId());
-                final int count = articuloMapper.getCategories4Product(cat2Prod);
+                final int count = productMapper.getCategories4Product(cat2Prod);
                 if (count == 0) {
-                    articuloMapper.insertCategory4Product(cat2Prod);
+                    productMapper.insertCategory4Product(cat2Prod);
                 }
             }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_DELETECAT4PROD.equals(input.getAccion())) {
-            final DTO_Articulo arti = input.getObject();
+            final DTO_Product arti = input.getObject();
             for (final DTO_Categoria categ : arti.getCategories()) {
                 final DTO_Categoria2Articulo cat2Prod = new DTO_Categoria2Articulo();
                 cat2Prod.setProductId(arti.getId());
                 cat2Prod.setCategoryId(categ.getId());
-                final int count = articuloMapper.getCategories4Product(cat2Prod);
+                final int count = productMapper.getCategories4Product(cat2Prod);
                 if (count > 0) {
-                    articuloMapper.deleteCategory4Product(cat2Prod);
+                    productMapper.deleteCategory4Product(cat2Prod);
                 }
             }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTERIMG4PROD.equals(input.getAccion())) {
-            final DTO_Articulo arti = input.getObject();
-            for (final DTO_ArticuloImage img : arti.getImages()) {
+            final DTO_Product arti = input.getObject();
+            for (final DTO_ProductImage img : arti.getImages()) {
                 // if(img.getImageName() == null) {
                 img.setImageName(arti.getEmpresa() + "." + arti.getId() + "." + generarNombreAleatorio());
                 savePhoto(img);
                 // }
-                articuloMapper.insertImage4Product(img);
+                if (img.getId() == null) {
+                    productMapper.insertImage4Product(img);
+                } else {
+                    productMapper.updateImage4Product(img);
+                }
             }
             output.setErrorCode(Constantes.OK);
             return output;
@@ -131,7 +142,7 @@ public class ProductService
         return nomImg.toString();
     }
 
-    private File getPhotoFile(final DTO_ArticuloImage _image)
+    private File getPhotoFile(final DTO_ProductImage _image)
     {
         String ruta;
         if (System.getProperty("os.name").contains("Windows")) {
@@ -142,7 +153,7 @@ public class ProductService
         return new File(ruta);
     }
 
-    private void savePhoto(final DTO_ArticuloImage _image)
+    private void savePhoto(final DTO_ProductImage _image)
     {
         final File photo = getPhotoFile(_image);
         if (_image.getImage() == null) {
@@ -160,7 +171,7 @@ public class ProductService
         }
     }
 
-    private void loadPhoto(final DTO_ArticuloImage _image)
+    private void loadPhoto(final DTO_ProductImage _image)
     {
         final File photo = getPhotoFile(_image);
         if (!photo.exists()) {
@@ -193,12 +204,12 @@ public class ProductService
 
     public ProductMapper getDao()
     {
-        return articuloMapper;
+        return productMapper;
     }
 
-    public void setDao(final ProductMapper articuloMapper)
+    public void setDao(final ProductMapper _productMapper)
     {
-        this.articuloMapper = articuloMapper;
+        this.productMapper = _productMapper;
     }
 
 }

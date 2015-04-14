@@ -43,11 +43,11 @@ import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Articulo;
-import pe.com.jx_market.domain.DTO_ArticuloImage;
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.domain.DTO_Marca;
+import pe.com.jx_market.domain.DTO_Product;
+import pe.com.jx_market.domain.DTO_ProductImage;
 import pe.com.jx_market.utilities.AdvancedTreeModel;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.CategoryTreeNode;
@@ -82,7 +82,7 @@ public class PO_EAProductsCreate
     @Wire
     private Listbox lstImages;
     @WireVariable
-    private BusinessService<DTO_Articulo> productService;
+    private BusinessService<DTO_Product> productService;
     @WireVariable
     private BusinessService<DTO_Categoria> categoryService;
     @WireVariable
@@ -90,7 +90,7 @@ public class PO_EAProductsCreate
     @WireVariable
     private Desktop desktop;
     private DTO_Empresa empresa;
-    private DTO_Articulo articulo;
+    private DTO_Product articulo;
     private CategoryTreeNode categoryTreeNode;
     private AdvancedTreeModel categoryTreeModel;
 
@@ -142,7 +142,7 @@ public class PO_EAProductsCreate
     {
         if (!txtNombre.getValue().equals("") && !txtDesc.getValue().equals("")
                         && cmbMarca.getSelectedItem() != null && cmbStatus.getSelectedItem() != null) {
-            final DTO_Articulo articulo = new DTO_Articulo();
+            final DTO_Product articulo = new DTO_Product();
             //articulo.setCategoria(((DTO_Categoria) cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
             articulo.setActivo((Boolean) cmbStatus.getSelectedItem().getValue());
             articulo.setMarca((DTO_Marca) cmbMarca.getSelectedItem().getValue());
@@ -151,15 +151,15 @@ public class PO_EAProductsCreate
             //articulo.setMarca(txtMarca.getValue());
             articulo.setProductName(txtNombre.getValue());
             //articulo.setPrecio(decPrec.getValue());
-            final ServiceInput<DTO_Articulo> input = new ServiceInput<DTO_Articulo>(articulo);
+            final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(articulo);
             input.setAccion(Constantes.V_REGISTER);
-            final ServiceOutput<DTO_Articulo> output = productService.execute(input);
+            final ServiceOutput<DTO_Product> output = productService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"),
                                 Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"), null);
                 this.articulo = articulo;
                 this.articulo.setCategories(new ArrayList<DTO_Categoria>());
-                this.articulo.setImages(new ArrayList<DTO_ArticuloImage>());
+                this.articulo.setImages(new ArrayList<DTO_ProductImage>());
                 //limpiarCampos();
             } else {
                 alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Error.Label"),
@@ -171,7 +171,7 @@ public class PO_EAProductsCreate
         }
     }
 
-    @Listen("onClick = #btnClose, #btnClose2")
+    @Listen("onClick = #btnClose, #btnClose2, #btnClose3")
     public void accionCerrar(final Event _event) {
         wEAPC.detach();
     }
@@ -185,7 +185,7 @@ public class PO_EAProductsCreate
                 mapCat4Prod.put(cat.getId(), cat);
             }
             if (tree.getItems() != null && !tree.getItems().isEmpty()) {
-                final DTO_Articulo prod4DelCat = new DTO_Articulo();
+                final DTO_Product prod4DelCat = new DTO_Product();
                 prod4DelCat.setId(articulo.getId());
                 prod4DelCat.setEmpresa(articulo.getEmpresa());
                 prod4DelCat.setCategories(new ArrayList<DTO_Categoria>());
@@ -193,15 +193,15 @@ public class PO_EAProductsCreate
                     saveCategories(item, mapCat4Prod, prod4DelCat);
                 }
 
-                ServiceInput<DTO_Articulo> input = new ServiceInput<DTO_Articulo>(articulo);
+                ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(articulo);
                 input.setAccion(Constantes.V_REGISTERCAT4PROD);
-                ServiceOutput<DTO_Articulo> output = productService.execute(input);
+                ServiceOutput<DTO_Product> output = productService.execute(input);
                 boolean correct = true;
                 if (output.getErrorCode() != Constantes.OK) {
                     alertaError(logger, "", "Error al guardar nuevas categorias para el producto", null);
                     correct = false;
                 }
-                input = new ServiceInput<DTO_Articulo>(prod4DelCat);
+                input = new ServiceInput<DTO_Product>(prod4DelCat);
                 input.setAccion(Constantes.V_DELETECAT4PROD);
                 output = productService.execute(input);
                 if (output.getErrorCode() != Constantes.OK) {
@@ -224,7 +224,7 @@ public class PO_EAProductsCreate
 
     private void saveCategories(final Treeitem _item,
                                 final Map<Integer, DTO_Categoria> _mapCat4Prod,
-                                final DTO_Articulo _prod4DelCat)
+                                final DTO_Product _prod4DelCat)
     {
         final CategoryTreeNode ctn = _item.getValue();
         final DTO_Categoria categ = ctn.getData();
@@ -244,16 +244,6 @@ public class PO_EAProductsCreate
                 saveCategories((Treeitem) _item.getTreechildren().getChildren().get(i), _mapCat4Prod, _prod4DelCat);
             }
         }
-    }
-
-    public void limpiarCampos()
-    {
-        cmbStatus.setSelectedItem(null);
-        cmbStatus.setValue(null);
-        txtNombre.setValue("");
-        txtDesc.setValue("");
-        //imgProducto = null;
-        setGraficoFoto(null);
     }
 
     public CategoryTreeNode getCategories()
@@ -398,7 +388,7 @@ public class PO_EAProductsCreate
         }
     }
 
-    private void setGraficoFoto(final Media _media)
+    private void setImage(final Media _media)
     {
         if (_media != null) {
             final byte[] imgProducto = _media.getByteData();
@@ -408,12 +398,13 @@ public class PO_EAProductsCreate
                     lbImageName.setValue(_media.getName());
                     lbImageSize.setValue("" + _media.getByteData().length);
 
-                    final DTO_ArticuloImage img4Prod = new DTO_ArticuloImage();
+                    final DTO_ProductImage img4Prod = new DTO_ProductImage();
                     img4Prod.setCompany(empresa.getCodigo());
                     img4Prod.setImage(imgFoto.getContent().getByteData());
                     img4Prod.setImageName(_media.getName());
 
                     final Listitem item = new Listitem();
+                    item.setAttribute(Constantes.ATTRIBUTE_PRODUCT_EDITIMAGE, true);
                     item.setValue(img4Prod);
                     Listcell cell = new Listcell();
                     cell.setLabel(_media.getName());
@@ -429,7 +420,7 @@ public class PO_EAProductsCreate
                             throws Exception
                         {
                             final Listitem lItem = (Listitem) event.getTarget();
-                            final DTO_ArticuloImage img = lItem.getValue();
+                            final DTO_ProductImage img = lItem.getValue();
                             lbImageName.setValue(img.getImageName());
                             lbImageSize.setValue("" + img.getImage().length);
                             imgFoto.setContent(new AImage("foto", img.getImage()));
@@ -466,12 +457,13 @@ public class PO_EAProductsCreate
                                 "El archivo seleccionado es muy grande. Maximo permitido = 100k", null);
                 return;
             }
-            setGraficoFoto(media);
+            setImage(media);
 
             // imgFoto.setContent((org.zkoss.image.Image)media);
         } else {
             alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.uploadPhoto.Info2.Label",
-                                                media.getName()),
+                                            Constantes.EMPTY_STRING,
+                                            new String[] {media.getName()}),
                             "El archivo seleccionado " + media.getName() + " no es una imagen", null);
             return;
         }
@@ -482,18 +474,23 @@ public class PO_EAProductsCreate
         if (articulo != null) {
             if (lstImages.getItems() != null && !lstImages.getItems().isEmpty()) {
                 for (final Listitem imgIt : lstImages.getItems()) {
-                    final DTO_ArticuloImage img4Prod = imgIt.getValue();
-                    img4Prod.setProductId(articulo.getId());
-                    articulo.getImages().add(img4Prod);
+                    if ((Boolean) imgIt.getAttribute(Constantes.ATTRIBUTE_PRODUCT_EDITIMAGE)) {
+                        final DTO_ProductImage img4Prod = imgIt.getValue();
+                        img4Prod.setProductId(articulo.getId());
+                        img4Prod.setImageActive(true);
+                        img4Prod.setImageDefault(false);
+                        articulo.getImages().add(img4Prod);
+                        imgIt.setAttribute(Constantes.ATTRIBUTE_PRODUCT_EDITIMAGE, false);
+                    }
                 }
-                final ServiceInput<DTO_Articulo> input = new ServiceInput<DTO_Articulo>(articulo);
+                final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(articulo);
                 input.setAccion(Constantes.V_REGISTERIMG4PROD);
-                final ServiceOutput<DTO_Articulo> output = productService.execute(input);
+                final ServiceOutput<DTO_Product> output = productService.execute(input);
                 if (output.getErrorCode() == Constantes.OK) {
                     alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Info.Label"),
                                     Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Info.Label"), null);
-                    articulo.setImages(new ArrayList<DTO_ArticuloImage>());
-                    cleanImagePanel();
+                    //articulo.setImages(new ArrayList<DTO_ProductImage>());
+                    //cleanImagePanel();
                 } else {
                     alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Error.Label"),
                                     "Erro al guardar la imagen.", null);
@@ -506,13 +503,6 @@ public class PO_EAProductsCreate
             alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Info2.Label"),
                             "Ningun producto a sido creado previamente", null);
         }
-    }
-
-    private void cleanImagePanel() {
-        lbImageName.setValue(null);
-        lbImageSize.setValue(null);
-        setGraficoFoto(null);
-        lstImages.getItems().clear();
     }
 
     @Override

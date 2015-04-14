@@ -10,7 +10,7 @@ import java.util.List;
  * @author George
  *
  */
-public class DTO_Articulo implements Serializable
+public class DTO_Product implements Serializable
 {
     private Integer id;
     private Integer empresa;
@@ -21,7 +21,7 @@ public class DTO_Articulo implements Serializable
     //private BigDecimal precio;
     //private Integer stock;
     private Boolean activo;
-    private List<DTO_ArticuloImage> images;
+    private List<DTO_ProductImage> images;
 
     public Integer getId()
     {
@@ -104,11 +104,11 @@ public class DTO_Articulo implements Serializable
         this.marca = marca;
     }
 
-    public List<DTO_ArticuloImage> getImages()
+    public List<DTO_ProductImage> getImages()
     {
         return images;
     }
-    public void setImages(final List<DTO_ArticuloImage> images)
+    public void setImages(final List<DTO_ProductImage> images)
     {
         this.images = images;
     }

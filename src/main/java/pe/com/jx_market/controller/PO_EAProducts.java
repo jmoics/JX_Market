@@ -5,6 +5,7 @@ package pe.com.jx_market.controller;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -35,15 +36,16 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.TreeNode;
 import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Articulo;
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.domain.DTO_Marca;
+import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.CategoryTreeNode;
 import pe.com.jx_market.utilities.CategoryTreeNodeCollection;
@@ -71,8 +73,10 @@ public class PO_EAProducts
     private Chosenbox chbCat;
     @Wire
     private Listbox lstProd;
+    @Wire
+    private Listheader headNumber;
     @WireVariable
-    private BusinessService<DTO_Articulo> productService;
+    private BusinessService<DTO_Product> productService;
     @WireVariable
     private BusinessService<DTO_Categoria> categoryService;
     @WireVariable
@@ -95,10 +99,39 @@ public class PO_EAProducts
 
         buildActiveCombo(cmbEstad);
         buildMarcaCombo();
+        buildOrderComparator();
 
-        if ((Boolean) desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD)) {
+        if (desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD) != null
+                        && (Boolean) desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD)) {
             buscarProductos();
         }
+    }
+
+    private void buildOrderComparator() {
+        headNumber.setSortAscending(new Comparator<Listitem>()
+        {
+            @Override
+            public int compare(final Listitem o1,
+                               final Listitem o2)
+            {
+                final Integer c1 = Integer.parseInt(((Listcell) o1.getChildren().get(0)).getLabel());
+                final Integer c2 = Integer.parseInt(((Listcell) o2.getChildren().get(0)).getLabel());
+                return c1.compareTo(c2);
+            }
+
+        });
+        headNumber.setSortDescending(new Comparator<Listitem>()
+        {
+            @Override
+            public int compare(final Listitem o1,
+                               final Listitem o2)
+            {
+                final Integer c1 = Integer.parseInt(((Listcell) o1.getChildren().get(0)).getLabel());
+                final Integer c2 = Integer.parseInt(((Listcell) o2.getChildren().get(0)).getLabel());
+                return c2.compareTo(c1);
+            }
+
+        });
     }
 
     private void buildMarcaCombo()
@@ -212,7 +245,7 @@ public class PO_EAProducts
     {
         lstProd.getItems().clear();
         final ArrayList<Integer> listCat = new ArrayList<Integer>();
-        final ServiceInput<DTO_Articulo> input = new ServiceInput<DTO_Articulo>();
+        final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>();
         if (chbCat.getSelectedObjects() != null && !chbCat.getSelectedObjects().isEmpty()) {
             final Set<DTO_Categoria> setCateg = chbCat.getSelectedObjects();
             for (final DTO_Categoria categ : setCateg) {
@@ -228,13 +261,15 @@ public class PO_EAProducts
         }
         input.addMapPair("empresa", empresa.getCodigo());
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput<DTO_Articulo> output = productService.execute(input);
+        final ServiceOutput<DTO_Product> output = productService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Articulo> lst = output.getLista();
-            for (final DTO_Articulo art : lst) {
+            final List<DTO_Product> lst = output.getLista();
+            int columnNumber = 1;
+            for (final DTO_Product art : lst) {
                 final Listitem item = new Listitem();
                 final List<DTO_Categoria> categs = art.getCategories();
-                Listcell cell = new Listcell();
+                Listcell cell = new Listcell("" + columnNumber);
+                item.appendChild(cell);
                 int cont = 1;
                 final StringBuilder strB = new StringBuilder();
                 for (final DTO_Categoria cat : categs) {
@@ -244,7 +279,7 @@ public class PO_EAProducts
                     }
                     cont++;
                 }
-                cell.setLabel(strB.toString());
+                cell = new Listcell(strB.toString());
                 item.appendChild(cell);
                 cell = new Listcell(art.getMarca().getMarcaName());
                 item.appendChild(cell);
@@ -270,6 +305,7 @@ public class PO_EAProducts
                     }
                 });
                 lstProd.appendChild(item);
+                columnNumber++;
             }
         }
         else {

@@ -25,7 +25,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Articulo;
+import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.domain.DTO_DetallePedido;
 import pe.com.jx_market.domain.DTO_Pedido;
@@ -57,14 +57,14 @@ public class PO_CECarritoCliente extends Window
     public void listaProductos()
     {
         grdProds.getRows().getChildren().clear();
-        final Map<Integer, Map<DTO_Articulo, Integer>> map = (Map<Integer, Map<DTO_Articulo, Integer>>) getDesktop()
+        final Map<Integer, Map<DTO_Product, Integer>> map = (Map<Integer, Map<DTO_Product, Integer>>) getDesktop()
                                                                                 .getSession().getAttribute("carrito");
         Integer cantTot = new Integer(0);
         final BigDecimal precTotal = BigDecimal.ZERO;
 
-        for (final Entry<Integer, Map<DTO_Articulo, Integer>> entry : map.entrySet()) {
-            for (final Entry<DTO_Articulo, Integer> entry2 : entry.getValue().entrySet()) {
-                final DTO_Articulo producto = entry2.getKey();
+        for (final Entry<Integer, Map<DTO_Product, Integer>> entry : map.entrySet()) {
+            for (final Entry<DTO_Product, Integer> entry2 : entry.getValue().entrySet()) {
+                final DTO_Product producto = entry2.getKey();
 
                 final Row row = new Row();
                 row.setAttribute("producto", producto);
@@ -96,7 +96,7 @@ public class PO_CECarritoCliente extends Window
                             public void onEvent(final Event e)
                                 throws UiException
                             {
-                                actualizarCarrito((DTO_Articulo)e.getTarget()
+                                actualizarCarrito((DTO_Product)e.getTarget()
                                                 .getParent().getParent().getAttribute("producto"),
                                             ((Intbox)((Row) e.getTarget()
                                                 .getParent().getParent()).getChildren().get(0)).getValue());
@@ -115,7 +115,7 @@ public class PO_CECarritoCliente extends Window
                             public void onEvent(final Event e)
                                 throws UiException
                             {
-                                quitarCarrito((DTO_Articulo)e.getTarget()
+                                quitarCarrito((DTO_Product)e.getTarget()
                                                 .getParent().getParent().getAttribute("producto"));
                             }
                 });
@@ -134,8 +134,8 @@ public class PO_CECarritoCliente extends Window
     }
 
     @SuppressWarnings("unchecked")
-    private void actualizarCarrito(final DTO_Articulo producto, final Integer cantNew) {
-        final Map<Integer, Map<DTO_Articulo, Integer>> map = (Map<Integer, Map<DTO_Articulo, Integer>>) getDesktop()
+    private void actualizarCarrito(final DTO_Product producto, final Integer cantNew) {
+        final Map<Integer, Map<DTO_Product, Integer>> map = (Map<Integer, Map<DTO_Product, Integer>>) getDesktop()
                                                                                 .getSession().getAttribute("carrito");
         map.get(producto.getId()).put(producto, cantNew);
         listaProductos();
@@ -148,8 +148,8 @@ public class PO_CECarritoCliente extends Window
     }
 
     @SuppressWarnings("unchecked")
-    private void quitarCarrito(final DTO_Articulo producto) {
-        final Map<Integer, Map<DTO_Articulo, Integer>> map = (Map<Integer, Map<DTO_Articulo, Integer>>) getDesktop()
+    private void quitarCarrito(final DTO_Product producto) {
+        final Map<Integer, Map<DTO_Product, Integer>> map = (Map<Integer, Map<DTO_Product, Integer>>) getDesktop()
                                                                                 .getSession().getAttribute("carrito");
         map.remove(producto.getId());
         listaProductos();
@@ -163,14 +163,14 @@ public class PO_CECarritoCliente extends Window
 
     @SuppressWarnings({ "unchecked" })
     public void generarPedido() {
-        final Map<Integer, Map<DTO_Articulo, Integer>> map = (Map<Integer, Map<DTO_Articulo, Integer>>) getDesktop()
+        final Map<Integer, Map<DTO_Product, Integer>> map = (Map<Integer, Map<DTO_Product, Integer>>) getDesktop()
                                                                                 .getSession().getAttribute("carrito");
         final Map<Integer, Map<DTO_Pedido, List<DTO_DetallePedido>>> mapPed
                                                 = new HashMap<Integer, Map<DTO_Pedido, List<DTO_DetallePedido>>>();
 
-        for (final Entry<Integer, Map<DTO_Articulo, Integer>> entry : map.entrySet()) {
-            for (final Entry<DTO_Articulo, Integer> entry2 : entry.getValue().entrySet()) {
-                final DTO_Articulo arti = entry2.getKey();
+        for (final Entry<Integer, Map<DTO_Product, Integer>> entry : map.entrySet()) {
+            for (final Entry<DTO_Product, Integer> entry2 : entry.getValue().entrySet()) {
+                final DTO_Product arti = entry2.getKey();
                 if (mapPed.containsKey(arti.getEmpresa())) {
                     final Map<DTO_Pedido, List<DTO_DetallePedido>> mapAux = mapPed.get(arti.getEmpresa());
                     for (final Entry<DTO_Pedido, List<DTO_DetallePedido>> entry3 : mapAux.entrySet()) {
@@ -239,7 +239,7 @@ public class PO_CECarritoCliente extends Window
     }
 
     private void resetearAtributos() {
-        final Map<Integer, Map<DTO_Articulo, Integer>> map = new HashMap<Integer, Map<DTO_Articulo, Integer>>();
+        final Map<Integer, Map<DTO_Product, Integer>> map = new HashMap<Integer, Map<DTO_Product, Integer>>();
         getDesktop().getSession().setAttribute("carrito", map);
         final Map<String, Object> map2 = new HashMap<String, Object>();
         map2.put("total", BigDecimal.ZERO);

@@ -17,7 +17,6 @@
             art.activo as productActivo,
             cart.id as catProdId,
             cart.categoryid as categoryId,
-            cart.productid as productId,
             cat.id as categoryId,
             cat.empresaid as categoryEmpresaId,
             cat.nombre as categoryName,
@@ -29,8 +28,10 @@
             mar.activo as marcaActivo,
             img.id as imageId,
             img.empresaid as imageEmpresaId,
+            img.productid as productImageId,
             img.nombre as imageName,
-            img.imagdefault as imageDefault
+            img.imagdefault as imageDefault,
+            img.active as imageActive
         FROM
             T_NEG_ARTICULO art LEFT JOIN
             T_NEG_CATEG2ARTIC cart ON art.id = cart.productid LEFT JOIN
@@ -57,7 +58,7 @@
         </where>
     </select>
 
-    <select id="getArticuloXCodigo" parameterType="DTO_Articulo" resultType="DTO_Articulo">
+    <select id="getArticuloXCodigo" parameterType="DTO_Product" resultType="DTO_Product">
         SELECT
             art.id as id,
             art.empresaid as empresa,
@@ -71,7 +72,7 @@
             art.id = #{id, jdbcType=INTEGER}
     </select>
 
-    <insert id="insertArticulo" parameterType="DTO_Articulo" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+    <insert id="insertArticulo" parameterType="DTO_Product" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
         INSERT INTO T_NEG_ARTICULO
             (empresaid,nombre,
             descripcion,marcaid,
@@ -82,7 +83,7 @@
             #{activo})
     </insert>
 
-    <update id="updateStock" parameterType="DTO_Articulo">
+    <update id="updateStock" parameterType="DTO_Product">
         UPDATE T_NEG_ARTICULO
         SET
             articulo_n_stock = #{stock}
@@ -92,7 +93,7 @@
             articulo_n_codigo = #{codigo}
     </update>
 
-    <update id="updateArticulo" parameterType="DTO_Articulo">
+    <update id="updateArticulo" parameterType="DTO_Product">
         UPDATE T_NEG_ARTICULO
         SET
             nombre = #{productName},
@@ -136,21 +137,32 @@
             categoryid = #{categoryId}
     </delete>
 
-    <insert id="insertImage4Product" parameterType="DTO_ArticuloImage">
+    <insert id="insertImage4Product" parameterType="DTO_ProductImage" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
         INSERT INTO T_NEG_IMAGE4PRODUCT
-            (empresaid,productid,nombre,imagdefault)
+            (empresaid,productid,nombre,imagdefault,active)
         VALUES
-            (#{company},#{productId},#{imageName},#{imageDefault})
+            (#{company},#{productId},#{imageName},#{imageDefault},#{imageActive})
     </insert>
 
-    <delete id="deleteImage4Product" parameterType="DTO_ArticuloImage">
+    <update id="updateImage4Product" parameterType="DTO_ProductImage">
+        UPDATE T_NEG_IMAGE4PRODUCT
+        SET
+            imagdefault = #{imageDefault},
+            active = #{imageActive}
+        WHERE
+            id = #{id}
+        AND
+            empresaid = #{company}
+    </update>
+
+    <delete id="deleteImage4Product" parameterType="DTO_ProductImage">
         DELETE FROM
             T_NEG_IMAGE4PRODUCT
         WHERE
             id = #{id}
     </delete>
 
-    <resultMap id="productResultMap" type="DTO_Articulo">
+    <resultMap id="productResultMap" type="DTO_Product">
         <id property="id" column="productId" />
         <result property="empresa" column="productEmpresaId" />
         <result property="productName" column="productName" />
@@ -165,7 +177,7 @@
                     ofType="DTO_Categoria" javaType="ArrayList" resultMap="categoryResultMap">
         </collection>
         <collection property="images" column="imageId"
-                    ofType="DTO_ArticuloImage" javaType="ArrayList" resultMap="imageResultMap">
+                    ofType="DTO_ProductImage" javaType="ArrayList" resultMap="imageResultMap">
         </collection>
     </resultMap>
 
@@ -187,11 +199,13 @@
         <result property="marcaName" column="marcaName" />
         <result property="active" column="marcaActivo" />
     </resultMap>
-    <resultMap id="imageResultMap" type="DTO_ArticuloImage">
+    <resultMap id="imageResultMap" type="DTO_ProductImage">
         <id property="id" column="imageId" />
         <result property="company" column="imageEmpresaId" />
+        <result property="productId" column="productImageId" />
         <result property="imageName" column="imageName" />
         <result property="imageDefault" column="imageDefault" />
+        <result property="imageActive" column="imageActive" />
     </resultMap>
 
     <select id="selectCategoriasForArticulos" resultType="DTO_Categoria">

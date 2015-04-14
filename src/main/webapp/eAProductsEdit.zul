@@ -85,8 +85,8 @@
                     <div width="100%">
                         <tree id="tree" hflex="1" height="400px" multiple="true" checkmark="true" >
                             <treecols>
-                                <treecol label="${labels.pe.com.jx_market.eACategoryEdit.category.Label}" />
-                                <treecol label="${labels.pe.com.jx_market.eACategoryEdit.status.Label}" />
+                                <treecol label="${labels.pe.com.jx_market.eAProductsEdit.category.Label}" />
+                                <treecol label="${labels.pe.com.jx_market.eAProductsEdit.status.Label}" />
                             </treecols>
                             <!-- <template name="model">
                                 <treeitem>
@@ -110,37 +110,39 @@
                     <hlayout spacing="4px" vflex="10">
                         <listbox id="lstImages" sclass="employee-list" vflex="1" hflex="2">
                             <auxhead>
-                                <auxheader colspan="2" class="topic">Imágenes Cargadas</auxheader>
+                                <auxheader colspan="4" class="topic">${labels.pe.com.jx_market.eAProductsEdit.Images.Title}</auxheader>
                             </auxhead>
                             <listhead>
-                                <listheader label="Nombre" hflex="1" align="center" />
-                                <listheader label="Tamaño" hflex="1" align="center" />
+                                <listheader label="${labels.pe.com.jx_market.eAProductsEdit.name.Label}" hflex="1" align="center" />
+                                <listheader label="${labels.pe.com.jx_market.eAProductsEdit.size.Label}" hflex="1" align="center" />
+                                <listheader label="${labels.pe.com.jx_market.eAProductsEdit.active.Label}" hflex="1" align="center" />
+                                <listheader label="${labels.pe.com.jx_market.eAProductsEdit.defaultt.Label}" hflex="1" align="center" />
                             </listhead>
                         </listbox>
                         <groupbox sclass="card-pre" mold="3d" hflex="3" vflex="1" >
-                            <div sclass="card">
+                            <div sclass="card" width="100%" height="100%">
                                 <image src="/media/imagProd.gif" id="imgFoto" hflex="1" vflex="1" />
                             </div>
                         </groupbox>
                     </hlayout>
                     <grid vflex="2">
                         <columns>
-                            <column label="Nombre" align="center" />
-                            <column label="Tamaño" align="center" />
-                            <column label="Cargar Imagen" align="center" />
+                            <column label="${labels.pe.com.jx_market.eAProductsEdit.lbImageName.Label}" align="center" />
+                            <column label="${labels.pe.com.jx_market.eAProductsEdit.lbImageSize.Label}" align="center" />
+                            <column label="${labels.pe.com.jx_market.eAProductsEdit.btnUpload.Label}" align="center" />
                         </columns>
                         <rows>
                             <row valign="middle">
                                 <label id="lbImageName" />
                                 <label id="lbImageSize" />
-                                <button id="btnUpload" upload="true" label="Cargar Imagen" />
+                                <button id="btnUpload" upload="true" image="/media/ArrowUpGreen-16x16.png" />
                             </row>
                         </rows>
                     </grid>
                     <hbox align="end" pack="end" hflex="1" vflex="1">
-                        <button id="btnSave3" label="${labels.pe.com.jx_market.eAProductsCreate.btnSave3.Label}"
+                        <button id="btnSave3" label="${labels.pe.com.jx_market.eAProductsEdit.btnSave3.Label}"
                             image="/media/filesave.png" />
-                        <button id="btnClose3" label="${labels.pe.com.jx_market.eAProductsCreate.btnClose3.Label}"
+                        <button id="btnClose3" label="${labels.pe.com.jx_market.eAProductsEdit.btnClose3.Label}"
                             image="/media/cancel.png" />
                     </hbox>
                 </vlayout>

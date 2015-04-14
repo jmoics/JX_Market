@@ -20,7 +20,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Articulo;
+import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.domain.DTO_DetallePedido;
 import pe.com.jx_market.domain.DTO_Pedido;
@@ -120,7 +120,7 @@ public class PO_CECuentaCliente extends Window
             cell.setLabel(det.getCantidad().toString());
             cell.setParent(item);
 
-            final DTO_Articulo art = obtenerArticulo(det.getArticulo());
+            final DTO_Product art = obtenerArticulo(det.getArticulo());
 
             cell = new Listcell();
             cell.setLabel(art.getProductName());
@@ -142,8 +142,8 @@ public class PO_CECuentaCliente extends Window
         }
     }
 
-    private DTO_Articulo obtenerArticulo(final Integer codArt) {
-        DTO_Articulo arti = new DTO_Articulo();
+    private DTO_Product obtenerArticulo(final Integer codArt) {
+        DTO_Product arti = new DTO_Product();
         arti.setId(codArt);
 
         final ServiceInput input = new ServiceInput();
@@ -152,7 +152,7 @@ public class PO_CECuentaCliente extends Window
         input.setObject(arti);
         final ServiceOutput output = articuloService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            arti = (DTO_Articulo) output.getObject();
+            arti = (DTO_Product) output.getObject();
         }
         return arti;
     }

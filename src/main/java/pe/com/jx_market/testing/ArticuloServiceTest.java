@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import pe.com.jx_market.domain.DTO_Articulo;
+import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -32,7 +32,7 @@ public class ArticuloServiceTest
     @Test
     public void registraArticulo()
     {
-        final DTO_Articulo art = new DTO_Articulo();
+        final DTO_Product art = new DTO_Product();
         //art.setCategoria(1);
         art.setActivo(Constantes.STB_ACTIVO);
         art.setProductDescription("juego de video de accion basado en la trilogia del senior de los anillos");
@@ -50,7 +50,7 @@ public class ArticuloServiceTest
 
     @Test
     public void getArticulo() {
-        DTO_Articulo art = new DTO_Articulo();
+        DTO_Product art = new DTO_Product();
         art.setId(1);
         art.setEmpresa(2);
         final ServiceInput input = new ServiceInput(art);
@@ -58,7 +58,7 @@ public class ArticuloServiceTest
         final ServiceOutput output = articuloService.execute(input);
         assertEquals(Constantes.OK, output.getErrorCode());
 
-        art = (DTO_Articulo)output.getObject();
+        art = (DTO_Product)output.getObject();
         //assertEquals(new BigDecimal(24.50), art.getPrecio());
         assertEquals("Ring Action", art.getProductName());
     }

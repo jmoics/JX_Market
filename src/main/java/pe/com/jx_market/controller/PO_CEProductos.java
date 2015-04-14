@@ -21,7 +21,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Articulo;
+import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.domain.DTO_Categoria;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -53,7 +53,7 @@ public class PO_CEProductos extends Window
             getDesktop().getSession().removeAttribute("categoria");
         }
 
-        final DTO_Articulo articulo = new DTO_Articulo();
+        final DTO_Product articulo = new DTO_Product();
         if (cat != null) {
             //articulo.setCategoria(cat.getCodigo());
         }
@@ -61,8 +61,8 @@ public class PO_CEProductos extends Window
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = articuloService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Articulo> lst = output.getLista();
-            for (final DTO_Articulo art : lst) {
+            final List<DTO_Product> lst = output.getLista();
+            for (final DTO_Product art : lst) {
                 final Listitem item = new Listitem();
                 item.setZclass("null");
                 item.setSclass("prod_box");
@@ -142,7 +142,7 @@ public class PO_CEProductos extends Window
                             public void onEvent(final Event e)
                                 throws UiException
                             {
-                                final DTO_Articulo prod = (DTO_Articulo) e.getTarget().getParent().getParent().getParent().getAttribute("producto");
+                                final DTO_Product prod = (DTO_Product) e.getTarget().getParent().getParent().getParent().getAttribute("producto");
                                 agregarCarrito(prod);
                             }
                 });
@@ -184,14 +184,14 @@ public class PO_CEProductos extends Window
     }
 
     @SuppressWarnings("unchecked")
-    private void agregarCarrito(final DTO_Articulo prod) {
+    private void agregarCarrito(final DTO_Product prod) {
         if (getDesktop().getSession().getAttribute("cliente") != null
                         && getDesktop().getSession().getAttribute("carrito") != null) {
-            final Map<Integer, Map<DTO_Articulo, Integer>> map = (Map<Integer, Map<DTO_Articulo, Integer>>) getDesktop()
+            final Map<Integer, Map<DTO_Product, Integer>> map = (Map<Integer, Map<DTO_Product, Integer>>) getDesktop()
                                                                                     .getSession().getAttribute("carrito");
 
             if (!map.containsKey(prod.getId())) {
-                final Map<DTO_Articulo, Integer> map2 = new HashMap<DTO_Articulo, Integer>();
+                final Map<DTO_Product, Integer> map2 = new HashMap<DTO_Product, Integer>();
                 map2.put(prod, 1);
                 map.put(prod.getId(), map2);
             }
@@ -201,7 +201,7 @@ public class PO_CEProductos extends Window
         }
     }
 
-    private void setGraficoFoto(final DTO_Articulo articulo, final Image imgFoto)
+    private void setGraficoFoto(final DTO_Product articulo, final Image imgFoto)
     {
         final ServiceInput input = new ServiceInput(articulo);
         input.setAccion(Constantes.V_GETIMG);

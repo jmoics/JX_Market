@@ -20,7 +20,7 @@ public class DTO_Categoria implements Serializable
     private Integer categoryParentId;
     private Boolean estado;
     private byte[] imagen;
-    private List<DTO_Articulo> articulos;
+    private List<DTO_Product> articulos;
 
     public DTO_Categoria() {
     }
@@ -88,11 +88,11 @@ public class DTO_Categoria implements Serializable
     {
         this.estado = estado;
     }
-    public List<DTO_Articulo> getArticulos()
+    public List<DTO_Product> getArticulos()
     {
         return articulos;
     }
-    public void setArticulos(final List<DTO_Articulo> articulos)
+    public void setArticulos(final List<DTO_Product> articulos)
     {
         this.articulos = articulos;
     }

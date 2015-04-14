@@ -2,7 +2,7 @@ package pe.com.jx_market.domain;
 
 import java.io.Serializable;
 
-public class DTO_ArticuloImage
+public class DTO_ProductImage
     implements Serializable
 {
 
@@ -11,6 +11,7 @@ public class DTO_ArticuloImage
     private String imageName;
     private Integer productId;
     private boolean imageDefault;
+    private boolean imageActive;
     private byte[] image;
 
     public Integer getId()
@@ -71,6 +72,17 @@ public class DTO_ArticuloImage
     public void setImage(final byte[] image)
     {
         this.image = image;
+    }
+
+
+    public boolean isImageActive()
+    {
+        return imageActive;
+    }
+
+    public void setImageActive(final boolean imageActive)
+    {
+        this.imageActive = imageActive;
     }
 
 }

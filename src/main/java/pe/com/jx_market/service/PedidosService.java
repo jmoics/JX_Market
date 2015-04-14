@@ -49,7 +49,7 @@ public class PedidosService implements BusinessService
             for (final DTO_Pedido ped : lst) {
 
             }
-            //output.setLista(dao.getArticulos((DTO_Articulo)input.getObject()));
+            //output.setLista(dao.getArticulos((DTO_Product)input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_LIST.equals(input.getAccion())) {
@@ -109,7 +109,7 @@ public class PedidosService implements BusinessService
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getAccion())) {
-            //final DTO_Articulo art = dao.getArticuloXCodigo((DTO_Articulo) input.getObject());
+            //final DTO_Product art = dao.getArticuloXCodigo((DTO_Product) input.getObject());
             //output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
