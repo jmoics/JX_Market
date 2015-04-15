@@ -12,31 +12,31 @@
         SELECT
             area.area_n_codigo as codigo,
             area.area_v_nombre as nombre,
-            area.empresa_n_codigo as empresa
+            area.companyid as company
         FROM
             T_EMP_AREA area
         WHERE
-            area.empresa_n_codigo = #{empresa}
+            area.companyid = #{company}
     </select>
     
     <select id="getAreaXCodigo" parameterType="DTO_Area" resultType="DTO_Area">
         SELECT
             area.area_n_codigo as codigo,
             area.area_v_nombre as nombre,
-            area.empresa_n_codigo as empresa
+            area.companyid as company
         FROM
             T_EMP_AREA area
         WHERE
-            area.empresa_n_codigo = #{empresa}
+            area.companyid = #{company}
         AND
             area.area_n_codigo = #{codigo}
     </select>
 
     <insert id="insertArea" parameterType="DTO_Area">
         INSERT INTO T_EMP_AREA
-            (area_v_nombre, empresa_n_codigo)
+            (area_v_nombre, companyid)
         VALUES
-            (#{nombre}, #{empresa})
+            (#{nombre}, #{company})
         <selectKey keyProperty="codigo" resultType="int" order="AFTER"> 
            select LAST_INSERT_ID() as value
         </selectKey>
@@ -49,7 +49,7 @@
         WHERE
             area_n_codigo = #{codigo}
         AND
-            empresa_n_codigo = #{empresa}
+            companyid = #{company}
     </update>
     
     <delete id="deleteArea" parameterType="DTO_Area">
@@ -58,7 +58,7 @@
       WHERE
             area_n_codigo = #{codigo}
         AND
-            empresa_n_codigo = #{empresa}
+            companyid = #{company}
     </delete>
 
 </mapper>

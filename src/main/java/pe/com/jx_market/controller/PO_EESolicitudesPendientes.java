@@ -14,8 +14,8 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 
 import pe.com.jx_market.domain.DTO_Area;
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Empleado;
-import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.domain.DTO_Modulo;
 import pe.com.jx_market.domain.DTO_Perfil;
 import pe.com.jx_market.domain.DTO_PerfilModulo;
@@ -29,7 +29,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
 public class PO_EESolicitudesPendientes extends SecuredWindow
 {
     static Log logger = LogFactory.getLog(PO_EESolicitudesPendientes.class);
-    private BusinessService solicitudService, empresaService, areaService, perfilService, moduloService, perfilModuloService, empleadoService;
+    private BusinessService solicitudService, companyService, areaService, perfilService, moduloService, perfilModuloService, empleadoService;
     private Listbox lstSolicitud;
 
     @Override
@@ -37,7 +37,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
     {
         lstSolicitud = (Listbox) getFellow("lstSolicitud");
         solicitudService = ContextLoader.getService(this, "solicitudService");
-        empresaService = ContextLoader.getService(this, "empresaService");
+        companyService = ContextLoader.getService(this, "companyService");
         areaService = ContextLoader.getService(this, "areaService");
         perfilService = ContextLoader.getService(this, "perfilService");
         moduloService = ContextLoader.getService(this, "moduloService");
@@ -123,16 +123,16 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
     }
 
     private void generarData(final DTO_Solicitud sol) {
-        final DTO_Empresa empresa = new DTO_Empresa();
-        empresa.setDominio(sol.getRazon());
-        empresa.setEstado(Constantes.ST_ACTIVO);
-        empresa.setRazonsocial(sol.getRazon());
-        empresa.setRuc(sol.getRuc());
+        final DTO_Company company = new DTO_Company();
+        company.setDomain(sol.getRazon());
+        company.setActive(Constantes.ST_ACTIVO);
+        company.setBusinessName(sol.getRazon());
+        company.setDocNumber(sol.getRuc());
 
         ServiceInput input = new ServiceInput();
         input.setAccion(Constantes.V_REGISTER);
-        input.setObject(empresa);
-        ServiceOutput output = empresaService.execute(input);
+        input.setObject(company);
+        ServiceOutput output = companyService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final Integer codEmp = (Integer) output.getObject();
             final DTO_Area area = new DTO_Area();
@@ -200,17 +200,17 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
                     input.setMapa(mapUser);
                     output = empleadoService.execute(input);
                     if (output.getErrorCode() == Constantes.OK) {
-                        alertaInfo("Se creao la data basica para la nueva empresa", "nueva data registrada correctamente", null);
+                        alertaInfo("Se creao la data basica para la nueva company", "nueva data registrada correctamente", null);
                     }
                 }
             }
         }
     }
 
-    private Integer insertModulo(final String desc, final String recurso, final Integer empresa) {
+    private Integer insertModulo(final String desc, final String recurso, final Integer company) {
         final DTO_Modulo mod = new DTO_Modulo();
         mod.setDescripcion(desc);
-        mod.setEmpresa(empresa);
+        mod.setEmpresa(company);
         mod.setRecurso(recurso);
 
         final ServiceInput input = new ServiceInput();
@@ -245,7 +245,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
     {
         getDesktop().getSession().removeAttribute("login");
         getDesktop().getSession().removeAttribute("actualizar");
-        getDesktop().getSession().removeAttribute("empresa");
+        getDesktop().getSession().removeAttribute("company");
         getDesktop().getSession().removeAttribute("empleado");
         // getDesktop().getSession().removeAttribute("paginaActual");
         Executions.sendRedirect("eALogin.zul");

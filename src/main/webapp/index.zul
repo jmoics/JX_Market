@@ -109,8 +109,8 @@
 
 
             <h:div class="left_content">
-                <div class="title_box">Categorias</div>
-                <h:ul id="ulCategorias">
+                <div class="title_box">Categories</div>
+                <h:ul id="ulCategories">
                 </h:ul>
 
 

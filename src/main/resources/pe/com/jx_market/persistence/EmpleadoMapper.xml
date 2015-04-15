@@ -12,7 +12,7 @@
         SELECT
             emp.empleado_n_codigo as codigo,
             emp.usuario_n_codigo as usuario,
-            emp.empresa_n_codigo as empresa,
+            emp.companyid as company,
             emp.perfil_n_codigo as perfil,
             emp.empleado_v_nombre as nombre,
             emp.empleado_d_fechnac as fecNac,
@@ -28,7 +28,7 @@
         FROM
             T_EMP_EMPLEADO emp
         WHERE
-            emp.empresa_n_codigo = #{empresa}
+            emp.companyid = #{company}
         <if test="usuario != null">AND
             emp.usuario_n_codigo = #{usuario}
         </if>
@@ -40,13 +40,13 @@
     <insert id="insertEmpleado" parameterType="DTO_Empleado">
         INSERT INTO
         T_EMP_EMPLEADO
-            (usuario_n_codigo, empresa_n_codigo, perfil_n_codigo,
+            (usuario_n_codigo, companyid, perfil_n_codigo,
             empleado_v_nombre, empleado_d_fechnac, empleado_v_apellido,
             empleado_v_dni, empleado_v_direccion, empleado_v_telefono,
             empleado_v_celular, empleado_v_email, empleado_v_ciudad,
             empleado_v_region, empleado_n_activo)
         VALUES
-            (#{usuario}, #{empresa}, #{perfil},
+            (#{usuario}, #{company}, #{perfil},
             #{nombre}, #{fecNac}, #{apellido},
             #{dni}, #{direccion}, #{telefono},
             #{celular}, #{email}, #{ciudad},
@@ -71,14 +71,14 @@
         WHERE
             empleado_n_codigo = #{codigo}
         AND
-            empresa_n_codigo = #{empresa}
+            companyid = #{company}
     </update>
     
     <delete id="deleteEmpleado" parameterType="DTO_Empleado">
       DELETE FROM
          T_EMP_EMPLEADO
       WHERE
-         empresa_n_codigo = #{empresa}
+         companyid = #{company}
       AND
          empleado_n_codigo = #{codigo}
     </delete>

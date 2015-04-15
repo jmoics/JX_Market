@@ -13,24 +13,24 @@
             us.usuario_n_codigo as codigo,
             us.usuario_v_username as username,
             us.usuario_v_contrasena as contrasena,
-            us.empresa_n_codigo as empresa
+            us.companyid as company
         FROM
             T_SEG_USUARIO us
         WHERE
             us.usuario_v_username = #{username}
         AND
-            us.empresa_n_codigo = #{empresa}
+            us.companyid = #{company}
     </select>
 
     <select id="getUsuarios" parameterType="DTO_Usuario" resultType="DTO_Usuario">
         SELECT
             us.usuario_n_codigo as codigo,
             us.usuario_v_username as username,
-            us.empresa_n_codigo as empresa
+            us.companyid as company
         FROM
             T_SEG_USUARIO us
         WHERE
-            us.empresa_n_codigo = #{empresa}
+            us.companyid = #{company}
         <if test="codigo != null">AND
             us.usuario_n_codigo = #{codigo}
         </if>
@@ -40,9 +40,9 @@
 
     <insert id="insertUsuario" parameterType="DTO_Usuario" useGeneratedKeys="true" keyProperty="codigo">
         INSERT INTO T_SEG_USUARIO
-            (usuario_v_username,usuario_v_contrasena,empresa_n_codigo)
+            (usuario_v_username,usuario_v_contrasena,companyid)
         VALUES
-            (#{username}, #{contrasena}, #{empresa})
+            (#{username}, #{contrasena}, #{company})
     </insert>
     
     <update id="updateUsuario" parameterType="DTO_Usuario">
@@ -52,7 +52,7 @@
         WHERE
             usuario_n_codigo = #{codigo}
         AND
-            empresa_n_codigo = #{empresa}
+            companyid = #{company}
     </update>
 
     <update id="cambiaPassword" parameterType="DTO_Usuario">
@@ -62,7 +62,7 @@
         WHERE
             usuario_v_username = #{username}
         AND
-            empresa_n_codigo = #{empresa}
+            companyid = #{company}
     </update>
 
 </mapper>

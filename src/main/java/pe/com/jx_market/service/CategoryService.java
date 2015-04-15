@@ -23,7 +23,7 @@ public class CategoryService
     implements BusinessService<DTO_Category>
 {
     @Autowired
-    private CategoryMapper categoriaMapper;
+    private CategoryMapper categoryMapper;
 
     /* (non-Javadoc)
      * @see pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities.ServiceInput)
@@ -34,25 +34,25 @@ public class CategoryService
     {
         final ServiceOutput<DTO_Category> output = new ServiceOutput<DTO_Category>();
         if (Constantes.V_LIST.equals(input.getAccion())) {
-            output.setLista(categoriaMapper.getCategorias(input.getObject()));
+            output.setLista(categoryMapper.getCategories(input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
-            final DTO_Category categTmp = categoriaMapper.getCategoriaXCodigo(input.getObject());
+            final DTO_Category categTmp = categoryMapper.getCategory4Id(input.getObject());
             if (categTmp == null) {
-                categoriaMapper.insertCategoria(input.getObject());
+                categoryMapper.insertCategory(input.getObject());
             } else {
-                categoriaMapper.updateCategoria(input.getObject());
+                categoryMapper.updateCategory(input.getObject());
             }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getAccion())) {
-            final DTO_Category art = categoriaMapper.getCategoriaXCodigo(input.getObject());
+            final DTO_Category art = categoryMapper.getCategory4Id(input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_DELETE.equals(input.getAccion())) {
-            categoriaMapper.deleteCategoria(input.getObject());
+            categoryMapper.deleteCategory(input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         } else {
@@ -62,11 +62,11 @@ public class CategoryService
 
     public CategoryMapper getDao()
     {
-        return categoriaMapper;
+        return categoryMapper;
     }
 
-    public void setDao(final CategoryMapper categoriaMapper)
+    public void setDao(final CategoryMapper categoryMapper)
     {
-        this.categoriaMapper = categoriaMapper;
+        this.categoryMapper = categoryMapper;
     }
 }

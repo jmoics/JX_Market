@@ -28,8 +28,8 @@ import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Window;
 
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Empleado;
-import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.utilities.Constantes;
 
 /**
@@ -50,15 +50,15 @@ public class PO_EAHeader
     @Wire
     private Combobox cmbLocale;
     private byte[] imgLogoByte;
-    private DTO_Empresa empresa;
+    private DTO_Company company;
 
     @Override
     public void doAfterCompose(final Window comp)
         throws Exception
     {
         super.doAfterCompose(comp);
-        empresa = (DTO_Empresa) comp.getDesktop().getSession().getAttribute("empresa");
-        loadPhoto(empresa.getDominio());
+        company = (DTO_Company) comp.getDesktop().getSession().getAttribute("company");
+        loadPhoto(company.getDomain());
         setGraficoFoto();
 
         final DTO_Empleado empleado = (DTO_Empleado) desktop.getSession().getAttribute("empleado");
@@ -160,7 +160,7 @@ public class PO_EAHeader
     {
         desktop.getSession().removeAttribute("login");
         desktop.getSession().removeAttribute("actualizar");
-        desktop.getSession().removeAttribute("empresa");
+        desktop.getSession().removeAttribute("company");
         desktop.getSession().removeAttribute("empleado");
         // getDesktop().getSession().removeAttribute("paginaActual");
         Executions.sendRedirect("eALogin.zul");

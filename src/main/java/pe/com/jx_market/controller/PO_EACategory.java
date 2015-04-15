@@ -28,7 +28,7 @@ import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Category;
-import pe.com.jx_market.domain.DTO_Empresa;
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.utilities.AdvancedTreeModel;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.CategoryTreeNode;
@@ -48,7 +48,7 @@ extends SelectorComposer<Window>
     private Window wEACC;
     @Autowired
     private BusinessService<DTO_Category> categoryService;
-    private DTO_Empresa empresa;
+    private DTO_Company company;
     @WireVariable
     private Desktop desktop;
     @Wire
@@ -65,38 +65,38 @@ extends SelectorComposer<Window>
 
         categoryService = (BusinessService<DTO_Category>) ContextLoader.getService(comp, "categoryService");
 
-        empresa = (DTO_Empresa) desktop.getSession().getAttribute("empresa");
+        company = (DTO_Company) desktop.getSession().getAttribute("company");
 
-        listarCategorias();
+        listarCategories();
         categoryTreeModel = new AdvancedTreeModel(categoryTreeNode);
-        tree.setItemRenderer(new CategoriaTreeRenderer());
+        tree.setItemRenderer(new CategoryTreeRenderer());
         tree.setModel(categoryTreeModel);
     }
 
-    public void listarCategorias()
+    public void listarCategories()
     {
         final DTO_Category cat = new DTO_Category();
-        cat.setEmpresa(empresa.getCodigo());
+        cat.setEmpresa(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            // alertaInfo("", "Exito al cargar categorias", null);
+            // alertaInfo("", "Exito al cargar categories", null);
             final List<DTO_Category> lstCat = output.getLista();
-            construirArbolCategorias(lstCat);
+            construirArbolCategories(lstCat);
         } else {
             // alertaError("Error inesperado, por favor catege al administrador",
-            // "Error cargando categorias", null);
+            // "Error cargando categories", null);
         }
     }
 
-    private void construirArbolCategorias(final List<DTO_Category> _categorias)
+    private void construirArbolCategories(final List<DTO_Category> _categories)
     {
         final Map<Integer, DTO_Category> mapCateg = new TreeMap<Integer, DTO_Category>();
         final Map<Integer, DTO_Category> roots = new TreeMap<Integer, DTO_Category>();
         final Map<Integer, DTO_Category> childs = new TreeMap<Integer, DTO_Category>();
         final Set<Integer> setPadres = new HashSet<Integer>();
-        for (final DTO_Category cat : _categorias) {
+        for (final DTO_Category cat : _categories) {
             mapCateg.put(cat.getId(), cat);
             setPadres.add(cat.getCategoryParentId());
             if (cat.getCategoryParentId() == null) {
@@ -153,7 +153,7 @@ extends SelectorComposer<Window>
         //w.doEmbedded();
     }
 
-    private final class CategoriaTreeRenderer
+    private final class CategoryTreeRenderer
         implements TreeitemRenderer<CategoryTreeNode>
     {
         @Override
@@ -178,7 +178,7 @@ extends SelectorComposer<Window>
             dataRow.appendChild(treeCell);
             final Treecell treeCell2 = new Treecell();
             final Hlayout h2 = new Hlayout();
-            h2.appendChild(new Label(categ.getEstado() ? Constantes.STATUS_ACTIVO : Constantes.STATUS_INACTIVO));
+            h2.appendChild(new Label(categ.isActive() ? Constantes.STATUS_ACTIVO : Constantes.STATUS_INACTIVO));
             treeCell2.appendChild(h2);
             dataRow.appendChild(treeCell2);
         }

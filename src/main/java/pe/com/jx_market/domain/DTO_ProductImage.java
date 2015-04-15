@@ -10,8 +10,8 @@ public class DTO_ProductImage
     private Integer company;
     private String imageName;
     private Integer productId;
-    private boolean imageDefault;
-    private boolean imageActive;
+    private boolean defaul;
+    private boolean active;
     private byte[] image;
 
     public Integer getId()
@@ -44,14 +44,14 @@ public class DTO_ProductImage
         this.imageName = imageName;
     }
 
-    public boolean isImageDefault()
+    public boolean isDefaul()
     {
-        return imageDefault;
+        return defaul;
     }
 
-    public void setImageDefault(final boolean imageDefault)
+    public void setDefaul(final boolean defaul)
     {
-        this.imageDefault = imageDefault;
+        this.defaul = defaul;
     }
 
     public Integer getProductId()
@@ -75,14 +75,14 @@ public class DTO_ProductImage
     }
 
 
-    public boolean isImageActive()
+    public boolean isActive()
     {
-        return imageActive;
+        return active;
     }
 
-    public void setImageActive(final boolean imageActive)
+    public void setActive(final boolean active)
     {
-        this.imageActive = imageActive;
+        this.active = active;
     }
 
 }

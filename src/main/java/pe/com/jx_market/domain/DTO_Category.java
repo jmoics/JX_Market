@@ -15,12 +15,12 @@ public class DTO_Category implements Serializable
     private static final long serialVersionUID = 7736453145474958927L;
 
     private Integer id;
-    private Integer empresa;
+    private Integer company;
     private String categoryName;
     private Integer categoryParentId;
-    private Boolean estado;
+    private Boolean active;
     private byte[] imagen;
-    private List<DTO_Product> articulos;
+    private List<DTO_Product> products;
 
     public DTO_Category() {
     }
@@ -44,11 +44,11 @@ public class DTO_Category implements Serializable
     }
     public Integer getEmpresa()
     {
-        return empresa;
+        return company;
     }
-    public void setEmpresa(final Integer empresa)
+    public void setEmpresa(final Integer company)
     {
-        this.empresa = empresa;
+        this.company = company;
     }
     public String getCategoryName()
     {
@@ -79,22 +79,22 @@ public class DTO_Category implements Serializable
         this.imagen = imagen;
     }
 
-    public Boolean getEstado()
+    public Boolean isActive()
     {
-        return estado;
+        return active;
     }
 
-    public void setEstado(final Boolean estado)
+    public void setActive(final Boolean active)
     {
-        this.estado = estado;
+        this.active = active;
     }
-    public List<DTO_Product> getArticulos()
+    public List<DTO_Product> getProducts()
     {
-        return articulos;
+        return products;
     }
-    public void setArticulos(final List<DTO_Product> articulos)
+    public void setProducts(final List<DTO_Product> products)
     {
-        this.articulos = articulos;
+        this.products = products;
     }
 
     @Override

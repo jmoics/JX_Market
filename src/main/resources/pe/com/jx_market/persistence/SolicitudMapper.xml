@@ -17,7 +17,7 @@
             sol.solicitud_n_estado as estado,
             sol.solicitud_d_fecha as fecha
         FROM
-            T_NEG_SOLICITUD sol
+            T_BUS_SOLICITUD sol
         WHERE
            sol.solicitud_n_estado = #{estado}          
     </select>
@@ -31,20 +31,20 @@
             sol.solicitud_n_estado as estado,
             sol.solicitud_d_fecha as fecha
         FROM
-            T_NEG_SOLICITUD sol
+            T_BUS_SOLICITUD sol
         WHERE
            sol.solicitud_n_codigo = #{codigo}   
     </select>
 
     <insert id="insertSolicitud" parameterType="DTO_Solicitud">
-        INSERT INTO T_NEG_SOLICITUD
+        INSERT INTO T_BUS_SOLICITUD
             (solicitud_n_codigo, solicitud_v_razon, solicitud_n_ruc, solicitud_v_email, solicitud_n_estado, solicitud_d_fecha)
         VALUES
             (#{codigo}, #{razon}, #{ruc}, #{correo}, #{estado}, #{fecha})
     </insert>
     
     <update id="updateSolicitud" parameterType="DTO_Solicitud">
-        UPDATE T_NEG_SOLICITUD
+        UPDATE T_BUS_SOLICITUD
         SET
             solicitud_n_estado = #{estado}          
         WHERE
@@ -53,7 +53,7 @@
 
     <delete id="deleteSolicitud">
         DELETE FROM
-            T_NEG_SOLICITUD
+            T_BUS_SOLICITUD
         WHERE
            solicitud_n_codigo = #{value}
    </delete>

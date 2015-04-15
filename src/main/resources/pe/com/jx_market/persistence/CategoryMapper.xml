@@ -5,59 +5,59 @@
 <mapper namespace="pe.com.jx_market.persistence.CategoryMapper">
 
   <cache />
-    <!-- MANTENIMIENTO DE CATEGORIAS -->
+    <!-- MANTENIMIENTO DE CATEGORYS -->
 
-    <select id="getCategorias" parameterType="DTO_Category" resultType="DTO_Category">
+    <select id="getCategories" parameterType="DTO_Category" resultType="DTO_Category">
         SELECT
         cat.id as id,
-        cat.empresaid as empresa,
-        cat.nombre as categoryName,
-        cat.estado as estado,
+        cat.companyid as company,
+        cat.name as categoryName,
+        cat.active as active,
         cat.parentid as categoryParentId
         FROM
-        T_NEG_CATEGORIA cat
-        <if test="empresa != null">
+        T_BUS_CATEGORY cat
+        <if test="company != null">
             WHERE
-            cat.empresaId = 1 OR
-            cat.empresaId = #{empresa}
+            cat.companyId = 1 OR
+            cat.companyId = #{company}
         </if>
-        ORDER BY cat.nombre
+        ORDER BY cat.name
     </select>
 
-    <select id="getCategoriaXCodigo" parameterType="DTO_Category" resultType="DTO_Category">
+    <select id="getCategory4Id" parameterType="DTO_Category" resultType="DTO_Category">
         SELECT
         cat.id as id,
-        cat.empresaId as empresa,
-        cat.nombre as categoryName,
-        cat.estado as estado
+        cat.companyId as company,
+        cat.name as categoryName,
+        cat.active as active
         FROM
-        T_NEG_CATEGORIA cat
+        T_BUS_CATEGORY cat
         WHERE
         cat.id = #{id, jdbcType=INTEGER}
     </select>
 
-    <insert id="insertCategoria" parameterType="DTO_Category">
-        INSERT INTO T_NEG_CATEGORIA
-        (empresaId,nombre,parentid)
+    <insert id="insertCategory" parameterType="DTO_Category">
+        INSERT INTO T_BUS_CATEGORY
+        (companyId,name,parentid)
         VALUES
-        (#{empresa},#{categoryName},#{categoryParentId, jdbcType=INTEGER})
+        (#{company},#{categoryName},#{categoryParentId, jdbcType=INTEGER})
     </insert>
 
-    <update id="updateCategoria" parameterType="DTO_Category">
-        UPDATE T_NEG_CATEGORIA
+    <update id="updateCategory" parameterType="DTO_Category">
+        UPDATE T_BUS_CATEGORY
         SET
-        nombre = #{categoryName},
+        name = #{categoryName},
         parentid = #{categoryParentId, jdbcType=INTEGER},
-        estado = #{estado}
+        active = #{active}
         WHERE
         id = #{id}
         AND
-        empresaId = #{empresa}
+        companyId = #{company}
     </update>
 
-    <delete id="deleteCategoria" parameterType="DTO_Category">
+    <delete id="deleteCategory" parameterType="DTO_Category">
         DELETE FROM
-        T_NEG_CATEGORIA
+        T_BUS_CATEGORY
         WHERE
         id = #{id}
     </delete>

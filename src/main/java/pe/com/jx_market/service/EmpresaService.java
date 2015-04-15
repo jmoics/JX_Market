@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.domain.DTO_Empresa;
-import pe.com.jx_market.persistence.EmpresaMapper;
+import pe.com.jx_market.domain.DTO_Company;
+import pe.com.jx_market.persistence.CompanyMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -25,7 +25,7 @@ public class EmpresaService
     implements BusinessService 
 {
     @Autowired
-    private EmpresaMapper empresaMapper;
+    private CompanyMapper companyMapper;
 
     /* (non-Javadoc)
      * @see pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities.ServiceInput)
@@ -42,23 +42,23 @@ public class EmpresaService
                 nombre = mapa.containsKey("nombre") ? (String)mapa.get("nombre") : null;
                 ruc = mapa.containsKey("ruc") ? (String)mapa.get("ruc") : null;
             }
-            output.setLista(empresaMapper.getEmpresas(nombre, ruc));
+            output.setLista(companyMapper.getCompanies(nombre, ruc));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
-            final DTO_Empresa empresa = (DTO_Empresa) input.getObject();
-            DTO_Empresa empTmp = empresaMapper.getEmpresaXRuc(empresa);
+            final DTO_Company company = (DTO_Company) input.getObject();
+            DTO_Company empTmp = companyMapper.getCompany4DocNumber(company);
             if (empTmp == null) {
-                final Integer cod = empresaMapper.insertEmpresa(empresa);
+                final Integer cod = companyMapper.insertCompany(company);
                 output.setObject(cod);
             } else {
-                empresaMapper.updateEmpresa(empresa);
+                companyMapper.updateCompany(company);
                 output.setObject(new Integer(-1));
             }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if ("delete".equals(input.getAccion())) {
-            empresaMapper.deleteEmpresa((String) input.getObject());
+            companyMapper.deleteCompany((String) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         } else {
@@ -66,12 +66,12 @@ public class EmpresaService
         }
     }
 
-    public EmpresaMapper getDao () {
-        return empresaMapper;
+    public CompanyMapper getDao () {
+        return companyMapper;
     }
 
-    public void setDao (final EmpresaMapper empresaMapper) {
-        this.empresaMapper = empresaMapper;
+    public void setDao (final CompanyMapper companyMapper) {
+        this.companyMapper = companyMapper;
     }
 
 

@@ -12,7 +12,7 @@
         SELECT
             cl.cliente_n_codigo as codigo,
             cl.usuario_n_codigo as usuario,
-            cl.empresa_n_codigo as empresa,
+            cl.companyid as company,
             cl.cliente_v_nombre as nombre,
             cl.cliente_d_fechanac as fecNac,
             cl.cliente_v_apellido as apellido,
@@ -26,9 +26,9 @@
             cl.cliente_v_codpostal as codPostal,
             cl.cliente_n_activo as estado
         FROM
-            T_NEG_CLIENTE cl
+            T_BUS_CLIENTE cl
         WHERE
-            cl.empresa_n_codigo = #{empresa}
+            cl.companyid = #{company}
         <if test="usuario != null">AND
             cl.usuario_n_codigo = #{usuario}
         </if>
@@ -41,14 +41,14 @@
 
     <insert id="insertCliente" parameterType="DTO_Cliente">
         INSERT INTO
-        T_NEG_CLIENTE
-            (usuario_n_codigo, empresa_n_codigo,
+        T_BUS_CLIENTE
+            (usuario_n_codigo, companyid,
             cliente_v_nombre, cliente_d_fechanac, cliente_v_apellido,
             cliente_n_dni, cliente_v_direccion, cliente_v_telefono,
             cliente_v_celular, cliente_v_email, cliente_v_ciudad,
             cliente_v_region, cliente_v_codpostal, cliente_n_activo)
         VALUES
-            (#{usuario}, #{empresa},
+            (#{usuario}, #{company},
             #{nombre}, #{fecNac}, #{apellido},
             #{dni}, #{direccion}, #{telefono},
             #{celular}, #{email}, #{ciudad},
@@ -56,7 +56,7 @@
     </insert>
     
     <update id="updateCliente" parameterType="DTO_Cliente">
-        UPDATE T_NEG_CLIENTE
+        UPDATE T_BUS_CLIENTE
         SET
             cliente_v_nombre = #{nombre},
             cliente_d_fechnac = #{fecNac},
@@ -72,14 +72,14 @@
         WHERE
             cliente_n_codigo = #{codigo}
         AND
-            empresa_n_codigo = #{empresa}
+            companyid = #{company}
     </update>
     
     <delete id="deleteCliente" parameterType="DTO_Cliente">
       DELETE FROM
-         T_NEG_CLIENTE
+         T_BUS_CLIENTE
       WHERE
-         empresa_n_codigo = #{empresa}
+         companyid = #{company}
       AND
          cliente_n_codigo = #{codigo}
     </delete>

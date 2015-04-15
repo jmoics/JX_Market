@@ -33,7 +33,7 @@ public class PO_CECuentaCliente extends Window
 {
     static Log logger = LogFactory.getLog(PO_CECuentaCliente.class);
     private final NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
-    private BusinessService pedidosService, articuloService;
+    private BusinessService pedidosService, productService;
     private Listbox lstPed, lstDet;
     private Button btnReturn;
 
@@ -43,7 +43,7 @@ public class PO_CECuentaCliente extends Window
         lstDet = (Listbox) getFellow("lstDet");
         btnReturn = (Button) getFellow("btnReturn");
         pedidosService = ContextLoader.getService(this, "pedidosService");
-        articuloService = ContextLoader.getService(this, "articuloService");
+        productService = ContextLoader.getService(this, "productService");
 
         if (getDesktop().getSession().getAttribute("cliente") != null) {
             listarPedidos();
@@ -120,7 +120,7 @@ public class PO_CECuentaCliente extends Window
             cell.setLabel(det.getCantidad().toString());
             cell.setParent(item);
 
-            final DTO_Product art = obtenerArticulo(det.getArticulo());
+            final DTO_Product art = obtenerProduct(det.getProduct());
 
             cell = new Listcell();
             cell.setLabel(art.getProductName());
@@ -142,19 +142,19 @@ public class PO_CECuentaCliente extends Window
         }
     }
 
-    private DTO_Product obtenerArticulo(final Integer codArt) {
-        DTO_Product arti = new DTO_Product();
-        arti.setId(codArt);
+    private DTO_Product obtenerProduct(final Integer codArt) {
+        DTO_Product prod = new DTO_Product();
+        prod.setId(codArt);
 
         final ServiceInput input = new ServiceInput();
         input.setAccion(Constantes.V_GET);
         input.setMapa(new HashMap<String, String>());
-        input.setObject(arti);
-        final ServiceOutput output = articuloService.execute(input);
+        input.setObject(prod);
+        final ServiceOutput output = productService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            arti = (DTO_Product) output.getObject();
+            prod = (DTO_Product) output.getObject();
         }
-        return arti;
+        return prod;
     }
 
     public void retornar() {

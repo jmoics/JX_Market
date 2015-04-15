@@ -6,7 +6,7 @@ public class DTO_Perfil
     implements Serializable
 {
     private Integer codigo;
-    private Integer empresa;
+    private Integer company;
     private Integer area;
     private String funcion;
     private String descripcion;
@@ -23,12 +23,12 @@ public class DTO_Perfil
 
     public Integer getEmpresa()
     {
-        return empresa;
+        return company;
     }
 
-    public void setEmpresa(final Integer empresa)
+    public void setEmpresa(final Integer company)
     {
-        this.empresa = empresa;
+        this.company = company;
     }
 
     public Integer getArea()

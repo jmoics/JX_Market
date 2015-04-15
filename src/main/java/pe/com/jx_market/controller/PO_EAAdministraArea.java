@@ -18,7 +18,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import pe.com.jx_market.domain.DTO_Area;
-import pe.com.jx_market.domain.DTO_Empresa;
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -31,7 +31,7 @@ public class PO_EAAdministraArea
     private Textbox txtNombre;
     private Groupbox grpNuevo;
     private Grid grdArea;
-    private DTO_Empresa empresa;
+    private DTO_Company company;
     private BusinessService areaService;
     private Popup popEmpleados;
 
@@ -43,7 +43,7 @@ public class PO_EAAdministraArea
         grdArea = (Grid) getFellow("grdArea");
         areaService = ContextLoader.getService(this, "areaService");
         popEmpleados = (Popup) getFellow("popEmpleados");
-        empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
+        company = (DTO_Company) getDesktop().getSession().getAttribute("company");
         mostrarAreas();
     }
 
@@ -55,7 +55,7 @@ public class PO_EAAdministraArea
             final DTO_Area unew = new DTO_Area();
 
             unew.setNombre(txtNombre.getValue());
-            unew.setEmpresa(empresa.getCodigo());
+            unew.setEmpresa(company.getId());
 
             final ServiceInput input = new ServiceInput(unew);
             input.setAccion(Constantes.V_REGISTER);
@@ -75,7 +75,7 @@ public class PO_EAAdministraArea
     public void mostrarAreas()
     {
         final DTO_Area are = new DTO_Area();
-        are.setEmpresa(empresa.getCodigo());
+        are.setEmpresa(company.getId());
         final ServiceInput input = new ServiceInput(are);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = areaService.execute(input);
@@ -268,7 +268,7 @@ public class PO_EAAdministraArea
                             {
                                 int msg = 0;
                                 msg = Messagebox.show("¿Está seguro de eliminar el area?",
-                                                empresa.getRazonsocial(), Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
+                                                company.getBusinessName(), Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
                                 if (msg == Messagebox.YES) {
                                     eliminaFila((DTO_Area) ((Row) e.getTarget().getParent().getParent())
                                                                                         .getAttribute("area"));
@@ -328,7 +328,7 @@ public class PO_EAAdministraArea
                            final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.INFORMATION);
+            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.INFORMATION);
         }
         if (t != null) {
             logger.info(txt2, t);
@@ -342,7 +342,7 @@ public class PO_EAAdministraArea
                             final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
+            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.EXCLAMATION);
         }
         if (t != null) {
             logger.error(txt2, t);

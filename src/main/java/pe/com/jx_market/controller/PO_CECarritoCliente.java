@@ -38,14 +38,14 @@ public class PO_CECarritoCliente extends Window
 {
     static Log logger = LogFactory.getLog(PO_CECarritoCliente.class);
     private final NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
-    private BusinessService articuloService, categoriaService, pedidosService;
+    private BusinessService productService, categoryService, pedidosService;
     private Grid grdProds;
 
     public void onCreate() {
         this.getParent();
         grdProds = (Grid) getFellow("grdProds");
-        articuloService = ContextLoader.getService(this, "articuloService");
-        categoriaService = ContextLoader.getService(this, "categoriaService");
+        productService = ContextLoader.getService(this, "productService");
+        categoryService = ContextLoader.getService(this, "categoryService");
         pedidosService = ContextLoader.getService(this, "pedidosService");
 
         if (getDesktop().getSession().getAttribute("carrito") != null) {
@@ -170,17 +170,17 @@ public class PO_CECarritoCliente extends Window
 
         for (final Entry<Integer, Map<DTO_Product, Integer>> entry : map.entrySet()) {
             for (final Entry<DTO_Product, Integer> entry2 : entry.getValue().entrySet()) {
-                final DTO_Product arti = entry2.getKey();
-                if (mapPed.containsKey(arti.getEmpresa())) {
-                    final Map<DTO_Pedido, List<DTO_DetallePedido>> mapAux = mapPed.get(arti.getEmpresa());
+                final DTO_Product prod = entry2.getKey();
+                if (mapPed.containsKey(prod.getEmpresa())) {
+                    final Map<DTO_Pedido, List<DTO_DetallePedido>> mapAux = mapPed.get(prod.getEmpresa());
                     for (final Entry<DTO_Pedido, List<DTO_DetallePedido>> entry3 : mapAux.entrySet()) {
                         final DTO_Pedido pedAux = entry3.getKey();
                         final BigDecimal total = pedAux.getTotal();
-                        //total = total.add(arti.getPrecio().multiply(new BigDecimal(entry2.getValue())));
+                        //total = total.add(prod.getPrecio().multiply(new BigDecimal(entry2.getValue())));
 
                         final List<DTO_DetallePedido> lstDet = entry3.getValue();
                         final DTO_DetallePedido det = new DTO_DetallePedido();
-                        det.setArticulo(arti.getId());
+                        det.setProduct(prod.getId());
                         det.setCantidad(entry2.getValue());
                         lstDet.add(det);
 
@@ -188,24 +188,24 @@ public class PO_CECarritoCliente extends Window
                         mapAux.remove(entry3.getKey());
                         mapAux.put(pedAux, lstDet);
 
-                        mapPed.put(arti.getEmpresa(), mapAux);
+                        mapPed.put(prod.getEmpresa(), mapAux);
                     }
 
                 } else {
                     final DTO_Pedido pedAux = construirPedido();
-                    pedAux.setEmpresa(arti.getEmpresa());
-                    //pedAux.setTotal(arti.getPrecio().multiply(new BigDecimal(entry2.getValue())));
+                    pedAux.setEmpresa(prod.getEmpresa());
+                    //pedAux.setTotal(prod.getPrecio().multiply(new BigDecimal(entry2.getValue())));
 
                     final List<DTO_DetallePedido> lstDet = new ArrayList<DTO_DetallePedido>();
                     final DTO_DetallePedido det = new DTO_DetallePedido();
-                    det.setArticulo(arti.getId());
+                    det.setProduct(prod.getId());
                     det.setCantidad(entry2.getValue());
                     lstDet.add(det);
 
                     final Map<DTO_Pedido, List<DTO_DetallePedido>> mapAux = new HashMap<DTO_Pedido, List<DTO_DetallePedido>>();
                     mapAux.put(pedAux, lstDet);
 
-                    mapPed.put(arti.getEmpresa(), mapAux);
+                    mapPed.put(prod.getEmpresa(), mapAux);
                 }
             }
         }

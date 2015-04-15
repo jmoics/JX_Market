@@ -19,7 +19,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import pe.com.jx_market.domain.DTO_Area;
-import pe.com.jx_market.domain.DTO_Empresa;
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Perfil;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -34,7 +34,7 @@ public class PO_EAAdministraPerfil
     private Combobox cmbArea;
     private Groupbox grpNuevo;
     private Grid grdPerfil;
-    private DTO_Empresa empresa;
+    private DTO_Company company;
     private BusinessService areaService, perfilService;
 
     @Override
@@ -48,7 +48,7 @@ public class PO_EAAdministraPerfil
         areaService = ContextLoader.getService(this, "areaService");
         perfilService = ContextLoader.getService(this, "perfilService");
 
-        empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
+        company = (DTO_Company) getDesktop().getSession().getAttribute("company");
         cargarAreas(cmbArea);
         mostrarPerfiles();
     }
@@ -63,7 +63,7 @@ public class PO_EAAdministraPerfil
             unew.setDescripcion(txtDescripcion.getValue());
             unew.setFuncion(txtFuncion.getValue());
             unew.setArea(((DTO_Area) cmbArea.getSelectedItem().getAttribute("area")).getCodigo());
-            unew.setEmpresa(empresa.getCodigo());
+            unew.setEmpresa(company.getId());
 
             final ServiceInput input = new ServiceInput(unew);
             input.setAccion(Constantes.V_REGISTER);
@@ -83,7 +83,7 @@ public class PO_EAAdministraPerfil
     public void mostrarPerfiles()
     {
         final DTO_Perfil perf = new DTO_Perfil();
-        perf.setEmpresa(empresa.getCodigo());
+        perf.setEmpresa(company.getId());
         final ServiceInput input = new ServiceInput(perf);
 
         input.setAccion(Constantes.V_LIST);
@@ -303,7 +303,7 @@ public class PO_EAAdministraPerfil
                             public void onEvent(final Event e)
                                 throws UiException
                             {
-                                final int msg = Messagebox.show("¿Está seguro de eliminar el perfil?", empresa.getRazonsocial(),
+                                final int msg = Messagebox.show("¿Está seguro de eliminar el perfil?", company.getBusinessName(),
                                                 Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
                                 if (msg == Messagebox.YES) {
                                     eliminaFila((DTO_Perfil) ((Row) e.getTarget().getParent().getParent()).getAttribute("perfil"));
@@ -355,7 +355,7 @@ public class PO_EAAdministraPerfil
     private void cargarAreas(final Combobox combo)
     {
         final DTO_Area ar = new DTO_Area();
-        ar.setEmpresa(empresa.getCodigo());
+        ar.setEmpresa(company.getId());
         final ServiceInput input = new ServiceInput(ar);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = areaService.execute(input);
@@ -376,7 +376,7 @@ public class PO_EAAdministraPerfil
     {
         final DTO_Area area = new DTO_Area();
         area.setCodigo(codigo);
-        area.setEmpresa(empresa.getCodigo());
+        area.setEmpresa(company.getId());
         final ServiceInput input = new ServiceInput(area);
         input.setAccion(Constantes.V_GET);
         final ServiceOutput output = areaService.execute(input);
@@ -400,7 +400,7 @@ public class PO_EAAdministraPerfil
                            final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.INFORMATION);
+            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.INFORMATION);
         }
         if (t != null) {
             logger.info(txt2, t);
@@ -414,7 +414,7 @@ public class PO_EAAdministraPerfil
                             final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
+            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.EXCLAMATION);
         }
         if (t != null) {
             logger.error(txt2, t);

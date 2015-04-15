@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class DTO_DetallePedido implements Serializable
 {
     private Integer pedido;
-    private Integer articulo;
+    private Integer product;
     private Integer cantidad;
 
     public Integer getPedido()
@@ -16,13 +16,13 @@ public class DTO_DetallePedido implements Serializable
     {
         this.pedido = pedido;
     }
-    public Integer getArticulo()
+    public Integer getProduct()
     {
-        return articulo;
+        return product;
     }
-    public void setArticulo(final Integer articulo)
+    public void setProduct(final Integer product)
     {
-        this.articulo = articulo;
+        this.product = product;
     }
     public Integer getCantidad()
     {

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.CompanyMapper">
+
+  <cache />
+
+    <!-- MANTENIMIENTO DE COMPANYS -->
+
+    <select id="getCompany4DocNumber" parameterType="DTO_Company" resultType="DTO_Company">
+        SELECT
+            emp.id as id,
+            emp.businessname as businessName,
+            emp.active as active,
+            emp.docnumber as docNumber,
+            emp.domain as domain
+        FROM
+            T_COM_COMPANY emp
+        WHERE
+            emp.id = #{docNumber}
+    </select>
+
+    <select id="getCompanies" resultType="DTO_Company">
+        SELECT
+            emp.id as id,
+            emp.businessname as businessName,
+            emp.active as active,
+            emp.docnumber as docNumber,
+            emp.domain as domain
+        FROM
+            T_COM_COMPANY emp
+        WHERE
+            emp.active = 1
+            <if test="businessName != null">AND
+               emp.businessname LIKE #{param1}
+            </if>
+            <if test="docNumber != null">OR
+               emp.docnumber LIKE #{param2}
+            </if>
+    </select>
+
+    <insert id="insertCompany" parameterType="DTO_Company">
+        INSERT INTO T_COM_COMPANY
+            (businessname,active,docnumber,domain)
+        VALUES
+            (#{businessName},#{active},#{docNumber},#{domain})
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+           select LAST_INSERT_ID() as value
+        </selectKey>
+    </insert>
+
+    <update id="updateCompany" parameterType="DTO_Company">
+        UPDATE T_COM_COMPANY
+        SET
+            businessname = #{businessName},
+            active = #{active},
+            docnumber = #{docNumber},
+            domain = #{domain}
+        WHERE
+            id = #{id}
+    </update>
+
+   <delete id="deleteCompany">
+      DELETE FROM
+         T_COM_COMPANY
+      WHERE
+         id = #{id}
+    </delete>
+
+</mapper>

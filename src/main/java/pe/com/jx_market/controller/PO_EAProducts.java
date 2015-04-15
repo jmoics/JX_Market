@@ -43,9 +43,9 @@ import org.zkoss.zul.TreeNode;
 import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Category;
-import pe.com.jx_market.domain.DTO_Empresa;
-import pe.com.jx_market.domain.DTO_TradeMark;
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Product;
+import pe.com.jx_market.domain.DTO_TradeMark;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.CategoryTreeNode;
 import pe.com.jx_market.utilities.CategoryTreeNodeCollection;
@@ -81,7 +81,7 @@ public class PO_EAProducts
     private BusinessService<DTO_Category> categoryService;
     @WireVariable
     private BusinessService<DTO_TradeMark> marcaService;
-    private DTO_Empresa empresa;
+    private DTO_Company company;
     @WireVariable
     private Desktop desktop;
     @Wire
@@ -93,7 +93,7 @@ public class PO_EAProducts
     {
         super.doAfterCompose(_comp);
 
-        empresa = (DTO_Empresa) _comp.getDesktop().getSession().getAttribute("empresa");
+        company = (DTO_Company) _comp.getDesktop().getSession().getAttribute("company");
 
         listCategories();
 
@@ -137,7 +137,7 @@ public class PO_EAProducts
     private void buildMarcaCombo()
     {
         final DTO_TradeMark marFi = new DTO_TradeMark();
-        marFi.setEmpresa(empresa.getCodigo());
+        marFi.setEmpresa(company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_TradeMark> output = marcaService.execute(input);
@@ -145,7 +145,7 @@ public class PO_EAProducts
             final List<DTO_TradeMark> lstMar = output.getLista();
             for (final DTO_TradeMark marIt : lstMar) {
                 final Comboitem item = new Comboitem();
-                item.setLabel(marIt.getMarcaName());
+                item.setLabel(marIt.getTradeMarkName());
                 item.setValue(marIt);
                 cmbMarca.appendChild(item);
             }
@@ -157,12 +157,12 @@ public class PO_EAProducts
     private void listCategories()
     {
         final DTO_Category cat = new DTO_Category();
-        cat.setEmpresa(empresa.getCodigo());
+        cat.setEmpresa(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo(logger, "", "Exito al cargar categorias", null);
+            alertaInfo(logger, "", "Exito al cargar categories", null);
             final List<DTO_Category> lstCat = output.getLista();
             final CategoryTreeNode categoryTreeNode = buildCategoryTree(lstCat);
 
@@ -172,17 +172,17 @@ public class PO_EAProducts
             //chbCat.setModel(ListModels.toListSubModel(modelCat));
             chbCat.setModel(modelCat);
         } else {
-            alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"), "Error cargando categorias", null);
+            alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"), "Error cargando categories", null);
         }
     }
 
-    private CategoryTreeNode buildCategoryTree(final List<DTO_Category> _categorias)
+    private CategoryTreeNode buildCategoryTree(final List<DTO_Category> _categories)
     {
         final Map<Integer, DTO_Category> mapCateg = new TreeMap<Integer, DTO_Category>();
         final Map<Integer, DTO_Category> roots = new TreeMap<Integer, DTO_Category>();
         final Map<Integer, DTO_Category> childs = new TreeMap<Integer, DTO_Category>();
         final Set<Integer> setPadres = new HashSet<Integer>();
-        for (final DTO_Category cat : _categorias) {
+        for (final DTO_Category cat : _categories) {
             mapCateg.put(cat.getId(), cat);
             setPadres.add(cat.getCategoryParentId());
             if (cat.getCategoryParentId() == null) {
@@ -259,7 +259,7 @@ public class PO_EAProducts
         if (cmbEstad.getSelectedItem() != null) {
             input.addMapPair("activo", cmbEstad.getSelectedItem().getValue());
         }
-        input.addMapPair("empresa", empresa.getCodigo());
+        input.addMapPair("company", company.getId());
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_Product> output = productService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
@@ -281,7 +281,7 @@ public class PO_EAProducts
                 }
                 cell = new Listcell(strB.toString());
                 item.appendChild(cell);
-                cell = new Listcell(art.getMarca().getMarcaName());
+                cell = new Listcell(art.getTradeMark().getTradeMarkName());
                 item.appendChild(cell);
                 cell = new Listcell(art.getProductName());
                 item.appendChild(cell);

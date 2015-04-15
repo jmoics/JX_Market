@@ -32,14 +32,14 @@ public class PO_CEProductos extends Window
 {
     static Log logger = LogFactory.getLog(PO_CEProductos.class);
     private final NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
-    private BusinessService articuloService, categoriaService;
+    private BusinessService productService, categoryService;
     private Listbox lstProds;
 
     public void onCreate() {
         this.getParent();
         lstProds = (Listbox) getFellow("lstProds");
-        articuloService = ContextLoader.getService(this, "articuloService");
-        categoriaService = ContextLoader.getService(this, "categoriaService");
+        productService = ContextLoader.getService(this, "productService");
+        categoryService = ContextLoader.getService(this, "categoryService");
 
         listaProductos();
     }
@@ -48,18 +48,18 @@ public class PO_CEProductos extends Window
     {
         lstProds.getItems().clear();
         DTO_Category cat = null;
-        if (getDesktop().getSession().hasAttribute("categoria")) {
-            cat = (DTO_Category) getDesktop().getSession().getAttribute("categoria");
-            getDesktop().getSession().removeAttribute("categoria");
+        if (getDesktop().getSession().hasAttribute("category")) {
+            cat = (DTO_Category) getDesktop().getSession().getAttribute("category");
+            getDesktop().getSession().removeAttribute("category");
         }
 
-        final DTO_Product articulo = new DTO_Product();
+        final DTO_Product product = new DTO_Product();
         if (cat != null) {
-            //articulo.setCategoria(cat.getCodigo());
+            //product.setCategory(cat.getCodigo());
         }
-        final ServiceInput input = new ServiceInput(articulo);
+        final ServiceInput input = new ServiceInput(product);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = articuloService.execute(input);
+        final ServiceOutput output = productService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Product> lst = output.getLista();
             for (final DTO_Product art : lst) {
@@ -201,17 +201,17 @@ public class PO_CEProductos extends Window
         }
     }
 
-    private void setGraficoFoto(final DTO_Product articulo, final Image imgFoto)
+    private void setGraficoFoto(final DTO_Product product, final Image imgFoto)
     {
-        final ServiceInput input = new ServiceInput(articulo);
+        final ServiceInput input = new ServiceInput(product);
         input.setAccion(Constantes.V_GETIMG);
-        final ServiceOutput output = articuloService.execute(input);
+        final ServiceOutput output = productService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
-            alertaInfo("", "El articulo" + articulo.getProductName() + "no posee imagen", null);
+            alertaInfo("", "El product" + product.getProductName() + "no posee imagen", null);
         }
-        /*if (articulo.getImagen() != null) {
+        /*if (product.getImagen() != null) {
             try {
-                imgFoto.setContent(new AImage("foto", articulo.getImagen()));
+                imgFoto.setContent(new AImage("foto", product.getImagen()));
                 return;
             } catch (final IOException ex) {
                 throw new RuntimeException(ex);

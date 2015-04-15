@@ -14,32 +14,32 @@ import pe.com.jx_market.domain.DTO_Category;
 public interface CategoryMapper
 {
     /**
-     * @param categoria
+     * @param category
      * @return
      */
-    public List<DTO_Category> getCategorias(DTO_Category categoria);
+    public List<DTO_Category> getCategories(DTO_Category category);
     
     /**
-     * @param categoria
+     * @param category
      * @return
      */
-    public DTO_Category getCategoriaXCodigo(DTO_Category categoria);
+    public DTO_Category getCategory4Id(DTO_Category category);
 
     /**
-     * @param categoria
+     * @param category
      * @return
      */
-    public boolean insertCategoria(DTO_Category categoria);
+    public boolean insertCategory(DTO_Category category);
     
     /**
-     * @param categoria
+     * @param category
      * @return
      */
-    public boolean updateCategoria(DTO_Category categoria);
+    public boolean updateCategory(DTO_Category category);
 
     /**
-     * @param categoria
+     * @param category
      * @return
      */
-    public boolean deleteCategoria(DTO_Category categoria);
+    public boolean deleteCategory(DTO_Category category);
 }

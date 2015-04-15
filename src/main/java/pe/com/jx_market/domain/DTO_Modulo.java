@@ -6,7 +6,7 @@ public class DTO_Modulo
     implements Serializable
 {
     private Integer codigo;
-    private Integer empresa;
+    private Integer company;
     private String descripcion;
     private String recurso;
 
@@ -32,12 +32,12 @@ public class DTO_Modulo
 
     public Integer getEmpresa()
     {
-        return empresa;
+        return company;
     }
 
-    public void setEmpresa(final Integer empresa)
+    public void setEmpresa(final Integer company)
     {
-        this.empresa = empresa;
+        this.company = company;
     }
 
     public String getDescripcion()

@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class DTO_Area implements Serializable
 {
     private Integer codigo;
-    private Integer empresa;
+    private Integer company;
     private String nombre;
     
     public Integer getCodigo()
@@ -18,11 +18,11 @@ public class DTO_Area implements Serializable
     }
     public Integer getEmpresa()
     {
-        return empresa;
+        return company;
     }
-    public void setEmpresa(final Integer empresa)
+    public void setEmpresa(final Integer company)
     {
-        this.empresa = empresa;
+        this.company = company;
     }
     public String getNombre()
     {

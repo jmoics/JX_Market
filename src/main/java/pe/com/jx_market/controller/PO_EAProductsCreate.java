@@ -44,10 +44,10 @@ import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Category;
-import pe.com.jx_market.domain.DTO_Empresa;
-import pe.com.jx_market.domain.DTO_TradeMark;
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.domain.DTO_ProductImage;
+import pe.com.jx_market.domain.DTO_TradeMark;
 import pe.com.jx_market.utilities.AdvancedTreeModel;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.CategoryTreeNode;
@@ -89,8 +89,8 @@ public class PO_EAProductsCreate
     private BusinessService<DTO_TradeMark> marcaService;
     @WireVariable
     private Desktop desktop;
-    private DTO_Empresa empresa;
-    private DTO_Product articulo;
+    private DTO_Company company;
+    private DTO_Product product;
     private CategoryTreeNode categoryTreeNode;
     private AdvancedTreeModel categoryTreeModel;
 
@@ -100,9 +100,9 @@ public class PO_EAProductsCreate
     {
         super.doAfterCompose(_comp);
 
-        empresa = (DTO_Empresa) desktop.getSession().getAttribute("empresa");
+        company = (DTO_Company) desktop.getSession().getAttribute("company");
         buildActiveCombo(cmbStatus);
-        articulo = null;
+        product = null;
 
         desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_PRODUCT);
         tree.setCheckmark(true);
@@ -110,7 +110,7 @@ public class PO_EAProductsCreate
         categoryTreeNode = getCategories();
         categoryTreeModel = new AdvancedTreeModel(categoryTreeNode);
         categoryTreeModel.setMultiple(true);
-        tree.setItemRenderer(new CategoriaTreeRenderer());
+        tree.setItemRenderer(new CategoryTreeRenderer());
         tree.setModel(categoryTreeModel);
 
         buildMarcaCombo();
@@ -119,16 +119,16 @@ public class PO_EAProductsCreate
     private void buildMarcaCombo()
     {
         final DTO_TradeMark marFi = new DTO_TradeMark();
-        marFi.setEmpresa(empresa.getCodigo());
+        marFi.setEmpresa(company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_TradeMark> output = marcaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo(logger, "", "Exito al cargar categorias", null);
+            alertaInfo(logger, "", "Exito al cargar categories", null);
             final List<DTO_TradeMark> lstMar = output.getLista();
             for (final DTO_TradeMark marIt : lstMar) {
                 final Comboitem item = new Comboitem();
-                item.setLabel(marIt.getMarcaName());
+                item.setLabel(marIt.getTradeMarkName());
                 item.setValue(marIt);
                 cmbMarca.appendChild(item);
             }
@@ -142,24 +142,24 @@ public class PO_EAProductsCreate
     {
         if (!txtNombre.getValue().equals("") && !txtDesc.getValue().equals("")
                         && cmbMarca.getSelectedItem() != null && cmbStatus.getSelectedItem() != null) {
-            final DTO_Product articulo = new DTO_Product();
-            //articulo.setCategoria(((DTO_Category) cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
-            articulo.setActivo((Boolean) cmbStatus.getSelectedItem().getValue());
-            articulo.setMarca((DTO_TradeMark) cmbMarca.getSelectedItem().getValue());
-            articulo.setProductDescription(txtDesc.getValue());
-            articulo.setEmpresa(empresa.getCodigo());
-            //articulo.setMarca(txtMarca.getValue());
-            articulo.setProductName(txtNombre.getValue());
-            //articulo.setPrecio(decPrec.getValue());
-            final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(articulo);
+            final DTO_Product product = new DTO_Product();
+            //product.setCategory(((DTO_Category) cmbCateg.getSelectedItem().getAttribute("category")).getCodigo());
+            product.setActivo((Boolean) cmbStatus.getSelectedItem().getValue());
+            product.setTradeMark((DTO_TradeMark) cmbMarca.getSelectedItem().getValue());
+            product.setProductDescription(txtDesc.getValue());
+            product.setEmpresa(company.getId());
+            //product.setMarca(txtMarca.getValue());
+            product.setProductName(txtNombre.getValue());
+            //product.setPrecio(decPrec.getValue());
+            final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
             input.setAccion(Constantes.V_REGISTER);
             final ServiceOutput<DTO_Product> output = productService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"),
                                 Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"), null);
-                this.articulo = articulo;
-                this.articulo.setCategories(new ArrayList<DTO_Category>());
-                this.articulo.setImages(new ArrayList<DTO_ProductImage>());
+                this.product = product;
+                this.product.setCategories(new ArrayList<DTO_Category>());
+                this.product.setImages(new ArrayList<DTO_ProductImage>());
                 //limpiarCampos();
             } else {
                 alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Error.Label"),
@@ -179,33 +179,33 @@ public class PO_EAProductsCreate
     @Listen("onClick = #btnSave2")
     public void saveCategories(final Event _event)
     {
-        if (articulo != null) {
+        if (product != null) {
             final Map<Integer, DTO_Category> mapCat4Prod = new HashMap<Integer, DTO_Category>();
-            for (final DTO_Category cat : articulo.getCategories()) {
+            for (final DTO_Category cat : product.getCategories()) {
                 mapCat4Prod.put(cat.getId(), cat);
             }
             if (tree.getItems() != null && !tree.getItems().isEmpty()) {
                 final DTO_Product prod4DelCat = new DTO_Product();
-                prod4DelCat.setId(articulo.getId());
-                prod4DelCat.setEmpresa(articulo.getEmpresa());
+                prod4DelCat.setId(product.getId());
+                prod4DelCat.setEmpresa(product.getEmpresa());
                 prod4DelCat.setCategories(new ArrayList<DTO_Category>());
                 for (final Treeitem item : tree.getItems()) {
                     saveCategories(item, mapCat4Prod, prod4DelCat);
                 }
 
-                ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(articulo);
+                ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
                 input.setAccion(Constantes.V_REGISTERCAT4PROD);
                 ServiceOutput<DTO_Product> output = productService.execute(input);
                 boolean correct = true;
                 if (output.getErrorCode() != Constantes.OK) {
-                    alertaError(logger, "", "Error al guardar nuevas categorias para el producto", null);
+                    alertaError(logger, "", "Error al guardar nuevas categories para el producto", null);
                     correct = false;
                 }
                 input = new ServiceInput<DTO_Product>(prod4DelCat);
                 input.setAccion(Constantes.V_DELETECAT4PROD);
                 output = productService.execute(input);
                 if (output.getErrorCode() != Constantes.OK) {
-                    alertaError(logger, "", "Error al eliminar categorias para el producto", null);
+                    alertaError(logger, "", "Error al eliminar categories para el producto", null);
                     correct = false;
                 }
                 if (correct) {
@@ -213,7 +213,7 @@ public class PO_EAProductsCreate
                                     "", null);
                 } else {
                     alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveCategories.Error.Label"),
-                                    "Error al guardar o eliminar categorias para el producto", null);
+                                    "Error al guardar o eliminar categories para el producto", null);
                 }
             }
         } else {
@@ -230,12 +230,12 @@ public class PO_EAProductsCreate
         final DTO_Category categ = ctn.getData();
 
         if (_item.isSelected() && !_mapCat4Prod.containsKey(categ.getId())) {
-            articulo.getCategories().add(categ);
+            product.getCategories().add(categ);
         } else if (!_item.isSelected() && _mapCat4Prod.containsKey(categ.getId())) {
-            for (int cnt = 0; cnt < articulo.getCategories().size(); cnt++) {
-                if (articulo.getCategories().get(cnt).getId().equals(categ.getId())) {
-                    _prod4DelCat.getCategories().add(articulo.getCategories().get(cnt));
-                    articulo.getCategories().remove(cnt);
+            for (int cnt = 0; cnt < product.getCategories().size(); cnt++) {
+                if (product.getCategories().get(cnt).getId().equals(categ.getId())) {
+                    _prod4DelCat.getCategories().add(product.getCategories().get(cnt));
+                    product.getCategories().remove(cnt);
                 }
             }
         }
@@ -249,7 +249,7 @@ public class PO_EAProductsCreate
     public CategoryTreeNode getCategories()
     {
         final DTO_Category cat = new DTO_Category();
-        cat.setEmpresa(empresa.getCodigo());
+        cat.setEmpresa(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);
@@ -259,18 +259,18 @@ public class PO_EAProductsCreate
             categoryTreeNode = buildCategoriesTree(lstCat);
         } else {
             alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"),
-                            "Error cargando categorias", null);
+                            "Error cargando categories", null);
         }
         return categoryTreeNode;
     }
 
-    private CategoryTreeNode buildCategoriesTree(final List<DTO_Category> _categorias)
+    private CategoryTreeNode buildCategoriesTree(final List<DTO_Category> _categories)
     {
         final Map<Integer, DTO_Category> mapCateg = new TreeMap<Integer, DTO_Category>();
         final Map<Integer, DTO_Category> roots = new TreeMap<Integer, DTO_Category>();
         final Map<Integer, DTO_Category> childs = new TreeMap<Integer, DTO_Category>();
         final Set<Integer> setPadres = new HashSet<Integer>();
-        for (final DTO_Category cat : _categorias) {
+        for (final DTO_Category cat : _categories) {
             mapCateg.put(cat.getId(), cat);
             setPadres.add(cat.getCategoryParentId());
             if (cat.getCategoryParentId() == null) {
@@ -306,7 +306,7 @@ public class PO_EAProductsCreate
         return categoryTreeNode;
     }
 
-    private final class CategoriaTreeRenderer
+    private final class CategoryTreeRenderer
         implements TreeitemRenderer<CategoryTreeNode>
     {
         @Override
@@ -316,8 +316,8 @@ public class PO_EAProductsCreate
             throws Exception
         {
             final Map<Integer, DTO_Category> mapCat4Prod = new HashMap<Integer, DTO_Category>();
-            if (articulo != null) {
-                for (final DTO_Category cat : articulo.getCategories()) {
+            if (product != null) {
+                for (final DTO_Category cat : product.getCategories()) {
                     mapCat4Prod.put(cat.getId(), cat);
                 }
             }
@@ -340,7 +340,7 @@ public class PO_EAProductsCreate
             dataRow.appendChild(treeCell);
             final Treecell treeCell2 = new Treecell();
             final Hlayout h2 = new Hlayout();
-            h2.appendChild(new Label(categ.getEstado() ? Constantes.STATUS_ACTIVO : Constantes.STATUS_INACTIVO));
+            h2.appendChild(new Label(categ.isActive() ? Constantes.STATUS_ACTIVO : Constantes.STATUS_INACTIVO));
             treeCell2.appendChild(h2);
             dataRow.appendChild(treeCell2);
 
@@ -399,7 +399,7 @@ public class PO_EAProductsCreate
                     lbImageSize.setValue("" + _media.getByteData().length);
 
                     final DTO_ProductImage img4Prod = new DTO_ProductImage();
-                    img4Prod.setCompany(empresa.getCodigo());
+                    img4Prod.setCompany(company.getId());
                     img4Prod.setImage(imgFoto.getContent().getByteData());
                     img4Prod.setImageName(_media.getName());
 
@@ -471,25 +471,25 @@ public class PO_EAProductsCreate
 
     @Listen("onClick = #btnSave3")
     public void saveImages(final Event _event) {
-        if (articulo != null) {
+        if (product != null) {
             if (lstImages.getItems() != null && !lstImages.getItems().isEmpty()) {
                 for (final Listitem imgIt : lstImages.getItems()) {
                     if ((Boolean) imgIt.getAttribute(Constantes.ATTRIBUTE_PRODUCT_EDITIMAGE)) {
                         final DTO_ProductImage img4Prod = imgIt.getValue();
-                        img4Prod.setProductId(articulo.getId());
-                        img4Prod.setImageActive(true);
-                        img4Prod.setImageDefault(false);
-                        articulo.getImages().add(img4Prod);
+                        img4Prod.setProductId(product.getId());
+                        img4Prod.setActive(true);
+                        img4Prod.setDefaul(false);
+                        product.getImages().add(img4Prod);
                         imgIt.setAttribute(Constantes.ATTRIBUTE_PRODUCT_EDITIMAGE, false);
                     }
                 }
-                final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(articulo);
+                final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
                 input.setAccion(Constantes.V_REGISTERIMG4PROD);
                 final ServiceOutput<DTO_Product> output = productService.execute(input);
                 if (output.getErrorCode() == Constantes.OK) {
                     alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Info.Label"),
                                     Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Info.Label"), null);
-                    //articulo.setImages(new ArrayList<DTO_ProductImage>());
+                    //product.setImages(new ArrayList<DTO_ProductImage>());
                     //cleanImagePanel();
                 } else {
                     alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Error.Label"),

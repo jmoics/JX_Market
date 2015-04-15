@@ -13,11 +13,11 @@
             modu.modulo_n_codigo as codigo,
             modu.modulo_v_desc as descripcion,
             modu.modulo_v_recurso as recurso,
-            modu.empresa_n_codigo as empresa
+            modu.companyid as company
         FROM
             T_SEG_MODULO modu
         WHERE
-            modu.empresa_n_codigo = #{empresa}
+            modu.companyid = #{company}
     </select>
     
     <select id="getModuloXCodigo" parameterType="DTO_Modulo" resultType="DTO_Modulo">
@@ -25,20 +25,20 @@
             modu.modulo_n_codigo as codigo,
             modu.modulo_v_desc as descripcion,
             modu.modulo_v_recurso as recurso,
-            modu.empresa_n_codigo as empresa
+            modu.companyid as company
         FROM
             T_SEG_MODULO modu
         WHERE
-            modu.empresa_n_codigo = #{empresa}
+            modu.companyid = #{company}
         AND
             modu.modulo_n_codigo = #{codigo}
     </select>
 
     <insert id="insertModulo" parameterType="DTO_Modulo">
         INSERT INTO T_SEG_MODULO
-            (modulo_v_desc, modulo_v_recurso, empresa_n_codigo)
+            (modulo_v_desc, modulo_v_recurso, companyid)
         VALUES
-            (#{descripcion}, #{recurso}, #{empresa})
+            (#{descripcion}, #{recurso}, #{company})
         <selectKey keyProperty="codigo" resultType="int" order="AFTER"> 
            select LAST_INSERT_ID() as value
         </selectKey>
@@ -52,7 +52,7 @@
         WHERE
             modulo_n_codigo = #{codigo}
         AND
-            empresa_n_codigo = #{empresa}
+            companyid = #{company}
     </update>
     
     <delete id="deleteModulo" parameterType="DTO_Modulo">
@@ -61,7 +61,7 @@
       WHERE
             modulo_n_codigo = #{codigo}
         AND
-            empresa_n_codigo = #{empresa}
+            companyid = #{company}
     </delete>
 
 </mapper>

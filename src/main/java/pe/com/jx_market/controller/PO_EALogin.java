@@ -16,8 +16,8 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Empleado;
-import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.domain.DTO_Usuario;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -39,9 +39,9 @@ public class PO_EALogin
     private Desktop desktop;
     @Wire
     private Window wEAL;
-    // En este caso empresaService esta siendo obtenido de los beans de spring.
+    // En este caso companyService esta siendo obtenido de los beans de spring.
     @WireVariable
-    private BusinessService<DTO_Empresa> empresaService;
+    private BusinessService<DTO_Company> companyService;
     @WireVariable
     private BusinessService<DTO_Usuario> authService;
     @WireVariable
@@ -58,22 +58,22 @@ public class PO_EALogin
 
     public void obtenerEmpresas()
     {
-        List<DTO_Empresa> empresas;
-        //empresaService = (BusinessService<DTO_Empresa>) ContextLoader.getService(wEAL, "empresaService");
-        final ServiceInput<DTO_Empresa> input = new ServiceInput<DTO_Empresa>();
+        List<DTO_Company> companys;
+        //companyService = (BusinessService<DTO_Company>) ContextLoader.getService(wEAL, "companyService");
+        final ServiceInput<DTO_Company> input = new ServiceInput<DTO_Company>();
         input.setAccion("list");
 
-        final ServiceOutput<DTO_Empresa> output = empresaService.execute(input);
+        final ServiceOutput<DTO_Company> output = companyService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            empresas = output.getLista();
-            for (final DTO_Empresa emp : empresas) {
+            companys = output.getLista();
+            for (final DTO_Company emp : companys) {
                 final Comboitem item = new Comboitem();
-                item.setLabel(emp.getRazonsocial());
-                item.setAttribute("empresa", emp);
+                item.setLabel(emp.getBusinessName());
+                item.setAttribute("company", emp);
                 cmbEmp.appendChild(item);
             }
         } else {
-            empresas = null;
+            companys = null;
         }
     }
 
@@ -85,17 +85,17 @@ public class PO_EALogin
         usuario.setUsername(txtUser.getValue());
         usuario.setContrasena(txtPass.getValue());
         if (cmbEmp.getSelectedItem() != null) {
-            final DTO_Empresa empresa = (DTO_Empresa) cmbEmp.getSelectedItem().getAttribute("empresa");
-            if (empresa != null) {
-                usuario.setEmpresa(empresa.getCodigo());
+            final DTO_Company company = (DTO_Company) cmbEmp.getSelectedItem().getAttribute("company");
+            if (company != null) {
+                usuario.setEmpresa(company.getId());
 
                 final DTO_Usuario validado = getUsuario(usuario);
                 if (validado != null) {
                     final DTO_Empleado empleado = getEmpleado(validado);
                     desktop.getSession().setAttribute("empleado", empleado);
                     desktop.getSession().setAttribute("login", validado);
-                    desktop.getSession().setAttribute("empresa", empresa);
-                    if (empresa.getCodigo().equals(Constantes.INSTITUCION_JX_MARKET)) {
+                    desktop.getSession().setAttribute("company", company);
+                    if (company.getId().equals(Constantes.INSTITUCION_JX_MARKET)) {
                         Executions.sendRedirect("eESolicitudesPendientes.zul");
                     } else {
                         Executions.sendRedirect("eAMainMenu.zul");
@@ -107,10 +107,10 @@ public class PO_EALogin
                     wEAL.getFellow("badauth").setVisible(true);
                 }
             } else {
-                Messagebox.show("No se cargo la empresa", "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
+                Messagebox.show("No se cargo la company", "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
             }
         } else {
-            Messagebox.show("Debe seleccionar una empresa", "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
+            Messagebox.show("Debe seleccionar una company", "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
         }
     }
 

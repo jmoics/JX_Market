@@ -25,7 +25,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import pe.com.jx_market.domain.DTO_Empleado;
-import pe.com.jx_market.domain.DTO_Empresa;
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Perfil;
 import pe.com.jx_market.domain.DTO_Usuario;
 import pe.com.jx_market.utilities.BusinessService;
@@ -48,7 +48,7 @@ public class PO_EAAdministraEmpleado
     private Groupbox grpEmpleados;
     private Popup popDetails;
     private Combobox cmbPerfil, cmbEstado;
-    private DTO_Empresa empresa;
+    private DTO_Company company;
     private BusinessService empleadoService, perfilService, usuarioService;
 
     @Override
@@ -88,7 +88,7 @@ public class PO_EAAdministraEmpleado
         perfilService = ContextLoader.getService(this, "perfilService");
         usuarioService = ContextLoader.getService(this, "usuarioService");
 
-        empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
+        company = (DTO_Company) getDesktop().getSession().getAttribute("company");
         cargarPerfiles();
         CargarTabla();
     }
@@ -132,7 +132,7 @@ public class PO_EAAdministraEmpleado
         empleado.setEmail(mail);
         empleado.setEstado(estado);
         empleado.setPerfil(perfil);
-        empleado.setEmpresa(empresa.getCodigo());
+        empleado.setEmpresa(company.getId());
         empleado.setCelular(celular);
         empleado.setCiudad(ciudad);
         empleado.setDireccion(direccion);
@@ -145,7 +145,7 @@ public class PO_EAAdministraEmpleado
             final DTO_Usuario usuario = new DTO_Usuario();
             usuario.setUsername(username);
             usuario.setContrasena(pass);
-            usuario.setEmpresa(empresa.getCodigo());
+            usuario.setEmpresa(company.getId());
 
             map.put("usuario", usuario);
         } else if (emp != null && pass != null && pass.length() != 0) {
@@ -155,7 +155,7 @@ public class PO_EAAdministraEmpleado
             usuario.setCodigo(emp.getUsuario());
             usuario.setUsername(username);
             usuario.setContrasena(pass);
-            usuario.setEmpresa(empresa.getCodigo());
+            usuario.setEmpresa(company.getId());
 
             map.put("usuario", usuario);
         } else {
@@ -284,7 +284,7 @@ public class PO_EAAdministraEmpleado
     {
         grdEmp.getRows().getChildren().clear();
         final DTO_Empleado emp = new DTO_Empleado();
-        emp.setEmpresa(empresa.getCodigo());
+        emp.setEmpresa(company.getId());
         final ServiceInput input = new ServiceInput(emp);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = empleadoService.execute(input);
@@ -384,7 +384,7 @@ public class PO_EAAdministraEmpleado
                                         throws UiException
                                     {
                                         final int msg = Messagebox.show("¿Está seguro de eliminar el Empleado?",
-                                                                    empresa.getRazonsocial(),
+                                                                    company.getBusinessName(),
                                                                     Messagebox.YES | Messagebox.NO,
                                                                     Messagebox.QUESTION);
                                         if (msg == Messagebox.YES) {
@@ -414,7 +414,7 @@ public class PO_EAAdministraEmpleado
     {
         final DTO_Usuario usuario = new DTO_Usuario();
         usuario.setCodigo(codigo);
-        usuario.setEmpresa(empresa.getCodigo());
+        usuario.setEmpresa(company.getId());
         final ServiceInput input = new ServiceInput(usuario);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = usuarioService.execute(input);
@@ -429,7 +429,7 @@ public class PO_EAAdministraEmpleado
     {
         final DTO_Perfil perfil = new DTO_Perfil();
         perfil.setCodigo(codigo);
-        perfil.setEmpresa(empresa.getCodigo());
+        perfil.setEmpresa(company.getId());
         final ServiceInput input = new ServiceInput(perfil);
         input.setAccion(Constantes.V_GET);
         final ServiceOutput output = perfilService.execute(input);
@@ -443,7 +443,7 @@ public class PO_EAAdministraEmpleado
     public void cargarPerfiles()
     {
         final DTO_Perfil per = new DTO_Perfil();
-        per.setEmpresa(empresa.getCodigo());
+        per.setEmpresa(company.getId());
         final ServiceInput input = new ServiceInput(per);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = perfilService.execute(input);
@@ -465,7 +465,7 @@ public class PO_EAAdministraEmpleado
                            final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.INFORMATION);
+            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.INFORMATION);
         }
         if (t != null) {
             logger.info(txt2, t);
@@ -479,7 +479,7 @@ public class PO_EAAdministraEmpleado
                             final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
+            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.EXCLAMATION);
         }
         if (t != null) {
             logger.error(txt2, t);

@@ -7,7 +7,7 @@ import java.util.Date;
 public class DTO_Pedido implements Serializable
 {
     private Integer codigo;
-    private Integer empresa;
+    private Integer company;
     private Integer cliente;
     private Integer tipo;
     private Date fecha;
@@ -24,11 +24,11 @@ public class DTO_Pedido implements Serializable
     }
     public Integer getEmpresa()
     {
-        return empresa;
+        return company;
     }
-    public void setEmpresa(final Integer empresa)
+    public void setEmpresa(final Integer company)
     {
-        this.empresa = empresa;
+        this.company = company;
     }
     public Integer getCliente()
     {

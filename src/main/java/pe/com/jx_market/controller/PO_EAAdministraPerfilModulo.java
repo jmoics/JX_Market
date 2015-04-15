@@ -24,7 +24,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 
 import pe.com.jx_market.domain.DTO_Area;
-import pe.com.jx_market.domain.DTO_Empresa;
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Modulo;
 import pe.com.jx_market.domain.DTO_Perfil;
 import pe.com.jx_market.domain.DTO_PerfilModulo;
@@ -43,7 +43,7 @@ public class PO_EAAdministraPerfilModulo
     private Combobox cmbArea;
 
     private BusinessService perfilModuloService, areaService;
-    private DTO_Empresa empresa;
+    private DTO_Company company;
 
     @Override
     public void realOnCreate()
@@ -56,7 +56,7 @@ public class PO_EAAdministraPerfilModulo
         cmbArea = (Combobox) getFellow("cmbArea");
         perfilModuloService = ContextLoader.getService(this, "perfilModuloService");
         areaService = ContextLoader.getService(this, "areaService");
-        empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
+        company = (DTO_Company) getDesktop().getSession().getAttribute("company");
         cargarAreas(cmbArea);
         //CargarTabla();
     }
@@ -120,9 +120,9 @@ public class PO_EAAdministraPerfilModulo
         gr_recursos.getColumns().appendChild(columna);
 
         final DTO_Modulo modL = new DTO_Modulo();
-        modL.setEmpresa(empresa.getCodigo());
+        modL.setEmpresa(company.getId());
         final DTO_Perfil perL = new DTO_Perfil();
-        perL.setEmpresa(empresa.getCodigo());
+        perL.setEmpresa(company.getId());
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("perfil", perL);
         map.put("modulo", modL);
@@ -239,7 +239,7 @@ public class PO_EAAdministraPerfilModulo
     private void cargarAreas(final Combobox combo)
     {
         final DTO_Area ar = new DTO_Area();
-        ar.setEmpresa(empresa.getCodigo());
+        ar.setEmpresa(company.getId());
         final ServiceInput input = new ServiceInput(ar);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = areaService.execute(input);
@@ -261,7 +261,7 @@ public class PO_EAAdministraPerfilModulo
                            final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.INFORMATION);
+            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.INFORMATION);
         }
         if (t != null) {
             logger.info(txt2, t);
@@ -275,7 +275,7 @@ public class PO_EAAdministraPerfilModulo
                             final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
+            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.EXCLAMATION);
         }
         if (t != null) {
             logger.error(txt2, t);

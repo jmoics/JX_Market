@@ -13,11 +13,11 @@ import java.util.List;
 public class DTO_Product implements Serializable
 {
     private Integer id;
-    private Integer empresa;
+    private Integer company;
     private List<DTO_Category> categories;
     private String productName;
     private String productDescription;
-    private DTO_TradeMark marca;
+    private DTO_TradeMark tradeMark;
     //private BigDecimal precio;
     //private Integer stock;
     private Boolean activo;
@@ -33,11 +33,11 @@ public class DTO_Product implements Serializable
     }
     public Integer getEmpresa()
     {
-        return empresa;
+        return company;
     }
-    public void setEmpresa(final Integer empresa)
+    public void setEmpresa(final Integer company)
     {
-        this.empresa = empresa;
+        this.company = company;
     }
     public List<DTO_Category> getCategories()
     {
@@ -63,13 +63,13 @@ public class DTO_Product implements Serializable
     {
         this.productDescription = productDescription;
     }
-    /*public String getMarca()
+    /*public String getTradeMark()
     {
-        return marca;
+        return tradeMark;
     }
-    public void setMarca(String marca)
+    public void setTradeMark(String tradeMark)
     {
-        this.marca = marca;
+        this.tradeMark = tradeMark;
     }
     public BigDecimal getPrecio()
     {
@@ -95,13 +95,13 @@ public class DTO_Product implements Serializable
     {
         this.activo = activo;
     }
-    public DTO_TradeMark getMarca()
+    public DTO_TradeMark getTradeMark()
     {
-        return marca;
+        return tradeMark;
     }
-    public void setMarca(final DTO_TradeMark marca)
+    public void setTradeMark(final DTO_TradeMark tradeMark)
     {
-        this.marca = marca;
+        this.tradeMark = tradeMark;
     }
 
     public List<DTO_ProductImage> getImages()

@@ -7,10 +7,10 @@ public class DTO_TradeMark
     implements Serializable
 {
     private Integer id;
-    private Integer empresa;
-    private String marcaName;
+    private Integer company;
+    private String tradeMarkName;
     private Boolean active;
-    private byte[] imagen;
+    private byte[] image;
     private String imageName;
 
     public Integer getId()
@@ -25,22 +25,22 @@ public class DTO_TradeMark
 
     public Integer getEmpresa()
     {
-        return empresa;
+        return company;
     }
 
-    public void setEmpresa(final Integer empresa)
+    public void setEmpresa(final Integer company)
     {
-        this.empresa = empresa;
+        this.company = company;
     }
 
-    public String getMarcaName()
+    public String getTradeMarkName()
     {
-        return marcaName;
+        return tradeMarkName;
     }
 
-    public void setMarcaName(final String marcaName)
+    public void setTradeMarkName(final String tradeMarkName)
     {
-        this.marcaName = marcaName;
+        this.tradeMarkName = tradeMarkName;
     }
 
     public Boolean getActive()
@@ -53,14 +53,14 @@ public class DTO_TradeMark
         this.active = active;
     }
 
-    public byte[] getImagen()
+    public byte[] getImage()
     {
-        return imagen;
+        return image;
     }
 
-    public void setImagen(final byte[] imagen)
+    public void setImage(final byte[] image)
     {
-        this.imagen = imagen;
+        this.image = image;
     }
 
     public String getImageName()

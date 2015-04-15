@@ -14,11 +14,11 @@
             per.perfil_v_funcion as funcion,
             per.perfil_v_descripcion as descripcion,
             per.area_n_codigo as area,
-            per.empresa_n_codigo as empresa
+            per.companyid as company
         FROM
             T_SEG_PERFIL per
         WHERE
-            per.empresa_n_codigo = #{empresa}
+            per.companyid = #{company}
     </select>
     
     <select id="getPerfilXCodigo" parameterType="DTO_Perfil" resultType="DTO_Perfil">
@@ -27,20 +27,20 @@
             per.perfil_v_funcion as funcion,
             per.perfil_v_descripcion as descripcion,
             per.area_n_codigo as area,
-            per.empresa_n_codigo as empresa
+            per.companyid as company
         FROM
             T_SEG_PERFIL per
         WHERE
-            per.empresa_n_codigo = #{empresa}
+            per.companyid = #{company}
         AND
             per.perfil_n_codigo = #{codigo}
     </select>
 
     <insert id="insertPerfil" parameterType="DTO_Perfil">
         INSERT INTO T_SEG_PERFIL
-            (perfil_v_funcion, perfil_v_descripcion, area_n_codigo, empresa_n_codigo)
+            (perfil_v_funcion, perfil_v_descripcion, area_n_codigo, companyid)
         VALUES
-            (#{funcion}, #{descripcion}, #{area}, #{empresa})
+            (#{funcion}, #{descripcion}, #{area}, #{company})
         <selectKey keyProperty="codigo" resultType="int" order="AFTER"> 
            select LAST_INSERT_ID() as value
         </selectKey>
@@ -55,7 +55,7 @@
         WHERE
             perfil_n_codigo = #{codigo}
         AND
-            empresa_n_codigo = #{empresa}
+            companyid = #{company}
     </update>
     
     <delete id="deletePerfil" parameterType="DTO_Perfil">
@@ -64,7 +64,7 @@
       WHERE
             perfil_n_codigo = #{codigo}
         AND
-            empresa_n_codigo = #{empresa}
+            companyid = #{company}
     </delete>
 
 </mapper>

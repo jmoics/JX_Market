@@ -9,7 +9,7 @@ public class DTO_Costo
     implements Serializable
 {
     private Integer id;
-    private Integer articuloId;
+    private Integer productId;
     private Date desde;
     private Date hasta;
     private BigDecimal monto;
@@ -24,14 +24,14 @@ public class DTO_Costo
         this.id = id;
     }
     
-    public Integer getArticuloId()
+    public Integer getProductId()
     {
-        return articuloId;
+        return productId;
     }
     
-    public void setArticuloId(Integer articuloId)
+    public void setProductId(Integer productId)
     {
-        this.articuloId = articuloId;
+        this.productId = productId;
     }
     
     public Date getDesde()

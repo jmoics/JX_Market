@@ -1,10 +1,10 @@
 package pe.com.jx_market.domain;
 
 
-public class DTO_Atributo2Articulo
+public class DTO_Atributo2Product
 {
     private Integer atributoId;
-    private Integer articuloId;
+    private Integer productId;
     private String nombre;
     
     public Integer getAtributoId()
@@ -17,14 +17,14 @@ public class DTO_Atributo2Articulo
         this.atributoId = atributoId;
     }
     
-    public Integer getArticuloId()
+    public Integer getProductId()
     {
-        return articuloId;
+        return productId;
     }
     
-    public void setArticuloId(Integer articuloId)
+    public void setProductId(Integer productId)
     {
-        this.articuloId = articuloId;
+        this.productId = productId;
     }
     
     public String getNombre()

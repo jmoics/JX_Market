@@ -20,20 +20,20 @@ import pe.com.jx_market.utilities.ServiceProvider;
  * @author George
  *
  */
-public class ArticuloServiceTest
+public class ProductServiceTest
 {
-    public static BusinessService articuloService;
+    public static BusinessService productService;
 
     @BeforeClass
     public static void setUpBeforeClass () {
-        articuloService = ServiceProvider.getServiceProvider().getService("articuloService");
+        productService = ServiceProvider.getServiceProvider().getService("productService");
     }
 
     @Test
-    public void registraArticulo()
+    public void registraProduct()
     {
         final DTO_Product art = new DTO_Product();
-        //art.setCategoria(1);
+        //art.setCategory(1);
         art.setActivo(Constantes.STB_ACTIVO);
         art.setProductDescription("juego de video de accion basado en la trilogia del senior de los anillos");
         art.setProductName("Ring Action");
@@ -44,18 +44,18 @@ public class ArticuloServiceTest
 
         final ServiceInput input = new ServiceInput(art);
         input.setAccion(Constantes.V_REGISTER);
-        final ServiceOutput output = articuloService.execute(input);
+        final ServiceOutput output = productService.execute(input);
         assertEquals(Constantes.OK, output.getErrorCode());
     }
 
     @Test
-    public void getArticulo() {
+    public void getProduct() {
         DTO_Product art = new DTO_Product();
         art.setId(1);
         art.setEmpresa(2);
         final ServiceInput input = new ServiceInput(art);
         input.setAccion(Constantes.V_GET);
-        final ServiceOutput output = articuloService.execute(input);
+        final ServiceOutput output = productService.execute(input);
         assertEquals(Constantes.OK, output.getErrorCode());
 
         art = (DTO_Product)output.getObject();

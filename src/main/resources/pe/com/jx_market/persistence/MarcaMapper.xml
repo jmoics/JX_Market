@@ -10,15 +10,15 @@
     <select id="getMarcas" parameterType="DTO_TradeMark" resultType="DTO_TradeMark">
         SELECT
             mar.id as id,
-            mar.empresaid as empresa,
+            mar.companyid as company,
             mar.nombre as marcaName,
             mar.activo as active,
             mar.imagen as imageName
         FROM
-            T_NEG_MARCA mar
+            T_BUS_TRADEMARK mar
         <where>
-            <if test="empresa != null">
-                mar.empresaId = #{empresa}
+            <if test="company != null">
+                mar.companyId = #{company}
             </if>
         </where>
         ORDER BY mar.nombre
@@ -27,25 +27,25 @@
     <select id="getMarcaXCodigo" parameterType="DTO_TradeMark" resultType="DTO_TradeMark">
         SELECT
             mar.id as id,
-            mar.empresaid as empresa,
+            mar.companyid as company,
             mar.nombre as marcaName,
             mar.activo as active,
             mar.imagen as imageName
         FROM
-            T_NEG_MARCA cat
+            T_BUS_TRADEMARK cat
         WHERE
             mar.id = #{id, jdbcType=INTEGER}
     </select>
 
     <insert id="insertMarca" parameterType="DTO_TradeMark">
-        INSERT INTO T_NEG_MARCA
-            (empresaId,nombre,activo,imagen)
+        INSERT INTO T_BUS_TRADEMARK
+            (companyId,nombre,activo,imagen)
         VALUES
-            (#{empresa},#{marcaName},#{active},#{imageName})
+            (#{company},#{marcaName},#{active},#{imageName})
     </insert>
 
     <update id="updateMarca" parameterType="DTO_TradeMark">
-        UPDATE T_NEG_MARCA
+        UPDATE T_BUS_TRADEMARK
         SET
             nombre = #{marcaName},
             activo = #{active},
@@ -53,11 +53,11 @@
         WHERE
             id = #{id}
         AND
-            empresaId = #{empresa}
+            companyId = #{company}
     </update>
 
     <delete id="deleteMarca" parameterType="DTO_TradeMark">
-        DELETE FROM T_NEG_MARCA
+        DELETE FROM T_BUS_TRADEMARK
         WHERE
         id = #{id}
     </delete>

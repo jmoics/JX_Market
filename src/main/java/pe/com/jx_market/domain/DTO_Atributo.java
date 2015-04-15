@@ -10,7 +10,7 @@ public class DTO_Atributo
     private String descr;
     private Boolean activo;
     private Boolean filtrable;
-    private Integer categoriaId;
+    private Integer categoryId;
     
     public Integer getId()
     {
@@ -63,14 +63,14 @@ public class DTO_Atributo
     }
 
     
-    public Integer getCategoriaId()
+    public Integer getCategoryId()
     {
-        return categoriaId;
+        return categoryId;
     }
 
     
-    public void setCategoriaId(Integer categoriaId)
+    public void setCategoryId(Integer categoryId)
     {
-        this.categoriaId = categoriaId;
+        this.categoryId = categoryId;
     }
 }

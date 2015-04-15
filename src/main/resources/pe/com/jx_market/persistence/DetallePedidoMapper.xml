@@ -11,34 +11,34 @@
     <select id="getDetallePedidos" parameterType="DTO_DetallePedido" resultType="DTO_DetallePedido">
         SELECT
             ped.pedido_n_codigo as pedido,
-            ped.articulo_n_codigo as articulo,
+            ped.product_n_codigo as product,
             ped.detped_n_cantidad as cantidad
         FROM
-            T_NEG_PEDIDO_DET ped
+            T_BUS_PEDIDO_DET ped
         WHERE
         <if test="pedido != null">
             ped.pedido_n_codigo = #{pedido}
-            <if test="articulo != null">AND
-                ped.articulo_n_codigo = #{articulo}
+            <if test="product != null">AND
+                ped.product_n_codigo = #{product}
             </if>
         </if>
         <if test="pedido == null">
-            ped.articulo_n_codigo = #{articulo}
+            ped.product_n_codigo = #{product}
         </if>
     </select>
 
     <insert id="insertDetallePedido" parameterType="DTO_DetallePedido">
-        INSERT INTO T_NEG_PEDIDO_DET
-            (pedido_n_codigo, articulo_n_codigo, detped_n_cantidad)
+        INSERT INTO T_BUS_PEDIDO_DET
+            (pedido_n_codigo, product_n_codigo, detped_n_cantidad)
         VALUES
-            (#{pedido}, #{articulo}, #{cantidad})
+            (#{pedido}, #{product}, #{cantidad})
     </insert>
     
     <update id="updateDetallePedido" parameterType="DTO_DetallePedido">
-        UPDATE T_NEG_PEDIDO_DET
+        UPDATE T_BUS_PEDIDO_DET
         SET
             pedido_n_codigo = #{pedido},
-            articulo_n_codigo = #{articulo},
+            product_n_codigo = #{product},
             detped_n_cantidad = #{cantidad}
         WHERE
             pedido_n_codigo = #{pedido}
@@ -46,7 +46,7 @@
 
     <delete id="deleteDetallePedido">
         DELETE FROM
-            T_NEG_PEDIDO_DET
+            T_BUS_PEDIDO_DET
         WHERE
             pedido_n_codigo = #{value}
     </delete>

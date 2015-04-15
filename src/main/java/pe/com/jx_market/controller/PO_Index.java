@@ -30,22 +30,22 @@ public class PO_Index
 {
     static Log logger = LogFactory.getLog(PO_Index.class);
     private final NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
-    private BusinessService articuloService, categoriaService;
-    private Ul ulCategorias;
+    private BusinessService productService, categoryService;
+    private Ul ulCategories;
     private Label lbUser, lbTotal, lbItems, lbSalir;
 
     public void onCreate()
     {
-        categoriaService = ContextLoader.getService(this, "categoriaService");
-        ulCategorias = (Ul) getFellow("ulCategorias");
+        categoryService = ContextLoader.getService(this, "categoryService");
+        ulCategories = (Ul) getFellow("ulCategories");
         lbUser = (Label) getFellow("lbUser");
         lbTotal = (Label) getFellow("lbTotal");
         lbItems = (Label) getFellow("lbItems");
         lbSalir = (Label) getFellow("lbSalir");
-        ulCategorias.getSclass();
-        ulCategorias.setSclass("left_menu");
+        ulCategories.getSclass();
+        ulCategories.setSclass("left_menu");
         // incluir("cEProductos.zul");
-        listarCategorias();
+        listarCategories();
 
         if (getDesktop().getSession().getAttribute("actualizar") == null) {
             incluir("cEProductos.zul");
@@ -79,14 +79,14 @@ public class PO_Index
                         });
     }
 
-    public void listarCategorias()
+    public void listarCategories()
     {
         final DTO_Category cat = new DTO_Category();
         final ServiceInput input = new ServiceInput(cat);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = categoriaService.execute(input);
+        final ServiceOutput output = categoryService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "Exito al cargar categorias", null);
+            alertaInfo("", "Exito al cargar categories", null);
             final List<DTO_Category> lstCat = output.getLista();
             int cont = 1;
             for (final DTO_Category categ : lstCat) {
@@ -97,22 +97,22 @@ public class PO_Index
                     item.setSclass("odd");
                 }
                 item.appendChild((new Label(categ.getCategoryName())));
-                item.setAttribute("categoria", categ);
+                item.setAttribute("category", categ);
                 item.addEventListener("onClick",
                                 new org.zkoss.zk.ui.event.EventListener() {
                                     @Override
                                     public void onEvent(final Event e)
                                         throws UiException
                     {
-                        getDesktop().getSession().setAttribute("categoria", e.getTarget().getAttribute("categoria"));
+                        getDesktop().getSession().setAttribute("category", e.getTarget().getAttribute("category"));
                         saltarPagina("cEProductos.zul", false);
                     }
                                 });
-                ulCategorias.appendChild(item);
+                ulCategories.appendChild(item);
                 cont++;
             }
         } else {
-            alertaError("Error inesperado, por favor contacte al administrador", "Error cargando categorias", null);
+            alertaError("Error inesperado, por favor contacte al administrador", "Error cargando categories", null);
         }
     }
 

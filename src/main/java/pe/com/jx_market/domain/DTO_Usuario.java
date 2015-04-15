@@ -4,7 +4,7 @@ public class DTO_Usuario implements java.io.Serializable {
 
     private Integer codigo;
     private String username;
-    private Integer empresa;
+    private Integer company;
     private String contrasena;
     public Integer getCodigo () {
         return codigo;
@@ -19,10 +19,10 @@ public class DTO_Usuario implements java.io.Serializable {
         this.username = username;
     }
     public Integer getEmpresa () {
-        return empresa;
+        return company;
     }
-    public void setEmpresa (Integer empresa) {
-        this.empresa = empresa;
+    public void setEmpresa (Integer company) {
+        this.company = company;
     }
     public String getContrasena () {
         return contrasena;

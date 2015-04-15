@@ -16,7 +16,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
-import pe.com.jx_market.domain.DTO_Empresa;
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Modulo;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -32,7 +32,7 @@ public class PO_EAAdministraModulo
     private Grid grdModulo;
     private Groupbox grpModulo;
     private BusinessService moduloService;
-    private DTO_Empresa empresa;
+    private DTO_Company company;
 
     @Override
     public void realOnCreate()
@@ -42,7 +42,7 @@ public class PO_EAAdministraModulo
         txtDescripcion = (Textbox) getFellow("txtDescripcion");
         grdModulo = (Grid) getFellow("grdModulo");
         grpModulo = (Groupbox) getFellow("grpModulo");
-        empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
+        company = (DTO_Company) getDesktop().getSession().getAttribute("company");
         mostrarModulos();
     }
 
@@ -59,7 +59,7 @@ public class PO_EAAdministraModulo
         final DTO_Modulo unew = new DTO_Modulo();
         unew.setRecurso(txtRecurso.getValue());
         unew.setDescripcion(txtDescripcion.getValue());
-        unew.setEmpresa(empresa.getCodigo());
+        unew.setEmpresa(company.getId());
 
         if (!txtRecurso.getValue().isEmpty() && !txtDescripcion.getValue().isEmpty()) {
             final ServiceInput input = new ServiceInput(unew);
@@ -82,7 +82,7 @@ public class PO_EAAdministraModulo
     public void mostrarModulos()
     {
         final DTO_Modulo mod = new DTO_Modulo();
-        mod.setEmpresa(empresa.getCodigo());
+        mod.setEmpresa(company.getId());
         final ServiceInput input = new ServiceInput(mod);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = moduloService.execute(input);
@@ -246,7 +246,7 @@ public class PO_EAAdministraModulo
                                 throws UiException
                             {
                                 final int msg = Messagebox.show("¿Está seguro de eliminar el Modulo?",
-                                                empresa.getRazonsocial(), Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
+                                                company.getBusinessName(), Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
                                 if (msg == Messagebox.YES) {
                                     eliminaFila(mod);
                                 }
@@ -299,7 +299,7 @@ public class PO_EAAdministraModulo
                            final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
+            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.EXCLAMATION);
         }
         if (t != null) {
             logger.info(txt2, t);
@@ -313,7 +313,7 @@ public class PO_EAAdministraModulo
                             final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
+            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.EXCLAMATION);
         }
         if (t != null) {
             logger.error(txt2, t);

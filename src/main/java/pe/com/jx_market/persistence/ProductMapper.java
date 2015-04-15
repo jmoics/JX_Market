@@ -16,10 +16,10 @@ import pe.com.jx_market.domain.DTO_ProductImage;
  */
 public interface ProductMapper
 {
-    public List<DTO_Product> getArticulos (Map<Object, Object> parameterMap);
-    public DTO_Product getArticuloXCodigo (DTO_Product art);
-    public int insertArticulo (DTO_Product art);
-    public boolean updateArticulo (DTO_Product art);
+    public List<DTO_Product> getProducts (Map<Object, Object> parameterMap);
+    public DTO_Product getProduct4Id (DTO_Product art);
+    public int insertProduct (DTO_Product art);
+    public boolean updateProduct (DTO_Product art);
     public boolean updateStock (DTO_Product art);
     public boolean insertCategory4Product (DTO_Category2Product cat2art);
     public boolean deleteCategory4Product (DTO_Category2Product cat2art);

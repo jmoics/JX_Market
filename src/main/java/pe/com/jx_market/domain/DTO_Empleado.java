@@ -8,7 +8,7 @@ public class DTO_Empleado implements Serializable {
     private String codigo;
     private Integer perfil;
     private Integer usuario;
-    private Integer empresa;
+    private Integer company;
     private String nombre;
     private String apellido;
     private Date fecNac;
@@ -46,11 +46,11 @@ public class DTO_Empleado implements Serializable {
     }
 
     public Integer getEmpresa () {
-        return empresa;
+        return company;
     }
 
-    public void setEmpresa (final Integer empresa) {
-        this.empresa = empresa;
+    public void setEmpresa (final Integer company) {
+        this.company = company;
     }
 
     public String getNombre () {

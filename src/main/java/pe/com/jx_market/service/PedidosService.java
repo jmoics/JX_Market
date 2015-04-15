@@ -49,7 +49,7 @@ public class PedidosService implements BusinessService
             for (final DTO_Pedido ped : lst) {
 
             }
-            //output.setLista(dao.getArticulos((DTO_Product)input.getObject()));
+            //output.setLista(dao.getProducts((DTO_Product)input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_LIST.equals(input.getAccion())) {
@@ -58,12 +58,12 @@ public class PedidosService implements BusinessService
             final List<DTO_Pedido> lstPedCli = pedidoMapper.getPedidos((DTO_Pedido) input.getObject());
             for (final DTO_Pedido ped : lstPedCli) {
                 final List<DTO_DetallePedido> lstPedEmp = new ArrayList<DTO_DetallePedido>();
-                //Codigos de los pedidos de las empresa
+                //Codigos de los pedidos de las company
                 final List<Integer> lstPeds = pedidoMapper.getConnected(ped.getCodigo());
                 for (final Integer codPed : lstPeds) {
                     final DTO_Pedido pedAux = new DTO_Pedido();
                     pedAux.setCodigo(codPed);
-                    //Pedido de la empresa
+                    //Pedido de la company
                     final DTO_Pedido pedEmp = pedidoMapper.getPedidoXCodigo(pedAux);
                     final DTO_DetallePedido detPedAux = new DTO_DetallePedido();
                     detPedAux.setPedido(pedEmp.getCodigo());
@@ -109,7 +109,7 @@ public class PedidosService implements BusinessService
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getAccion())) {
-            //final DTO_Product art = dao.getArticuloXCodigo((DTO_Product) input.getObject());
+            //final DTO_Product art = dao.getProductXCodigo((DTO_Product) input.getObject());
             //output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
@@ -131,7 +131,7 @@ public class PedidosService implements BusinessService
 
     private DTO_DetallePedido obtenerDetallePedido (final DTO_DetallePedido det) {
         final DTO_DetallePedido detAux = new DTO_DetallePedido();
-        detAux.setArticulo(det.getArticulo());
+        detAux.setProduct(det.getProduct());
         detAux.setCantidad(det.getCantidad());
         return detAux;
     }

@@ -13,7 +13,7 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Messagebox;
 
 import pe.com.jx_market.domain.DTO_Empleado;
-import pe.com.jx_market.domain.DTO_Empresa;
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -25,7 +25,7 @@ public abstract class SecuredComposer<T extends Component>
 {
 
     private static final long serialVersionUID = 3258515575680520815L;
-    private DTO_Empresa empresa;
+    private DTO_Company company;
     @WireVariable
     private Desktop desktop;
     @WireVariable
@@ -43,7 +43,7 @@ public abstract class SecuredComposer<T extends Component>
         if (!empleado.getEmpresa().equals(Constantes.INSTITUCION_JX_MARKET)) {
             checkResources(empleado);
         }
-        empresa = (DTO_Empresa) _comp.getDesktop().getSession().getAttribute("empresa");
+        company = (DTO_Company) _comp.getDesktop().getSession().getAttribute("company");
     }
 
     private void checkResources(final DTO_Empleado empleado)
@@ -70,7 +70,7 @@ public abstract class SecuredComposer<T extends Component>
     {
         int ret = 0;
         if (txt.length() > 0) {
-            ret = Messagebox.show(txt, empresa.getRazonsocial(), Messagebox.OK, Messagebox.INFORMATION);
+            ret = Messagebox.show(txt, company.getBusinessName(), Messagebox.OK, Messagebox.INFORMATION);
         }
         if (t != null) {
             _logger.info(txt2, t);
@@ -86,7 +86,7 @@ public abstract class SecuredComposer<T extends Component>
                             final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), Messagebox.OK, Messagebox.EXCLAMATION);
+            Messagebox.show(txt, company.getBusinessName(), Messagebox.OK, Messagebox.EXCLAMATION);
         }
         if (t != null) {
             _logger.error(txt2, t);

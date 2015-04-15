@@ -34,7 +34,7 @@ import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Category;
-import pe.com.jx_market.domain.DTO_Empresa;
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.utilities.AdvancedTreeModel;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.CategoryTreeNode;
@@ -52,7 +52,7 @@ public class PO_EACategoryEdit
     static Log logger = LogFactory.getLog(PO_EACategoryEdit.class);
     @Autowired
     private BusinessService<DTO_Category> categoryService;
-    private DTO_Empresa empresa;
+    private DTO_Company company;
     @WireVariable
     private Desktop desktop;
     @Wire
@@ -71,41 +71,41 @@ public class PO_EACategoryEdit
 
         categoryService = (BusinessService<DTO_Category>) ContextLoader.getService(comp, "categoryService");
 
-        empresa = (DTO_Empresa) desktop.getSession().getAttribute("empresa");
+        company = (DTO_Company) desktop.getSession().getAttribute("company");
 
-        categoryTreeNode = listarCategorias();
+        categoryTreeNode = listarCategories();
         categoryTreeModel = new AdvancedTreeModel(categoryTreeNode);
-        tree.setItemRenderer(new CategoriaTreeRenderer());
+        tree.setItemRenderer(new CategoryTreeRenderer());
         tree.setModel(categoryTreeModel);
         tree.getRoot().setVisible(true);
     }
 
-    public CategoryTreeNode listarCategorias()
+    public CategoryTreeNode listarCategories()
     {
         final DTO_Category cat = new DTO_Category();
-        cat.setEmpresa(empresa.getCodigo());
+        cat.setEmpresa(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);
         CategoryTreeNode categoryTreeNode = null;
         if (output.getErrorCode() == Constantes.OK) {
-            // alertaInfo("", "Exito al cargar categorias", null);
+            // alertaInfo("", "Exito al cargar categories", null);
             final List<DTO_Category> lstCat = output.getLista();
-            categoryTreeNode = construirArbolCategorias(lstCat);
+            categoryTreeNode = construirArbolCategories(lstCat);
         } else {
             // alertaError("Error inesperado, por favor catege al administrador",
-            // "Error cargando categorias", null);
+            // "Error cargando categories", null);
         }
         return categoryTreeNode;
     }
 
-    private CategoryTreeNode construirArbolCategorias(final List<DTO_Category> _categorias)
+    private CategoryTreeNode construirArbolCategories(final List<DTO_Category> _categories)
     {
         final Map<Integer, DTO_Category> mapCateg = new TreeMap<Integer, DTO_Category>();
         final Map<Integer, DTO_Category> roots = new TreeMap<Integer, DTO_Category>();
         final Map<Integer, DTO_Category> childs = new TreeMap<Integer, DTO_Category>();
         final Set<Integer> setPadres = new HashSet<Integer>();
-        for (final DTO_Category cat : _categorias) {
+        for (final DTO_Category cat : _categories) {
             mapCateg.put(cat.getId(), cat);
             setPadres.add(cat.getCategoryParentId());
             if (cat.getCategoryParentId() == null) {
@@ -120,7 +120,7 @@ public class PO_EACategoryEdit
         {
             private static final long serialVersionUID = -8249078122595873454L;
             {
-                // Agregamos esta Raiz ficticia para poder convertir un nodo hijo en Raiz de categorias
+                // Agregamos esta Raiz ficticia para poder convertir un nodo hijo en Raiz de categories
                 add(new CategoryTreeNode(new DTO_Category(Constantes.TREE_EDITABLE_RAIZ), new CategoryTreeNodeCollection()
                 {
                     private static final long serialVersionUID = 3800210198277431722L;
@@ -147,7 +147,7 @@ public class PO_EACategoryEdit
         return categoryTreeNode;
     }
 
-    private final class CategoriaTreeRenderer
+    private final class CategoryTreeRenderer
         implements TreeitemRenderer<CategoryTreeNode>
     {
         @Override
@@ -182,10 +182,10 @@ public class PO_EACategoryEdit
             if (categ != null && !Constantes.TREE_EDITABLE_RAIZ.equals(categ.getCategoryName())) {
                 final Treecell treeCell2 = new Treecell();
                 //final Hlayout h2 = new Hlayout();
-                final Checkbox checkBoxEstado = new Checkbox(categ.getEstado()
+                final Checkbox checkBoxEstado = new Checkbox(categ.isActive()
                                                     ? Constantes.STATUS_ACTIVO : Constantes.STATUS_INACTIVO);
-                checkBoxEstado.setValue(categ.getEstado());
-                checkBoxEstado.setChecked(categ.getEstado());
+                checkBoxEstado.setValue(categ.isActive());
+                checkBoxEstado.setChecked(categ.isActive());
                 treeCell2.appendChild(checkBoxEstado);
                 treeCell2.setSclass("h-inline-block");
                 checkBoxEstado.addEventListener(Events.ON_CHECK, new EventListener<Event>()
@@ -195,7 +195,7 @@ public class PO_EACategoryEdit
                         throws Exception
                     {
                         final Checkbox checkBox = (Checkbox) event.getTarget();
-                        categ.setEstado(checkBox.isChecked());
+                        categ.setActive(checkBox.isChecked());
                         checkBox.setValue(checkBoxEstado.isChecked());
                         if (checkBox.isChecked()) {
                             checkBox.setLabel(Constantes.STATUS_ACTIVO);
@@ -243,7 +243,7 @@ public class PO_EACategoryEdit
                         final Treerow row = _item.getTreerow();
                         final Treecell cell = (Treecell) row.getChildren().get(1);
                         final Checkbox checkb = (Checkbox) cell.getChildren().get(0);
-                        ((CategoryTreeNode) _item.getValue()).getData().setEstado(_checked);
+                        ((CategoryTreeNode) _item.getValue()).getData().setActive(_checked);
                         checkb.setChecked(_checked);
                         checkb.setValue(_checked);
                         if (_checked) {
@@ -319,7 +319,7 @@ public class PO_EACategoryEdit
             categ.setCategoryName(txtCategName.getValue());
             output = categoryService.execute(input);
             if (Constantes.OK == output.getErrorCode()) {
-                logger.debug("Categoria '" + categ.getCategoryName() + "' actualizada");
+                logger.debug("Category '" + categ.getCategoryName() + "' actualizada");
             }
         }
 

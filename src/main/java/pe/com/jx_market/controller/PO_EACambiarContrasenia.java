@@ -5,7 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zul.Textbox;
 
-import pe.com.jx_market.domain.DTO_Empresa;
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Usuario;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -19,7 +19,7 @@ public class PO_EACambiarContrasenia
     static Log logger = LogFactory.getLog(PO_EACambiarContrasenia.class);
     private Textbox txtPassActual, txtPassNew1, txtPassNew2;
     private BusinessService usuarioService, passwordHashService;
-    private DTO_Empresa empresa;
+    private DTO_Company company;
 
     @Override
     public void realOnCreate()
@@ -30,7 +30,7 @@ public class PO_EACambiarContrasenia
         usuarioService = ContextLoader.getService(this, "usuarioService");
         passwordHashService = ContextLoader.getService(this, "passwordHashService");
 
-        empresa = (DTO_Empresa) getDesktop().getSession().getAttribute("empresa");
+        company = (DTO_Company) getDesktop().getSession().getAttribute("company");
     }
 
     public String encriptacion(final String pass)
@@ -56,7 +56,7 @@ public class PO_EACambiarContrasenia
                 final ServiceInput input = new ServiceInput();
                 final DTO_Usuario user = new DTO_Usuario();
                 user.setUsername(usuario.getUsername());
-                user.setEmpresa(empresa.getCodigo());
+                user.setEmpresa(company.getId());
                 user.setContrasena(txtPassNew1.getValue());
                 input.setObject(user);
                 input.setAccion("chgpass");
@@ -94,7 +94,7 @@ public class PO_EACambiarContrasenia
                            final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
+            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.EXCLAMATION);
         }
         if (t != null) {
             logger.info(txt2, t);
@@ -108,7 +108,7 @@ public class PO_EACambiarContrasenia
                             final Throwable t)
     {
         if (txt.length() > 0) {
-            Messagebox.show(txt, empresa.getRazonsocial(), 1, Messagebox.EXCLAMATION);
+            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.EXCLAMATION);
         }
         if (t != null) {
             logger.error(txt2, t);

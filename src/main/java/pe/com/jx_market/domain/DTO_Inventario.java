@@ -7,7 +7,7 @@ import java.util.Date;
 public class DTO_Inventario
 {
     private Integer id;
-    private Integer articuloId;
+    private Integer productId;
     private BigDecimal stock;
     private BigDecimal reserva;
     private Date fecha;
@@ -22,14 +22,14 @@ public class DTO_Inventario
         this.id = id;
     }
     
-    public Integer getArticuloId()
+    public Integer getProductId()
     {
-        return articuloId;
+        return productId;
     }
     
-    public void setArticuloId(Integer articuloId)
+    public void setProductId(Integer productId)
     {
-        this.articuloId = articuloId;
+        this.productId = productId;
     }
     
     public BigDecimal getStock()

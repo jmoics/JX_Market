@@ -45,10 +45,10 @@ import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Category;
-import pe.com.jx_market.domain.DTO_Empresa;
-import pe.com.jx_market.domain.DTO_TradeMark;
+import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.domain.DTO_ProductImage;
+import pe.com.jx_market.domain.DTO_TradeMark;
 import pe.com.jx_market.utilities.AdvancedTreeModel;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.CategoryTreeNode;
@@ -89,8 +89,8 @@ public class PO_EAProductsEdit
     private BusinessService<DTO_Category> categoryService;
     @WireVariable
     private BusinessService<DTO_TradeMark> marcaService;
-    private DTO_Empresa empresa;
-    private DTO_Product articulo;
+    private DTO_Company company;
+    private DTO_Product product;
     @WireVariable
     private Desktop desktop;
     private CategoryTreeNode categoryTreeNode;
@@ -103,17 +103,17 @@ public class PO_EAProductsEdit
         super.doAfterCompose(_comp);
         //decPrec.setValue(BigDecimal.ZERO);
 
-        empresa = (DTO_Empresa) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
+        company = (DTO_Company) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
 
-        articulo = (DTO_Product) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_PRODUCT);
-        final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(articulo);
+        product = (DTO_Product) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_PRODUCT);
+        final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
         input.setAccion(Constantes.V_GETIMG);
         final ServiceOutput<DTO_Product> output = productService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
-            alertaInfo(logger, "", "El articulo" + articulo.getProductName() + "no posee imagen", null);
+            alertaInfo(logger, "", "El product" + product.getProductName() + "no posee imagen", null);
         }
 
-        if (articulo == null) {
+        if (product == null) {
             alertaInfo(logger, "", "No se encontro producto, retornando a busqueda", null);
         } else {
             desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_PRODUCT);
@@ -127,19 +127,19 @@ public class PO_EAProductsEdit
     private void buildMarcaCombo()
     {
         final DTO_TradeMark marFi = new DTO_TradeMark();
-        marFi.setEmpresa(empresa.getCodigo());
+        marFi.setEmpresa(company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_TradeMark> output = marcaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo(logger, "", "Exito al cargar categorias", null);
+            alertaInfo(logger, "", "Exito al cargar categories", null);
             final List<DTO_TradeMark> lstMar = output.getLista();
             for (final DTO_TradeMark marIt : lstMar) {
                 final Comboitem item = new Comboitem();
-                item.setLabel(marIt.getMarcaName());
+                item.setLabel(marIt.getTradeMarkName());
                 item.setValue(marIt);
                 cmbMarca.appendChild(item);
-                if (articulo.getMarca().getId().equals(marIt.getId())) {
+                if (product.getTradeMark().getId().equals(marIt.getId())) {
                     cmbMarca.setSelectedItem(item);
                 }
             }
@@ -153,22 +153,22 @@ public class PO_EAProductsEdit
     {
         if (cmbStatus.getSelectedItem() != null && cmbMarca.getSelectedItem() != null
                         && !txtNombre.getValue().equals("") && !txtDesc.getValue().equals("")) {
-            articulo.setActivo((Boolean) cmbStatus.getSelectedItem().getValue());
-            articulo.setMarca((DTO_TradeMark) cmbMarca.getSelectedItem().getValue());
-            articulo.setProductDescription(txtDesc.getValue());
-            articulo.setEmpresa(empresa.getCodigo());
-            articulo.setProductName(txtNombre.getValue());
-            // articulo.setPrecio(decPrec.getValue());
-            /*if (imgProducto != null && !imgProducto.equals(articulo.getImagen())) {
-                articulo.setImagen(imgProducto);
-                articulo.setNomimg(null);
+            product.setActivo((Boolean) cmbStatus.getSelectedItem().getValue());
+            product.setTradeMark((DTO_TradeMark) cmbMarca.getSelectedItem().getValue());
+            product.setProductDescription(txtDesc.getValue());
+            product.setEmpresa(company.getId());
+            product.setProductName(txtNombre.getValue());
+            // product.setPrecio(decPrec.getValue());
+            /*if (imgProducto != null && !imgProducto.equals(product.getImagen())) {
+                product.setImagen(imgProducto);
+                product.setNomimg(null);
             }*/
-            final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(articulo);
+            final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
             input.setAccion(Constantes.V_REGISTER);
             final ServiceOutput<DTO_Product> output = productService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 final int resp = alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editProduct.Info.Label",
-                                articulo.getProductName()),
+                                product.getProductName()),
                                 "Los datos del producto se actualizaron correctamente", null);
                 if (resp == Messagebox.OK) {
                     desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
@@ -191,38 +191,38 @@ public class PO_EAProductsEdit
     public void editCategories()
     {
         final Map<Integer, DTO_Category> mapCat4Prod = new HashMap<Integer, DTO_Category>();
-        for (final DTO_Category cat : articulo.getCategories()) {
+        for (final DTO_Category cat : product.getCategories()) {
             mapCat4Prod.put(cat.getId(), cat);
         }
         if (tree.getItems() != null && !tree.getItems().isEmpty()) {
             final DTO_Product prod4DelCat = new DTO_Product();
-            prod4DelCat.setId(articulo.getId());
-            prod4DelCat.setEmpresa(articulo.getEmpresa());
+            prod4DelCat.setId(product.getId());
+            prod4DelCat.setEmpresa(product.getEmpresa());
             prod4DelCat.setCategories(new ArrayList<DTO_Category>());
             for (final Treeitem item : tree.getItems()) {
                 saveCategories(item, mapCat4Prod, prod4DelCat);
             }
 
-            ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(articulo);
+            ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
             input.setAccion(Constantes.V_REGISTERCAT4PROD);
             ServiceOutput<DTO_Product> output = productService.execute(input);
             boolean correct = true;
             if (output.getErrorCode() != Constantes.OK) {
-                alertaError(logger, "", "Error al guardar nuevas categorias para el producto", null);
+                alertaError(logger, "", "Error al guardar nuevas categories para el producto", null);
                 correct = false;
             }
             input = new ServiceInput<DTO_Product>(prod4DelCat);
             input.setAccion(Constantes.V_DELETECAT4PROD);
             output = productService.execute(input);
             if (output.getErrorCode() != Constantes.OK) {
-                alertaError(logger, "", "Error al eliminar categorias para el producto", null);
+                alertaError(logger, "", "Error al eliminar categories para el producto", null);
                 correct = false;
             }
             if (correct) {
                 alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editCategories.Info.Label"), "", null);
             } else {
                 alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editCategories.Error.Label"),
-                                "Error al guardar o eliminar categorias para el producto", null);
+                                "Error al guardar o eliminar categories para el producto", null);
             }
         }
     }
@@ -235,12 +235,12 @@ public class PO_EAProductsEdit
         final DTO_Category categ = ctn.getData();
 
         if (_item.isSelected() && !_mapCat4Prod.containsKey(categ.getId())) {
-            articulo.getCategories().add(categ);
+            product.getCategories().add(categ);
         } else if (!_item.isSelected() && _mapCat4Prod.containsKey(categ.getId())) {
-            for (int cnt = 0; cnt < articulo.getCategories().size(); cnt++) {
-                if (articulo.getCategories().get(cnt).getId().equals(categ.getId())) {
-                    _prod4DelCat.getCategories().add(articulo.getCategories().get(cnt));
-                    articulo.getCategories().remove(cnt);
+            for (int cnt = 0; cnt < product.getCategories().size(); cnt++) {
+                if (product.getCategories().get(cnt).getId().equals(categ.getId())) {
+                    _prod4DelCat.getCategories().add(product.getCategories().get(cnt));
+                    product.getCategories().remove(cnt);
                 }
             }
         }
@@ -260,16 +260,16 @@ public class PO_EAProductsEdit
     private void cargarDatos()
     {
         buildActiveCombo(cmbStatus);
-        txtNombre.setValue(articulo.getProductName());
-        txtDesc.setValue(articulo.getProductDescription());
-        // decPrec.setValue(articulo.getPrecio());
-        //imgProducto = articulo.getImagen();
+        txtNombre.setValue(product.getProductName());
+        txtDesc.setValue(product.getProductDescription());
+        // decPrec.setValue(product.getPrecio());
+        //imgProducto = product.getImagen();
         loadPhotos();
 
         categoryTreeNode = getCategories();
         categoryTreeModel = new AdvancedTreeModel(categoryTreeNode);
         categoryTreeModel.setMultiple(true);
-        tree.setItemRenderer(new CategoriaTreeRenderer());
+        tree.setItemRenderer(new CategoryTreeRenderer());
         tree.setModel(categoryTreeModel);
     }
 
@@ -278,7 +278,7 @@ public class PO_EAProductsEdit
     {
         super.buildActiveCombo(cmbStatus);
         for(final Comboitem item : cmbStatus.getItems()) {
-            if (articulo.getActivo().equals(item.getValue())){
+            if (product.getActivo().equals(item.getValue())){
                 cmbStatus.setSelectedItem(item);
             }
         }
@@ -287,7 +287,7 @@ public class PO_EAProductsEdit
     public CategoryTreeNode getCategories()
     {
         final DTO_Category cat = new DTO_Category();
-        cat.setEmpresa(empresa.getCodigo());
+        cat.setEmpresa(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);
@@ -297,18 +297,18 @@ public class PO_EAProductsEdit
             categoryTreeNode = buildCategoriesTree(lstCat);
         } else {
             alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"),
-                            "Error cargando categorias", null);
+                            "Error cargando categories", null);
         }
         return categoryTreeNode;
     }
 
-    private CategoryTreeNode buildCategoriesTree(final List<DTO_Category> _categorias)
+    private CategoryTreeNode buildCategoriesTree(final List<DTO_Category> _categories)
     {
         final Map<Integer, DTO_Category> mapCateg = new TreeMap<Integer, DTO_Category>();
         final Map<Integer, DTO_Category> roots = new TreeMap<Integer, DTO_Category>();
         final Map<Integer, DTO_Category> childs = new TreeMap<Integer, DTO_Category>();
         final Set<Integer> setPadres = new HashSet<Integer>();
-        for (final DTO_Category cat : _categorias) {
+        for (final DTO_Category cat : _categories) {
             mapCateg.put(cat.getId(), cat);
             setPadres.add(cat.getCategoryParentId());
             if (cat.getCategoryParentId() == null) {
@@ -344,7 +344,7 @@ public class PO_EAProductsEdit
         return categoryTreeNode;
     }
 
-    private final class CategoriaTreeRenderer
+    private final class CategoryTreeRenderer
         implements TreeitemRenderer<CategoryTreeNode>
     {
         @Override
@@ -354,7 +354,7 @@ public class PO_EAProductsEdit
             throws Exception
         {
             final Map<Integer, DTO_Category> mapCat4Prod = new HashMap<Integer, DTO_Category>();
-            for (final DTO_Category cat : articulo.getCategories()) {
+            for (final DTO_Category cat : product.getCategories()) {
                 mapCat4Prod.put(cat.getId(), cat);
             }
             final CategoryTreeNode ctn = treeNode;
@@ -376,7 +376,7 @@ public class PO_EAProductsEdit
             dataRow.appendChild(treeCell);
             final Treecell treeCell2 = new Treecell();
             final Hlayout h2 = new Hlayout();
-            h2.appendChild(new Label(categ.getEstado() ? Constantes.STATUS_ACTIVO : Constantes.STATUS_INACTIVO));
+            h2.appendChild(new Label(categ.isActive() ? Constantes.STATUS_ACTIVO : Constantes.STATUS_INACTIVO));
             treeCell2.appendChild(h2);
             dataRow.appendChild(treeCell2);
 
@@ -426,7 +426,7 @@ public class PO_EAProductsEdit
 
     private void loadPhotos() {
         final StringBuilder str = new StringBuilder();
-        for (final DTO_ProductImage img : articulo.getImages()) {
+        for (final DTO_ProductImage img : product.getImages()) {
             if (img.getImage() != null) {
                 final Listitem item = new Listitem();
                 item.setAttribute(Constantes.ATTRIBUTE_PRODUCT_EDITIMAGE, false);
@@ -439,8 +439,8 @@ public class PO_EAProductsEdit
                 item.appendChild(cell);
                 cell = new Listcell();
                 final Checkbox checkBoxEstado = new Checkbox();
-                checkBoxEstado.setValue(img.isImageActive());
-                checkBoxEstado.setChecked(img.isImageActive());
+                checkBoxEstado.setValue(img.isActive());
+                checkBoxEstado.setChecked(img.isActive());
                 checkBoxEstado.addEventListener(Events.ON_CHECK, new EventListener<Event>()
                 {
                     @Override
@@ -449,15 +449,15 @@ public class PO_EAProductsEdit
                     {
                         final Checkbox check = (Checkbox) event.getTarget();
                         final DTO_ProductImage imgProd = ((Listitem) check.getParent().getParent()).getValue();
-                        imgProd.setImageActive(check.isChecked());
+                        imgProd.setActive(check.isChecked());
                     }
                 });
                 cell.appendChild(checkBoxEstado);
                 item.appendChild(cell);
                 cell = new Listcell();
                 final Checkbox checkBoxDef = new Checkbox();
-                checkBoxDef.setValue(img.isImageDefault());
-                checkBoxDef.setChecked(img.isImageDefault());
+                checkBoxDef.setValue(img.isDefaul());
+                checkBoxDef.setChecked(img.isDefaul());
                 checkBoxDef.addEventListener(Events.ON_CHECK, new EventListener<Event>()
                 {
                     @Override
@@ -466,7 +466,7 @@ public class PO_EAProductsEdit
                     {
                         final Checkbox check = (Checkbox) event.getTarget();
                         final DTO_ProductImage imgProd = ((Listitem) check.getParent().getParent()).getValue();
-                        imgProd.setImageDefault(check.isChecked());
+                        imgProd.setDefaul(check.isChecked());
                     }
                 });
                 cell.appendChild(checkBoxDef);
@@ -511,11 +511,11 @@ public class PO_EAProductsEdit
                     lbImageSize.setValue("" + _media.getByteData().length);
 
                     final DTO_ProductImage img4Prod = new DTO_ProductImage();
-                    img4Prod.setCompany(empresa.getCodigo());
+                    img4Prod.setCompany(company.getId());
                     img4Prod.setImage(imgFoto.getContent().getByteData());
                     img4Prod.setImageName(_media.getName());
-                    img4Prod.setImageActive(true);
-                    img4Prod.setImageDefault(false);
+                    img4Prod.setActive(true);
+                    img4Prod.setDefaul(false);
 
                     final Listitem item = new Listitem();
                     item.setAttribute(Constantes.ATTRIBUTE_PRODUCT_EDITIMAGE, true);
@@ -527,8 +527,8 @@ public class PO_EAProductsEdit
                     cell.setLabel("" + _media.getByteData().length);
                     item.appendChild(cell);
                     final Checkbox checkBoxEstado = new Checkbox();
-                    checkBoxEstado.setValue(img4Prod.isImageActive());
-                    checkBoxEstado.setChecked(img4Prod.isImageActive());
+                    checkBoxEstado.setValue(img4Prod.isActive());
+                    checkBoxEstado.setChecked(img4Prod.isActive());
                     checkBoxEstado.addEventListener(Events.ON_CHECK, new EventListener<Event>()
                     {
                         @Override
@@ -537,15 +537,15 @@ public class PO_EAProductsEdit
                         {
                             final Checkbox check = (Checkbox) event.getTarget();
                             final DTO_ProductImage imgProd = ((Listitem) check.getParent().getParent()).getValue();
-                            imgProd.setImageActive(check.isChecked());
+                            imgProd.setActive(check.isChecked());
                         }
                     });
                     cell.appendChild(checkBoxEstado);
                     item.appendChild(cell);
                     cell = new Listcell();
                     final Checkbox checkBoxDef = new Checkbox();
-                    checkBoxDef.setValue(img4Prod.isImageDefault());
-                    checkBoxDef.setChecked(img4Prod.isImageDefault());
+                    checkBoxDef.setValue(img4Prod.isDefaul());
+                    checkBoxDef.setChecked(img4Prod.isDefaul());
                     checkBoxDef.addEventListener(Events.ON_CHECK, new EventListener<Event>()
                     {
                         @Override
@@ -554,7 +554,7 @@ public class PO_EAProductsEdit
                         {
                             final Checkbox check = (Checkbox) event.getTarget();
                             final DTO_ProductImage imgProd = ((Listitem) check.getParent().getParent()).getValue();
-                            imgProd.setImageDefault(check.isChecked());
+                            imgProd.setDefaul(check.isChecked());
                         }
                     });
                     cell.appendChild(checkBoxDef);
@@ -619,17 +619,17 @@ public class PO_EAProductsEdit
 
     @Listen("onClick = #btnSave3")
     public void saveImages(final Event _event) {
-        if (articulo != null) {
+        if (product != null) {
             if (lstImages.getItems() != null && !lstImages.getItems().isEmpty()) {
                 for (final Listitem imgIt : lstImages.getItems()) {
                     if ((Boolean) imgIt.getAttribute(Constantes.ATTRIBUTE_PRODUCT_EDITIMAGE)) {
                         final DTO_ProductImage img4Prod = imgIt.getValue();
-                        img4Prod.setProductId(articulo.getId());
-                        articulo.getImages().add(img4Prod);
+                        img4Prod.setProductId(product.getId());
+                        product.getImages().add(img4Prod);
                         imgIt.setAttribute(Constantes.ATTRIBUTE_PRODUCT_EDITIMAGE, false);
                     }
                 }
-                final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(articulo);
+                final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
                 input.setAccion(Constantes.V_REGISTERIMG4PROD);
                 final ServiceOutput<DTO_Product> output = productService.execute(input);
                 if (output.getErrorCode() == Constantes.OK) {
