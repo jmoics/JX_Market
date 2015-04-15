@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.CategoryMapper">
+
+  <cache />
+    <!-- MANTENIMIENTO DE CATEGORYS -->
+
+    <select id="getCategories" parameterType="DTO_Category" resultType="DTO_Category">
+        SELECT
+        cat.id as id,
+        cat.companyid as company,
+        cat.nombre as categoryName,
+        cat.estado as estado,
+        cat.parentid as categoryParentId
+        FROM
+        T_BUS_CATEGORY cat
+        <if test="company != null">
+            WHERE
+            cat.companyId = 1 OR
+            cat.companyId = #{company}
+        </if>
+        ORDER BY cat.nombre
+    </select>
+
+    <select id="getCategory4Id" parameterType="DTO_Category" resultType="DTO_Category">
+        SELECT
+        cat.id as id,
+        cat.companyId as company,
+        cat.nombre as categoryName,
+        cat.estado as estado
+        FROM
+        T_BUS_CATEGORY cat
+        WHERE
+        cat.id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertCategory" parameterType="DTO_Category">
+        INSERT INTO T_BUS_CATEGORY
+        (companyId,nombre,parentid)
+        VALUES
+        (#{company},#{categoryName},#{categoryParentId, jdbcType=INTEGER})
+    </insert>
+
+    <update id="updateCategory" parameterType="DTO_Category">
+        UPDATE T_BUS_CATEGORY
+        SET
+        nombre = #{categoryName},
+        parentid = #{categoryParentId, jdbcType=INTEGER},
+        estado = #{estado}
+        WHERE
+        id = #{id}
+        AND
+        companyId = #{company}
+    </update>
+
+    <delete id="deleteCategory" parameterType="DTO_Category">
+        DELETE FROM
+        T_BUS_CATEGORY
+        WHERE
+        id = #{id}
+    </delete>
+
+</mapper>
