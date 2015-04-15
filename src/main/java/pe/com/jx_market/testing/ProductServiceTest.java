@@ -34,11 +34,11 @@ public class ProductServiceTest
     {
         final DTO_Product art = new DTO_Product();
         //art.setCategory(1);
-        art.setActivo(Constantes.STB_ACTIVO);
+        art.setActive(Constantes.STB_ACTIVO);
         art.setProductDescription("juego de video de accion basado en la trilogia del senior de los anillos");
         art.setProductName("Ring Action");
         art.setEmpresa(2);
-        //art.setMarca("Capcom");
+        //art.setTradeMark("Capcom");
         //art.setPrecio(new BigDecimal(24.5));
         //art.setStock(20);
 

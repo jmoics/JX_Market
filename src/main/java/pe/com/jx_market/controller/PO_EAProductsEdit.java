@@ -67,9 +67,9 @@ public class PO_EAProductsEdit
 
     static Log logger = LogFactory.getLog(PO_EAProductsEdit.class);
     @Wire
-    private Combobox cmbCateg, cmbStatus, cmbMarca;
+    private Combobox cmbCateg, cmbStatus, cmbTradeMark;
     @Wire
-    private Textbox txtNombre, txtDesc, txtMarca;
+    private Textbox txtNombre, txtDesc, txtTradeMark;
     @Wire
     private Decimalbox decPrec;
     @Wire
@@ -88,7 +88,7 @@ public class PO_EAProductsEdit
     @WireVariable
     private BusinessService<DTO_Category> categoryService;
     @WireVariable
-    private BusinessService<DTO_TradeMark> marcaService;
+    private BusinessService<DTO_TradeMark> tradeMarkService;
     private DTO_Company company;
     private DTO_Product product;
     @WireVariable
@@ -120,17 +120,17 @@ public class PO_EAProductsEdit
             tree.setCheckmark(true);
             tree.setMultiple(true);
             cargarDatos();
-            buildMarcaCombo();
+            buildTradeMarkCombo();
         }
     }
 
-    private void buildMarcaCombo()
+    private void buildTradeMarkCombo()
     {
         final DTO_TradeMark marFi = new DTO_TradeMark();
         marFi.setEmpresa(company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput<DTO_TradeMark> output = marcaService.execute(input);
+        final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo(logger, "", "Exito al cargar categories", null);
             final List<DTO_TradeMark> lstMar = output.getLista();
@@ -138,9 +138,9 @@ public class PO_EAProductsEdit
                 final Comboitem item = new Comboitem();
                 item.setLabel(marIt.getTradeMarkName());
                 item.setValue(marIt);
-                cmbMarca.appendChild(item);
+                cmbTradeMark.appendChild(item);
                 if (product.getTradeMark().getId().equals(marIt.getId())) {
-                    cmbMarca.setSelectedItem(item);
+                    cmbTradeMark.setSelectedItem(item);
                 }
             }
         } else {
@@ -151,10 +151,10 @@ public class PO_EAProductsEdit
     @Listen("onClick = #btnSave")
     public void editProduct()
     {
-        if (cmbStatus.getSelectedItem() != null && cmbMarca.getSelectedItem() != null
+        if (cmbStatus.getSelectedItem() != null && cmbTradeMark.getSelectedItem() != null
                         && !txtNombre.getValue().equals("") && !txtDesc.getValue().equals("")) {
-            product.setActivo((Boolean) cmbStatus.getSelectedItem().getValue());
-            product.setTradeMark((DTO_TradeMark) cmbMarca.getSelectedItem().getValue());
+            product.setActive((Boolean) cmbStatus.getSelectedItem().getValue());
+            product.setTradeMark((DTO_TradeMark) cmbTradeMark.getSelectedItem().getValue());
             product.setProductDescription(txtDesc.getValue());
             product.setEmpresa(company.getId());
             product.setProductName(txtNombre.getValue());
@@ -278,7 +278,7 @@ public class PO_EAProductsEdit
     {
         super.buildActiveCombo(cmbStatus);
         for(final Comboitem item : cmbStatus.getItems()) {
-            if (product.getActivo().equals(item.getValue())){
+            if (product.isActive().equals(item.getValue())){
                 cmbStatus.setSelectedItem(item);
             }
         }
@@ -526,6 +526,7 @@ public class PO_EAProductsEdit
                     cell = new Listcell();
                     cell.setLabel("" + _media.getByteData().length);
                     item.appendChild(cell);
+                    cell = new Listcell();
                     final Checkbox checkBoxEstado = new Checkbox();
                     checkBoxEstado.setValue(img4Prod.isActive());
                     checkBoxEstado.setChecked(img4Prod.isActive());

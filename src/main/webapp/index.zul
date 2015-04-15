@@ -36,15 +36,15 @@
                     <h:img src="media/images/header_divider.png" alt="" title="" width="1" height="164" />
                 </h:div>
                 <h:div class="oferta">
-                   
+
                   <!--   <h:div class="oferta_pagination">
                         <h:span class="current">1</h:span>
                         <h:a href="#?page=2">2</h:a>
                         <h:a href="#?page=3">3</h:a>
                         <h:a href="#?page=3">4</h:a>
                         <h:a href="#?page=3">5</h:a>
-                        
-                        
+
+
                     </h:div>-->
                 </h:div>
                 <h:div class="top_divider">
@@ -102,7 +102,7 @@
                 Usuario:
                 <label value="" id="lbUser" class="current"/>
             </div>
-            
+
             <div class="logout">
                 <label value="Cerrar Sesion" id="lbSalir" visible="false" onClick="w_in.cerrarSesion()"/>
             </div>
@@ -131,7 +131,7 @@
                 </h:div>
 
 
-               <!-- <h:div class="title_box">Newsletter</h:div> --> 
+               <!-- <h:div class="title_box">Newsletter</h:div> -->
                 <!-- <h:div class="border_box">
                     <h:input type="text" name="newsletter" class="newsletter_input" value="your email" />
                     <h:a href="#" class="join">join</h:a>
@@ -169,7 +169,7 @@
                 </h:div>
 
 
-               
+
 
 
                 <h:div class="title_box">Marcas reconocidas</h:div>
@@ -197,8 +197,8 @@
                     </h:li>
                     <h:li class="even">
                         <h:a href="services.html">Beko</h:a>
-                    </h:li> --> 
-                    
+                    </h:li> -->
+
                     <h:li class="odd">
                         <h:a >Sony</h:a>
                     </h:li>
@@ -231,10 +231,10 @@
                     </h:a>
                 </h:div>
             </h:div><!-- end of right content -->
-<!-- <h:iframe src="http://www.facebook.com/plugins/likebox.phpid=YOURUNIQUEID&amp;width=158&amp;connections=5&amp;stream=true&amp;header=false&amp;height=555" 
-        scrolling="no" 
-        frameborder="0" 
-        style="border:none; overflow:hidden; width:158px; height:555px;" 
+<!-- <h:iframe src="http://www.facebook.com/plugins/likebox.phpid=YOURUNIQUEID&amp;width=158&amp;connections=5&amp;stream=true&amp;header=false&amp;height=555"
+        scrolling="no"
+        frameborder="0"
+        style="border:none; overflow:hidden; width:158px; height:555px;"
         allowTransparency="true">
 </h:iframe> -->
 
@@ -242,7 +242,7 @@
 <!-- <h:iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FJX-market%2F116739915064601&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;font=verdana&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:170px; height:180px;" allowTransparency="true"></h:iframe>-->
 
         </div><!-- end of main content -->
-        
+
         <h:div class="footer">
             <h:div class="left_footer">
                 <h:img src="media/images/footer_logo1.png" alt="" title="" width="170" height="49" />

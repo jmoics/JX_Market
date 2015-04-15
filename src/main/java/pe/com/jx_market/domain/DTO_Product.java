@@ -20,7 +20,7 @@ public class DTO_Product implements Serializable
     private DTO_TradeMark tradeMark;
     //private BigDecimal precio;
     //private Integer stock;
-    private Boolean activo;
+    private Boolean active;
     private List<DTO_ProductImage> images;
 
     public Integer getId()
@@ -87,13 +87,13 @@ public class DTO_Product implements Serializable
     {
         this.stock = stock;
     }*/
-    public Boolean getActivo()
+    public Boolean isActive()
     {
-        return activo;
+        return active;
     }
-    public void setActivo(final Boolean activo)
+    public void setActive(final Boolean active)
     {
-        this.activo = activo;
+        this.active = active;
     }
     public DTO_TradeMark getTradeMark()
     {

@@ -68,7 +68,7 @@ public class PO_EAProductsCreate
 
     static Log logger = LogFactory.getLog(PO_EAProductsCreate.class);
     @Wire
-    private Combobox cmbStatus, cmbMarca;
+    private Combobox cmbStatus, cmbTradeMark;
     @Wire
     private Textbox txtNombre, txtDesc;
     @Wire
@@ -86,7 +86,7 @@ public class PO_EAProductsCreate
     @WireVariable
     private BusinessService<DTO_Category> categoryService;
     @WireVariable
-    private BusinessService<DTO_TradeMark> marcaService;
+    private BusinessService<DTO_TradeMark> tradeMarkService;
     @WireVariable
     private Desktop desktop;
     private DTO_Company company;
@@ -113,16 +113,16 @@ public class PO_EAProductsCreate
         tree.setItemRenderer(new CategoryTreeRenderer());
         tree.setModel(categoryTreeModel);
 
-        buildMarcaCombo();
+        buildTradeMarkCombo();
     }
 
-    private void buildMarcaCombo()
+    private void buildTradeMarkCombo()
     {
         final DTO_TradeMark marFi = new DTO_TradeMark();
         marFi.setEmpresa(company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput<DTO_TradeMark> output = marcaService.execute(input);
+        final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo(logger, "", "Exito al cargar categories", null);
             final List<DTO_TradeMark> lstMar = output.getLista();
@@ -130,7 +130,7 @@ public class PO_EAProductsCreate
                 final Comboitem item = new Comboitem();
                 item.setLabel(marIt.getTradeMarkName());
                 item.setValue(marIt);
-                cmbMarca.appendChild(item);
+                cmbTradeMark.appendChild(item);
             }
         } else {
             alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"), "Error cargando marcas", null);
@@ -141,14 +141,14 @@ public class PO_EAProductsCreate
     public void createProduct()
     {
         if (!txtNombre.getValue().equals("") && !txtDesc.getValue().equals("")
-                        && cmbMarca.getSelectedItem() != null && cmbStatus.getSelectedItem() != null) {
+                        && cmbTradeMark.getSelectedItem() != null && cmbStatus.getSelectedItem() != null) {
             final DTO_Product product = new DTO_Product();
             //product.setCategory(((DTO_Category) cmbCateg.getSelectedItem().getAttribute("category")).getCodigo());
-            product.setActivo((Boolean) cmbStatus.getSelectedItem().getValue());
-            product.setTradeMark((DTO_TradeMark) cmbMarca.getSelectedItem().getValue());
+            product.setActive((Boolean) cmbStatus.getSelectedItem().getValue());
+            product.setTradeMark((DTO_TradeMark) cmbTradeMark.getSelectedItem().getValue());
             product.setProductDescription(txtDesc.getValue());
             product.setEmpresa(company.getId());
-            //product.setMarca(txtMarca.getValue());
+            //product.setTradeMark(txtTradeMark.getValue());
             product.setProductName(txtNombre.getValue());
             //product.setPrecio(decPrec.getValue());
             final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);

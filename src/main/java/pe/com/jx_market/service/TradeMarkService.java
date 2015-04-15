@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.jx_market.domain.DTO_TradeMark;
-import pe.com.jx_market.persistence.MarcaMapper;
+import pe.com.jx_market.persistence.TradeMarkMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -19,11 +19,11 @@ import pe.com.jx_market.utilities.ServiceOutput;
  *
  */
 @Service
-public class MarcaService
+public class TradeMarkService
     implements BusinessService<DTO_TradeMark>
 {
     @Autowired
-    private MarcaMapper marcaMapper;
+    private TradeMarkMapper tradeMarkMapper;
 
     /* (non-Javadoc)
      * @see pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities.ServiceInput)
@@ -34,25 +34,25 @@ public class MarcaService
     {
         final ServiceOutput<DTO_TradeMark> output = new ServiceOutput<DTO_TradeMark>();
         if (Constantes.V_LIST.equals(input.getAccion())) {
-            output.setLista(marcaMapper.getMarcas(input.getObject()));
+            output.setLista(tradeMarkMapper.getTradeMarks(input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
-            final DTO_TradeMark categTmp = marcaMapper.getMarcaXCodigo(input.getObject());
+            final DTO_TradeMark categTmp = tradeMarkMapper.getTradeMark4Id(input.getObject());
             if (categTmp == null) {
-                marcaMapper.insertMarca(input.getObject());
+                tradeMarkMapper.insertTradeMark(input.getObject());
             } else {
-                marcaMapper.updateMarca(input.getObject());
+                tradeMarkMapper.updateTradeMark(input.getObject());
             }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getAccion())) {
-            final DTO_TradeMark art = marcaMapper.getMarcaXCodigo(input.getObject());
+            final DTO_TradeMark art = tradeMarkMapper.getTradeMark4Id(input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_DELETE.equals(input.getAccion())) {
-            marcaMapper.deleteMarca(input.getObject());
+            tradeMarkMapper.deleteTradeMark(input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         } else {
@@ -60,13 +60,13 @@ public class MarcaService
         }
     }
 
-    public MarcaMapper getDao()
+    public TradeMarkMapper getDao()
     {
-        return marcaMapper;
+        return tradeMarkMapper;
     }
 
-    public void setDao(final MarcaMapper marcaMapper)
+    public void setDao(final TradeMarkMapper tradeMarkMapper)
     {
-        this.marcaMapper = marcaMapper;
+        this.tradeMarkMapper = tradeMarkMapper;
     }
 }

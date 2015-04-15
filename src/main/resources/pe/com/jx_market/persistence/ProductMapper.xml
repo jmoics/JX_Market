@@ -22,7 +22,7 @@
             cat.name as categoryName,
             cat.active as categoryActive,
             cat.parentid as categoryParentId,
-            mar.id as tradeMarcaId,
+            mar.id as tradeTradeMarkId,
             mar.companyid as tradeMarkCompanyId,
             mar.name as tradeMarkName,
             mar.active as tradeMarkActive,
@@ -36,7 +36,7 @@
             T_BUS_PRODUCT art LEFT JOIN
             T_BUS_CATEG2ARTIC cart ON art.id = cart.productid LEFT JOIN
             T_BUS_CATEGORY cat ON cart.categoryid = cat.id LEFT JOIN
-            T_BUS_TRADEMARK mar ON art.marcaid = mar.id LEFT JOIN
+            T_BUS_TRADEMARK mar ON art.tradeMarkid = mar.id LEFT JOIN
             T_BUS_PRODUCTIMAGE img ON art.id = img.productid
         <where>
             <if test="company != null">
@@ -63,7 +63,7 @@
             art.id as id,
             art.companyid as company,
             art.name as productName,
-            --art.tradeMarcaId as marca,
+            --art.tradeTradeMarkId as tradeMark,
             art.description as productDescription,
             art.active as active
         FROM
@@ -75,11 +75,11 @@
     <insert id="insertProduct" parameterType="DTO_Product" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
         INSERT INTO T_BUS_PRODUCT
             (companyid,name,
-            description,marcaid,
+            description,tradeMarkid,
             active)
         VALUES
             (#{company},#{productName},
-            #{productDescription},#{marca.id},
+            #{productDescription},#{tradeMark.id},
             #{active})
     </insert>
 
@@ -141,14 +141,14 @@
         INSERT INTO T_BUS_PRODUCTIMAGE
             (companyid,productid,name,imagdefault,active)
         VALUES
-            (#{company},#{productId},#{imageName},#{imageDefault},#{imageActive})
+            (#{company},#{productId},#{imageName},#{defaul},#{active})
     </insert>
 
     <update id="updateImage4Product" parameterType="DTO_ProductImage">
         UPDATE T_BUS_PRODUCTIMAGE
         SET
-            imagdefault = #{imageDefault},
-            active = #{imageActive}
+            imagdefault = #{defaul},
+            active = #{active}
         WHERE
             id = #{id}
         AND
@@ -171,7 +171,7 @@
         <!-- <collection property="categories2Products" column="catProdId"
                     ofType="DTO_Category2Product" javaType="ArrayList" resultMap="category2ProductMap">
         </collection> -->
-        <association property="marca" column="tradeMarcaId" javaType="DTO_TradeMark" resultMap="marcaResultMap">
+        <association property="tradeMark" column="tradeTradeMarkId" javaType="DTO_TradeMark" resultMap="tradeMarkResultMap">
         </association>
         <collection property="categories" column="catProdId"
                     ofType="DTO_Category" javaType="ArrayList" resultMap="categoryResultMap">
@@ -193,8 +193,8 @@
         <result property="active" column="categoryActive" />
         <result property="categoryParentId" column="categoryParentId" />
     </resultMap>
-    <resultMap id="marcaResultMap" type="DTO_TradeMark">
-        <id property="id" column="tradeMarcaId" />
+    <resultMap id="tradeMarkResultMap" type="DTO_TradeMark">
+        <id property="id" column="tradeTradeMarkId" />
         <result property="company" column="tradeMarkCompanyId" />
         <result property="tradeMarkName" column="tradeMarkName" />
         <result property="active" column="tradeMarkActive" />

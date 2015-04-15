@@ -21,7 +21,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
  *
  */
 @Service
-public class EmpresaService 
+public class CompanyService 
     implements BusinessService 
 {
     @Autowired

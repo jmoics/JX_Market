@@ -34,7 +34,7 @@ public interface CompanyMapper {
      * @return
      */
     public Integer insertCompany (DTO_Company company);
-    
+
     /**
      * @param company
      * @return
@@ -44,6 +44,6 @@ public interface CompanyMapper {
     /**
      * @return
      */
-    public List<DTO_Company> getCompanies (@Param("razonsocial") String razonsocial, 
-                                          @Param("ruc")String ruc);
+    public List<DTO_Company> getCompanies (@Param("businessName") String businessName,
+                                          @Param("docNumber")String docNumber);
 }

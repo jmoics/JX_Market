@@ -43,8 +43,8 @@
                             <textbox id="txtProdName" hflex="1" />
                             <label value="${labels.pe.com.jx_market.eAProducts.cmbEstad.Label}" />
                             <combobox id="cmbEstad" hflex="1" />
-                            <label value="${labels.pe.com.jx_market.eAProducts.cmbMarca.Label}"/>
-                            <combobox id="cmbMarca" hflex="1" />
+                            <label value="${labels.pe.com.jx_market.eAProducts.cmbTradeMark.Label}"/>
+                            <combobox id="cmbTradeMark" hflex="1" />
                         </row>
                     </rows>
                 </grid>
@@ -61,7 +61,7 @@
                 <listhead>
                     <listheader label="Nº" id="headNumber" hflex="1"/>
                     <listheader label="${labels.pe.com.jx_market.eAProducts.Category.Label}" sort="auto" hflex="8"/>
-                    <listheader label="${labels.pe.com.jx_market.eAProducts.Marca.Label}" sort="auto" hflex="4"/>
+                    <listheader label="${labels.pe.com.jx_market.eAProducts.TradeMark.Label}" sort="auto" hflex="4"/>
                     <listheader label="${labels.pe.com.jx_market.eAProducts.ProductName.Label}" sort="auto" hflex="8"/>
                     <listheader label="${labels.pe.com.jx_market.eAProducts.ProductDesc.Label}" sort="auto" hflex="12"/>
                     <listheader label="${labels.pe.com.jx_market.eAProducts.Status.Label}" sort="auto" hflex="2"/>

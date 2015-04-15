@@ -68,7 +68,7 @@ public class PO_EAProducts
     @Wire
     private Textbox txtProdName;
     @Wire
-    private Combobox cmbEstad, cmbMarca;
+    private Combobox cmbEstad, cmbTradeMark;
     @Wire
     private Chosenbox chbCat;
     @Wire
@@ -80,7 +80,7 @@ public class PO_EAProducts
     @WireVariable
     private BusinessService<DTO_Category> categoryService;
     @WireVariable
-    private BusinessService<DTO_TradeMark> marcaService;
+    private BusinessService<DTO_TradeMark> tradeMarkService;
     private DTO_Company company;
     @WireVariable
     private Desktop desktop;
@@ -98,7 +98,7 @@ public class PO_EAProducts
         listCategories();
 
         buildActiveCombo(cmbEstad);
-        buildMarcaCombo();
+        buildTradeMarkCombo();
         buildOrderComparator();
 
         if (desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD) != null
@@ -134,20 +134,20 @@ public class PO_EAProducts
         });
     }
 
-    private void buildMarcaCombo()
+    private void buildTradeMarkCombo()
     {
         final DTO_TradeMark marFi = new DTO_TradeMark();
         marFi.setEmpresa(company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput<DTO_TradeMark> output = marcaService.execute(input);
+        final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_TradeMark> lstMar = output.getLista();
             for (final DTO_TradeMark marIt : lstMar) {
                 final Comboitem item = new Comboitem();
                 item.setLabel(marIt.getTradeMarkName());
                 item.setValue(marIt);
-                cmbMarca.appendChild(item);
+                cmbTradeMark.appendChild(item);
             }
         } else {
             alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"), "Error cargando marcas", null);
@@ -287,7 +287,7 @@ public class PO_EAProducts
                 item.appendChild(cell);
                 cell = new Listcell(art.getProductDescription());
                 item.appendChild(cell);
-                if (art.getActivo()) {
+                if (art.isActive()) {
                     cell = new Listcell(Labels.getLabel("pe.com.jx_market.Active.TRUE"));
                 } else {
                     cell = new Listcell(Labels.getLabel("pe.com.jx_market.Active.FALSE"));

@@ -2,62 +2,62 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="pe.com.jx_market.persistence.CategoryMapper">
+<mapper namespace="pe.com.jx_market.persistence.TradeMarkMapper">
 
   <cache />
-    <!-- MANTENIMIENTO DE CATEGORYS -->
+    <!-- MANTENIMIENTO DE MARCAS -->
 
-    <select id="getCategories" parameterType="DTO_Category" resultType="DTO_Category">
+    <select id="getTradeMarks" parameterType="DTO_TradeMark" resultType="DTO_TradeMark">
         SELECT
-        cat.id as id,
-        cat.companyid as company,
-        cat.nombre as categoryName,
-        cat.estado as estado,
-        cat.parentid as categoryParentId
+            mar.id as id,
+            mar.companyid as company,
+            mar.name as tradeMarkName,
+            mar.active as active,
+            mar.image as imageName
         FROM
-        T_BUS_CATEGORY cat
-        <if test="company != null">
-            WHERE
-            cat.companyId = 1 OR
-            cat.companyId = #{company}
-        </if>
-        ORDER BY cat.nombre
+            T_BUS_TRADEMARK mar
+        <where>
+            <if test="company != null">
+                mar.companyId = #{company}
+            </if>
+        </where>
+        ORDER BY mar.name
     </select>
 
-    <select id="getCategory4Id" parameterType="DTO_Category" resultType="DTO_Category">
+    <select id="getTradeMark4Id" parameterType="DTO_TradeMark" resultType="DTO_TradeMark">
         SELECT
-        cat.id as id,
-        cat.companyId as company,
-        cat.nombre as categoryName,
-        cat.estado as estado
+            mar.id as id,
+            mar.companyid as company,
+            mar.name as tradeMarkName,
+            mar.active as active,
+            mar.image as imageName
         FROM
-        T_BUS_CATEGORY cat
+            T_BUS_TRADEMARK cat
         WHERE
-        cat.id = #{id, jdbcType=INTEGER}
+            mar.id = #{id, jdbcType=INTEGER}
     </select>
 
-    <insert id="insertCategory" parameterType="DTO_Category">
-        INSERT INTO T_BUS_CATEGORY
-        (companyId,nombre,parentid)
+    <insert id="insertTradeMark" parameterType="DTO_TradeMark">
+        INSERT INTO T_BUS_TRADEMARK
+            (companyId,name,active,image)
         VALUES
-        (#{company},#{categoryName},#{categoryParentId, jdbcType=INTEGER})
+            (#{company},#{tradeMarkName},#{active},#{imageName})
     </insert>
 
-    <update id="updateCategory" parameterType="DTO_Category">
-        UPDATE T_BUS_CATEGORY
+    <update id="updateTradeMark" parameterType="DTO_TradeMark">
+        UPDATE T_BUS_TRADEMARK
         SET
-        nombre = #{categoryName},
-        parentid = #{categoryParentId, jdbcType=INTEGER},
-        estado = #{estado}
+            name = #{tradeMarkName},
+            active = #{active},
+            image = #{imageName}
         WHERE
-        id = #{id}
+            id = #{id}
         AND
-        companyId = #{company}
+            companyId = #{company}
     </update>
 
-    <delete id="deleteCategory" parameterType="DTO_Category">
-        DELETE FROM
-        T_BUS_CATEGORY
+    <delete id="deleteTradeMark" parameterType="DTO_TradeMark">
+        DELETE FROM T_BUS_TRADEMARK
         WHERE
         id = #{id}
     </delete>

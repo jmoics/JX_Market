@@ -65,7 +65,7 @@ INSERT INTO T_BUS_PRODUCT (COMPANYID, TRADEMARKID, NAME, DESCRIPTION, ACTIVE)
            VALUES (2,1,'Ring Action','juego de video de accion basado en la trilogia del senior de los anillos',true),
                   (2,1,'Final Fantasy X','Juego de ROL, para consola Play Station 2',true),
                   (2,1,'PS2','play station 2 color azul con un mando y una memory card',true),
-                  (2,1,'PS2','play station 2 azul y negro mas un mando',true,'2.1.PS2.938193'),
+                  (2,1,'PS2','play station 2 azul y negro mas un mando',true),
                   (2,1,'Final fantasy x-2','Juego rpg final fantasy x-2 original en caja',true),
                   (2,1,'Final Fantasy XII','Juego Final Fantasy XII original algo rayadito XD',true),
                   (2,1,'PS2','consola ps2',true);

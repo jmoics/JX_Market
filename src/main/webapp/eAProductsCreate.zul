@@ -57,8 +57,8 @@
                                 <textbox id="txtDesc" hflex="1" multiline="true" rows="8" />
                             </row>
                             <row>
-                                <label value="${labels.pe.com.jx_market.eAProductsCreate.cmbMarca.Label}"/>
-                                <combobox id="cmbMarca" />
+                                <label value="${labels.pe.com.jx_market.eAProductsCreate.cmbTradeMark.Label}"/>
+                                <combobox id="cmbTradeMark" />
                             </row>
                             <row>
                                 <label value="${labels.pe.com.jx_market.eAProductsCreate.cmbStatus.Label}" />
