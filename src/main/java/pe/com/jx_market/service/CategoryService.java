@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.domain.DTO_Categoria;
+import pe.com.jx_market.domain.DTO_Category;
 import pe.com.jx_market.persistence.CategoryMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -20,7 +20,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
  */
 @Service
 public class CategoryService
-    implements BusinessService<DTO_Categoria>
+    implements BusinessService<DTO_Category>
 {
     @Autowired
     private CategoryMapper categoriaMapper;
@@ -30,15 +30,15 @@ public class CategoryService
      */
     @Override
     @Transactional
-    public ServiceOutput<DTO_Categoria> execute(final ServiceInput<DTO_Categoria> input)
+    public ServiceOutput<DTO_Category> execute(final ServiceInput<DTO_Category> input)
     {
-        final ServiceOutput<DTO_Categoria> output = new ServiceOutput<DTO_Categoria>();
+        final ServiceOutput<DTO_Category> output = new ServiceOutput<DTO_Category>();
         if (Constantes.V_LIST.equals(input.getAccion())) {
             output.setLista(categoriaMapper.getCategorias(input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
-            final DTO_Categoria categTmp = categoriaMapper.getCategoriaXCodigo(input.getObject());
+            final DTO_Category categTmp = categoriaMapper.getCategoriaXCodigo(input.getObject());
             if (categTmp == null) {
                 categoriaMapper.insertCategoria(input.getObject());
             } else {
@@ -47,7 +47,7 @@ public class CategoryService
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getAccion())) {
-            final DTO_Categoria art = categoriaMapper.getCategoriaXCodigo(input.getObject());
+            final DTO_Category art = categoriaMapper.getCategoriaXCodigo(input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;

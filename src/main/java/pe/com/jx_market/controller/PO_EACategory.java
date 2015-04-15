@@ -27,7 +27,7 @@ import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Categoria;
+import pe.com.jx_market.domain.DTO_Category;
 import pe.com.jx_market.domain.DTO_Empresa;
 import pe.com.jx_market.utilities.AdvancedTreeModel;
 import pe.com.jx_market.utilities.BusinessService;
@@ -47,7 +47,7 @@ extends SelectorComposer<Window>
     @Wire
     private Window wEACC;
     @Autowired
-    private BusinessService<DTO_Categoria> categoryService;
+    private BusinessService<DTO_Category> categoryService;
     private DTO_Empresa empresa;
     @WireVariable
     private Desktop desktop;
@@ -63,7 +63,7 @@ extends SelectorComposer<Window>
     {
         super.doAfterCompose(comp);
 
-        categoryService = (BusinessService<DTO_Categoria>) ContextLoader.getService(comp, "categoryService");
+        categoryService = (BusinessService<DTO_Category>) ContextLoader.getService(comp, "categoryService");
 
         empresa = (DTO_Empresa) desktop.getSession().getAttribute("empresa");
 
@@ -75,14 +75,14 @@ extends SelectorComposer<Window>
 
     public void listarCategorias()
     {
-        final DTO_Categoria cat = new DTO_Categoria();
+        final DTO_Category cat = new DTO_Category();
         cat.setEmpresa(empresa.getCodigo());
-        final ServiceInput<DTO_Categoria> input = new ServiceInput<DTO_Categoria>(cat);
+        final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput<DTO_Categoria> output = categoryService.execute(input);
+        final ServiceOutput<DTO_Category> output = categoryService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             // alertaInfo("", "Exito al cargar categorias", null);
-            final List<DTO_Categoria> lstCat = output.getLista();
+            final List<DTO_Category> lstCat = output.getLista();
             construirArbolCategorias(lstCat);
         } else {
             // alertaError("Error inesperado, por favor catege al administrador",
@@ -90,13 +90,13 @@ extends SelectorComposer<Window>
         }
     }
 
-    private void construirArbolCategorias(final List<DTO_Categoria> _categorias)
+    private void construirArbolCategorias(final List<DTO_Category> _categorias)
     {
-        final Map<Integer, DTO_Categoria> mapCateg = new TreeMap<Integer, DTO_Categoria>();
-        final Map<Integer, DTO_Categoria> roots = new TreeMap<Integer, DTO_Categoria>();
-        final Map<Integer, DTO_Categoria> childs = new TreeMap<Integer, DTO_Categoria>();
+        final Map<Integer, DTO_Category> mapCateg = new TreeMap<Integer, DTO_Category>();
+        final Map<Integer, DTO_Category> roots = new TreeMap<Integer, DTO_Category>();
+        final Map<Integer, DTO_Category> childs = new TreeMap<Integer, DTO_Category>();
         final Set<Integer> setPadres = new HashSet<Integer>();
-        for (final DTO_Categoria cat : _categorias) {
+        for (final DTO_Category cat : _categorias) {
             mapCateg.put(cat.getId(), cat);
             setPadres.add(cat.getCategoryParentId());
             if (cat.getCategoryParentId() == null) {
@@ -112,7 +112,7 @@ extends SelectorComposer<Window>
 
             private static final long serialVersionUID = -8249078122595873454L;
             {
-                for (final DTO_Categoria root : roots.values()) {
+                for (final DTO_Category root : roots.values()) {
                     if (!setPadres.contains(root.getId())) {
                         add(new CategoryTreeNode(root));
                     } else {
@@ -163,7 +163,7 @@ extends SelectorComposer<Window>
             throws Exception
         {
             final CategoryTreeNode ctn = treeNode;
-            final DTO_Categoria categ = ctn.getData();
+            final DTO_Category categ = ctn.getData();
             final Treerow dataRow = new Treerow();
             dataRow.setParent(treeItem);
             treeItem.setValue(ctn);

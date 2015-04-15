@@ -112,7 +112,7 @@
         id = #{value}
     </delete>
 
-    <select id="getCategories4Product" parameterType="DTO_Categoria2Articulo" resultType="int">
+    <select id="getCategories4Product" parameterType="DTO_Category2Product" resultType="int">
         SELECT
             count(*)
         FROM
@@ -122,14 +122,14 @@
             cat4art.categoryid = #{categoryId}
     </select>
 
-    <insert id="insertCategory4Product" parameterType="DTO_Categoria2Articulo">
+    <insert id="insertCategory4Product" parameterType="DTO_Category2Product">
         INSERT INTO T_NEG_CATEG2ARTIC
             (productid,categoryid)
         VALUES
             (#{productId},#{categoryId})
     </insert>
 
-    <delete id="deleteCategory4Product" parameterType="DTO_Categoria2Articulo">
+    <delete id="deleteCategory4Product" parameterType="DTO_Category2Product">
         DELETE FROM
             T_NEG_CATEG2ARTIC
         WHERE
@@ -169,31 +169,31 @@
         <result property="productDescription" column="productDescription" />
         <result property="activo" column="productActivo" />
         <!-- <collection property="categorias2Articulos" column="catProdId"
-                    ofType="DTO_Categoria2Articulo" javaType="ArrayList" resultMap="category2ProductMap">
+                    ofType="DTO_Category2Product" javaType="ArrayList" resultMap="category2ProductMap">
         </collection> -->
-        <association property="marca" column="marcaId" javaType="DTO_Marca" resultMap="marcaResultMap">
+        <association property="marca" column="marcaId" javaType="DTO_TradeMark" resultMap="marcaResultMap">
         </association>
         <collection property="categories" column="catProdId"
-                    ofType="DTO_Categoria" javaType="ArrayList" resultMap="categoryResultMap">
+                    ofType="DTO_Category" javaType="ArrayList" resultMap="categoryResultMap">
         </collection>
         <collection property="images" column="imageId"
                     ofType="DTO_ProductImage" javaType="ArrayList" resultMap="imageResultMap">
         </collection>
     </resultMap>
 
-    <!-- <resultMap id="category2ProductMap" type="DTO_Categoria2Articulo">
+    <!-- <resultMap id="category2ProductMap" type="DTO_Category2Product">
         <id property="id" column="catProdId" />
         <result property="categoryId" column="categoryId" />
         <result property="productId" column="productId" />
     </resultMap>-->
-    <resultMap id="categoryResultMap" type="DTO_Categoria">
+    <resultMap id="categoryResultMap" type="DTO_Category">
         <id property="id" column="categoryId" />
         <result property="empresa" column="categoryEmpresaId" />
         <result property="categoryName" column="categoryName" />
         <result property="estado" column="categoryStatus" />
         <result property="categoryParentId" column="categoryParentId" />
     </resultMap>
-    <resultMap id="marcaResultMap" type="DTO_Marca">
+    <resultMap id="marcaResultMap" type="DTO_TradeMark">
         <id property="id" column="marcaId" />
         <result property="empresa" column="marcaEmpresaId" />
         <result property="marcaName" column="marcaName" />
@@ -208,7 +208,7 @@
         <result property="imageActive" column="imageActive" />
     </resultMap>
 
-    <select id="selectCategoriasForArticulos" resultType="DTO_Categoria">
+    <select id="selectCategoriasForArticulos" resultType="DTO_Category">
         SELECT
             cat.id as categoryId,
             cat.empresaid as empresa,

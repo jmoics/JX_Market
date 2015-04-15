@@ -14,10 +14,10 @@ public class DTO_Product implements Serializable
 {
     private Integer id;
     private Integer empresa;
-    private List<DTO_Categoria> categories;
+    private List<DTO_Category> categories;
     private String productName;
     private String productDescription;
-    private DTO_Marca marca;
+    private DTO_TradeMark marca;
     //private BigDecimal precio;
     //private Integer stock;
     private Boolean activo;
@@ -39,11 +39,11 @@ public class DTO_Product implements Serializable
     {
         this.empresa = empresa;
     }
-    public List<DTO_Categoria> getCategories()
+    public List<DTO_Category> getCategories()
     {
         return categories;
     }
-    public void setCategories(final List<DTO_Categoria> categories)
+    public void setCategories(final List<DTO_Category> categories)
     {
         this.categories = categories;
     }
@@ -95,11 +95,11 @@ public class DTO_Product implements Serializable
     {
         this.activo = activo;
     }
-    public DTO_Marca getMarca()
+    public DTO_TradeMark getMarca()
     {
         return marca;
     }
-    public void setMarca(final DTO_Marca marca)
+    public void setMarca(final DTO_TradeMark marca)
     {
         this.marca = marca;
     }

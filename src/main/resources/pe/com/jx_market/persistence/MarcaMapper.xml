@@ -7,7 +7,7 @@
   <cache />
     <!-- MANTENIMIENTO DE MARCAS -->
 
-    <select id="getMarcas" parameterType="DTO_Marca" resultType="DTO_Marca">
+    <select id="getMarcas" parameterType="DTO_TradeMark" resultType="DTO_TradeMark">
         SELECT
             mar.id as id,
             mar.empresaid as empresa,
@@ -24,7 +24,7 @@
         ORDER BY mar.nombre
     </select>
 
-    <select id="getMarcaXCodigo" parameterType="DTO_Marca" resultType="DTO_Marca">
+    <select id="getMarcaXCodigo" parameterType="DTO_TradeMark" resultType="DTO_TradeMark">
         SELECT
             mar.id as id,
             mar.empresaid as empresa,
@@ -37,14 +37,14 @@
             mar.id = #{id, jdbcType=INTEGER}
     </select>
 
-    <insert id="insertMarca" parameterType="DTO_Marca">
+    <insert id="insertMarca" parameterType="DTO_TradeMark">
         INSERT INTO T_NEG_MARCA
             (empresaId,nombre,activo,imagen)
         VALUES
             (#{empresa},#{marcaName},#{active},#{imageName})
     </insert>
 
-    <update id="updateMarca" parameterType="DTO_Marca">
+    <update id="updateMarca" parameterType="DTO_TradeMark">
         UPDATE T_NEG_MARCA
         SET
             nombre = #{marcaName},
@@ -56,7 +56,7 @@
             empresaId = #{empresa}
     </update>
 
-    <delete id="deleteMarca" parameterType="DTO_Marca">
+    <delete id="deleteMarca" parameterType="DTO_TradeMark">
         DELETE FROM T_NEG_MARCA
         WHERE
         id = #{id}

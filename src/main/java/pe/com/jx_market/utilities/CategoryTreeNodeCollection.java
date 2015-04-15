@@ -4,19 +4,19 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Set;
 
-import pe.com.jx_market.domain.DTO_Categoria;
+import pe.com.jx_market.domain.DTO_Category;
 
 public class CategoryTreeNodeCollection
     extends LinkedList<CategoryTreeNode>
 {
     private static final long serialVersionUID = 5118244589333582131L;
 
-    protected void construirJerarquia(final Collection<DTO_Categoria> childs,
-                                      final DTO_Categoria root,
+    protected void construirJerarquia(final Collection<DTO_Category> childs,
+                                      final DTO_Category root,
                                       final Set<Integer> setPadres,
                                       final Boolean _editable)
     {
-        for (final DTO_Categoria child : childs) {
+        for (final DTO_Category child : childs) {
             if ((child).getCategoryParentId().equals((root).getId())) {
                 if (setPadres.contains(child.getId())) {
                     add(new CategoryTreeNode(child,

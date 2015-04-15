@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.domain.DTO_Marca;
+import pe.com.jx_market.domain.DTO_TradeMark;
 import pe.com.jx_market.persistence.MarcaMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -20,7 +20,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
  */
 @Service
 public class MarcaService
-    implements BusinessService<DTO_Marca>
+    implements BusinessService<DTO_TradeMark>
 {
     @Autowired
     private MarcaMapper marcaMapper;
@@ -30,15 +30,15 @@ public class MarcaService
      */
     @Override
     @Transactional
-    public ServiceOutput<DTO_Marca> execute(final ServiceInput<DTO_Marca> input)
+    public ServiceOutput<DTO_TradeMark> execute(final ServiceInput<DTO_TradeMark> input)
     {
-        final ServiceOutput<DTO_Marca> output = new ServiceOutput<DTO_Marca>();
+        final ServiceOutput<DTO_TradeMark> output = new ServiceOutput<DTO_TradeMark>();
         if (Constantes.V_LIST.equals(input.getAccion())) {
             output.setLista(marcaMapper.getMarcas(input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
-            final DTO_Marca categTmp = marcaMapper.getMarcaXCodigo(input.getObject());
+            final DTO_TradeMark categTmp = marcaMapper.getMarcaXCodigo(input.getObject());
             if (categTmp == null) {
                 marcaMapper.insertMarca(input.getObject());
             } else {
@@ -47,7 +47,7 @@ public class MarcaService
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getAccion())) {
-            final DTO_Marca art = marcaMapper.getMarcaXCodigo(input.getObject());
+            final DTO_TradeMark art = marcaMapper.getMarcaXCodigo(input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;

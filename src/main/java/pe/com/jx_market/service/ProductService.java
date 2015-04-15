@@ -20,8 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.domain.DTO_Categoria;
-import pe.com.jx_market.domain.DTO_Categoria2Articulo;
+import pe.com.jx_market.domain.DTO_Category;
+import pe.com.jx_market.domain.DTO_Category2Product;
 import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.domain.DTO_ProductImage;
 import pe.com.jx_market.persistence.ProductMapper;
@@ -91,8 +91,8 @@ public class ProductService
             return output;
         } else if (Constantes.V_REGISTERCAT4PROD.equals(input.getAccion())) {
             final DTO_Product prod = input.getObject();
-            for (final DTO_Categoria categ : prod.getCategories()) {
-                final DTO_Categoria2Articulo cat2Prod = new DTO_Categoria2Articulo();
+            for (final DTO_Category categ : prod.getCategories()) {
+                final DTO_Category2Product cat2Prod = new DTO_Category2Product();
                 cat2Prod.setProductId(prod.getId());
                 cat2Prod.setCategoryId(categ.getId());
                 final int count = productMapper.getCategories4Product(cat2Prod);
@@ -104,8 +104,8 @@ public class ProductService
             return output;
         } else if (Constantes.V_DELETECAT4PROD.equals(input.getAccion())) {
             final DTO_Product arti = input.getObject();
-            for (final DTO_Categoria categ : arti.getCategories()) {
-                final DTO_Categoria2Articulo cat2Prod = new DTO_Categoria2Articulo();
+            for (final DTO_Category categ : arti.getCategories()) {
+                final DTO_Category2Product cat2Prod = new DTO_Category2Product();
                 cat2Prod.setProductId(arti.getId());
                 cat2Prod.setCategoryId(categ.getId());
                 final int count = productMapper.getCategories4Product(cat2Prod);

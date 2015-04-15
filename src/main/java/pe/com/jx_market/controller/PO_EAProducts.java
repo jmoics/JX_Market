@@ -42,9 +42,9 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.TreeNode;
 import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Categoria;
+import pe.com.jx_market.domain.DTO_Category;
 import pe.com.jx_market.domain.DTO_Empresa;
-import pe.com.jx_market.domain.DTO_Marca;
+import pe.com.jx_market.domain.DTO_TradeMark;
 import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.CategoryTreeNode;
@@ -78,9 +78,9 @@ public class PO_EAProducts
     @WireVariable
     private BusinessService<DTO_Product> productService;
     @WireVariable
-    private BusinessService<DTO_Categoria> categoryService;
+    private BusinessService<DTO_Category> categoryService;
     @WireVariable
-    private BusinessService<DTO_Marca> marcaService;
+    private BusinessService<DTO_TradeMark> marcaService;
     private DTO_Empresa empresa;
     @WireVariable
     private Desktop desktop;
@@ -136,14 +136,14 @@ public class PO_EAProducts
 
     private void buildMarcaCombo()
     {
-        final DTO_Marca marFi = new DTO_Marca();
+        final DTO_TradeMark marFi = new DTO_TradeMark();
         marFi.setEmpresa(empresa.getCodigo());
-        final ServiceInput<DTO_Marca> input = new ServiceInput<DTO_Marca>(marFi);
+        final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput<DTO_Marca> output = marcaService.execute(input);
+        final ServiceOutput<DTO_TradeMark> output = marcaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Marca> lstMar = output.getLista();
-            for (final DTO_Marca marIt : lstMar) {
+            final List<DTO_TradeMark> lstMar = output.getLista();
+            for (final DTO_TradeMark marIt : lstMar) {
                 final Comboitem item = new Comboitem();
                 item.setLabel(marIt.getMarcaName());
                 item.setValue(marIt);
@@ -156,19 +156,19 @@ public class PO_EAProducts
 
     private void listCategories()
     {
-        final DTO_Categoria cat = new DTO_Categoria();
+        final DTO_Category cat = new DTO_Category();
         cat.setEmpresa(empresa.getCodigo());
-        final ServiceInput<DTO_Categoria> input = new ServiceInput<DTO_Categoria>(cat);
+        final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput<DTO_Categoria> output = categoryService.execute(input);
+        final ServiceOutput<DTO_Category> output = categoryService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo(logger, "", "Exito al cargar categorias", null);
-            final List<DTO_Categoria> lstCat = output.getLista();
+            final List<DTO_Category> lstCat = output.getLista();
             final CategoryTreeNode categoryTreeNode = buildCategoryTree(lstCat);
 
-            final List<DTO_Categoria> lstCat2 = new LinkedList<DTO_Categoria>();
+            final List<DTO_Category> lstCat2 = new LinkedList<DTO_Category>();
             buildChosenBox(categoryTreeNode, lstCat2, Constantes.EMPTY_STRING);
-            final ListModelList<DTO_Categoria> modelCat = new ListModelList<DTO_Categoria>(lstCat2);
+            final ListModelList<DTO_Category> modelCat = new ListModelList<DTO_Category>(lstCat2);
             //chbCat.setModel(ListModels.toListSubModel(modelCat));
             chbCat.setModel(modelCat);
         } else {
@@ -176,13 +176,13 @@ public class PO_EAProducts
         }
     }
 
-    private CategoryTreeNode buildCategoryTree(final List<DTO_Categoria> _categorias)
+    private CategoryTreeNode buildCategoryTree(final List<DTO_Category> _categorias)
     {
-        final Map<Integer, DTO_Categoria> mapCateg = new TreeMap<Integer, DTO_Categoria>();
-        final Map<Integer, DTO_Categoria> roots = new TreeMap<Integer, DTO_Categoria>();
-        final Map<Integer, DTO_Categoria> childs = new TreeMap<Integer, DTO_Categoria>();
+        final Map<Integer, DTO_Category> mapCateg = new TreeMap<Integer, DTO_Category>();
+        final Map<Integer, DTO_Category> roots = new TreeMap<Integer, DTO_Category>();
+        final Map<Integer, DTO_Category> childs = new TreeMap<Integer, DTO_Category>();
         final Set<Integer> setPadres = new HashSet<Integer>();
-        for (final DTO_Categoria cat : _categorias) {
+        for (final DTO_Category cat : _categorias) {
             mapCateg.put(cat.getId(), cat);
             setPadres.add(cat.getCategoryParentId());
             if (cat.getCategoryParentId() == null) {
@@ -197,7 +197,7 @@ public class PO_EAProducts
         {
             private static final long serialVersionUID = -8249078122595873454L;
             {
-                for (final DTO_Categoria root : roots.values()) {
+                for (final DTO_Category root : roots.values()) {
                     if (!setPadres.contains(root.getId())) {
                         add(new CategoryTreeNode(root));
                     } else {
@@ -218,9 +218,9 @@ public class PO_EAProducts
     }
 
     private void buildChosenBox(final CategoryTreeNode _nodo,
-                                final List<DTO_Categoria> _lstCat,
+                                final List<DTO_Category> _lstCat,
                                 final String _space) {
-        final DTO_Categoria categ = _nodo.getData();
+        final DTO_Category categ = _nodo.getData();
         if (categ != null) {
             if (categ.getCategoryParentId() != null) {
                 categ.setCategoryName(_space.concat(categ.getCategoryName()));
@@ -232,7 +232,7 @@ public class PO_EAProducts
             if (categ != null) {
                 space = _space.concat(Constantes.SEPARATOR_STRING);
             }
-            final List<TreeNode<DTO_Categoria>> hijos = _nodo.getChildren();
+            final List<TreeNode<DTO_Category>> hijos = _nodo.getChildren();
             for (int i = 0; i < hijos.size(); i++) {
                 final CategoryTreeNode hijo = (CategoryTreeNode) hijos.get(i);
                 buildChosenBox(hijo, _lstCat, space);
@@ -247,8 +247,8 @@ public class PO_EAProducts
         final ArrayList<Integer> listCat = new ArrayList<Integer>();
         final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>();
         if (chbCat.getSelectedObjects() != null && !chbCat.getSelectedObjects().isEmpty()) {
-            final Set<DTO_Categoria> setCateg = chbCat.getSelectedObjects();
-            for (final DTO_Categoria categ : setCateg) {
+            final Set<DTO_Category> setCateg = chbCat.getSelectedObjects();
+            for (final DTO_Category categ : setCateg) {
                 listCat.add(categ.getId());
             }
             input.addMapPair("lstCategory", listCat);
@@ -267,12 +267,12 @@ public class PO_EAProducts
             int columnNumber = 1;
             for (final DTO_Product art : lst) {
                 final Listitem item = new Listitem();
-                final List<DTO_Categoria> categs = art.getCategories();
+                final List<DTO_Category> categs = art.getCategories();
                 Listcell cell = new Listcell("" + columnNumber);
                 item.appendChild(cell);
                 int cont = 1;
                 final StringBuilder strB = new StringBuilder();
-                for (final DTO_Categoria cat : categs) {
+                for (final DTO_Category cat : categs) {
                     strB.append(cat.getCategoryName());
                     if (cont < categs.size()) {
                         strB.append(", ");

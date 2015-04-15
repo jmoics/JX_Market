@@ -18,7 +18,7 @@ import org.zkoss.zul.Div;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 
-import pe.com.jx_market.domain.DTO_Categoria;
+import pe.com.jx_market.domain.DTO_Category;
 import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -81,15 +81,15 @@ public class PO_Index
 
     public void listarCategorias()
     {
-        final DTO_Categoria cat = new DTO_Categoria();
+        final DTO_Category cat = new DTO_Category();
         final ServiceInput input = new ServiceInput(cat);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = categoriaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("", "Exito al cargar categorias", null);
-            final List<DTO_Categoria> lstCat = output.getLista();
+            final List<DTO_Category> lstCat = output.getLista();
             int cont = 1;
-            for (final DTO_Categoria categ : lstCat) {
+            for (final DTO_Category categ : lstCat) {
                 final Li item = new Li();
                 if (cont % 2 == 0) {
                     item.setSclass("even");

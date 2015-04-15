@@ -22,7 +22,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Product;
-import pe.com.jx_market.domain.DTO_Categoria;
+import pe.com.jx_market.domain.DTO_Category;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -47,9 +47,9 @@ public class PO_CEProductos extends Window
     public void listaProductos()
     {
         lstProds.getItems().clear();
-        DTO_Categoria cat = null;
+        DTO_Category cat = null;
         if (getDesktop().getSession().hasAttribute("categoria")) {
-            cat = (DTO_Categoria) getDesktop().getSession().getAttribute("categoria");
+            cat = (DTO_Category) getDesktop().getSession().getAttribute("categoria");
             getDesktop().getSession().removeAttribute("categoria");
         }
 

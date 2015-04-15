@@ -2,10 +2,10 @@ package pe.com.jx_market.utilities;
 
 import org.zkoss.zul.DefaultTreeModel;
 
-import pe.com.jx_market.domain.DTO_Categoria;
+import pe.com.jx_market.domain.DTO_Category;
 
 public class AdvancedTreeModel
-    extends DefaultTreeModel<DTO_Categoria>
+    extends DefaultTreeModel<DTO_Category>
 {
 
     private static final long serialVersionUID = -5513180500300189445L;

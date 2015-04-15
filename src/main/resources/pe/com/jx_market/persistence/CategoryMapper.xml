@@ -7,7 +7,7 @@
   <cache />
     <!-- MANTENIMIENTO DE CATEGORIAS -->
 
-    <select id="getCategorias" parameterType="DTO_Categoria" resultType="DTO_Categoria">
+    <select id="getCategorias" parameterType="DTO_Category" resultType="DTO_Category">
         SELECT
         cat.id as id,
         cat.empresaid as empresa,
@@ -24,7 +24,7 @@
         ORDER BY cat.nombre
     </select>
 
-    <select id="getCategoriaXCodigo" parameterType="DTO_Categoria" resultType="DTO_Categoria">
+    <select id="getCategoriaXCodigo" parameterType="DTO_Category" resultType="DTO_Category">
         SELECT
         cat.id as id,
         cat.empresaId as empresa,
@@ -36,14 +36,14 @@
         cat.id = #{id, jdbcType=INTEGER}
     </select>
 
-    <insert id="insertCategoria" parameterType="DTO_Categoria">
+    <insert id="insertCategoria" parameterType="DTO_Category">
         INSERT INTO T_NEG_CATEGORIA
         (empresaId,nombre,parentid)
         VALUES
         (#{empresa},#{categoryName},#{categoryParentId, jdbcType=INTEGER})
     </insert>
 
-    <update id="updateCategoria" parameterType="DTO_Categoria">
+    <update id="updateCategoria" parameterType="DTO_Category">
         UPDATE T_NEG_CATEGORIA
         SET
         nombre = #{categoryName},
@@ -55,7 +55,7 @@
         empresaId = #{empresa}
     </update>
 
-    <delete id="deleteCategoria" parameterType="DTO_Categoria">
+    <delete id="deleteCategoria" parameterType="DTO_Category">
         DELETE FROM
         T_NEG_CATEGORIA
         WHERE

@@ -43,9 +43,9 @@ import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Categoria;
+import pe.com.jx_market.domain.DTO_Category;
 import pe.com.jx_market.domain.DTO_Empresa;
-import pe.com.jx_market.domain.DTO_Marca;
+import pe.com.jx_market.domain.DTO_TradeMark;
 import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.domain.DTO_ProductImage;
 import pe.com.jx_market.utilities.AdvancedTreeModel;
@@ -84,9 +84,9 @@ public class PO_EAProductsCreate
     @WireVariable
     private BusinessService<DTO_Product> productService;
     @WireVariable
-    private BusinessService<DTO_Categoria> categoryService;
+    private BusinessService<DTO_Category> categoryService;
     @WireVariable
-    private BusinessService<DTO_Marca> marcaService;
+    private BusinessService<DTO_TradeMark> marcaService;
     @WireVariable
     private Desktop desktop;
     private DTO_Empresa empresa;
@@ -118,15 +118,15 @@ public class PO_EAProductsCreate
 
     private void buildMarcaCombo()
     {
-        final DTO_Marca marFi = new DTO_Marca();
+        final DTO_TradeMark marFi = new DTO_TradeMark();
         marFi.setEmpresa(empresa.getCodigo());
-        final ServiceInput<DTO_Marca> input = new ServiceInput<DTO_Marca>(marFi);
+        final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput<DTO_Marca> output = marcaService.execute(input);
+        final ServiceOutput<DTO_TradeMark> output = marcaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo(logger, "", "Exito al cargar categorias", null);
-            final List<DTO_Marca> lstMar = output.getLista();
-            for (final DTO_Marca marIt : lstMar) {
+            final List<DTO_TradeMark> lstMar = output.getLista();
+            for (final DTO_TradeMark marIt : lstMar) {
                 final Comboitem item = new Comboitem();
                 item.setLabel(marIt.getMarcaName());
                 item.setValue(marIt);
@@ -143,9 +143,9 @@ public class PO_EAProductsCreate
         if (!txtNombre.getValue().equals("") && !txtDesc.getValue().equals("")
                         && cmbMarca.getSelectedItem() != null && cmbStatus.getSelectedItem() != null) {
             final DTO_Product articulo = new DTO_Product();
-            //articulo.setCategoria(((DTO_Categoria) cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
+            //articulo.setCategoria(((DTO_Category) cmbCateg.getSelectedItem().getAttribute("categoria")).getCodigo());
             articulo.setActivo((Boolean) cmbStatus.getSelectedItem().getValue());
-            articulo.setMarca((DTO_Marca) cmbMarca.getSelectedItem().getValue());
+            articulo.setMarca((DTO_TradeMark) cmbMarca.getSelectedItem().getValue());
             articulo.setProductDescription(txtDesc.getValue());
             articulo.setEmpresa(empresa.getCodigo());
             //articulo.setMarca(txtMarca.getValue());
@@ -158,7 +158,7 @@ public class PO_EAProductsCreate
                 alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"),
                                 Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"), null);
                 this.articulo = articulo;
-                this.articulo.setCategories(new ArrayList<DTO_Categoria>());
+                this.articulo.setCategories(new ArrayList<DTO_Category>());
                 this.articulo.setImages(new ArrayList<DTO_ProductImage>());
                 //limpiarCampos();
             } else {
@@ -180,15 +180,15 @@ public class PO_EAProductsCreate
     public void saveCategories(final Event _event)
     {
         if (articulo != null) {
-            final Map<Integer, DTO_Categoria> mapCat4Prod = new HashMap<Integer, DTO_Categoria>();
-            for (final DTO_Categoria cat : articulo.getCategories()) {
+            final Map<Integer, DTO_Category> mapCat4Prod = new HashMap<Integer, DTO_Category>();
+            for (final DTO_Category cat : articulo.getCategories()) {
                 mapCat4Prod.put(cat.getId(), cat);
             }
             if (tree.getItems() != null && !tree.getItems().isEmpty()) {
                 final DTO_Product prod4DelCat = new DTO_Product();
                 prod4DelCat.setId(articulo.getId());
                 prod4DelCat.setEmpresa(articulo.getEmpresa());
-                prod4DelCat.setCategories(new ArrayList<DTO_Categoria>());
+                prod4DelCat.setCategories(new ArrayList<DTO_Category>());
                 for (final Treeitem item : tree.getItems()) {
                     saveCategories(item, mapCat4Prod, prod4DelCat);
                 }
@@ -223,11 +223,11 @@ public class PO_EAProductsCreate
     }
 
     private void saveCategories(final Treeitem _item,
-                                final Map<Integer, DTO_Categoria> _mapCat4Prod,
+                                final Map<Integer, DTO_Category> _mapCat4Prod,
                                 final DTO_Product _prod4DelCat)
     {
         final CategoryTreeNode ctn = _item.getValue();
-        final DTO_Categoria categ = ctn.getData();
+        final DTO_Category categ = ctn.getData();
 
         if (_item.isSelected() && !_mapCat4Prod.containsKey(categ.getId())) {
             articulo.getCategories().add(categ);
@@ -248,14 +248,14 @@ public class PO_EAProductsCreate
 
     public CategoryTreeNode getCategories()
     {
-        final DTO_Categoria cat = new DTO_Categoria();
+        final DTO_Category cat = new DTO_Category();
         cat.setEmpresa(empresa.getCodigo());
-        final ServiceInput<DTO_Categoria> input = new ServiceInput<DTO_Categoria>(cat);
+        final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput<DTO_Categoria> output = categoryService.execute(input);
+        final ServiceOutput<DTO_Category> output = categoryService.execute(input);
         CategoryTreeNode categoryTreeNode = null;
         if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Categoria> lstCat = output.getLista();
+            final List<DTO_Category> lstCat = output.getLista();
             categoryTreeNode = buildCategoriesTree(lstCat);
         } else {
             alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"),
@@ -264,13 +264,13 @@ public class PO_EAProductsCreate
         return categoryTreeNode;
     }
 
-    private CategoryTreeNode buildCategoriesTree(final List<DTO_Categoria> _categorias)
+    private CategoryTreeNode buildCategoriesTree(final List<DTO_Category> _categorias)
     {
-        final Map<Integer, DTO_Categoria> mapCateg = new TreeMap<Integer, DTO_Categoria>();
-        final Map<Integer, DTO_Categoria> roots = new TreeMap<Integer, DTO_Categoria>();
-        final Map<Integer, DTO_Categoria> childs = new TreeMap<Integer, DTO_Categoria>();
+        final Map<Integer, DTO_Category> mapCateg = new TreeMap<Integer, DTO_Category>();
+        final Map<Integer, DTO_Category> roots = new TreeMap<Integer, DTO_Category>();
+        final Map<Integer, DTO_Category> childs = new TreeMap<Integer, DTO_Category>();
         final Set<Integer> setPadres = new HashSet<Integer>();
-        for (final DTO_Categoria cat : _categorias) {
+        for (final DTO_Category cat : _categorias) {
             mapCateg.put(cat.getId(), cat);
             setPadres.add(cat.getCategoryParentId());
             if (cat.getCategoryParentId() == null) {
@@ -286,7 +286,7 @@ public class PO_EAProductsCreate
 
             private static final long serialVersionUID = -8249078122595873454L;
             {
-                for (final DTO_Categoria root : roots.values()) {
+                for (final DTO_Category root : roots.values()) {
                     if (!setPadres.contains(root.getId())) {
                         add(new CategoryTreeNode(root));
                     } else {
@@ -315,14 +315,14 @@ public class PO_EAProductsCreate
                            final int _index)
             throws Exception
         {
-            final Map<Integer, DTO_Categoria> mapCat4Prod = new HashMap<Integer, DTO_Categoria>();
+            final Map<Integer, DTO_Category> mapCat4Prod = new HashMap<Integer, DTO_Category>();
             if (articulo != null) {
-                for (final DTO_Categoria cat : articulo.getCategories()) {
+                for (final DTO_Category cat : articulo.getCategories()) {
                     mapCat4Prod.put(cat.getId(), cat);
                 }
             }
             final CategoryTreeNode ctn = _treeNode;
-            final DTO_Categoria categ = ctn.getData();
+            final DTO_Category categ = ctn.getData();
             final Treerow dataRow = new Treerow();
             dataRow.setParent(_treeItem);
             _treeItem.setValue(ctn);

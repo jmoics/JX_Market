@@ -3,7 +3,7 @@ package pe.com.jx_market.domain;
 import java.io.Serializable;
 
 
-public class DTO_Marca
+public class DTO_TradeMark
     implements Serializable
 {
     private Integer id;

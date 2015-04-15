@@ -10,7 +10,7 @@ import java.util.List;
  * @author George
  *
  */
-public class DTO_Categoria implements Serializable
+public class DTO_Category implements Serializable
 {
     private static final long serialVersionUID = 7736453145474958927L;
 
@@ -22,7 +22,7 @@ public class DTO_Categoria implements Serializable
     private byte[] imagen;
     private List<DTO_Product> articulos;
 
-    public DTO_Categoria() {
+    public DTO_Category() {
     }
 
     /**
@@ -30,7 +30,7 @@ public class DTO_Categoria implements Serializable
      *
      * @param _nombre
      */
-    public DTO_Categoria(final String _categoryName) {
+    public DTO_Category(final String _categoryName) {
         this.categoryName = _categoryName;
     }
 

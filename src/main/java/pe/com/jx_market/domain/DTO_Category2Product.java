@@ -2,7 +2,7 @@ package pe.com.jx_market.domain;
 
 import java.io.Serializable;
 
-public class DTO_Categoria2Articulo
+public class DTO_Category2Product
     implements Serializable
 {
     private Integer id;
