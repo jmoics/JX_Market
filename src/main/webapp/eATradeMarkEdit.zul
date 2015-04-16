@@ -1,0 +1,49 @@
+<?page title="JX_Market" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+<window id="wEATE" apply="pe.com.jx_market.controller.PO_EATradeMarkEdit" sizable="true"
+        width="500px" height="540px" position="center,center" closable="true"
+        action="show: slideDown;hide: slideUp">
+    <style>
+        .z-grid {
+            border-left-width: 1px;
+            border-right-width: 1px;
+        }
+        .z-hbox {
+            -webkit-border-horizontal-spacing: 0px;
+        }
+    </style>
+    <vbox height="100%" width="100%">
+        <div align="center" height="10%">
+            <label zclass="z-south-header"
+                style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                ${labels.pe.com.jx_market.eATradeMarkEdit.Title}
+            </label>
+        </div>
+        <grid width="100%" fixedLayout="true">
+            <auxhead>
+                <auxheader label="${labels.pe.com.jx_market.eATradeMarkEdit.SubTitle}" colspan="2" />
+            </auxhead>
+            <columns>
+                <column hflex="1" />
+                <column hflex="3" />
+            </columns>
+            <rows>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eATradeMarkEdit.txtTradeMarkName.Label}" />
+                    <textbox id="txtTradeMarkName" width="60%" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eATradeMarkEdit.cmbActive.Label}" />
+                    <combobox id="cmbActive" />
+                </row>
+            </rows>
+        </grid>
+        <hbox align="end" pack="end" hflex="1" vflex="1">
+            <button id="btnSave" label="${labels.pe.com.jx_market.eATradeMarkEdit.btnSave.Label }"
+                image="/media/filesave.png" />
+            <button id="btnClose" label="${labels.pe.com.jx_market.eATradeMarkEdit.btnClose.Label }"
+                image="/media/cancel.png" />
+        </hbox>
+    </vbox>
+</window>
+</zk>
