@@ -37,7 +37,7 @@ public class ProductServiceTest
         art.setActive(Constantes.STB_ACTIVO);
         art.setProductDescription("juego de video de accion basado en la trilogia del senior de los anillos");
         art.setProductName("Ring Action");
-        art.setEmpresa(2);
+        art.setCompany(2);
         //art.setTradeMark("Capcom");
         //art.setPrecio(new BigDecimal(24.5));
         //art.setStock(20);
@@ -52,7 +52,7 @@ public class ProductServiceTest
     public void getProduct() {
         DTO_Product art = new DTO_Product();
         art.setId(1);
-        art.setEmpresa(2);
+        art.setCompany(2);
         final ServiceInput input = new ServiceInput(art);
         input.setAccion(Constantes.V_GET);
         final ServiceOutput output = productService.execute(input);

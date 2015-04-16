@@ -107,6 +107,7 @@ public class Constantes {
      */
     public static final String MODULO_PRODUCTS = "MODULO_PRODUCTS";
     public static final String MODULO_PROD_CATEGORY = "MODULO_PROD_CATEGORY";
+    public static final String MODULO_PROD_TRADEMARK = "MODULO_PROD_TRADEMARK";
     public static final String MODULO_PROD_PRODUCT = "MODULO_PROD_PRODUCT";
     public static final String MODULO_PROD_AMOUNT = "MODULO_PROD_AMOUNUT";
     public static final String MODULO_PROD_INVENTORY = "MODULO_PROD_INVENTORY";
@@ -135,9 +136,13 @@ public class Constantes {
     public static final String SEPARATOR_STRING = "..";
 
     public enum Form {
+        EMPTY_FORM("eAFondo.zul"),
         PRODUCTS_FORM("eAProducts.zul"),
         PRODUCTS_EDIT_FORM("eAProductsEdit.zul"),
-        PRODUCTS_CREATE_FORM("eAProductsCreate.zul");
+        PRODUCTS_CREATE_FORM("eAProductsCreate.zul"),
+        TRADEMARK_FORM("eATradeMark.zul"),
+        TRADEMARK_EDIT_FORM("eATradeMarkEdit.zul"),
+        TRADEMARK_CREATE_FORM("eATradeMarkCreate.zul");
 
         private final String form;
 
@@ -154,4 +159,5 @@ public class Constantes {
     public static final String ATTRIBUTE_COMPANY = "company";
     public static final String ATTRIBUTE_PRODUCT = "product";
     public static final String ATTRIBUTE_PRODUCT_EDITIMAGE = "productEditImage";
+    public static final String ATTRIBUTE_TRADEMARK = "tradeMark";
 }

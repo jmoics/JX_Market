@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-<window id="wEACP" hflex="1" vflex="1" apply="pe.com.jx_market.controller.PO_EAProducts" >
+<window id="wEAP" hflex="1" vflex="1" apply="pe.com.jx_market.controller.PO_EAProducts" >
     <style>
         .z-grid {
             border-left-width: 0px;

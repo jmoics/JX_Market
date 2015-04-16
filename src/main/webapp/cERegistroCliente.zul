@@ -82,7 +82,7 @@
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <label onClick='d_cERC.saltarPagina("eALogin.zul", true)' class="nav6">Mi Empresa</label>
+                        <label onClick='d_cERC.saltarPagina("eALogin.zul", true)' class="nav6">Mi Company</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li class="currencies">
@@ -110,8 +110,8 @@
                     <radio label="Cliente" 
                         checked="true" sclass="post-normal-text"
                         onCheck="d_cERC.esCliente()" />
-                    <radio label="Empresa" sclass="post-normal-text"
-                        onCheck="d_cERC.esEmpresa()" />
+                    <radio label="Company" sclass="post-normal-text"
+                        onCheck="d_cERC.esCompany()" />
                 </radiogroup>
                 <grid width="700px" align="left" zclass="null" id="grdRegCli"
                     style="margin-bottom:10pt; border:0pt">

@@ -52,11 +52,11 @@ public class PO_EALogin
         throws Exception
     {
         super.doAfterCompose(comp);
-        obtenerEmpresas();
+        obtenerCompanys();
         txtUser.setFocus(true);
     }
 
-    public void obtenerEmpresas()
+    public void obtenerCompanys()
     {
         List<DTO_Company> companys;
         //companyService = (BusinessService<DTO_Company>) ContextLoader.getService(wEAL, "companyService");
@@ -87,7 +87,7 @@ public class PO_EALogin
         if (cmbEmp.getSelectedItem() != null) {
             final DTO_Company company = (DTO_Company) cmbEmp.getSelectedItem().getAttribute("company");
             if (company != null) {
-                usuario.setEmpresa(company.getId());
+                usuario.setCompany(company.getId());
 
                 final DTO_Usuario validado = getUsuario(usuario);
                 if (validado != null) {
@@ -134,7 +134,7 @@ public class PO_EALogin
     {
         //empleadoService = (BusinessService<DTO_Empleado>) ContextLoader.getService(wEAL, "empleadoService");
         final DTO_Empleado emp = new DTO_Empleado();
-        emp.setEmpresa(usu.getEmpresa());
+        emp.setCompany(usu.getCompany());
         emp.setUsuario(usu.getCodigo());
         final ServiceInput<DTO_Empleado> input = new ServiceInput<DTO_Empleado>(emp);
         input.setAccion(Constantes.V_GET);

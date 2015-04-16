@@ -18,10 +18,10 @@ public class DTO_Usuario implements java.io.Serializable {
     public void setUsername (String username) {
         this.username = username;
     }
-    public Integer getEmpresa () {
+    public Integer getCompany () {
         return company;
     }
-    public void setEmpresa (Integer company) {
+    public void setCompany (Integer company) {
         this.company = company;
     }
     public String getContrasena () {

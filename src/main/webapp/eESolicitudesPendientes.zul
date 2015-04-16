@@ -17,7 +17,7 @@
                         <html:p />
                         <listbox id="lstSolicitud" visible="true" width="560px" multiple="false" checkmark="true">
                             <listhead>
-                                <listheader label="Empresa" width="160px" />
+                                <listheader label="Company" width="160px" />
                                 <listheader label="RUC" width="80px" />
                                 <listheader label="Correo" width="160px" />
                                 <listheader label="Fecha Envío" width="80px" />

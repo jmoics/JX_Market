@@ -83,7 +83,7 @@ public class PO_EACategoryEdit
     public CategoryTreeNode listarCategories()
     {
         final DTO_Category cat = new DTO_Category();
-        cat.setEmpresa(company.getId());
+        cat.setCompany(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);

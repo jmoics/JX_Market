@@ -63,7 +63,7 @@ public class PO_EAAdministraPerfil
             unew.setDescripcion(txtDescripcion.getValue());
             unew.setFuncion(txtFuncion.getValue());
             unew.setArea(((DTO_Area) cmbArea.getSelectedItem().getAttribute("area")).getCodigo());
-            unew.setEmpresa(company.getId());
+            unew.setCompany(company.getId());
 
             final ServiceInput input = new ServiceInput(unew);
             input.setAccion(Constantes.V_REGISTER);
@@ -83,7 +83,7 @@ public class PO_EAAdministraPerfil
     public void mostrarPerfiles()
     {
         final DTO_Perfil perf = new DTO_Perfil();
-        perf.setEmpresa(company.getId());
+        perf.setCompany(company.getId());
         final ServiceInput input = new ServiceInput(perf);
 
         input.setAccion(Constantes.V_LIST);
@@ -355,7 +355,7 @@ public class PO_EAAdministraPerfil
     private void cargarAreas(final Combobox combo)
     {
         final DTO_Area ar = new DTO_Area();
-        ar.setEmpresa(company.getId());
+        ar.setCompany(company.getId());
         final ServiceInput input = new ServiceInput(ar);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = areaService.execute(input);
@@ -376,7 +376,7 @@ public class PO_EAAdministraPerfil
     {
         final DTO_Area area = new DTO_Area();
         area.setCodigo(codigo);
-        area.setEmpresa(company.getId());
+        area.setCompany(company.getId());
         final ServiceInput input = new ServiceInput(area);
         input.setAccion(Constantes.V_GET);
         final ServiceOutput output = areaService.execute(input);

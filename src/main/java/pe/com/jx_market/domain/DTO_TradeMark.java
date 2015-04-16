@@ -23,12 +23,12 @@ public class DTO_TradeMark
         this.id = id;
     }
 
-    public Integer getEmpresa()
+    public Integer getCompany()
     {
         return company;
     }
 
-    public void setEmpresa(final Integer company)
+    public void setCompany(final Integer company)
     {
         this.company = company;
     }
@@ -43,7 +43,7 @@ public class DTO_TradeMark
         this.tradeMarkName = tradeMarkName;
     }
 
-    public Boolean getActive()
+    public Boolean isActive()
     {
         return active;
     }

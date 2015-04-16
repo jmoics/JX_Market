@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="pe.com.jx_market.persistence.ModuloMapper">
@@ -19,7 +19,7 @@
         WHERE
             modu.companyid = #{company}
     </select>
-    
+
     <select id="getModuloXCodigo" parameterType="DTO_Modulo" resultType="DTO_Modulo">
         SELECT
             modu.modulo_n_codigo as codigo,
@@ -31,19 +31,16 @@
         WHERE
             modu.companyid = #{company}
         AND
-            modu.modulo_n_codigo = #{codigo}
+            modu.modulo_n_codigo = #{codigo, jdbcType=INTEGER}
     </select>
 
-    <insert id="insertModulo" parameterType="DTO_Modulo">
+    <insert id="insertModulo" parameterType="DTO_Modulo" useGeneratedKeys="true" keyProperty="codigo" keyColumn="MODULO_N_CODIGO">
         INSERT INTO T_SEG_MODULO
             (modulo_v_desc, modulo_v_recurso, companyid)
         VALUES
             (#{descripcion}, #{recurso}, #{company})
-        <selectKey keyProperty="codigo" resultType="int" order="AFTER"> 
-           select LAST_INSERT_ID() as value
-        </selectKey>
     </insert>
-    
+
     <update id="updateModulo" parameterType="DTO_Modulo">
         UPDATE T_SEG_MODULO
         SET
@@ -54,7 +51,7 @@
         AND
             companyid = #{company}
     </update>
-    
+
     <delete id="deleteModulo" parameterType="DTO_Modulo">
       DELETE FROM
          T_SEG_MODULO

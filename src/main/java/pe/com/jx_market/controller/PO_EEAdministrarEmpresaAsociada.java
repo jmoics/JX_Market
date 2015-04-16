@@ -1,6 +1,6 @@
 package pe.com.jx_market.controller;
 
-public class PO_EEAdministrarEmpresaAsociada extends SecuredWindow 
+public class PO_EEAdministrarEmpresaAsociada extends SecuredWindow
 {
 
 	@Override

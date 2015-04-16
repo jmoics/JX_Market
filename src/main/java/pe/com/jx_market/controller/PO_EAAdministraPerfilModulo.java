@@ -120,9 +120,9 @@ public class PO_EAAdministraPerfilModulo
         gr_recursos.getColumns().appendChild(columna);
 
         final DTO_Modulo modL = new DTO_Modulo();
-        modL.setEmpresa(company.getId());
+        modL.setCompany(company.getId());
         final DTO_Perfil perL = new DTO_Perfil();
-        perL.setEmpresa(company.getId());
+        perL.setCompany(company.getId());
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("perfil", perL);
         map.put("modulo", modL);
@@ -239,7 +239,7 @@ public class PO_EAAdministraPerfilModulo
     private void cargarAreas(final Combobox combo)
     {
         final DTO_Area ar = new DTO_Area();
-        ar.setEmpresa(company.getId());
+        ar.setCompany(company.getId());
         final ServiceInput input = new ServiceInput(ar);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = areaService.execute(input);

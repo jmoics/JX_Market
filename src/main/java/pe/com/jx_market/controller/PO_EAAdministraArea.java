@@ -55,7 +55,7 @@ public class PO_EAAdministraArea
             final DTO_Area unew = new DTO_Area();
 
             unew.setNombre(txtNombre.getValue());
-            unew.setEmpresa(company.getId());
+            unew.setCompany(company.getId());
 
             final ServiceInput input = new ServiceInput(unew);
             input.setAccion(Constantes.V_REGISTER);
@@ -75,7 +75,7 @@ public class PO_EAAdministraArea
     public void mostrarAreas()
     {
         final DTO_Area are = new DTO_Area();
-        are.setEmpresa(company.getId());
+        are.setCompany(company.getId());
         final ServiceInput input = new ServiceInput(are);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = areaService.execute(input);

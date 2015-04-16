@@ -56,7 +56,7 @@ public class PO_EACambiarContrasenia
                 final ServiceInput input = new ServiceInput();
                 final DTO_Usuario user = new DTO_Usuario();
                 user.setUsername(usuario.getUsername());
-                user.setEmpresa(company.getId());
+                user.setCompany(company.getId());
                 user.setContrasena(txtPassNew1.getValue());
                 input.setObject(user);
                 input.setAccion("chgpass");

@@ -45,11 +45,11 @@ public class DTO_Empleado implements Serializable {
         this.usuario = usuario;
     }
 
-    public Integer getEmpresa () {
+    public Integer getCompany () {
         return company;
     }
 
-    public void setEmpresa (final Integer company) {
+    public void setCompany (final Integer company) {
         this.company = company;
     }
 

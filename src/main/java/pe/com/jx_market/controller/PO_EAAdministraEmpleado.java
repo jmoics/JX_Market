@@ -132,7 +132,7 @@ public class PO_EAAdministraEmpleado
         empleado.setEmail(mail);
         empleado.setEstado(estado);
         empleado.setPerfil(perfil);
-        empleado.setEmpresa(company.getId());
+        empleado.setCompany(company.getId());
         empleado.setCelular(celular);
         empleado.setCiudad(ciudad);
         empleado.setDireccion(direccion);
@@ -145,7 +145,7 @@ public class PO_EAAdministraEmpleado
             final DTO_Usuario usuario = new DTO_Usuario();
             usuario.setUsername(username);
             usuario.setContrasena(pass);
-            usuario.setEmpresa(company.getId());
+            usuario.setCompany(company.getId());
 
             map.put("usuario", usuario);
         } else if (emp != null && pass != null && pass.length() != 0) {
@@ -155,7 +155,7 @@ public class PO_EAAdministraEmpleado
             usuario.setCodigo(emp.getUsuario());
             usuario.setUsername(username);
             usuario.setContrasena(pass);
-            usuario.setEmpresa(company.getId());
+            usuario.setCompany(company.getId());
 
             map.put("usuario", usuario);
         } else {
@@ -284,7 +284,7 @@ public class PO_EAAdministraEmpleado
     {
         grdEmp.getRows().getChildren().clear();
         final DTO_Empleado emp = new DTO_Empleado();
-        emp.setEmpresa(company.getId());
+        emp.setCompany(company.getId());
         final ServiceInput input = new ServiceInput(emp);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = empleadoService.execute(input);
@@ -414,7 +414,7 @@ public class PO_EAAdministraEmpleado
     {
         final DTO_Usuario usuario = new DTO_Usuario();
         usuario.setCodigo(codigo);
-        usuario.setEmpresa(company.getId());
+        usuario.setCompany(company.getId());
         final ServiceInput input = new ServiceInput(usuario);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = usuarioService.execute(input);
@@ -429,7 +429,7 @@ public class PO_EAAdministraEmpleado
     {
         final DTO_Perfil perfil = new DTO_Perfil();
         perfil.setCodigo(codigo);
-        perfil.setEmpresa(company.getId());
+        perfil.setCompany(company.getId());
         final ServiceInput input = new ServiceInput(perfil);
         input.setAccion(Constantes.V_GET);
         final ServiceOutput output = perfilService.execute(input);
@@ -443,7 +443,7 @@ public class PO_EAAdministraEmpleado
     public void cargarPerfiles()
     {
         final DTO_Perfil per = new DTO_Perfil();
-        per.setEmpresa(company.getId());
+        per.setCompany(company.getId());
         final ServiceInput input = new ServiceInput(per);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = perfilService.execute(input);

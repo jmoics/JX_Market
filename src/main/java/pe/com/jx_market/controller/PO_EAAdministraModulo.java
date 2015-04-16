@@ -59,7 +59,7 @@ public class PO_EAAdministraModulo
         final DTO_Modulo unew = new DTO_Modulo();
         unew.setRecurso(txtRecurso.getValue());
         unew.setDescripcion(txtDescripcion.getValue());
-        unew.setEmpresa(company.getId());
+        unew.setCompany(company.getId());
 
         if (!txtRecurso.getValue().isEmpty() && !txtDescripcion.getValue().isEmpty()) {
             final ServiceInput input = new ServiceInput(unew);
@@ -82,7 +82,7 @@ public class PO_EAAdministraModulo
     public void mostrarModulos()
     {
         final DTO_Modulo mod = new DTO_Modulo();
-        mod.setEmpresa(company.getId());
+        mod.setCompany(company.getId());
         final ServiceInput input = new ServiceInput(mod);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = moduloService.execute(input);

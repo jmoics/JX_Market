@@ -19,6 +19,8 @@
                     <menubar style="text-align:left" orient="vertical" autodrop="true">
                         <menuitem src="/media/viewmag.png" id="id_option_prod_categ"
                                   label="${labels.pe.com.jx_market.eAMainMenu.products.category.Label }" />
+                        <menuitem src="/media/viewmag.png" id="id_option_prod_tradeMark"
+                                  label="${labels.pe.com.jx_market.eAMainMenu.products.tradeMark.Label }" />
                         <menuitem src="/media/viewmag.png" id="id_option_prod_inventory"
                                   label="${labels.pe.com.jx_market.eAMainMenu.products.inventory.Label }" />
                         <menuitem src="/media/logviewer.png" id="id_option_prod_products"

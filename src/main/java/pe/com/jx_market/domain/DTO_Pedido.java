@@ -22,11 +22,11 @@ public class DTO_Pedido implements Serializable
     {
         this.codigo = codigo;
     }
-    public Integer getEmpresa()
+    public Integer getCompany()
     {
         return company;
     }
-    public void setEmpresa(final Integer company)
+    public void setCompany(final Integer company)
     {
         this.company = company;
     }

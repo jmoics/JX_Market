@@ -156,7 +156,7 @@ public class PO_CERegistroCliente
     public List<String> guardaDTO(final DTO_Cliente cliente,
                                   final DTO_Usuario usuario)
     {
-        cliente.setEmpresa(Constantes.INSTITUCION_JX_MARKET);
+        cliente.setCompany(Constantes.INSTITUCION_JX_MARKET);
 
         // modificar cuando se agregue activacion desde email
         cliente.setEstado(Constantes.ST_ACTIVO);
@@ -213,7 +213,7 @@ public class PO_CERegistroCliente
             }
         }
 
-        usuario.setEmpresa(Constantes.INSTITUCION_JX_MARKET);
+        usuario.setCompany(Constantes.INSTITUCION_JX_MARKET);
         usuario.setUsername(txtMail.getValue());
 
         if (!txtPass.getValue().isEmpty() || !txtRepPass.getValue().isEmpty()) {
@@ -345,7 +345,7 @@ public class PO_CERegistroCliente
         return dis;
     }
 
-    public void esEmpresa()
+    public void esCompany()
     {
         grdRegEmp.setVisible(true);
         grdRegCli.setVisible(false);

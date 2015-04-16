@@ -84,7 +84,7 @@ public class PedidosService implements BusinessService
                     final DTO_Pedido ped = obtenerPedido(entry2.getKey());
                     if (pedMainId == null) {
                         final DTO_Pedido pedMain = obtenerPedido(ped);
-                        pedMain.setEmpresa(Constantes.INSTITUCION_JX_MARKET);
+                        pedMain.setCompany(Constantes.INSTITUCION_JX_MARKET);
                         pedMain.setTotal(total);
                         DTO_Pedido pedTmp = pedidoMapper.getPedidoXCodigo(pedMain);
                         if (pedTmp == null) {
@@ -121,7 +121,7 @@ public class PedidosService implements BusinessService
     private DTO_Pedido obtenerPedido (final DTO_Pedido ped) {
         final DTO_Pedido pedAux = new DTO_Pedido();
         pedAux.setCliente(ped.getCliente());
-        pedAux.setEmpresa(ped.getEmpresa());
+        pedAux.setCompany(ped.getCompany());
         pedAux.setFecha(ped.getFecha());
         pedAux.setIgv(ped.getIgv());
         pedAux.setTipo(ped.getTipo());

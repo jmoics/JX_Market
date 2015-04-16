@@ -20,7 +20,7 @@ public abstract class SecuredWindow extends Window
         if (empleado == null) {
             throw new RuntimeException("La sesión se perdió. Vuelva a ingresar por favor.");
         }
-        if (!empleado.getEmpresa().equals(Constantes.INSTITUCION_JX_MARKET)) {
+        if (!empleado.getCompany().equals(Constantes.INSTITUCION_JX_MARKET)) {
             checkResources(empleado);
         }
         realOnCreate();

@@ -119,7 +119,7 @@ public class PO_EAProductsCreate
     private void buildTradeMarkCombo()
     {
         final DTO_TradeMark marFi = new DTO_TradeMark();
-        marFi.setEmpresa(company.getId());
+        marFi.setCompany(company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
@@ -147,7 +147,7 @@ public class PO_EAProductsCreate
             product.setActive((Boolean) cmbStatus.getSelectedItem().getValue());
             product.setTradeMark((DTO_TradeMark) cmbTradeMark.getSelectedItem().getValue());
             product.setProductDescription(txtDesc.getValue());
-            product.setEmpresa(company.getId());
+            product.setCompany(company.getId());
             //product.setTradeMark(txtTradeMark.getValue());
             product.setProductName(txtNombre.getValue());
             //product.setPrecio(decPrec.getValue());
@@ -187,7 +187,7 @@ public class PO_EAProductsCreate
             if (tree.getItems() != null && !tree.getItems().isEmpty()) {
                 final DTO_Product prod4DelCat = new DTO_Product();
                 prod4DelCat.setId(product.getId());
-                prod4DelCat.setEmpresa(product.getEmpresa());
+                prod4DelCat.setCompany(product.getCompany());
                 prod4DelCat.setCategories(new ArrayList<DTO_Category>());
                 for (final Treeitem item : tree.getItems()) {
                     saveCategories(item, mapCat4Prod, prod4DelCat);
@@ -249,7 +249,7 @@ public class PO_EAProductsCreate
     public CategoryTreeNode getCategories()
     {
         final DTO_Category cat = new DTO_Category();
-        cat.setEmpresa(company.getId());
+        cat.setCompany(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);

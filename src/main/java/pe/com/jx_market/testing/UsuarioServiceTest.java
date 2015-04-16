@@ -37,7 +37,7 @@ public class UsuarioServiceTest {
         final DTO_Usuario unew = new DTO_Usuario();
         unew.setUsername("jcueva");
         unew.setContrasena("jcueva");
-        unew.setEmpresa(3);
+        unew.setCompany(3);
 
         final ServiceInput input = new ServiceInput(unew);
         input.setAccion("register");
@@ -45,7 +45,7 @@ public class UsuarioServiceTest {
         assertEquals(Constantes.OK, output.getErrorCode());
 
         // ahora debe aparecer en el listado
-        final ServiceInput inputList = new ServiceInput(unew.getEmpresa());
+        final ServiceInput inputList = new ServiceInput(unew.getCompany());
         inputList.setAccion("list");
         final ServiceOutput outputList = usuarioService.execute(inputList);
         assertEquals(Constantes.OK, outputList.getErrorCode());
@@ -72,7 +72,7 @@ public class UsuarioServiceTest {
         final DTO_Usuario unew = new DTO_Usuario();
         unew.setUsername("mdiaz");
         unew.setContrasena("mdiaz");
-        unew.setEmpresa(1);
+        unew.setCompany(1);
 
         final ServiceInput input = new ServiceInput(unew);
         final ServiceOutput output = authService.execute(input);
@@ -86,7 +86,7 @@ public class UsuarioServiceTest {
         final DTO_Usuario user = new DTO_Usuario();
         user.setUsername("jmoics");
         user.setContrasena("xyz");
-        user.setEmpresa(1);
+        user.setCompany(1);
         final ServiceInput input = new ServiceInput(user);
         input.setAccion("chgpass");
         final Map<String, String> mapa = new HashMap<String, String>();

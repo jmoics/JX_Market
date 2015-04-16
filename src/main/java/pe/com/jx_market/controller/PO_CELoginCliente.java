@@ -37,7 +37,7 @@ public class PO_CELoginCliente extends Div
         final DTO_Usuario usuario = new DTO_Usuario();
         usuario.setUsername(txtUser.getValue());
         usuario.setContrasena(txtPass.getValue());
-        usuario.setEmpresa(Constantes.INSTITUCION_JX_MARKET);
+        usuario.setCompany(Constantes.INSTITUCION_JX_MARKET);
 
         final DTO_Usuario validado = getUsuario(usuario);
         if (validado != null) {
@@ -66,7 +66,7 @@ public class PO_CELoginCliente extends Div
     public DTO_Cliente getCliente(final DTO_Usuario usu)
     {
         final DTO_Cliente cli = new DTO_Cliente();
-        cli.setEmpresa(usu.getEmpresa());
+        cli.setCompany(usu.getCompany());
         cli.setUsuario(usu.getCodigo());
         final ServiceInput input = new ServiceInput(cli);
         input.setAccion(Constantes.V_GET);

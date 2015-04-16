@@ -119,7 +119,7 @@ public class ProductService
             final DTO_Product prod = input.getObject();
             for (final DTO_ProductImage img : prod.getImages()) {
                 // if(img.getImageName() == null) {
-                img.setImageName(prod.getEmpresa() + "." + prod.getId() + "." + generarNombreAleatorio());
+                img.setImageName(prod.getCompany() + "." + prod.getId() + "." + generarNombreAleatorio());
                 savePhoto(img);
                 // }
                 if (img.getId() == null) {

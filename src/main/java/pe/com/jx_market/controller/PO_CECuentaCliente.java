@@ -58,7 +58,7 @@ public class PO_CECuentaCliente extends Window
         final DTO_Cliente cliente = (DTO_Cliente) getDesktop().getSession().getAttribute("cliente");
         final DTO_Pedido pedAux = new DTO_Pedido();
         pedAux.setCliente(cliente.getCodigo());
-        pedAux.setEmpresa(Constantes.INSTITUCION_JX_MARKET);
+        pedAux.setCompany(Constantes.INSTITUCION_JX_MARKET);
 
         final ServiceInput input = new ServiceInput();
         input.setAccion(Constantes.V_LIST);

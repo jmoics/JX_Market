@@ -106,12 +106,12 @@ public class PO_EAProductsEdit
         company = (DTO_Company) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
 
         product = (DTO_Product) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_PRODUCT);
-        final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
+        /*final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
         input.setAccion(Constantes.V_GETIMG);
         final ServiceOutput<DTO_Product> output = productService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
             alertaInfo(logger, "", "El product" + product.getProductName() + "no posee imagen", null);
-        }
+        }*/
 
         if (product == null) {
             alertaInfo(logger, "", "No se encontro producto, retornando a busqueda", null);
@@ -119,7 +119,7 @@ public class PO_EAProductsEdit
             desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_PRODUCT);
             tree.setCheckmark(true);
             tree.setMultiple(true);
-            cargarDatos();
+            loadData();
             buildTradeMarkCombo();
         }
     }
@@ -127,7 +127,7 @@ public class PO_EAProductsEdit
     private void buildTradeMarkCombo()
     {
         final DTO_TradeMark marFi = new DTO_TradeMark();
-        marFi.setEmpresa(company.getId());
+        marFi.setCompany(company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
@@ -156,7 +156,7 @@ public class PO_EAProductsEdit
             product.setActive((Boolean) cmbStatus.getSelectedItem().getValue());
             product.setTradeMark((DTO_TradeMark) cmbTradeMark.getSelectedItem().getValue());
             product.setProductDescription(txtDesc.getValue());
-            product.setEmpresa(company.getId());
+            product.setCompany(company.getId());
             product.setProductName(txtNombre.getValue());
             // product.setPrecio(decPrec.getValue());
             /*if (imgProducto != null && !imgProducto.equals(product.getImagen())) {
@@ -197,7 +197,7 @@ public class PO_EAProductsEdit
         if (tree.getItems() != null && !tree.getItems().isEmpty()) {
             final DTO_Product prod4DelCat = new DTO_Product();
             prod4DelCat.setId(product.getId());
-            prod4DelCat.setEmpresa(product.getEmpresa());
+            prod4DelCat.setCompany(product.getCompany());
             prod4DelCat.setCategories(new ArrayList<DTO_Category>());
             for (final Treeitem item : tree.getItems()) {
                 saveCategories(item, mapCat4Prod, prod4DelCat);
@@ -257,7 +257,7 @@ public class PO_EAProductsEdit
         wEAEP.detach();
     }
 
-    private void cargarDatos()
+    private void loadData()
     {
         buildActiveCombo(cmbStatus);
         txtNombre.setValue(product.getProductName());
@@ -287,7 +287,7 @@ public class PO_EAProductsEdit
     public CategoryTreeNode getCategories()
     {
         final DTO_Category cat = new DTO_Category();
-        cat.setEmpresa(company.getId());
+        cat.setCompany(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);

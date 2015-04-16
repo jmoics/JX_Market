@@ -35,18 +35,19 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
     /**
      * Mapeo de paginas a redirigir de acuerdo al ID del link en el menu.
      */
-    public static final Map<String, String> MAPA_MENU = new HashMap<String, String>();
+    public static final Map<String, String> MENU_MAP = new HashMap<String, String>();
     {
-        PO_EAMainMenu.MAPA_MENU.put("id_option_prod_categ", "eACategory.zul");
-        PO_EAMainMenu.MAPA_MENU.put("id_option_prod_products", "eAProducts.zul");
-        PO_EAMainMenu.MAPA_MENU.put("id_option_prod_amount", "");
-        PO_EAMainMenu.MAPA_MENU.put("id_option_prod_inventory","");
-        PO_EAMainMenu.MAPA_MENU.put("id_option_adm_areas", "eAAdministraArea.zul");
-        PO_EAMainMenu.MAPA_MENU.put("id_option_adm_emp", "eAAdministraEmpleado.zul");
-        PO_EAMainMenu.MAPA_MENU.put("id_option_adm_perf", "eAAdministraPerfil.zul");
-        PO_EAMainMenu.MAPA_MENU.put("id_option_adm_mod", "eAAdministraModulo.zul");
-        PO_EAMainMenu.MAPA_MENU.put("id_option_adm_perfi_modulo", "eAAdministraPerfilModulo.zul");
-        PO_EAMainMenu.MAPA_MENU.put("id_option_chgpass", "eACambiarContrasenia.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_prod_categ", "eACategory.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_prod_products", "eAProducts.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_prod_tradeMark", "eATradeMark.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_prod_amount", "");
+        PO_EAMainMenu.MENU_MAP.put("id_option_prod_inventory","");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_areas", "eAAdministraArea.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_emp", "eAAdministraEmpleado.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perf", "eAAdministraPerfil.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_mod", "eAAdministraModulo.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perfi_modulo", "eAAdministraPerfilModulo.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_chgpass", "eACambiarContrasenia.zul");
     }
 
     static Log logger = LogFactory.getLog(PO_EAMainMenu.class);
@@ -69,7 +70,7 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
     {
         super.doAfterCompose(comp);
         autorizacionService = (BusinessService<DTO_Empleado>) ContextLoader.getService(comp, "autorizacionService");
-        incluir("eAFondo.zul");
+        incluir(Constantes.Form.EMPTY_FORM.getForm());
 
         final DTO_Empleado empleado = (DTO_Empleado) comp.getDesktop().getSession().getAttribute("empleado");
 
@@ -78,7 +79,7 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
         }
 
         if(comp.getDesktop().getSession().getAttribute("actualizar") == null){
-            incluir("eAFondo.zul");
+            incluir(Constantes.Form.EMPTY_FORM.getForm());
         }
 
         getPage().addEventListener(Events.ON_BOOKMARK_CHANGE,
@@ -88,13 +89,14 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
                                 try {
                                     incluir(comp.getDesktop().getBookmark());
                                 } catch (final org.zkoss.zk.ui.ComponentNotFoundException ex) {
-                                    incluir("eAFondo.zul");
+                                    incluir(Constantes.Form.EMPTY_FORM.getForm());
                                 }
                             }
                       });
 
         setVisibilityByResource(comp, "id_option_prod_products", Constantes.MODULO_PROD_PRODUCT, empleado);
         setVisibilityByResource(comp, "id_option_prod_categ", Constantes.MODULO_PROD_CATEGORY, empleado);
+        setVisibilityByResource(comp, "id_option_prod_tradeMark", Constantes.MODULO_PROD_TRADEMARK, empleado);
         setVisibilityByResource(comp, "id_option_prod_amount", Constantes.MODULO_PROD_AMOUNT, empleado);
         setVisibilityByResource(comp, "id_option_prod_inventory", Constantes.MODULO_PROD_INVENTORY, empleado);
         setVisibilityByResource(comp, "id_option_administracion", Constantes.MODULO_ADMINISTRACION, empleado);
@@ -123,7 +125,7 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
     }
 
     @Listen("onClick = #id_option_prod_products, #id_option_prod_categ, #id_option_prod_amount, "
-                    + "#id_option_prod_inventory, "
+                    + "#id_option_prod_inventory, #id_option_prod_tradeMark, "
                     + "#id_option_adm_areas, #id_option_adm_emp, #id_option_adm_perf, "
                     + "#id_option_adm_mod, #id_option_adm_perfi_modulo, #id_option_chgpass, "
                     + "#id_option_categ")
@@ -131,7 +133,7 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
     {
         // getDesktop().getSession().setAttribute("paginaActual", txt);
         desktop.getSession().setAttribute("actualizar", "actualizar");
-        ContextLoader.saltar(desktop, PO_EAMainMenu.MAPA_MENU.get(event.getTarget().getId()));
+        ContextLoader.saltar(desktop, PO_EAMainMenu.MENU_MAP.get(event.getTarget().getId()));
     }
 
     public void incluir(final String _txt)

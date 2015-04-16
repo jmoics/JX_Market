@@ -136,7 +136,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         if (output.getErrorCode() == Constantes.OK) {
             final Integer codEmp = (Integer) output.getObject();
             final DTO_Area area = new DTO_Area();
-            area.setEmpresa(codEmp);
+            area.setCompany(codEmp);
             area.setNombre("Administrator");
             input = new ServiceInput();
             input.setAccion(Constantes.V_REGISTER);
@@ -147,7 +147,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
                 final DTO_Perfil perf = new DTO_Perfil();
                 perf.setArea(codArea);
                 perf.setDescripcion("Administration");
-                perf.setEmpresa(codEmp);
+                perf.setCompany(codEmp);
                 perf.setFuncion("Administrator");
                 input = new ServiceInput();
                 input.setAccion(Constantes.V_REGISTER);
@@ -182,13 +182,13 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
 
                     final Map<String, Object> mapUser = new HashMap<String,Object>();
                     final DTO_Usuario usuario = new DTO_Usuario();
-                    usuario.setEmpresa(codEmp);
+                    usuario.setCompany(codEmp);
                     usuario.setUsername("Administrator");
                     usuario.setContrasena("Administrator");
 
                     final DTO_Empleado empleado = new DTO_Empleado();
                     empleado.setApellido("Administrator");
-                    empleado.setEmpresa(codEmp);
+                    empleado.setCompany(codEmp);
                     empleado.setEstado(Constantes.ST_ACTIVO);
                     empleado.setPerfil(codPerf);
 
@@ -210,7 +210,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
     private Integer insertModulo(final String desc, final String recurso, final Integer company) {
         final DTO_Modulo mod = new DTO_Modulo();
         mod.setDescripcion(desc);
-        mod.setEmpresa(company);
+        mod.setCompany(company);
         mod.setRecurso(recurso);
 
         final ServiceInput input = new ServiceInput();

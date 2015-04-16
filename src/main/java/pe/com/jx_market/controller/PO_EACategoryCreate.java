@@ -82,7 +82,7 @@ public class PO_EACategoryCreate
     public CategoryTreeNode listarCategories()
     {
         final DTO_Category cat = new DTO_Category();
-        cat.setEmpresa(company.getId());
+        cat.setCompany(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);
@@ -246,7 +246,7 @@ public class PO_EACategoryCreate
                 .append(categ.getId()).toString();
             final Textbox txtCategName = ((Textbox) wEAIC.getFellow(strIdTxtCateg));
             categ.setCategoryName(txtCategName.getValue());
-            categ.setEmpresa(company.getId());
+            categ.setCompany(company.getId());
             output = categoryService.execute(input);
             if (Constantes.OK == output.getErrorCode()) {
                 logger.debug("Category '" + categ.getCategoryName() + "' actualizada");

@@ -31,11 +31,11 @@ public class DTO_Product implements Serializable
     {
         this.id = id;
     }
-    public Integer getEmpresa()
+    public Integer getCompany()
     {
         return company;
     }
-    public void setEmpresa(final Integer company)
+    public void setCompany(final Integer company)
     {
         this.company = company;
     }

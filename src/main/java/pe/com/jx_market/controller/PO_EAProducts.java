@@ -85,7 +85,7 @@ public class PO_EAProducts
     @WireVariable
     private Desktop desktop;
     @Wire
-    private Window wEACP;
+    private Window wEAP;
 
     @Override
     public void doAfterCompose(final Window _comp)
@@ -103,7 +103,7 @@ public class PO_EAProducts
 
         if (desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD) != null
                         && (Boolean) desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD)) {
-            buscarProductos();
+            searchProducts();
         }
     }
 
@@ -137,7 +137,7 @@ public class PO_EAProducts
     private void buildTradeMarkCombo()
     {
         final DTO_TradeMark marFi = new DTO_TradeMark();
-        marFi.setEmpresa(company.getId());
+        marFi.setCompany(company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
@@ -157,7 +157,7 @@ public class PO_EAProducts
     private void listCategories()
     {
         final DTO_Category cat = new DTO_Category();
-        cat.setEmpresa(company.getId());
+        cat.setCompany(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);
@@ -241,7 +241,7 @@ public class PO_EAProducts
     }
 
     @Listen("onClick = #btnSearch")
-    public void buscarProductos()
+    public void searchProducts()
     {
         lstProd.getItems().clear();
         final ArrayList<Integer> listCat = new ArrayList<Integer>();
@@ -327,7 +327,7 @@ public class PO_EAProducts
                             lstProd.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_PRODUCT));
             final Map<String, Object> dataArgs = new HashMap<String, Object>();
             final Window w = (Window) Executions.createComponents(Constantes.Form.PRODUCTS_EDIT_FORM.getForm(), null, dataArgs);
-            w.setPage(wEACP.getPage());
+            w.setPage(wEAP.getPage());
             //w.setParent(wEACC);
             //w.doOverlapped();
             w.doHighlighted();
@@ -342,7 +342,7 @@ public class PO_EAProducts
     public void runWindowCreate(final MouseEvent event) {
         final Map<String, Object> dataArgs = new HashMap<String, Object>();
         final Window w = (Window) Executions.createComponents(Constantes.Form.PRODUCTS_CREATE_FORM.getForm(), null, dataArgs);
-        w.setPage(wEACP.getPage());
+        w.setPage(wEAP.getPage());
         //w.setParent(wEACC);
         //w.doOverlapped();
         w.doModal();

@@ -32,7 +32,7 @@
             mar.active as active,
             mar.image as imageName
         FROM
-            T_BUS_TRADEMARK cat
+            T_BUS_TRADEMARK mar
         WHERE
             mar.id = #{id, jdbcType=INTEGER}
     </select>
@@ -41,7 +41,7 @@
         INSERT INTO T_BUS_TRADEMARK
             (companyId,name,active,image)
         VALUES
-            (#{company},#{tradeMarkName},#{active},#{imageName})
+            (#{company},#{tradeMarkName},#{active},#{imageName, jdbcType=VARCHAR})
     </insert>
 
     <update id="updateTradeMark" parameterType="DTO_TradeMark">
@@ -49,7 +49,7 @@
         SET
             name = #{tradeMarkName},
             active = #{active},
-            image = #{imageName}
+            image = #{imageName, jdbcType=VARCHAR}
         WHERE
             id = #{id}
         AND

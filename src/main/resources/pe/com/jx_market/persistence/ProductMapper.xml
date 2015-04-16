@@ -11,14 +11,14 @@
     <select id="getProducts" parameterType="java.util.Map" resultMap="productResultMap">
         SELECT
             art.id as productId,
-            art.companyid as productEmpresaId,
+            art.companyid as productCompanyId,
             art.name as productName,
             art.description as productDescription,
             art.active as productActive,
             cart.id as catProdId,
             cart.categoryid as categoryId,
             cat.id as categoryId,
-            cat.companyid as categoryEmpresaId,
+            cat.companyid as categoryCompanyId,
             cat.name as categoryName,
             cat.active as categoryActive,
             cat.parentid as categoryParentId,
@@ -27,7 +27,7 @@
             mar.name as tradeMarkName,
             mar.active as tradeMarkActive,
             img.id as imageId,
-            img.companyid as imageEmpresaId,
+            img.companyid as imageCompanyId,
             img.productid as productImageId,
             img.name as imageName,
             img.imagdefault as imageDefault,
@@ -164,7 +164,7 @@
 
     <resultMap id="productResultMap" type="DTO_Product">
         <id property="id" column="productId" />
-        <result property="company" column="productEmpresaId" />
+        <result property="company" column="productCompanyId" />
         <result property="productName" column="productName" />
         <result property="productDescription" column="productDescription" />
         <result property="active" column="productActive" />
@@ -188,7 +188,7 @@
     </resultMap>-->
     <resultMap id="categoryResultMap" type="DTO_Category">
         <id property="id" column="categoryId" />
-        <result property="company" column="categoryEmpresaId" />
+        <result property="company" column="categoryCompanyId" />
         <result property="categoryName" column="categoryName" />
         <result property="active" column="categoryActive" />
         <result property="categoryParentId" column="categoryParentId" />
@@ -201,7 +201,7 @@
     </resultMap>
     <resultMap id="imageResultMap" type="DTO_ProductImage">
         <id property="id" column="imageId" />
-        <result property="company" column="imageEmpresaId" />
+        <result property="company" column="imageCompanyId" />
         <result property="productId" column="productImageId" />
         <result property="imageName" column="imageName" />
         <result property="defaul" column="imageDefault" />
