@@ -14,7 +14,7 @@
         FROM
             T_SEG_ROLE2MODULE
         WHERE
-            roleid = #{codigo}
+            roleid = #{id}
     </select>
 
     <select id="getModuleString4Role" parameterType="DTO_Role" resultType="String">
@@ -24,7 +24,7 @@
             T_SEG_ROLE2MODULE modDet,
             T_SEG_MODULE modu
         WHERE
-            modDet.moduleid = modu.moduleid
+            modDet.moduleid = modu.id
         AND
             modDet.roleid = #{id}
     </select>
@@ -34,7 +34,7 @@
             T_SEG_ROLE2MODULE
                 (roleid, moduleid, active)
             VALUES
-                (#{perfil}, #{module}, #{active, jdbcType=INTEGER})
+                (#{roleId}, #{moduleId}, #{active})
 
     </insert>
 

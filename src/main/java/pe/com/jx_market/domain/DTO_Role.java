@@ -1,6 +1,7 @@
 package pe.com.jx_market.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class DTO_Role
     implements Serializable
@@ -8,8 +9,10 @@ public class DTO_Role
     private Integer id;
     private Integer companyId;
     private Integer areaId;
-    private String name;
-    private String description;
+    private String roleName;
+    private String roleDescription;
+    private DTO_Area area;
+    private List<DTO_Module> modules;
 
     public Integer getId()
     {
@@ -41,24 +44,43 @@ public class DTO_Role
         this.areaId = areaId;
     }
 
-    public String getName()
+    public String getRoleName()
     {
-        return name;
+        return roleName;
     }
 
-    public void setName(final String name)
+    public void setRoleName(final String roleName)
     {
-        this.name = name;
+        this.roleName = roleName;
     }
 
-    public String getDescription()
+    public String getRoleDescription()
     {
-        return description;
+        return roleDescription;
     }
 
-    public void setDescription(final String description)
+    public void setRoleDescription(final String roleDescription)
     {
-        this.description = description;
+        this.roleDescription = roleDescription;
     }
 
+    public List<DTO_Module> getModules()
+    {
+        return modules;
+    }
+
+    public void setModules(final List<DTO_Module> modules)
+    {
+        this.modules = modules;
+    }
+
+    public DTO_Area getArea()
+    {
+        return area;
+    }
+
+    public void setArea(final DTO_Area area)
+    {
+        this.area = area;
+    }
 }

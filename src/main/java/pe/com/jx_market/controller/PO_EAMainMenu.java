@@ -42,11 +42,11 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
         PO_EAMainMenu.MENU_MAP.put("id_option_prod_tradeMark", "eATradeMark.zul");
         PO_EAMainMenu.MENU_MAP.put("id_option_prod_amount", "");
         PO_EAMainMenu.MENU_MAP.put("id_option_prod_inventory","");
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_areas", "eAAdministraArea.zul");
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_emp", "eAAdministraEmpleado.zul");
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perf", "eAAdministraRole.zul");
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_mod", "eAAdministraModule.zul");
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perfi_module", "eAAdministraRoleModule.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_areas", "eAAdministrateArea.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_emp", "eAAdministrateEmpleado.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perf", "eAAdministrateRole.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_mod", "eAAdministrateModule.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perfi_module", "eAAdministrateRoleModule.zul");
         PO_EAMainMenu.MENU_MAP.put("id_option_chgpass", "eACambiarContrasenia.zul");
     }
 

@@ -7,7 +7,7 @@ public class DTO_TradeMark
     implements Serializable
 {
     private Integer id;
-    private Integer company;
+    private Integer companyId;
     private String tradeMarkName;
     private Boolean active;
     private byte[] image;
@@ -23,14 +23,14 @@ public class DTO_TradeMark
         this.id = id;
     }
 
-    public Integer getCompany()
+    public Integer getCompanyId()
     {
-        return company;
+        return companyId;
     }
 
-    public void setCompany(final Integer company)
+    public void setCompanyId(final Integer companyId)
     {
-        this.company = company;
+        this.companyId = companyId;
     }
 
     public String getTradeMarkName()

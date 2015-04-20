@@ -1,5 +1,7 @@
 package pe.com.jx_market.controller;
 
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.util.resource.Labels;
@@ -9,6 +11,7 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
@@ -35,6 +38,7 @@ public class PO_EATradeMarkCreate
     @WireVariable
     private Desktop desktop;
     private DTO_Company company;
+    private PO_EATradeMark tradeMarkParent;
 
     @Override
     public void doAfterCompose(final Window _comp)
@@ -44,6 +48,9 @@ public class PO_EATradeMarkCreate
 
         company = (DTO_Company) _comp.getDesktop().getSession().getAttribute("company");
         buildActiveCombo(cmbActive);
+     // Obtenemos el controlador de la pantalla principal de marcas.
+        final Map<?, ?> mapArg = desktop.getExecution().getArg();
+        tradeMarkParent = (PO_EATradeMark) mapArg.get("parent");
     }
 
     @Listen("onClick = #btnSave")
@@ -53,13 +60,19 @@ public class PO_EATradeMarkCreate
             final DTO_TradeMark newTrMk = new DTO_TradeMark();
             newTrMk.setActive((Boolean) cmbActive.getSelectedItem().getValue());
             newTrMk.setTradeMarkName(txtTradeMarkName.getValue());
-            newTrMk.setCompany(company.getId());
+            newTrMk.setCompanyId(company.getId());
             final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(newTrMk);
             input.setAccion(Constantes.V_REGISTER);
             final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAPTradeMarkCreate.createTradeMark.Info.Label"),
+                final int resp = alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAPTradeMarkCreate.createTradeMark.Info.Label"),
                                 Labels.getLabel("pe.com.jx_market.PO_EATradeMarkCreate.createTradeMark.Info.Label"), null);
+                if (resp == Messagebox.OK) {
+                    tradeMarkParent.searchTradeMarks();
+                    //desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
+                    //ContextLoader.recargar(desktop, Constantes.Form.TRADEMARK_FORM.getForm());
+                    //wEAEP.detach();
+                }
             } else {
                 alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAPTradeMarkCreate.createTradeMark.Error.Label"),
                                 Labels.getLabel("pe.com.jx_market.PO_EAPTradeMarkCreate.createTradeMark.Error.Label"), null);

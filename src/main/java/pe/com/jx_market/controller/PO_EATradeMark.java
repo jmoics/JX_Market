@@ -62,6 +62,7 @@ public class PO_EATradeMark
         buildActiveCombo(cmbActive);
         if (desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD) != null
                         && (Boolean) desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD)) {
+            desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, false);
             searchTradeMarks();
         }
     }
@@ -70,7 +71,7 @@ public class PO_EATradeMark
     public void searchTradeMarks() {
         lstTradeMarks.getItems().clear();
         final DTO_TradeMark trMarkSearch = new DTO_TradeMark();
-        trMarkSearch.setCompany(company.getId());
+        trMarkSearch.setCompanyId(company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>();
         if (txtTradeMarkName.getValue().length() > 0) {
             trMarkSearch.setTradeMarkName(txtTradeMarkName.getValue());
@@ -78,6 +79,7 @@ public class PO_EATradeMark
         if (cmbActive.getSelectedItem() != null) {
             trMarkSearch.setActive((Boolean) cmbActive.getSelectedItem().getValue());
         }
+        input.setObject(trMarkSearch);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
         if (Constantes.OK == output.getErrorCode()) {
@@ -117,9 +119,11 @@ public class PO_EATradeMark
             desktop.getSession().setAttribute(Constantes.ATTRIBUTE_TRADEMARK,
                             lstTradeMarks.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_TRADEMARK));
             final Map<String, Object> dataArgs = new HashMap<String, Object>();
-            final Window w = (Window) Executions.createComponents(Constantes.Form.TRADEMARK_EDIT_FORM.getForm(), null, dataArgs);
+            dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
+            final Window w = (Window) Executions.createComponents(Constantes.Form.TRADEMARK_EDIT_FORM.getForm(),
+                            null, dataArgs);
             w.setPage(wEAT.getPage());
-            //w.setParent(wEACC);
+            //w.setParent(wEAT);
             //w.doOverlapped();
             w.doHighlighted();
             //w.doEmbedded();
@@ -132,10 +136,11 @@ public class PO_EATradeMark
     @Listen("onClick = #btnCreate")
     public void runWindowCreate(final MouseEvent event) {
         final Map<String, Object> dataArgs = new HashMap<String, Object>();
+        dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
         final Window w = (Window) Executions.createComponents(Constantes.Form.TRADEMARK_CREATE_FORM.getForm(),
                             null, dataArgs);
         w.setPage(wEAT.getPage());
-        //w.setParent(wEACC);
+        //w.setParent(wEAT);
         //w.doOverlapped();
         w.doModal();
         //w.doEmbedded();

@@ -23,11 +23,11 @@ import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-public class PO_EAAdministraModule
+public class PO_EAAdministrateModule
     extends SecuredWindow
 {
 
-    static Log logger = LogFactory.getLog(PO_EAAdministraModule.class);
+    static Log logger = LogFactory.getLog(PO_EAAdministrateModule.class);
     private Textbox txtRecurso, txtDescripcion;
     private Grid grdModule;
     private Groupbox grpModule;

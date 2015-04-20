@@ -1,5 +1,7 @@
 package pe.com.jx_market.controller;
 
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.util.resource.Labels;
@@ -36,6 +38,7 @@ public class PO_EATradeMarkEdit
     @WireVariable
     private Desktop desktop;
     private DTO_TradeMark tradeMark;
+    private PO_EATradeMark tradeMarkParent;
 
     @Override
     public void doAfterCompose(final Window _comp)
@@ -48,6 +51,9 @@ public class PO_EATradeMarkEdit
             alertaInfo(logger, "", "No se encontro producto, retornando a busqueda", null);
         } else {
             desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_TRADEMARK);
+            // Obtenemos el controlador de la pantalla principal de marcas.
+            final Map<?, ?> mapArg = desktop.getExecution().getArg();
+            tradeMarkParent = (PO_EATradeMark) mapArg.get("parent");
             loadData();
         }
     }
@@ -83,8 +89,9 @@ public class PO_EATradeMarkEdit
                                         new Object[] {tradeMark.getTradeMarkName()}),
                                 Labels.getLabel("pe.com.jx_market.PO_EATradeMarkCreate.editTradeMark.Info.Label"), null);
                 if (resp == Messagebox.OK) {
-                    desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
-                    ContextLoader.recargar(desktop, Constantes.Form.TRADEMARK_FORM.getForm());
+                    tradeMarkParent.searchTradeMarks();
+                    //desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
+                    //ContextLoader.recargar(desktop, Constantes.Form.TRADEMARK_FORM.getForm());
                 }
             } else {
                 alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAPTradeMarkEdit.editTradeMark.Error.Label"),

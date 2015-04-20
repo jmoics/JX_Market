@@ -4,7 +4,7 @@
    <div align="center">
       <html:p />
       <window width="700px"
-         use="pe.com.jx_market.controller.PO_EAAdministraEmpleado"
+         use="pe.com.jx_market.controller.PO_EAAdministrateEmpleado"
          id="winEAAE">
 
          <div align="center">
@@ -202,7 +202,7 @@
                                     <comboitem label="Activo" value="1"/>
                                     <comboitem label="Inactivo" value="2"/>
                                  </combobox>
-                              </row>  
+                              </row>
                            </rows>
                         </grid>
                         <html:p />

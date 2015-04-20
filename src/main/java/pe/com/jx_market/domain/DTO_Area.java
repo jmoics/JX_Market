@@ -7,7 +7,7 @@ public class DTO_Area
 {
     private Integer id;
     private Integer companyId;
-    private String name;
+    private String areaAreaName;
 
     public Integer getId()
     {
@@ -29,13 +29,13 @@ public class DTO_Area
         this.companyId = _companyId;
     }
 
-    public String getName()
+    public String getAreaName()
     {
-        return name;
+        return areaAreaName;
     }
 
-    public void setName(final String name)
+    public void setAreaName(final String areaAreaName)
     {
-        this.name = name;
+        this.areaAreaName = areaAreaName;
     }
 }

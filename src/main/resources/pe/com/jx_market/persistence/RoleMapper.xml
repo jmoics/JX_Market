@@ -11,21 +11,21 @@
     <select id="getRoles" parameterType="DTO_Role" resultType="DTO_Role">
         SELECT
             rol.id as id,
-            rol.name as name,
-            rol.description as description,
+            rol.name as roleName,
+            rol.description as roleDescription,
             rol.areaid as areaId,
             rol.companyid as companyId
         FROM
             T_SEG_ROLE rol
         WHERE
-            rol.companyid = #{company}
+            rol.companyid = #{companyId}
     </select>
 
     <select id="getRoleXId" parameterType="DTO_Role" resultType="DTO_Role">
         SELECT
             rol.id as id,
-            rol.name as name,
-            rol.description as descripcion,
+            rol.name as roleName,
+            rol.description as roleDescription,
             rol.areaid as areaId,
             rol.companyid as companyId
         FROM
@@ -36,18 +36,44 @@
             rol.id = #{id, jdbcType=INTEGER}
     </select>
 
+    <select id="getModules4Role" parameterType="DTO_Role">
+        SELECT
+            rol.id as roleId,
+            rol.name as roleName,
+            rol.description as roleDescription,
+            rol.areaid as roleAreaId,
+            rol.companyid as companyId,
+            rolMod.id roleModuId,
+            rolMod.active roleModuActive,
+            modu.id as moduId,
+            modu.description as moduDescription,
+            modu.resource as moduResource,
+            area.id areaId,
+            area.name as areaName
+        FROM
+            T_SEG_ROLE role LEFT JOIN
+            T_SEG_ROLE2MODULE rolMod ON rol.id = rolMod.roleid LEFT JOIN
+            T_SEG_MODULE modu ON rolMod.moduleid = modu.id LEFT JOIN
+            T_EMP_AREA area ON rol.areaid = area.id
+        <where>
+            rol.companyid = #{companyId}
+        AND
+            rol.id = #{id, jdbcType=INTEGER}
+        </where>
+    </select>
+
     <insert id="insertRole" parameterType="DTO_Role" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
         INSERT INTO T_SEG_ROLE
             (name, description, areaid, companyid)
         VALUES
-            (#{name}, #{descripcion}, #{areaId}, #{companyId})
+            (#{roleName}, #{roleDescription}, #{areaId}, #{companyId})
     </insert>
 
     <update id="updateRole" parameterType="DTO_Role">
         UPDATE T_SEG_ROLE
         SET
-            name = #{name},
-            description = #{descripcion},
+            name = #{roleName},
+            description = #{roleDescription},
             areaid = #{areaId}
         WHERE
             id = #{id}
@@ -63,5 +89,30 @@
         AND
             companyid = #{companyId}
     </delete>
+
+    <resultMap id="roleResultMap" type="DTO_Role">
+        <id property="id" column="rolId" />
+        <result property="companyId" column="companyId" />
+        <result property="areaId" column="rolAreaId" />
+        <result property="name" column="roleName" />
+        <result property="description" column="roleDescription" />
+        <association property="area" column="areaId" javaType="DTO_Area" resultMap="areaResultMap">
+        </association>
+        <collection property="modules" column="roleModuId"
+                    ofType="DTO_Module" javaType="ArrayList" resultMap="moduleResultMap">
+        </collection>
+    </resultMap>
+    <resultMap id="areaResultMap" type="DTO_Area">
+        <id property="id" column="areaId" />
+        <result property="company" column="companyId" />
+        <result property="areaName" column="areaName" />
+    </resultMap>
+    <resultMap id="moduleResultMap" type="DTO_Module">
+        <id property="id" column="moduId" />
+        <result property="companyId" column="companyId" />
+        <result property="description" column="moduDescription" />
+        <result property="resource" column="moduResource" />
+        <result property="activeConnection" column="roleModuActive" />
+    </resultMap>
 
 </mapper>

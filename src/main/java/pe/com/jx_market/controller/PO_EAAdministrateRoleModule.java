@@ -33,10 +33,10 @@ import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-public class PO_EAAdministraRoleModule
+public class PO_EAAdministrateRoleModule
     extends SecuredWindow
 {
-    static Log logger = LogFactory.getLog(PO_EAAdministraRoleModule.class);
+    static Log logger = LogFactory.getLog(PO_EAAdministrateRoleModule.class);
     private Grid gr_recursos;
     private Button b_info, b_cancel, b_edit;
     private Foot f_buttons;
@@ -154,7 +154,7 @@ public class PO_EAAdministraRoleModule
                 if(role.getAreaId().equals(((DTO_Area)cmbArea.getSelectedItem().getAttribute("area")).getId())) {
                     columna = new Column();
                     columna.setAttribute("role", role);
-                    columna.appendChild(new Label(role.getName()));
+                    columna.appendChild(new Label(role.getRoleName()));
                     columna.setAlign("center");
 
                     final Set perfMod = mapa.get(role);
@@ -246,7 +246,7 @@ public class PO_EAAdministraRoleModule
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Area> listado = output.getLista();
             for (final DTO_Area area : listado) {
-                final Comboitem item = new Comboitem(area.getName());
+                final Comboitem item = new Comboitem(area.getAreaName());
                 item.setAttribute("area", area);
                 combo.appendChild(item);
             }

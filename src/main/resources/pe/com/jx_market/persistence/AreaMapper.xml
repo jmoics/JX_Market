@@ -11,10 +11,10 @@
     <select id="getAreas" parameterType="DTO_Area" resultType="DTO_Area">
         SELECT
             area.id as id,
-            area.name as name,
+            area.name as areaName,
             area.companyid as companyId
         FROM
-            T_EMP_AREA area
+            T_COM_AREA area
         WHERE
             area.companyid = #{companyId}
     </select>
@@ -22,10 +22,10 @@
     <select id="getAreaXCodigo" parameterType="DTO_Area" resultType="DTO_Area">
         SELECT
             area.id as id,
-            area.name as name,
+            area.name as areaName,
             area.companyid as companyId
         FROM
-            T_EMP_AREA area
+            T_COM_AREA area
         WHERE
             area.companyid = #{companyId}
         AND
@@ -33,16 +33,16 @@
     </select>
 
     <insert id="insertArea" parameterType="DTO_Area" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
-        INSERT INTO T_EMP_AREA
+        INSERT INTO T_COM_AREA
             (name, companyid)
         VALUES
-            (#{name}, #{companyId})
+            (#{areaName}, #{companyId})
     </insert>
 
     <update id="updateArea" parameterType="DTO_Area">
-        UPDATE T_EMP_AREA
+        UPDATE T_COM_AREA
         SET
-            name = #{name}
+            name = #{areaName}
         WHERE
             id = #{id}
         AND
@@ -51,7 +51,7 @@
 
     <delete id="deleteArea" parameterType="DTO_Area">
       DELETE FROM
-         T_EMP_AREA
+         T_COM_AREA
       WHERE
             id = #{id}
         AND

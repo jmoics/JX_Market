@@ -3,7 +3,7 @@
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
     <div align="center">
         <html:p />
-        <window width="700px" use="pe.com.jx_market.controller.PO_EAAdministraRoleModule" id="w_role_recurso">
+        <window width="700px" use="pe.com.jx_market.controller.PO_EAAdministrateRoleModule" id="w_role_recurso">
             <div align="center">
                 <vbox width="700px">
                     <html:p />

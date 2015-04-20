@@ -33,11 +33,11 @@ import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-public class PO_EAAdministraEmpleado
+public class PO_EAAdministrateEmpleado
     extends SecuredWindow
 {
 
-    static Log logger = LogFactory.getLog(PO_EAAdministraEmpleado.class);
+    static Log logger = LogFactory.getLog(PO_EAAdministrateEmpleado.class);
     private Grid grdEmp;
     private Textbox txtUsuario, txtPass, txtNombre, txtApellidos, txtDNI, txtTelefono, txtCelular, txtMail,
                     txtDireccion, txtCiudad, txtRegion;
@@ -270,7 +270,7 @@ public class PO_EAAdministraEmpleado
         lblUsuario.setValue((getUsuario(empleado.getUsuario())).getUsername());
         lblNombre.setValue(empleado.getNombre());
         lblApellidos.setValue(empleado.getApellido());
-        lblRole.setValue((getRole(empleado.getRole()).getName()));
+        lblRole.setValue((getRole(empleado.getRole()).getRoleName()));
         lblCiudad.setValue(empleado.getCiudad());
         lblDNI.setValue(empleado.getDni());
         final String estado = Constantes.ST_ACTIVO.equals(empleado.getEstado()) ? Constantes.STATUS_ACTIVO
@@ -303,7 +303,7 @@ public class PO_EAAdministraEmpleado
                 fila.appendChild(new Label(uOut.getNombre()));
                 fila.appendChild(new Label(uOut.getApellido()));
                 fila.appendChild(new Label(getUsuario(uOut.getUsuario()).getUsername()));
-                fila.appendChild(new Label((getRole(uOut.getRole())).getName()));
+                fila.appendChild(new Label((getRole(uOut.getRole())).getRoleName()));
 
                 final Image ImDetalles = new Image("media/details.png");
                 ImDetalles.setStyle("cursor:pointer");
@@ -450,7 +450,7 @@ public class PO_EAAdministraEmpleado
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Role> listado = output.getLista();
             for (final DTO_Role role : listado) {
-                final Comboitem item = new Comboitem(role.getName());
+                final Comboitem item = new Comboitem(role.getRoleName());
                 item.setAttribute("role", role);
                 cmbRole.appendChild(item);
             }

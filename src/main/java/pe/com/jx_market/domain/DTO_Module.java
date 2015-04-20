@@ -9,6 +9,7 @@ public class DTO_Module
     private Integer companyId;
     private String description;
     private String resource;
+    private Boolean activeConnection;
 
     public Integer getId()
     {
@@ -48,6 +49,16 @@ public class DTO_Module
     public void setDescription(final String description)
     {
         this.description = description;
+    }
+
+    public Boolean getActiveConnection()
+    {
+        return activeConnection;
+    }
+
+    public void setActiveConnection(final Boolean activeConnection)
+    {
+        this.activeConnection = activeConnection;
     }
 
 }

@@ -3,27 +3,28 @@
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
     <div align="center">
         <html:p />
-        <window width="700px" id="eaAA"
-            use="pe.com.jx_market.controller.PO_EAAdministraArea">
+        <window width="700px" id="eaAP"
+            use="pe.com.jx_market.controller.PO_EAAdministrateRole">
             <div align="center">
                 <vbox width="700px">
                     <html:p />
                     <div align="center">
                         <label zclass="z-south-header"
                             style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                            Administrador de Areas
+                            Administración de Roles
                         </label>
                         <html:p />
-                        <groupbox mold="3d" width="600px">
-                            <caption label="Areas Registrados" />
+                        <groupbox mold="3d" width="650px">
+                            <caption label="Roles Registrados" />
                             <div align="center">
                                 <html:p />
-                                <grid id="grdArea" width="400px">
+                                <grid id="grdRole" width="600px">
                                     <columns>
-                                       <column label="Nombre" width="200px" />
-                                       <column label="Ver Empleados" width="90px" />
-                                       <column label="Editar" width="55px" />
-                                       <column label="Eliminar" width="55px" />
+                                       <column label="Area" width="120px" />
+                                       <column label="Funcion" width="130px" />
+                                       <column label="Descripción" width="250px" />
+                                       <column label="Editar" width="50px" />
+                                       <column label="Eliminar" width="50px" />
                                     </columns>
                                     <rows></rows>
                                 </grid>
@@ -32,19 +33,27 @@
 
                                 <groupbox mold="3d" width="420px"
                                     id="grpNuevo">
-                                    <caption label="Nueva Area" />
+                                    <caption label="Nuevo Role" />
                                     <div width="400px" align="center">
                                         <grid fixedLayout="true" width="380px">
                                            <rows>
                                               <row>
-                                                 <label style="font-size:small" value="Nombre de Area" />
-                                                 <textbox id="txtNombre" />
+                                                 <label style="font-size:small" value="Area" />
+                                                 <combobox id="cmbArea" />
+                                              </row>
+                                              <row>
+                                                 <label style="font-size:small" value="Funcion" />
+                                                 <textbox id="txtFuncion" />
+                                              </row>
+                                              <row>
+                                                 <label style="font-size:small" value="Descripción" />
+                                                 <textbox id="txtDescripcion" maxlength="255" />
                                               </row>
                                            </rows>
                                         </grid>
                                         <html:p />
                                         <div align="center">
-                                            <button label="Crear" onClick="eaAA.crearNuevaArea()">
+                                            <button label="Crear" onClick="eaAP.crearNuevoRole()">
                                             </button>
                                         </div>
                                     </div>
@@ -55,13 +64,6 @@
                     </div>
                 </vbox>
             </div>
-            <popup id="popEmpleados" width="400px">
-                <div align="center">
-                   <toolbarbutton label="Cerrar"
-                     onClick="popEmpleados.close()">
-                   </toolbarbutton>
-                </div>
-            </popup>
         </window>
-     </div>
+    </div>
 </zk>

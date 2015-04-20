@@ -156,6 +156,7 @@ public class Constantes {
     }
 
     public static final String ATTRIBUTE_RELOAD = "reloadPage";
+    public static final String ATTRIBUTE_PARENTFORM = "parentForm";
     public static final String ATTRIBUTE_COMPANY = "company";
     public static final String ATTRIBUTE_PRODUCT = "product";
     public static final String ATTRIBUTE_PRODUCT_EDITIMAGE = "productEditImage";

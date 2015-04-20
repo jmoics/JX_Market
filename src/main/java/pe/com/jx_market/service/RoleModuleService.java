@@ -69,6 +69,7 @@ public class RoleModuleService implements BusinessService
                 final Iterator <DTO_RoleModule> itBlock = recursos.iterator();
                 while(itBlock.hasNext()) {
                     final DTO_RoleModule perfMod = itBlock.next();
+                    perfMod.setActive(true);
                     System.out.println("Agrego: " + perfMod.getRole() + " cod: " + perfMod.getModuleId());
                     roleModuleMapper.insertModuleRole(perfMod);
                 }

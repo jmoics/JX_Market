@@ -7,138 +7,95 @@ import org.apache.commons.logging.LogFactory;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Popup;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import pe.com.jx_market.domain.DTO_Area;
 import pe.com.jx_market.domain.DTO_Company;
-import pe.com.jx_market.domain.DTO_Role;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-public class PO_EAAdministraRole
+public class PO_EAAdministrateArea
     extends SecuredWindow
 {
-    static Log logger = LogFactory.getLog(PO_EAAdministraRole.class);
-    private Textbox txtFuncion, txtDescripcion;
-    private Combobox cmbArea;
+    static Log logger = LogFactory.getLog(PO_EAAdministrateArea.class);
+    private Textbox txtNombre;
     private Groupbox grpNuevo;
-    private Grid grdRole;
+    private Grid grdArea;
     private DTO_Company company;
-    private BusinessService areaService, roleService;
+    private BusinessService areaService;
+    private Popup popEmpleados;
 
     @Override
     public void realOnCreate()
     {
-        txtFuncion = (Textbox) getFellow("txtFuncion");
-        txtDescripcion = (Textbox) getFellow("txtDescripcion");
-        cmbArea = (Combobox) getFellow("cmbArea");
+        txtNombre = (Textbox) getFellow("txtNombre");
         grpNuevo = (Groupbox) getFellow("grpNuevo");
-        grdRole = (Grid) getFellow("grdRole");
+        grdArea = (Grid) getFellow("grdArea");
         areaService = ContextLoader.getService(this, "areaService");
-        roleService = ContextLoader.getService(this, "roleService");
-
+        popEmpleados = (Popup) getFellow("popEmpleados");
         company = (DTO_Company) getDesktop().getSession().getAttribute("company");
-        cargarAreas(cmbArea);
-        mostrarRoles();
+        mostrarAreas();
     }
 
-    public void crearNuevoRole()
+    public void crearNuevaArea()
     {
         // row1.setVisible(true);
 
-        if (!txtDescripcion.getValue().isEmpty() && !txtFuncion.getValue().isEmpty() && cmbArea.getSelectedItem() != null) {
-            final DTO_Role unew = new DTO_Role();
+        if (!txtNombre.getValue().isEmpty()) {
+            final DTO_Area unew = new DTO_Area();
 
-            unew.setDescription(txtDescripcion.getValue());
-            unew.setName(txtFuncion.getValue());
-            unew.setAreaId(((DTO_Area) cmbArea.getSelectedItem().getAttribute("area")).getId());
+            unew.setAreaName(txtNombre.getValue());
             unew.setCompanyId(company.getId());
 
             final ServiceInput input = new ServiceInput(unew);
             input.setAccion(Constantes.V_REGISTER);
-            final ServiceOutput output = roleService.execute(input);
+            final ServiceOutput output = areaService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo("", "role creado correctamente", null);
+                alertaInfo("", "area creada correctamente", null);
                 onLimpiar();
-                mostrarRoles();
+                mostrarAreas();
             } else {
-                alertaError("Error al crear role", "error al crear role", null);
+                alertaError("Error al crear area", "error al crear area", null);
             }
         } else {
             alertaInfo("Todos los campos deben ser llenados", "No se ingresaron datos para codigo y descripcion", null);
         }
     }
 
-    public void mostrarRoles()
+    public void mostrarAreas()
     {
-        final DTO_Role perf = new DTO_Role();
-        perf.setCompanyId(company.getId());
-        final ServiceInput input = new ServiceInput(perf);
-
+        final DTO_Area are = new DTO_Area();
+        are.setCompanyId(company.getId());
+        final ServiceInput input = new ServiceInput(are);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = roleService.execute(input);
+        final ServiceOutput output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Role> ulist = output.getLista();
+            final List<DTO_Area> ulist = output.getLista();
 
-            for (final DTO_Role sOut : ulist) {
+            for (final DTO_Area sOut : ulist) {
                 agregarFila(sOut);
             }
         } else {
-            alertaError("Error al cargar roles", "Error al cargar roles", null);
+            alertaError("Error al cargar areas", "Error al cargar areas", null);
         }
     }
 
-    public void agregarFila(final DTO_Role perf)
+    public void agregarFila(final DTO_Area are)
     {
         final Row fila = new Row();
-        fila.setAttribute("role", perf);
+        fila.setAttribute("area", are);
 
-        final Combobox combo = new Combobox();
-        combo.setWidth("110px");
-        cargarAreas(combo);
-        for (final Comboitem item : combo.getItems()) {
-            if (perf.getAreaId().equals(((DTO_Area) item.getAttribute("area")).getId())) {
-                combo.setSelectedItem(item);
-            }
-        }
-        combo.setDisabled(true);
-        fila.appendChild(combo);
-
-        Textbox txt = new Textbox(perf.getName());
-        txt.setWidth("100px");
-        txt.setReadonly(true);
-        txt.addEventListener(Events.ON_CANCEL,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                                .getChildren().get(3))).getChildren().get(0))
-                                                .setVisible(true);
-                                ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                                .getChildren().get(3))).getChildren().get(1))
-                                                .setVisible(false);
-                                ((Textbox) e.getTarget()).setReadonly(true);
-                                grpNuevo.setOpen(true);
-                                onLimpiar();
-                                mostrarRoles();
-                            }
-                        });
-        fila.appendChild(txt);
-
-        txt = new Textbox(perf.getDescription());
+        final Textbox txt = new Textbox(are.getAreaName());
         txt.setWidth("180px");
         txt.setReadonly(true);
         txt.addEventListener(Events.ON_CANCEL,
@@ -148,18 +105,37 @@ public class PO_EAAdministraRole
                                 throws UiException
                             {
                                 ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                                .getChildren().get(3))).getChildren().get(0))
+                                                .getChildren().get(2))).getChildren().get(0))
                                                 .setVisible(true);
                                 ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                                .getChildren().get(3))).getChildren().get(1))
+                                                .getChildren().get(2))).getChildren().get(1))
                                                 .setVisible(false);
                                 ((Textbox) e.getTarget()).setReadonly(true);
                                 grpNuevo.setOpen(true);
                                 onLimpiar();
-                                mostrarRoles();
+                                mostrarAreas();
                             }
                         });
         fila.appendChild(txt);
+
+        final Image ImDetalles = new Image("media/details.png");
+        ImDetalles.setStyle("cursor:pointer");
+        ImDetalles.setPopup(popEmpleados);
+        ImDetalles.addEventListener("onClick",
+                        new org.zkoss.zk.ui.event.EventListener() {
+                            @Override
+                            public void onEvent(final Event e)
+                                throws UiException
+                            {
+                                /*
+                                 * cargarPop((DTO_Empleado) ((Row)
+                                 * e.getTarget().
+                                 * getParent()).getAttribute("empleado"));
+                                 */
+
+                            }
+                        });
+        fila.appendChild(ImDetalles);
 
         final Image imgEditar = new Image("media/edit.png");
         imgEditar.setStyle("cursor: pointer");
@@ -172,7 +148,17 @@ public class PO_EAAdministraRole
                                 ((Image) e.getTarget()).setVisible(false);
                                 ((Image) ((Div) e.getTarget().getParent())
                                                 .getChildren().get(1)).setVisible(true);
-                                for (int i = 0; i < grdRole.getRows().getChildren().size(); i++) {
+                                for (int i = 0; i < grdArea.getRows().getChildren().size(); i++) {
+                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
+                                                    .getParent().getParent().getParent())
+                                                    .getChildren().get(i))).getChildren()
+                                                    .get(2))).getChildren().get(0))
+                                                    .setVisible(false);
+                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
+                                                    .getParent().getParent().getParent())
+                                                    .getChildren().get(i))).getChildren()
+                                                    .get(2))).getChildren().get(2))
+                                                    .setVisible(true);
                                     ((Image) ((Div) (((Row) (((Rows) e.getTarget()
                                                     .getParent().getParent().getParent())
                                                     .getChildren().get(i))).getChildren()
@@ -181,32 +167,18 @@ public class PO_EAAdministraRole
                                     ((Image) ((Div) (((Row) (((Rows) e.getTarget()
                                                     .getParent().getParent().getParent())
                                                     .getChildren().get(i))).getChildren()
-                                                    .get(3))).getChildren().get(2))
-                                                    .setVisible(true);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(4))).getChildren().get(0))
-                                                    .setVisible(false);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(4))).getChildren().get(1))
+                                                    .get(3))).getChildren().get(1))
                                                     .setVisible(true);
                                 }
-                                ((Combobox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(0)).setDisabled(false);
                                 ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(1)).setReadonly(false);
+                                                .getChildren().get(0)).setReadonly(false);
                                 ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(1)).setFocus(true);
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(2)).setReadonly(false);
+                                                .getChildren().get(0)).setFocus(true);
                                 ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                                .getParent()).getChildren().get(3)))
+                                                .getParent()).getChildren().get(2)))
                                                 .getChildren().get(0)).setVisible(false);
                                 ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                                .getParent()).getChildren().get(3)))
+                                                .getParent()).getChildren().get(2)))
                                                 .getChildren().get(1)).setVisible(true);
                                 grpNuevo.setOpen(false);
                             }
@@ -223,20 +195,26 @@ public class PO_EAAdministraRole
                                 ((Image) e.getTarget()).setVisible(false);
                                 ((Image) ((Div) e.getTarget().getParent())
                                                 .getChildren().get(0)).setVisible(true);
-                                ((Combobox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(0)).setDisabled(true);
                                 ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(1)).setReadonly(true);
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(2)).setReadonly(true);
+                                                .getChildren().get(0)).setReadonly(true);
                                 ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                                .getParent()).getChildren().get(3)))
+                                                .getParent()).getChildren().get(2)))
                                                 .getChildren().get(0)).setVisible(true);
                                 ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                                .getParent()).getChildren().get(3)))
+                                                .getParent()).getChildren().get(2)))
                                                 .getChildren().get(1)).setVisible(false);
                                 grpNuevo.setOpen(true);
-                                for (int i = 0; i < grdRole.getRows().getChildren().size(); i++) {
+                                for (int i = 0; i < grdArea.getRows().getChildren().size(); i++) {
+                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
+                                                    .getParent().getParent().getParent())
+                                                    .getChildren().get(i))).getChildren()
+                                                    .get(2))).getChildren().get(0))
+                                                    .setVisible(true);
+                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
+                                                    .getParent().getParent().getParent())
+                                                    .getChildren().get(i))).getChildren()
+                                                    .get(2))).getChildren().get(2))
+                                                    .setVisible(false);
                                     ((Image) ((Div) (((Row) (((Rows) e.getTarget()
                                                     .getParent().getParent().getParent())
                                                     .getChildren().get(i))).getChildren()
@@ -245,28 +223,13 @@ public class PO_EAAdministraRole
                                     ((Image) ((Div) (((Row) (((Rows) e.getTarget()
                                                     .getParent().getParent().getParent())
                                                     .getChildren().get(i))).getChildren()
-                                                    .get(3))).getChildren().get(2))
-                                                    .setVisible(false);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(4))).getChildren().get(0))
-                                                    .setVisible(true);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(4))).getChildren().get(1))
+                                                    .get(3))).getChildren().get(1))
                                                     .setVisible(false);
                                 }
-                                ((Row) e.getTarget().getParent().getParent()).getAttribute("role");
-                                perf.setName(((Textbox)
-                                                ((Row) e.getTarget().getParent().getParent()).getChildren().get(1)).getValue());
-                                perf.setDescription(((Textbox)
-                                                ((Row) e.getTarget().getParent().getParent()).getChildren().get(2)).getValue());
-                                perf.setAreaId(((DTO_Area) ((Combobox)
-                                                ((Row) e.getTarget().getParent().getParent()).getChildren().get(0))
-                                                                .getSelectedItem().getAttribute("area")).getId());
-                                actualizaRole(perf);
+                                are.setAreaName(((Textbox)
+                                                ((Row) e.getTarget().getParent().getParent()).getChildren().get(0)).getValue());
+
+                                actualizaArea(are);
                             }
                         });
 
@@ -282,7 +245,7 @@ public class PO_EAAdministraRole
                                 ((Image) ((Div) e.getTarget().getParent()).getChildren().get(0)).setVisible(false);
                                 grpNuevo.setOpen(true);
                                 onLimpiar();
-                                mostrarRoles();
+                                mostrarAreas();
                             }
                         });
         imgEditarDisab.setVisible(false);
@@ -303,10 +266,12 @@ public class PO_EAAdministraRole
                             public void onEvent(final Event e)
                                 throws UiException
                             {
-                                final int msg = Messagebox.show("¿Está seguro de eliminar el role?", company.getBusinessName(),
-                                                Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
+                                int msg = 0;
+                                msg = Messagebox.show("¿Está seguro de eliminar el area?",
+                                                company.getBusinessName(), Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
                                 if (msg == Messagebox.YES) {
-                                    eliminaFila((DTO_Role) ((Row) e.getTarget().getParent().getParent()).getAttribute("role"));
+                                    eliminaFila((DTO_Area) ((Row) e.getTarget().getParent().getParent())
+                                                                                        .getAttribute("area"));
                                 }
                             }
                         });
@@ -318,81 +283,44 @@ public class PO_EAAdministraRole
         divEliminar.appendChild(imgEliminar);
         divEliminar.appendChild(imgEliminarDisab);
         fila.appendChild(divEliminar);
-        grdRole.getRows().appendChild(fila);
+        grdArea.getRows().appendChild(fila);
     }
 
-    public void actualizaRole(final DTO_Role perf)
+    public void actualizaArea(final DTO_Area are)
     {
-        final ServiceInput input = new ServiceInput(perf);
+        final ServiceInput input = new ServiceInput(are);
         input.setAccion(Constantes.V_REGISTER);
 
-        final ServiceOutput output = roleService.execute(input);
+        final ServiceOutput output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "El role se actualizo correctamente", null);
+            alertaInfo("", "El area se actualizo correctamente", null);
         } else {
-            alertaError("Error al actualizar el role", "Error al actualizar el role", null);
+            alertaError("Error al actualizar el area", "Error al actualizar el area", null);
         }
 
         // onLimpiar();
         // mostrarTBloqueos();
     }
 
-    public void eliminaFila(final DTO_Role perf)
+    public void eliminaFila(final DTO_Area are)
         throws UiException
     {
-        final ServiceInput input = new ServiceInput(perf.getId());
-        input.setAccion("delete");
-        final ServiceOutput output = roleService.execute(input);
+        final ServiceInput input = new ServiceInput(are);
+        input.setAccion(Constantes.V_DELETE);
+        final ServiceOutput output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "El role se elimino correctamente", null);
+            alertaInfo("", "El area se elimino correctamente", null);
             onLimpiar();
-            mostrarRoles();
+            mostrarAreas();
         } else {
-            alertaError("Error al eliminar el role", "Error al eliminar el role", null);
-        }
-    }
-
-    private void cargarAreas(final Combobox combo)
-    {
-        final DTO_Area ar = new DTO_Area();
-        ar.setCompanyId(company.getId());
-        final ServiceInput input = new ServiceInput(ar);
-        input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = areaService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Area> listado = output.getLista();
-            for (final DTO_Area area : listado) {
-                final Comboitem item = new Comboitem(area.getName());
-                item.setAttribute("area", area);
-                combo.appendChild(item);
-            }
-        } else {
-            alertaError("Error en la carga de areas",
-                            "error al cargar los areas", null);
-        }
-    }
-
-    private DTO_Area getArea(final Integer codigo)
-    {
-        final DTO_Area area = new DTO_Area();
-        area.setId(codigo);
-        area.setCompanyId(company.getId());
-        final ServiceInput input = new ServiceInput(area);
-        input.setAccion(Constantes.V_GET);
-        final ServiceOutput output = areaService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            return (DTO_Area) output.getObject();
-        } else {
-            return null;
+            alertaError("Error al eliminar el area", "Error al eliminar el area", null);
         }
     }
 
     public void onLimpiar()
     {
-        grdRole.getRows().getChildren().clear();
-        txtDescripcion.setValue("");
-        txtFuncion.setValue("");
-        cmbArea.setSelectedItem(null);
+        grdArea.getRows().getChildren().clear();
+        txtNombre.setValue("");
     }
 
     public void alertaInfo(final String txt,
@@ -426,6 +354,6 @@ public class PO_EAAdministraRole
     @Override
     String[] requiredResources()
     {
-        return new String[] { Constantes.MODULE_ADM_ROLE };
+        return new String[] { Constantes.MODULE_ADM_AREA };
     }
 }

@@ -35,6 +35,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treecell;
@@ -119,7 +120,7 @@ public class PO_EAProductsCreate
     private void buildTradeMarkCombo()
     {
         final DTO_TradeMark marFi = new DTO_TradeMark();
-        marFi.setCompany(company.getId());
+        marFi.setCompanyId(company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
@@ -155,12 +156,16 @@ public class PO_EAProductsCreate
             input.setAccion(Constantes.V_REGISTER);
             final ServiceOutput<DTO_Product> output = productService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"),
+                final int resp = alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"),
                                 Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"), null);
                 this.product = product;
                 this.product.setCategories(new ArrayList<DTO_Category>());
                 this.product.setImages(new ArrayList<DTO_ProductImage>());
-                //limpiarCampos();
+                if (resp == Messagebox.OK) {
+                    desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
+                    ContextLoader.recargar(desktop, Constantes.Form.PRODUCTS_FORM.getForm());
+                    //wEAEP.detach();
+                }
             } else {
                 alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Error.Label"),
                                 Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Error.Label"), null);

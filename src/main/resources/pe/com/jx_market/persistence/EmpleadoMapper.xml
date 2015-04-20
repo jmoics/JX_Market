@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="pe.com.jx_market.persistence.EmpleadoMapper">
@@ -13,7 +13,7 @@
             emp.empleado_n_codigo as codigo,
             emp.usuario_n_codigo as usuario,
             emp.companyid as company,
-            emp.perfil_n_codigo as perfil,
+            emp.roleid as perfil,
             emp.empleado_v_nombre as nombre,
             emp.empleado_d_fechnac as fecNac,
             emp.empleado_v_apellido as apellido,
@@ -40,7 +40,7 @@
     <insert id="insertEmpleado" parameterType="DTO_Empleado">
         INSERT INTO
         T_EMP_EMPLEADO
-            (usuario_n_codigo, companyid, perfil_n_codigo,
+            (usuario_n_codigo, companyid, roleid,
             empleado_v_nombre, empleado_d_fechnac, empleado_v_apellido,
             empleado_v_dni, empleado_v_direccion, empleado_v_telefono,
             empleado_v_celular, empleado_v_email, empleado_v_ciudad,
@@ -52,11 +52,11 @@
             #{celular}, #{email}, #{ciudad},
             #{region}, #{estado})
     </insert>
-    
+
     <update id="updateEmpleado" parameterType="DTO_Empleado">
         UPDATE T_EMP_EMPLEADO
         SET
-            perfil_n_codigo = #{perfil},
+            roleid = #{perfil},
             empleado_v_nombre = #{nombre},
             empleado_d_fechnac = #{fecNac},
             empleado_v_apellido = #{apellido},
@@ -73,7 +73,7 @@
         AND
             companyid = #{company}
     </update>
-    
+
     <delete id="deleteEmpleado" parameterType="DTO_Empleado">
       DELETE FROM
          T_EMP_EMPLEADO

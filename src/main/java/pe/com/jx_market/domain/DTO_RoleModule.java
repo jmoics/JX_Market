@@ -7,7 +7,7 @@ public class DTO_RoleModule
 {
     private Integer roleId;
     private Integer moduleId;
-    private Integer active;
+    private Boolean active;
 
     public Integer getRole()
     {
@@ -29,12 +29,12 @@ public class DTO_RoleModule
         this.moduleId = moduleId;
     }
 
-    public Integer getActive()
+    public Boolean getActive()
     {
         return active;
     }
 
-    public void setActive(final Integer active)
+    public void setActive(final Boolean active)
     {
         this.active = active;
     }

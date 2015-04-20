@@ -137,7 +137,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
             final Integer codEmp = (Integer) output.getObject();
             final DTO_Area area = new DTO_Area();
             area.setCompanyId(codEmp);
-            area.setName("Administrator");
+            area.setAreaName("Administrator");
             input = new ServiceInput();
             input.setAccion(Constantes.V_REGISTER);
             input.setObject(area);
@@ -146,9 +146,9 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
                 final Integer codArea = (Integer) output.getObject();
                 final DTO_Role perf = new DTO_Role();
                 perf.setAreaId(codArea);
-                perf.setDescription("Administration");
+                perf.setRoleDescription("Administration");
                 perf.setCompanyId(codEmp);
-                perf.setName("Administrator");
+                perf.setRoleName("Administrator");
                 input = new ServiceInput();
                 input.setAccion(Constantes.V_REGISTER);
                 input.setObject(perf);

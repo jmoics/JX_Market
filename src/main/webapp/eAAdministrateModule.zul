@@ -4,14 +4,14 @@
     <div align="center">
         <html:p />
         <window width="700px" id="eaAM"
-            use="pe.com.jx_market.controller.PO_EAAdministraModule">
+            use="pe.com.jx_market.controller.PO_EAAdministrateModule">
             <div align="center">
                 <vbox width="700px">
                     <html:p />
                     <div align="center">
                         <label zclass="z-south-header"
                             style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                            Administrador de Modules
+                            Administración de Modules
                         </label>
                         <html:p />
                         <groupbox mold="3d" width="620px">
