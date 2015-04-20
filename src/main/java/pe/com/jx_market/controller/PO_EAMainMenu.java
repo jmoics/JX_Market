@@ -44,9 +44,9 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
         PO_EAMainMenu.MENU_MAP.put("id_option_prod_inventory","");
         PO_EAMainMenu.MENU_MAP.put("id_option_adm_areas", "eAAdministraArea.zul");
         PO_EAMainMenu.MENU_MAP.put("id_option_adm_emp", "eAAdministraEmpleado.zul");
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perf", "eAAdministraPerfil.zul");
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_mod", "eAAdministraModulo.zul");
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perfi_modulo", "eAAdministraPerfilModulo.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perf", "eAAdministraRole.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_mod", "eAAdministraModule.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perfi_module", "eAAdministraRoleModule.zul");
         PO_EAMainMenu.MENU_MAP.put("id_option_chgpass", "eACambiarContrasenia.zul");
     }
 
@@ -94,29 +94,29 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
                             }
                       });
 
-        setVisibilityByResource(comp, "id_option_prod_products", Constantes.MODULO_PROD_PRODUCT, empleado);
-        setVisibilityByResource(comp, "id_option_prod_categ", Constantes.MODULO_PROD_CATEGORY, empleado);
-        setVisibilityByResource(comp, "id_option_prod_tradeMark", Constantes.MODULO_PROD_TRADEMARK, empleado);
-        setVisibilityByResource(comp, "id_option_prod_amount", Constantes.MODULO_PROD_AMOUNT, empleado);
-        setVisibilityByResource(comp, "id_option_prod_inventory", Constantes.MODULO_PROD_INVENTORY, empleado);
-        setVisibilityByResource(comp, "id_option_administracion", Constantes.MODULO_ADMINISTRACION, empleado);
-        setVisibilityByResource(comp, "id_option_adm_areas", Constantes.MODULO_ADM_AREA, empleado);
-        setVisibilityByResource(comp, "id_option_adm_emp", Constantes.MODULO_ADM_EMPLEADO, empleado);
-        setVisibilityByResource(comp, "id_option_adm_mod", Constantes.MODULO_ADM_MODULO, empleado);
-        setVisibilityByResource(comp, "id_option_adm_perf", Constantes.MODULO_ADM_PERFIL, empleado);
-        setVisibilityByResource(comp, "id_option_adm_perfi_modulo", Constantes.MODULO_ADM_PERFILMODULO, empleado);
-        setVisibilityByResource(comp, "id_option_chgpass", Constantes.MODULO_CHANGE_PASS, empleado);
+        setVisibilityByResource(comp, "id_option_prod_products", Constantes.MODULE_PROD_PRODUCT, empleado);
+        setVisibilityByResource(comp, "id_option_prod_categ", Constantes.MODULE_PROD_CATEGORY, empleado);
+        setVisibilityByResource(comp, "id_option_prod_tradeMark", Constantes.MODULE_PROD_TRADEMARK, empleado);
+        setVisibilityByResource(comp, "id_option_prod_amount", Constantes.MODULE_PROD_AMOUNT, empleado);
+        setVisibilityByResource(comp, "id_option_prod_inventory", Constantes.MODULE_PROD_INVENTORY, empleado);
+        setVisibilityByResource(comp, "id_option_administracion", Constantes.MODULE_ADMINISTRACION, empleado);
+        setVisibilityByResource(comp, "id_option_adm_areas", Constantes.MODULE_ADM_AREA, empleado);
+        setVisibilityByResource(comp, "id_option_adm_emp", Constantes.MODULE_ADM_EMPLEADO, empleado);
+        setVisibilityByResource(comp, "id_option_adm_mod", Constantes.MODULE_ADM_MODULE, empleado);
+        setVisibilityByResource(comp, "id_option_adm_perf", Constantes.MODULE_ADM_ROLE, empleado);
+        setVisibilityByResource(comp, "id_option_adm_perfi_module", Constantes.MODULE_ADM_ROLEMODULE, empleado);
+        setVisibilityByResource(comp, "id_option_chgpass", Constantes.MODULE_CHANGE_PASS, empleado);
     }
 
     private void setVisibilityByResource(final Borderlayout comp,
                                          final String widget,
-                                         final String modulo,
+                                         final String module,
                                          final DTO_Empleado empleado)
     {
 
         final ServiceInput<DTO_Empleado> input = new ServiceInput<DTO_Empleado>();
         input.addMapPair("empleado", empleado);
-        input.addMapPair("modulo", modulo);
+        input.addMapPair("module", module);
         final ServiceOutput<DTO_Empleado> output = autorizacionService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
             comp.getFellow(widget).setVisible(false);
@@ -127,7 +127,7 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
     @Listen("onClick = #id_option_prod_products, #id_option_prod_categ, #id_option_prod_amount, "
                     + "#id_option_prod_inventory, #id_option_prod_tradeMark, "
                     + "#id_option_adm_areas, #id_option_adm_emp, #id_option_adm_perf, "
-                    + "#id_option_adm_mod, #id_option_adm_perfi_modulo, #id_option_chgpass, "
+                    + "#id_option_adm_mod, #id_option_adm_perfi_module, #id_option_chgpass, "
                     + "#id_option_categ")
     public void incluir(final MouseEvent event)
     {

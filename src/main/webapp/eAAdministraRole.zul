@@ -4,21 +4,21 @@
     <div align="center">
         <html:p />
         <window width="700px" id="eaAP"
-            use="pe.com.jx_market.controller.PO_EAAdministraPerfil">
+            use="pe.com.jx_market.controller.PO_EAAdministraRole">
             <div align="center">
                 <vbox width="700px">
                     <html:p />
                     <div align="center">
                         <label zclass="z-south-header"
                             style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                            Administrador de Perfiles
+                            Administrador de Roles
                         </label>
                         <html:p />
                         <groupbox mold="3d" width="650px">
-                            <caption label="Perfiles Registrados" />
+                            <caption label="Roles Registrados" />
                             <div align="center">
                                 <html:p />
-                                <grid id="grdPerfil" width="600px">
+                                <grid id="grdRole" width="600px">
                                     <columns>
                                        <column label="Area" width="120px" />
                                        <column label="Funcion" width="130px" />
@@ -33,7 +33,7 @@
 
                                 <groupbox mold="3d" width="420px"
                                     id="grpNuevo">
-                                    <caption label="Nuevo Perfil" />
+                                    <caption label="Nuevo Role" />
                                     <div width="400px" align="center">
                                         <grid fixedLayout="true" width="380px">
                                            <rows>
@@ -53,7 +53,7 @@
                                         </grid>
                                         <html:p />
                                         <div align="center">
-                                            <button label="Crear" onClick="eaAP.crearNuevoPerfil()">
+                                            <button label="Crear" onClick="eaAP.crearNuevoRole()">
                                             </button>
                                         </div>
                                     </div>

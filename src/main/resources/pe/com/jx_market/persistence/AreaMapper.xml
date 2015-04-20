@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="pe.com.jx_market.persistence.AreaMapper">
@@ -10,55 +10,52 @@
 
     <select id="getAreas" parameterType="DTO_Area" resultType="DTO_Area">
         SELECT
-            area.area_n_codigo as codigo,
-            area.area_v_nombre as nombre,
-            area.companyid as company
+            area.id as id,
+            area.name as name,
+            area.companyid as companyId
         FROM
             T_EMP_AREA area
         WHERE
-            area.companyid = #{company}
-    </select>
-    
-    <select id="getAreaXCodigo" parameterType="DTO_Area" resultType="DTO_Area">
-        SELECT
-            area.area_n_codigo as codigo,
-            area.area_v_nombre as nombre,
-            area.companyid as company
-        FROM
-            T_EMP_AREA area
-        WHERE
-            area.companyid = #{company}
-        AND
-            area.area_n_codigo = #{codigo}
+            area.companyid = #{companyId}
     </select>
 
-    <insert id="insertArea" parameterType="DTO_Area">
+    <select id="getAreaXCodigo" parameterType="DTO_Area" resultType="DTO_Area">
+        SELECT
+            area.id as id,
+            area.name as name,
+            area.companyid as companyId
+        FROM
+            T_EMP_AREA area
+        WHERE
+            area.companyid = #{companyId}
+        AND
+            area.id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertArea" parameterType="DTO_Area" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
         INSERT INTO T_EMP_AREA
-            (area_v_nombre, companyid)
+            (name, companyid)
         VALUES
-            (#{nombre}, #{company})
-        <selectKey keyProperty="codigo" resultType="int" order="AFTER"> 
-           select LAST_INSERT_ID() as value
-        </selectKey>
+            (#{name}, #{companyId})
     </insert>
-    
+
     <update id="updateArea" parameterType="DTO_Area">
         UPDATE T_EMP_AREA
         SET
-            area_v_nombre = #{nombre}
+            name = #{name}
         WHERE
-            area_n_codigo = #{codigo}
+            id = #{id}
         AND
-            companyid = #{company}
+            companyid = #{companyId}
     </update>
-    
+
     <delete id="deleteArea" parameterType="DTO_Area">
       DELETE FROM
          T_EMP_AREA
       WHERE
-            area_n_codigo = #{codigo}
+            id = #{id}
         AND
-            companyid = #{company}
+            companyid = #{companyId}
     </delete>
 
 </mapper>

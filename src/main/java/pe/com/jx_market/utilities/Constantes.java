@@ -103,22 +103,22 @@ public class Constantes {
     public static final String RUTA_IMAGENES_WINDOWS = "C:/imagenesJXMarket";
 
     /*
-     * Modulos para accesos
+     * Modules para accesos
      */
-    public static final String MODULO_PRODUCTS = "MODULO_PRODUCTS";
-    public static final String MODULO_PROD_CATEGORY = "MODULO_PROD_CATEGORY";
-    public static final String MODULO_PROD_TRADEMARK = "MODULO_PROD_TRADEMARK";
-    public static final String MODULO_PROD_PRODUCT = "MODULO_PROD_PRODUCT";
-    public static final String MODULO_PROD_AMOUNT = "MODULO_PROD_AMOUNUT";
-    public static final String MODULO_PROD_INVENTORY = "MODULO_PROD_INVENTORY";
+    public static final String MODULE_PRODUCTS = "MODULE_PRODUCTS";
+    public static final String MODULE_PROD_CATEGORY = "MODULE_PROD_CATEGORY";
+    public static final String MODULE_PROD_TRADEMARK = "MODULE_PROD_TRADEMARK";
+    public static final String MODULE_PROD_PRODUCT = "MODULE_PROD_PRODUCT";
+    public static final String MODULE_PROD_AMOUNT = "MODULE_PROD_AMOUNUT";
+    public static final String MODULE_PROD_INVENTORY = "MODULE_PROD_INVENTORY";
 
-    public static final String MODULO_ADMINISTRACION = "MODULO_ADMINISTRACION";
-    public static final String MODULO_ADM_PERFIL = "MODULO_ADM_PERFIL";
-    public static final String MODULO_ADM_AREA = "MODULO_ADM_AREA";
-    public static final String MODULO_ADM_EMPLEADO = "MODULO_ADM_EMPLEADO";
-    public static final String MODULO_ADM_MODULO = "MODULO_ADM_MODULO";
-    public static final String MODULO_ADM_PERFILMODULO = "MODULO_ADM_PERFILMODULO";
-    public static final String MODULO_CHANGE_PASS = "MODULO_CHANGE_PASS";
+    public static final String MODULE_ADMINISTRACION = "MODULE_ADMINISTRACION";
+    public static final String MODULE_ADM_ROLE = "MODULE_ADM_ROLE";
+    public static final String MODULE_ADM_AREA = "MODULE_ADM_AREA";
+    public static final String MODULE_ADM_EMPLEADO = "MODULE_ADM_EMPLEADO";
+    public static final String MODULE_ADM_MODULE = "MODULE_ADM_MODULE";
+    public static final String MODULE_ADM_ROLEMODULE = "MODULE_ADM_ROLEMODULE";
+    public static final String MODULE_CHANGE_PASS = "MODULE_CHANGE_PASS";
 
     /*VALIDACION DE CARACTERES*/
     public static final String VALID_TELEFONO = "^[0-9]*$";

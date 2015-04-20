@@ -5,9 +5,9 @@
 INSERT INTO T_COM_COMPANY (BUSINESSNAME, ACTIVE, DOCNUMBER, DOMAIN)
     VALUES ('JX_Market',1,'44563458976','jxmarket'),('Metro',1,'35346576899','metro'),('moxter.net',1,'56452345346','moxternet');
 
-INSERT INTO T_EMP_AREA (COMPANYID, AREA_V_NOMBRE) VALUES (2,'Gerenciaa'),(2,'Ventaas'),(2,'Productos'),(2,'Recursos Humanos'),(1,'Administration');
+INSERT INTO T_COM_AREA (COMPANYID, NAME) VALUES (2,'Gerenciaa'),(2,'Ventaas'),(2,'Productos'),(2,'Recursos Humanos'),(1,'Administration');
 
-INSERT INTO T_SEG_PERFIL (COMPANYID, AREA_N_CODIGO, PERFIL_V_FUNCION, PERFIL_V_DESCRIPCION)
+INSERT INTO T_SEG_ROLE (COMPANYID, AREAID, NAME, DESCRIPTION)
          VALUES (2,1,'Gerente','Administracion Generaal'),
                 (2,2,'Vendedor','Encargador de realizar las ventas'),
                 (2,3,'Almacenero','Encargado de la logistica'),
@@ -23,25 +23,25 @@ INSERT INTO T_SEG_USUARIO (COMPANYID, USUARIO_V_CONTRASENA, USUARIO_V_USERNAME)
                  (1,'e10adc3949ba59abbe56e057f20f883e','jmoics@gmail.com'),
                  (1,'e10adc3949ba59abbe56e057f20f883e','jacky@gmail.com');
 
-INSERT INTO T_SEG_MODULO (COMPANYID, MODULO_V_DESC, MODULO_V_RECURSO) VALUES (2,'Modulo para administracion de empleados','MODULO_ADM_EMPLEADO'),
-                (2,'Modulo para productos','MODULO_PRODUCTS'),
-                (2,'Modulo para gestion de productos','MODULO_PROD_PRODUCT'),
-                (2,'Modulo para gestion de categories','MODULO_PROD_CATEGORY'),
-                (2,'Modulo para gestion de inventario','MODULO_PROD_INVENTORY'),
-                (2,'Modulo para gestion de montos','MODULO_PROD_AMOUNT'),
-                (2,'Modulo para administracion','MODULO_ADMINISTRACION'),
-                (2,'Modulo para administracion de perfiles','MODULO_ADM_PERFIL'),
-                (2,'modulo para administracion de areas','MODULO_ADM_AREA'),
-                (2,'Modulo para administracion de modulos','MODULO_ADM_MODULO'),
-                (2,'Modulo para asignacion de modulos a perfiles','MODULO_ADM_PERFILMODULO'),
-                (2,'Modulo para administrar la contrasena','MODULO_CHANGE_PASS');
+INSERT INTO T_SEG_MODULE (COMPANYID, DESCRIPTION, RESOURCE) VALUES (2,'Module para administracion de empleados','MODULE_ADM_EMPLEADO'),
+                (2,'Module para productos','MODULE_PRODUCTS'),
+                (2,'Module para gestion de productos','MODULE_PROD_PRODUCT'),
+                (2,'Module para gestion de categories','MODULE_PROD_CATEGORY'),
+                (2,'Module para gestion de inventario','MODULE_PROD_INVENTORY'),
+                (2,'Module para gestion de montos','MODULE_PROD_AMOUNT'),
+                (2,'Module para administracion','MODULE_ADMINISTRACION'),
+                (2,'Module para administracion de roles','MODULE_ADM_ROLE'),
+                (2,'module para administracion de areas','MODULE_ADM_AREA'),
+                (2,'Module para administracion de modules','MODULE_ADM_MODULE'),
+                (2,'Module para asignacion de modules a roles','MODULE_ADM_ROLEMODULE'),
+                (2,'Module para administrar la contrasena','MODULE_CHANGE_PASS');
 
-INSERT INTO T_SEG_MOD_DET (PERFIL_N_CODIGO, MODULO_N_CODIGO, MODDET_N_HABILITADO)
+INSERT INTO T_SEG_ROLE2MODULE (ROLEID, MODULEID, ACTIVE)
          VALUES (1,1,NULL),(1,2,NULL),(1,3,NULL),(1,4,NULL),(1,5,NULL),(1,6,NULL),(1,7,NULL),(1,8,NULL),(1,9,NULL),(1,10,NULL),(1,11,NULL),
                 (2,2,NULL),(2,4,NULL),(3,2,NULL),(3,3,NULL),(3,4,NULL),(3,5,NULL),(3,11,NULL),(4,1,NULL),(4,6,NULL),(4,7,NULL),(4,11,NULL),
                 (5,2,NULL),(5,4,NULL),(5,5,NULL),(5,6,NULL),(5,7,NULL),(5,10,NULL),(5,11,NULL);
 
-INSERT INTO T_EMP_EMPLEADO (PERFIL_N_CODIGO, USUARIO_N_CODIGO, COMPANYID, EMPLEADO_V_NOMBRE, EMPLEADO_V_APELLIDO,  EMPLEADO_V_DNI, EMPLEADO_V_DIRECCION, EMPLEADO_V_TELEFONO, EMPLEADO_V_CELULAR, EMPLEADO_V_EMAIL, EMPLEADO_V_CIUDAD, EMPLEADO_V_REGION, EMPLEADO_D_FECHNAC, EMPLEADO_N_ACTIVO)
+INSERT INTO T_EMP_EMPLEADO (ROLEID, USUARIO_N_CODIGO, COMPANYID, EMPLEADO_V_NOMBRE, EMPLEADO_V_APELLIDO,  EMPLEADO_V_DNI, EMPLEADO_V_DIRECCION, EMPLEADO_V_TELEFONO, EMPLEADO_V_CELULAR, EMPLEADO_V_EMAIL, EMPLEADO_V_CIUDAD, EMPLEADO_V_REGION, EMPLEADO_D_FECHNAC, EMPLEADO_N_ACTIVO)
            VALUES (1,4,2,'Jorge','Cueva','44128463','Mi casa','4823262','945190242','jmoics@gmail.com','Lima','Lima','1987-12-01',1),
                   (3,2,2,'jorge','cueva samames','44128463','mi house','4563423','987755443','','lima','lima',NULL,1);
 

@@ -27,7 +27,7 @@
                         <column label="Nombres" />
                         <column label="Apellidos" />
                         <column label="Usuario" />
-                        <column label="Perfil" />
+                        <column label="Role" />
                         <column label="Ver Detalles" width="80px" />
                         <column label="Editar" width="60px" />
                         <column label="Eliminar" width="60px" />
@@ -65,8 +65,8 @@
                               <label id="lblDNI" value="" />
                            </row>
                            <row>
-                              <label value="Perfil" />
-                              <label id="lblPerfil" value="" />
+                              <label value="Role" />
+                              <label id="lblRole" value="" />
                            </row>
                            <row>
                               <label value="Teléfonos" />
@@ -138,9 +138,9 @@
                               </row>
                               <row>
                                  <label style="font-size:small">
-                                    (*) Perfil:
+                                    (*) Role:
                                  </label>
-                                 <combobox id="cmbPerfil" readonly="true"
+                                 <combobox id="cmbRole" readonly="true"
                                     width="150px">
                                  </combobox>
                               </row>

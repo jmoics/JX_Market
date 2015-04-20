@@ -10,16 +10,16 @@
     <select id="getCategories" parameterType="DTO_Category" resultType="DTO_Category">
         SELECT
         cat.id as id,
-        cat.companyid as company,
+        cat.companyid as companyId,
         cat.name as categoryName,
         cat.active as active,
         cat.parentid as categoryParentId
         FROM
         T_BUS_CATEGORY cat
-        <if test="company != null">
+        <if test="companyId != null">
             WHERE
-            cat.companyId = 1 OR
-            cat.companyId = #{company}
+            cat.companyid = 1 OR
+            cat.companyid = #{companyId}
         </if>
         ORDER BY cat.name
     </select>
@@ -27,7 +27,7 @@
     <select id="getCategory4Id" parameterType="DTO_Category" resultType="DTO_Category">
         SELECT
         cat.id as id,
-        cat.companyId as company,
+        cat.companyid as companyId,
         cat.name as categoryName,
         cat.active as active
         FROM
@@ -40,7 +40,7 @@
         INSERT INTO T_BUS_CATEGORY
         (companyId,name,parentid)
         VALUES
-        (#{company},#{categoryName},#{categoryParentId, jdbcType=INTEGER})
+        (#{companyId},#{categoryName},#{categoryParentId, jdbcType=INTEGER})
     </insert>
 
     <update id="updateCategory" parameterType="DTO_Category">
@@ -52,7 +52,7 @@
         WHERE
         id = #{id}
         AND
-        companyId = #{company}
+        companyId = #{companyId}
     </update>
 
     <delete id="deleteCategory" parameterType="DTO_Category">

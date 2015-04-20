@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.RoleModuleMapper">
+
+  <cache />
+
+    <!-- MANTENIMIENTOD DE MODULES POR ROLE -->
+
+    <select id="getModules4Role" parameterType="DTO_Role" resultType="Integer">
+        SELECT
+            moduleid
+        FROM
+            T_SEG_ROLE2MODULE
+        WHERE
+            roleid = #{codigo}
+    </select>
+
+    <select id="getModuleString4Role" parameterType="DTO_Role" resultType="String">
+        SELECT
+            modu.resource
+        FROM
+            T_SEG_ROLE2MODULE modDet,
+            T_SEG_MODULE modu
+        WHERE
+            modDet.moduleid = modu.moduleid
+        AND
+            modDet.roleid = #{id}
+    </select>
+
+    <insert id="insertModuleRole" parameterType="DTO_RoleModule">
+        INSERT INTO
+            T_SEG_ROLE2MODULE
+                (roleid, moduleid, active)
+            VALUES
+                (#{perfil}, #{module}, #{active, jdbcType=INTEGER})
+
+    </insert>
+
+    <delete id="deleteModuleRole" parameterType="DTO_Role">
+        DELETE FROM
+            T_SEG_ROLE2MODULE
+        WHERE
+            roleid = #{id}
+    </delete>
+
+</mapper>

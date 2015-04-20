@@ -24,9 +24,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
-import pe.com.jx_market.domain.DTO_Empleado;
 import pe.com.jx_market.domain.DTO_Company;
-import pe.com.jx_market.domain.DTO_Perfil;
+import pe.com.jx_market.domain.DTO_Empleado;
+import pe.com.jx_market.domain.DTO_Role;
 import pe.com.jx_market.domain.DTO_Usuario;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -41,15 +41,15 @@ public class PO_EAAdministraEmpleado
     private Grid grdEmp;
     private Textbox txtUsuario, txtPass, txtNombre, txtApellidos, txtDNI, txtTelefono, txtCelular, txtMail,
                     txtDireccion, txtCiudad, txtRegion;
-    private Label lblUsuario, lblNombre, lblApellidos, lblDNI, lblPerfil, lblTelefono, lblMail, lblCiudad, lblEstado;
+    private Label lblUsuario, lblNombre, lblApellidos, lblDNI, lblRole, lblTelefono, lblMail, lblCiudad, lblEstado;
     private Datebox datNac;
     private Button btnInfo, btnCancel, btnCrear;
     private Caption capNombre, capInfo;
     private Groupbox grpEmpleados;
     private Popup popDetails;
-    private Combobox cmbPerfil, cmbEstado;
+    private Combobox cmbRole, cmbEstado;
     private DTO_Company company;
-    private BusinessService empleadoService, perfilService, usuarioService;
+    private BusinessService empleadoService, roleService, usuarioService;
 
     @Override
     public void realOnCreate()
@@ -69,13 +69,13 @@ public class PO_EAAdministraEmpleado
         lblUsuario = (Label) getFellow("lblUsuario");
         lblNombre = (Label) getFellow("lblNombre");
         lblApellidos = (Label) getFellow("lblApellidos");
-        lblPerfil = (Label) getFellow("lblPerfil");
+        lblRole = (Label) getFellow("lblRole");
         lblDNI = (Label) getFellow("lblDNI");
         lblTelefono = (Label) getFellow("lblTelefono");
         lblMail = (Label) getFellow("lblMail");
         lblCiudad = (Label) getFellow("lblCiudad");
         lblEstado = (Label) getFellow("lblEstado");
-        cmbPerfil = (Combobox) getFellow("cmbPerfil");
+        cmbRole = (Combobox) getFellow("cmbRole");
         cmbEstado = (Combobox) getFellow("cmbEstado");
         btnInfo = (Button) getFellow("btnInfo");
         btnCancel = (Button) getFellow("btnCancel");
@@ -85,11 +85,11 @@ public class PO_EAAdministraEmpleado
         capInfo = (Caption) getFellow("capInfo");
         popDetails = (Popup) getFellow("popDetails");
         empleadoService = ContextLoader.getService(this, "empleadoService");
-        perfilService = ContextLoader.getService(this, "perfilService");
+        roleService = ContextLoader.getService(this, "roleService");
         usuarioService = ContextLoader.getService(this, "usuarioService");
 
         company = (DTO_Company) getDesktop().getSession().getAttribute("company");
-        cargarPerfiles();
+        cargarRoles();
         CargarTabla();
     }
 
@@ -118,7 +118,7 @@ public class PO_EAAdministraEmpleado
                        final String telefono,
                        final String mail,
                        final Integer estado,
-                       final Integer perfil,
+                       final Integer role,
                        final String celular,
                        final String ciudad,
                        final String direccion,
@@ -131,7 +131,7 @@ public class PO_EAAdministraEmpleado
         empleado.setTelefono(telefono);
         empleado.setEmail(mail);
         empleado.setEstado(estado);
-        empleado.setPerfil(perfil);
+        empleado.setRole(role);
         empleado.setCompany(company.getId());
         empleado.setCelular(celular);
         empleado.setCiudad(ciudad);
@@ -181,13 +181,13 @@ public class PO_EAAdministraEmpleado
     {
         if (!txtUsuario.getValue().equals("") && !txtNombre.getValue().equals("") &&
                         !txtApellidos.getValue().equals("") && !txtDNI.getValue().equals("") &&
-                        cmbPerfil.getSelectedItem() != null && cmbEstado.getSelectedItem() != null) {
+                        cmbRole.getSelectedItem() != null && cmbEstado.getSelectedItem() != null) {
 
             editar((DTO_Empleado) txtUsuario.getAttribute("usuario"), txtUsuario.getValue(),
                             txtPass.getValue(), txtNombre.getValue(), txtApellidos.getValue(),
                             txtDNI.getValue(), txtTelefono.getValue(), txtMail.getValue(),
                             Integer.parseInt((String)cmbEstado.getSelectedItem().getValue()),
-                            ((DTO_Perfil) cmbPerfil.getSelectedItem().getAttribute("perfil")).getCodigo(),
+                            ((DTO_Role) cmbRole.getSelectedItem().getAttribute("role")).getId(),
                             txtCelular.getValue(), txtCiudad.getValue(), txtDireccion.getValue(), txtRegion.getValue());
             CargarTabla();
             limpiarCrear();
@@ -205,11 +205,11 @@ public class PO_EAAdministraEmpleado
     {
         if (!txtPass.getValue().equals("") && !txtUsuario.getValue().equals("") && !txtNombre.getValue().equals("") &&
                         !txtApellidos.getValue().equals("") && !txtDNI.getValue().equals("") &&
-                        cmbPerfil.getSelectedItem() != null && cmbEstado.getSelectedItem() != null) {
+                        cmbRole.getSelectedItem() != null && cmbEstado.getSelectedItem() != null) {
             editar(null, txtUsuario.getValue(), txtPass.getValue(), txtNombre.getValue(), txtApellidos.getValue(),
                             txtDNI.getValue(), txtTelefono.getValue(), txtMail.getValue(),
                             Integer.parseInt((String)cmbEstado.getSelectedItem().getValue()),
-                            ((DTO_Perfil) cmbPerfil.getSelectedItem().getAttribute("perfil")).getCodigo(),
+                            ((DTO_Role) cmbRole.getSelectedItem().getAttribute("role")).getId(),
                             txtCelular.getValue(), txtCiudad.getValue(), txtDireccion.getValue(), txtRegion.getValue());
             CargarTabla();
             limpiarCrear();
@@ -227,7 +227,7 @@ public class PO_EAAdministraEmpleado
         txtUsuario.setValue("");
         txtPass.setValue("");
         cmbEstado.setSelectedItem(null);
-        cmbPerfil.setSelectedItem(null);
+        cmbRole.setSelectedItem(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -249,11 +249,11 @@ public class PO_EAAdministraEmpleado
         txtMail.setValue(empleado.getEmail());
         txtPass.setValue("");
 
-        final List<Comboitem> perfiles = cmbPerfil.getItems();
-        for(final Comboitem item : perfiles) {
-            final DTO_Perfil perfil = (DTO_Perfil) item.getAttribute("perfil");
-            if(perfil.getCodigo().equals(empleado.getPerfil())) {
-                cmbPerfil.setSelectedItem(item);
+        final List<Comboitem> roles = cmbRole.getItems();
+        for(final Comboitem item : roles) {
+            final DTO_Role role = (DTO_Role) item.getAttribute("role");
+            if(role.getId().equals(empleado.getRole())) {
+                cmbRole.setSelectedItem(item);
             }
         }
         final List<Comboitem> estados = cmbEstado.getItems();
@@ -270,7 +270,7 @@ public class PO_EAAdministraEmpleado
         lblUsuario.setValue((getUsuario(empleado.getUsuario())).getUsername());
         lblNombre.setValue(empleado.getNombre());
         lblApellidos.setValue(empleado.getApellido());
-        lblPerfil.setValue((getPerfil(empleado.getPerfil()).getFuncion()));
+        lblRole.setValue((getRole(empleado.getRole()).getName()));
         lblCiudad.setValue(empleado.getCiudad());
         lblDNI.setValue(empleado.getDni());
         final String estado = Constantes.ST_ACTIVO.equals(empleado.getEstado()) ? Constantes.STATUS_ACTIVO
@@ -303,7 +303,7 @@ public class PO_EAAdministraEmpleado
                 fila.appendChild(new Label(uOut.getNombre()));
                 fila.appendChild(new Label(uOut.getApellido()));
                 fila.appendChild(new Label(getUsuario(uOut.getUsuario()).getUsername()));
-                fila.appendChild(new Label((getPerfil(uOut.getPerfil())).getFuncion()));
+                fila.appendChild(new Label((getRole(uOut.getRole())).getName()));
 
                 final Image ImDetalles = new Image("media/details.png");
                 ImDetalles.setStyle("cursor:pointer");
@@ -425,38 +425,38 @@ public class PO_EAAdministraEmpleado
         }
     }
 
-    private DTO_Perfil getPerfil(final Integer codigo)
+    private DTO_Role getRole(final Integer codigo)
     {
-        final DTO_Perfil perfil = new DTO_Perfil();
-        perfil.setCodigo(codigo);
-        perfil.setCompany(company.getId());
-        final ServiceInput input = new ServiceInput(perfil);
+        final DTO_Role role = new DTO_Role();
+        role.setId(codigo);
+        role.setCompanyId(company.getId());
+        final ServiceInput input = new ServiceInput(role);
         input.setAccion(Constantes.V_GET);
-        final ServiceOutput output = perfilService.execute(input);
+        final ServiceOutput output = roleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            return (DTO_Perfil) output.getObject();
+            return (DTO_Role) output.getObject();
         } else {
             return null;
         }
     }
 
-    public void cargarPerfiles()
+    public void cargarRoles()
     {
-        final DTO_Perfil per = new DTO_Perfil();
-        per.setCompany(company.getId());
+        final DTO_Role per = new DTO_Role();
+        per.setCompanyId(company.getId());
         final ServiceInput input = new ServiceInput(per);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = perfilService.execute(input);
+        final ServiceOutput output = roleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Perfil> listado = output.getLista();
-            for (final DTO_Perfil perfil : listado) {
-                final Comboitem item = new Comboitem(perfil.getFuncion());
-                item.setAttribute("perfil", perfil);
-                cmbPerfil.appendChild(item);
+            final List<DTO_Role> listado = output.getLista();
+            for (final DTO_Role role : listado) {
+                final Comboitem item = new Comboitem(role.getName());
+                item.setAttribute("role", role);
+                cmbRole.appendChild(item);
             }
         } else {
-            alertaError("Error en la carga de perfiles",
-                            "error al cargar los perfiles", null);
+            alertaError("Error en la carga de roles",
+                            "error al cargar los roles", null);
         }
     }
 
@@ -491,6 +491,6 @@ public class PO_EAAdministraEmpleado
     @Override
     String[] requiredResources()
     {
-        return new String[]{Constantes.MODULO_ADM_EMPLEADO };
+        return new String[]{Constantes.MODULE_ADM_EMPLEADO };
     }
 }

@@ -15,7 +15,7 @@ public class DTO_Category implements Serializable
     private static final long serialVersionUID = 7736453145474958927L;
 
     private Integer id;
-    private Integer company;
+    private Integer companyId;
     private String categoryName;
     private Integer categoryParentId;
     private Boolean active;
@@ -42,13 +42,13 @@ public class DTO_Category implements Serializable
     {
         this.id = id;
     }
-    public Integer getCompany()
+    public Integer getCompanyId()
     {
-        return company;
+        return companyId;
     }
-    public void setCompany(final Integer company)
+    public void setCompanyId(final Integer companyId)
     {
-        this.company = company;
+        this.companyId = companyId;
     }
     public String getCategoryName()
     {

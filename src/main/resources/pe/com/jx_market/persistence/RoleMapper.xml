@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.RoleMapper">
+
+  <cache />
+
+    <!-- MANTENIMIENTO DE ROLES -->
+
+    <select id="getRoles" parameterType="DTO_Role" resultType="DTO_Role">
+        SELECT
+            rol.id as id,
+            rol.name as name,
+            rol.description as description,
+            rol.areaid as areaId,
+            rol.companyid as companyId
+        FROM
+            T_SEG_ROLE rol
+        WHERE
+            rol.companyid = #{company}
+    </select>
+
+    <select id="getRoleXId" parameterType="DTO_Role" resultType="DTO_Role">
+        SELECT
+            rol.id as id,
+            rol.name as name,
+            rol.description as descripcion,
+            rol.areaid as areaId,
+            rol.companyid as companyId
+        FROM
+            T_SEG_ROLE rol
+        WHERE
+            rol.companyid = #{companyId}
+        AND
+            rol.id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertRole" parameterType="DTO_Role" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+        INSERT INTO T_SEG_ROLE
+            (name, description, areaid, companyid)
+        VALUES
+            (#{name}, #{descripcion}, #{areaId}, #{companyId})
+    </insert>
+
+    <update id="updateRole" parameterType="DTO_Role">
+        UPDATE T_SEG_ROLE
+        SET
+            name = #{name},
+            description = #{descripcion},
+            areaid = #{areaId}
+        WHERE
+            id = #{id}
+        AND
+            companyid = #{companyId}
+    </update>
+
+    <delete id="deleteRole" parameterType="DTO_Role">
+      DELETE FROM
+         T_SEG_ROLE
+      WHERE
+            id = #{id}
+        AND
+            companyid = #{companyId}
+    </delete>
+
+</mapper>

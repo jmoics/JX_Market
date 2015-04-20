@@ -20,22 +20,22 @@ import org.zkoss.zul.Textbox;
 
 import pe.com.jx_market.domain.DTO_Area;
 import pe.com.jx_market.domain.DTO_Company;
-import pe.com.jx_market.domain.DTO_Perfil;
+import pe.com.jx_market.domain.DTO_Role;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-public class PO_EAAdministraPerfil
+public class PO_EAAdministraRole
     extends SecuredWindow
 {
-    static Log logger = LogFactory.getLog(PO_EAAdministraPerfil.class);
+    static Log logger = LogFactory.getLog(PO_EAAdministraRole.class);
     private Textbox txtFuncion, txtDescripcion;
     private Combobox cmbArea;
     private Groupbox grpNuevo;
-    private Grid grdPerfil;
+    private Grid grdRole;
     private DTO_Company company;
-    private BusinessService areaService, perfilService;
+    private BusinessService areaService, roleService;
 
     @Override
     public void realOnCreate()
@@ -44,78 +44,78 @@ public class PO_EAAdministraPerfil
         txtDescripcion = (Textbox) getFellow("txtDescripcion");
         cmbArea = (Combobox) getFellow("cmbArea");
         grpNuevo = (Groupbox) getFellow("grpNuevo");
-        grdPerfil = (Grid) getFellow("grdPerfil");
+        grdRole = (Grid) getFellow("grdRole");
         areaService = ContextLoader.getService(this, "areaService");
-        perfilService = ContextLoader.getService(this, "perfilService");
+        roleService = ContextLoader.getService(this, "roleService");
 
         company = (DTO_Company) getDesktop().getSession().getAttribute("company");
         cargarAreas(cmbArea);
-        mostrarPerfiles();
+        mostrarRoles();
     }
 
-    public void crearNuevoPerfil()
+    public void crearNuevoRole()
     {
         // row1.setVisible(true);
 
         if (!txtDescripcion.getValue().isEmpty() && !txtFuncion.getValue().isEmpty() && cmbArea.getSelectedItem() != null) {
-            final DTO_Perfil unew = new DTO_Perfil();
+            final DTO_Role unew = new DTO_Role();
 
-            unew.setDescripcion(txtDescripcion.getValue());
-            unew.setFuncion(txtFuncion.getValue());
-            unew.setArea(((DTO_Area) cmbArea.getSelectedItem().getAttribute("area")).getCodigo());
-            unew.setCompany(company.getId());
+            unew.setDescription(txtDescripcion.getValue());
+            unew.setName(txtFuncion.getValue());
+            unew.setAreaId(((DTO_Area) cmbArea.getSelectedItem().getAttribute("area")).getId());
+            unew.setCompanyId(company.getId());
 
             final ServiceInput input = new ServiceInput(unew);
             input.setAccion(Constantes.V_REGISTER);
-            final ServiceOutput output = perfilService.execute(input);
+            final ServiceOutput output = roleService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo("", "perfil creado correctamente", null);
+                alertaInfo("", "role creado correctamente", null);
                 onLimpiar();
-                mostrarPerfiles();
+                mostrarRoles();
             } else {
-                alertaError("Error al crear perfil", "error al crear perfil", null);
+                alertaError("Error al crear role", "error al crear role", null);
             }
         } else {
             alertaInfo("Todos los campos deben ser llenados", "No se ingresaron datos para codigo y descripcion", null);
         }
     }
 
-    public void mostrarPerfiles()
+    public void mostrarRoles()
     {
-        final DTO_Perfil perf = new DTO_Perfil();
-        perf.setCompany(company.getId());
+        final DTO_Role perf = new DTO_Role();
+        perf.setCompanyId(company.getId());
         final ServiceInput input = new ServiceInput(perf);
 
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = perfilService.execute(input);
+        final ServiceOutput output = roleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Perfil> ulist = output.getLista();
+            final List<DTO_Role> ulist = output.getLista();
 
-            for (final DTO_Perfil sOut : ulist) {
+            for (final DTO_Role sOut : ulist) {
                 agregarFila(sOut);
             }
         } else {
-            alertaError("Error al cargar perfiles", "Error al cargar perfiles", null);
+            alertaError("Error al cargar roles", "Error al cargar roles", null);
         }
     }
 
-    public void agregarFila(final DTO_Perfil perf)
+    public void agregarFila(final DTO_Role perf)
     {
         final Row fila = new Row();
-        fila.setAttribute("perfil", perf);
+        fila.setAttribute("role", perf);
 
         final Combobox combo = new Combobox();
         combo.setWidth("110px");
         cargarAreas(combo);
         for (final Comboitem item : combo.getItems()) {
-            if (perf.getArea().equals(((DTO_Area) item.getAttribute("area")).getCodigo())) {
+            if (perf.getAreaId().equals(((DTO_Area) item.getAttribute("area")).getId())) {
                 combo.setSelectedItem(item);
             }
         }
         combo.setDisabled(true);
         fila.appendChild(combo);
 
-        Textbox txt = new Textbox(perf.getFuncion());
+        Textbox txt = new Textbox(perf.getName());
         txt.setWidth("100px");
         txt.setReadonly(true);
         txt.addEventListener(Events.ON_CANCEL,
@@ -133,12 +133,12 @@ public class PO_EAAdministraPerfil
                                 ((Textbox) e.getTarget()).setReadonly(true);
                                 grpNuevo.setOpen(true);
                                 onLimpiar();
-                                mostrarPerfiles();
+                                mostrarRoles();
                             }
                         });
         fila.appendChild(txt);
 
-        txt = new Textbox(perf.getDescripcion());
+        txt = new Textbox(perf.getDescription());
         txt.setWidth("180px");
         txt.setReadonly(true);
         txt.addEventListener(Events.ON_CANCEL,
@@ -156,7 +156,7 @@ public class PO_EAAdministraPerfil
                                 ((Textbox) e.getTarget()).setReadonly(true);
                                 grpNuevo.setOpen(true);
                                 onLimpiar();
-                                mostrarPerfiles();
+                                mostrarRoles();
                             }
                         });
         fila.appendChild(txt);
@@ -172,7 +172,7 @@ public class PO_EAAdministraPerfil
                                 ((Image) e.getTarget()).setVisible(false);
                                 ((Image) ((Div) e.getTarget().getParent())
                                                 .getChildren().get(1)).setVisible(true);
-                                for (int i = 0; i < grdPerfil.getRows().getChildren().size(); i++) {
+                                for (int i = 0; i < grdRole.getRows().getChildren().size(); i++) {
                                     ((Image) ((Div) (((Row) (((Rows) e.getTarget()
                                                     .getParent().getParent().getParent())
                                                     .getChildren().get(i))).getChildren()
@@ -236,7 +236,7 @@ public class PO_EAAdministraPerfil
                                                 .getParent()).getChildren().get(3)))
                                                 .getChildren().get(1)).setVisible(false);
                                 grpNuevo.setOpen(true);
-                                for (int i = 0; i < grdPerfil.getRows().getChildren().size(); i++) {
+                                for (int i = 0; i < grdRole.getRows().getChildren().size(); i++) {
                                     ((Image) ((Div) (((Row) (((Rows) e.getTarget()
                                                     .getParent().getParent().getParent())
                                                     .getChildren().get(i))).getChildren()
@@ -258,15 +258,15 @@ public class PO_EAAdministraPerfil
                                                     .get(4))).getChildren().get(1))
                                                     .setVisible(false);
                                 }
-                                ((Row) e.getTarget().getParent().getParent()).getAttribute("perfil");
-                                perf.setFuncion(((Textbox)
+                                ((Row) e.getTarget().getParent().getParent()).getAttribute("role");
+                                perf.setName(((Textbox)
                                                 ((Row) e.getTarget().getParent().getParent()).getChildren().get(1)).getValue());
-                                perf.setDescripcion(((Textbox)
+                                perf.setDescription(((Textbox)
                                                 ((Row) e.getTarget().getParent().getParent()).getChildren().get(2)).getValue());
-                                perf.setArea(((DTO_Area) ((Combobox)
+                                perf.setAreaId(((DTO_Area) ((Combobox)
                                                 ((Row) e.getTarget().getParent().getParent()).getChildren().get(0))
-                                                                .getSelectedItem().getAttribute("area")).getCodigo());
-                                actualizaPerfil(perf);
+                                                                .getSelectedItem().getAttribute("area")).getId());
+                                actualizaRole(perf);
                             }
                         });
 
@@ -282,7 +282,7 @@ public class PO_EAAdministraPerfil
                                 ((Image) ((Div) e.getTarget().getParent()).getChildren().get(0)).setVisible(false);
                                 grpNuevo.setOpen(true);
                                 onLimpiar();
-                                mostrarPerfiles();
+                                mostrarRoles();
                             }
                         });
         imgEditarDisab.setVisible(false);
@@ -303,10 +303,10 @@ public class PO_EAAdministraPerfil
                             public void onEvent(final Event e)
                                 throws UiException
                             {
-                                final int msg = Messagebox.show("¿Está seguro de eliminar el perfil?", company.getBusinessName(),
+                                final int msg = Messagebox.show("¿Está seguro de eliminar el role?", company.getBusinessName(),
                                                 Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
                                 if (msg == Messagebox.YES) {
-                                    eliminaFila((DTO_Perfil) ((Row) e.getTarget().getParent().getParent()).getAttribute("perfil"));
+                                    eliminaFila((DTO_Role) ((Row) e.getTarget().getParent().getParent()).getAttribute("role"));
                                 }
                             }
                         });
@@ -318,51 +318,51 @@ public class PO_EAAdministraPerfil
         divEliminar.appendChild(imgEliminar);
         divEliminar.appendChild(imgEliminarDisab);
         fila.appendChild(divEliminar);
-        grdPerfil.getRows().appendChild(fila);
+        grdRole.getRows().appendChild(fila);
     }
 
-    public void actualizaPerfil(final DTO_Perfil perf)
+    public void actualizaRole(final DTO_Role perf)
     {
         final ServiceInput input = new ServiceInput(perf);
         input.setAccion(Constantes.V_REGISTER);
 
-        final ServiceOutput output = perfilService.execute(input);
+        final ServiceOutput output = roleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "El perfil se actualizo correctamente", null);
+            alertaInfo("", "El role se actualizo correctamente", null);
         } else {
-            alertaError("Error al actualizar el perfil", "Error al actualizar el perfil", null);
+            alertaError("Error al actualizar el role", "Error al actualizar el role", null);
         }
 
         // onLimpiar();
         // mostrarTBloqueos();
     }
 
-    public void eliminaFila(final DTO_Perfil perf)
+    public void eliminaFila(final DTO_Role perf)
         throws UiException
     {
-        final ServiceInput input = new ServiceInput(perf.getCodigo());
+        final ServiceInput input = new ServiceInput(perf.getId());
         input.setAccion("delete");
-        final ServiceOutput output = perfilService.execute(input);
+        final ServiceOutput output = roleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "El perfil se elimino correctamente", null);
+            alertaInfo("", "El role se elimino correctamente", null);
             onLimpiar();
-            mostrarPerfiles();
+            mostrarRoles();
         } else {
-            alertaError("Error al eliminar el perfil", "Error al eliminar el perfil", null);
+            alertaError("Error al eliminar el role", "Error al eliminar el role", null);
         }
     }
 
     private void cargarAreas(final Combobox combo)
     {
         final DTO_Area ar = new DTO_Area();
-        ar.setCompany(company.getId());
+        ar.setCompanyId(company.getId());
         final ServiceInput input = new ServiceInput(ar);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Area> listado = output.getLista();
             for (final DTO_Area area : listado) {
-                final Comboitem item = new Comboitem(area.getNombre());
+                final Comboitem item = new Comboitem(area.getName());
                 item.setAttribute("area", area);
                 combo.appendChild(item);
             }
@@ -375,8 +375,8 @@ public class PO_EAAdministraPerfil
     private DTO_Area getArea(final Integer codigo)
     {
         final DTO_Area area = new DTO_Area();
-        area.setCodigo(codigo);
-        area.setCompany(company.getId());
+        area.setId(codigo);
+        area.setCompanyId(company.getId());
         final ServiceInput input = new ServiceInput(area);
         input.setAccion(Constantes.V_GET);
         final ServiceOutput output = areaService.execute(input);
@@ -389,7 +389,7 @@ public class PO_EAAdministraPerfil
 
     public void onLimpiar()
     {
-        grdPerfil.getRows().getChildren().clear();
+        grdRole.getRows().getChildren().clear();
         txtDescripcion.setValue("");
         txtFuncion.setValue("");
         cmbArea.setSelectedItem(null);
@@ -426,6 +426,6 @@ public class PO_EAAdministraPerfil
     @Override
     String[] requiredResources()
     {
-        return new String[] { Constantes.MODULO_ADM_PERFIL };
+        return new String[] { Constantes.MODULE_ADM_ROLE };
     }
 }

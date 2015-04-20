@@ -4,21 +4,21 @@
     <div align="center">
         <html:p />
         <window width="700px" id="eaAM"
-            use="pe.com.jx_market.controller.PO_EAAdministraModulo">
+            use="pe.com.jx_market.controller.PO_EAAdministraModule">
             <div align="center">
                 <vbox width="700px">
                     <html:p />
                     <div align="center">
                         <label zclass="z-south-header"
                             style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                            Administrador de Modulos
+                            Administrador de Modules
                         </label>
                         <html:p />
                         <groupbox mold="3d" width="620px">
-                            <caption label="Modulos Registrados" />
+                            <caption label="Modules Registrados" />
                             <div align="center">
                                 <html:p />
-                                <grid id="grdModulo" mold="paging" pageSize="10"
+                                <grid id="grdModule" mold="paging" pageSize="10"
                                     fixedLayout="true" width="600px">
                                     <columns>
                                         <column label="Recurso"
@@ -36,8 +36,8 @@
                                 <html:p />
 
                                 <groupbox mold="3d" width="440px"
-                                    id="grpModulo">
-                                    <caption label="Nuevo Modulo" />
+                                    id="grpModule">
+                                    <caption label="Nuevo Module" />
                                     <div width="420px" align="center">
                                         <grid fixedLayout="false"
                                             width="420px">
@@ -59,7 +59,7 @@
                                         </grid>
                                         <html:p />
                                         <div align="center">
-                                            <button label="Crear" onClick="eaAM.crearNuevoModulo()"/>
+                                            <button label="Crear" onClick="eaAM.crearNuevoModule()"/>
                                         </div>
                                     </div>
                                 </groupbox>

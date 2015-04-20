@@ -54,8 +54,8 @@ public class PO_EAAdministraArea
         if (!txtNombre.getValue().isEmpty()) {
             final DTO_Area unew = new DTO_Area();
 
-            unew.setNombre(txtNombre.getValue());
-            unew.setCompany(company.getId());
+            unew.setName(txtNombre.getValue());
+            unew.setCompanyId(company.getId());
 
             final ServiceInput input = new ServiceInput(unew);
             input.setAccion(Constantes.V_REGISTER);
@@ -75,7 +75,7 @@ public class PO_EAAdministraArea
     public void mostrarAreas()
     {
         final DTO_Area are = new DTO_Area();
-        are.setCompany(company.getId());
+        are.setCompanyId(company.getId());
         final ServiceInput input = new ServiceInput(are);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput output = areaService.execute(input);
@@ -95,7 +95,7 @@ public class PO_EAAdministraArea
         final Row fila = new Row();
         fila.setAttribute("area", are);
 
-        final Textbox txt = new Textbox(are.getNombre());
+        final Textbox txt = new Textbox(are.getName());
         txt.setWidth("180px");
         txt.setReadonly(true);
         txt.addEventListener(Events.ON_CANCEL,
@@ -226,7 +226,7 @@ public class PO_EAAdministraArea
                                                     .get(3))).getChildren().get(1))
                                                     .setVisible(false);
                                 }
-                                are.setNombre(((Textbox)
+                                are.setName(((Textbox)
                                                 ((Row) e.getTarget().getParent().getParent()).getChildren().get(0)).getValue());
 
                                 actualizaArea(are);
@@ -354,6 +354,6 @@ public class PO_EAAdministraArea
     @Override
     String[] requiredResources()
     {
-        return new String[] { Constantes.MODULO_ADM_AREA };
+        return new String[] { Constantes.MODULE_ADM_AREA };
     }
 }

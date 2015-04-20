@@ -121,6 +121,6 @@ public class PO_EACambiarContrasenia
     @Override
     String[] requiredResources()
     {
-        return new String[] { Constantes.MODULO_CHANGE_PASS };
+        return new String[] { Constantes.MODULE_CHANGE_PASS };
     }
 }

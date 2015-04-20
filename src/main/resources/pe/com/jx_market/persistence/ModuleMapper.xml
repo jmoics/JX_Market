@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.ModuleMapper">
+
+  <cache />
+
+    <!-- MANTENIMIENTO DE MODULES -->
+
+    <select id="getModules" parameterType="DTO_Module" resultType="DTO_Module">
+        SELECT
+            modu.id as id,
+            modu.description as description,
+            modu.resource as resource,
+            modu.companyid as companyId
+        FROM
+            T_SEG_MODULE modu
+        WHERE
+            modu.companyid = #{companyId}
+    </select>
+
+    <select id="getModuleXId" parameterType="DTO_Module" resultType="DTO_Module">
+        SELECT
+            modu.id as id,
+            modu.description as description,
+            modu.resource as resource,
+            modu.companyid as companyId
+        FROM
+            T_SEG_MODULE modu
+        WHERE
+            modu.companyid = #{companyId}
+        AND
+            modu.id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertModule" parameterType="DTO_Module" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+        INSERT INTO T_SEG_MODULE
+            (description, resource, companyid)
+        VALUES
+            (#{description}, #{resource}, #{companyId})
+    </insert>
+
+    <update id="updateModule" parameterType="DTO_Module">
+        UPDATE T_SEG_MODULE
+        SET
+            description = #{description},
+            resource = #{resource}
+        WHERE
+            id = #{id}
+        AND
+            companyid = #{companyId}
+    </update>
+
+    <delete id="deleteModule" parameterType="DTO_Module">
+      DELETE FROM
+         T_SEG_MODULE
+      WHERE
+            id = #{id}
+        AND
+            companyid = #{companyId}
+    </delete>
+
+</mapper>

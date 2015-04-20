@@ -29,11 +29,11 @@ public class DTO_Empleado implements Serializable {
         this.codigo = codigo;
     }
 
-    public Integer getPerfil () {
+    public Integer getRole () {
         return perfil;
     }
 
-    public void setPerfil (final Integer perfil) {
+    public void setRole (final Integer perfil) {
         this.perfil = perfil;
     }
 

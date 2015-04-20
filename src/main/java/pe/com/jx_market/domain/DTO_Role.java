@@ -2,12 +2,14 @@ package pe.com.jx_market.domain;
 
 import java.io.Serializable;
 
-public class DTO_Area
+public class DTO_Role
     implements Serializable
 {
     private Integer id;
     private Integer companyId;
+    private Integer areaId;
     private String name;
+    private String description;
 
     public Integer getId()
     {
@@ -24,9 +26,19 @@ public class DTO_Area
         return companyId;
     }
 
-    public void setCompanyId(final Integer _companyId)
+    public void setCompanyId(final Integer companyId)
     {
-        this.companyId = _companyId;
+        this.companyId = companyId;
+    }
+
+    public Integer getAreaId()
+    {
+        return areaId;
+    }
+
+    public void setAreaId(final Integer areaId)
+    {
+        this.areaId = areaId;
     }
 
     public String getName()
@@ -38,4 +50,15 @@ public class DTO_Area
     {
         this.name = name;
     }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(final String description)
+    {
+        this.description = description;
+    }
+
 }

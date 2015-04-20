@@ -16,9 +16,9 @@ import org.zkoss.zul.Messagebox;
 import pe.com.jx_market.domain.DTO_Area;
 import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Empleado;
-import pe.com.jx_market.domain.DTO_Modulo;
-import pe.com.jx_market.domain.DTO_Perfil;
-import pe.com.jx_market.domain.DTO_PerfilModulo;
+import pe.com.jx_market.domain.DTO_Module;
+import pe.com.jx_market.domain.DTO_Role;
+import pe.com.jx_market.domain.DTO_RoleModule;
 import pe.com.jx_market.domain.DTO_Solicitud;
 import pe.com.jx_market.domain.DTO_Usuario;
 import pe.com.jx_market.utilities.BusinessService;
@@ -29,7 +29,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
 public class PO_EESolicitudesPendientes extends SecuredWindow
 {
     static Log logger = LogFactory.getLog(PO_EESolicitudesPendientes.class);
-    private BusinessService solicitudService, companyService, areaService, perfilService, moduloService, perfilModuloService, empleadoService;
+    private BusinessService solicitudService, companyService, areaService, roleService, moduleService, roleModuleService, empleadoService;
     private Listbox lstSolicitud;
 
     @Override
@@ -39,9 +39,9 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         solicitudService = ContextLoader.getService(this, "solicitudService");
         companyService = ContextLoader.getService(this, "companyService");
         areaService = ContextLoader.getService(this, "areaService");
-        perfilService = ContextLoader.getService(this, "perfilService");
-        moduloService = ContextLoader.getService(this, "moduloService");
-        perfilModuloService = ContextLoader.getService(this, "perfilModuloService");
+        roleService = ContextLoader.getService(this, "roleService");
+        moduleService = ContextLoader.getService(this, "moduleService");
+        roleModuleService = ContextLoader.getService(this, "roleModuleService");
         empleadoService = ContextLoader.getService(this, "empleadoService");
         busquedaSolicitudes();
     }
@@ -136,49 +136,49 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         if (output.getErrorCode() == Constantes.OK) {
             final Integer codEmp = (Integer) output.getObject();
             final DTO_Area area = new DTO_Area();
-            area.setCompany(codEmp);
-            area.setNombre("Administrator");
+            area.setCompanyId(codEmp);
+            area.setName("Administrator");
             input = new ServiceInput();
             input.setAccion(Constantes.V_REGISTER);
             input.setObject(area);
             output = areaService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 final Integer codArea = (Integer) output.getObject();
-                final DTO_Perfil perf = new DTO_Perfil();
-                perf.setArea(codArea);
-                perf.setDescripcion("Administration");
-                perf.setCompany(codEmp);
-                perf.setFuncion("Administrator");
+                final DTO_Role perf = new DTO_Role();
+                perf.setAreaId(codArea);
+                perf.setDescription("Administration");
+                perf.setCompanyId(codEmp);
+                perf.setName("Administrator");
                 input = new ServiceInput();
                 input.setAccion(Constantes.V_REGISTER);
                 input.setObject(perf);
-                output = perfilService.execute(input);
+                output = roleService.execute(input);
                 if (output.getErrorCode() == Constantes.OK) {
                     final Integer codPerf = (Integer) output.getObject();
-                    Integer codMod = insertModulo("Modulo para administracion", Constantes.MODULO_ADMINISTRACION, codEmp);
-                    connectPerfilModulo(codPerf, codMod);
-                    codMod = insertModulo("modulo para administracion de areas", Constantes.MODULO_ADM_AREA, codEmp);
-                    connectPerfilModulo(codPerf, codMod);
-                    codMod = insertModulo("Modulo para administracion de empleados", Constantes.MODULO_ADM_EMPLEADO, codEmp);
-                    connectPerfilModulo(codPerf, codMod);
-                    codMod = insertModulo("Modulo para administracion de modulos", Constantes.MODULO_ADM_MODULO, codEmp);
-                    connectPerfilModulo(codPerf, codMod);
-                    codMod = insertModulo("Modulo para administracion de perfiles", Constantes.MODULO_ADM_PERFIL, codEmp);
-                    connectPerfilModulo(codPerf, codMod);
-                    codMod = insertModulo("Modulo para asignacion de modulos a perfiles", Constantes.MODULO_ADM_PERFILMODULO, codEmp);
-                    connectPerfilModulo(codPerf, codMod);
-                    codMod = insertModulo("Modulo para consulta de productos", Constantes.MODULO_PROD_PRODUCT, codEmp);
-                    connectPerfilModulo(codPerf, codMod);
-                    codMod = insertModulo("Modulo para edicion de productos", Constantes.MODULO_PROD_INVENTORY, codEmp);
-                    connectPerfilModulo(codPerf, codMod);
-                    codMod = insertModulo("Modulo para ingreso de productos", Constantes.MODULO_PROD_CATEGORY, codEmp);
-                    connectPerfilModulo(codPerf, codMod);
-                    codMod = insertModulo("Modulo para inventario", Constantes.MODULO_PROD_AMOUNT, codEmp);
-                    connectPerfilModulo(codPerf, codMod);
-                    codMod = insertModulo("Modulo para productos", Constantes.MODULO_PRODUCTS, codEmp);
-                    connectPerfilModulo(codPerf, codMod);
-                    codMod = insertModulo("Modulo para administrar la contrasena", Constantes.MODULO_CHANGE_PASS, codEmp);
-                    connectPerfilModulo(codPerf, codMod);
+                    Integer codMod = insertModule("Module para administracion", Constantes.MODULE_ADMINISTRACION, codEmp);
+                    connectRoleModule(codPerf, codMod);
+                    codMod = insertModule("module para administracion de areas", Constantes.MODULE_ADM_AREA, codEmp);
+                    connectRoleModule(codPerf, codMod);
+                    codMod = insertModule("Module para administracion de empleados", Constantes.MODULE_ADM_EMPLEADO, codEmp);
+                    connectRoleModule(codPerf, codMod);
+                    codMod = insertModule("Module para administracion de modules", Constantes.MODULE_ADM_MODULE, codEmp);
+                    connectRoleModule(codPerf, codMod);
+                    codMod = insertModule("Module para administracion de roles", Constantes.MODULE_ADM_ROLE, codEmp);
+                    connectRoleModule(codPerf, codMod);
+                    codMod = insertModule("Module para asignacion de modules a roles", Constantes.MODULE_ADM_ROLEMODULE, codEmp);
+                    connectRoleModule(codPerf, codMod);
+                    codMod = insertModule("Module para consulta de productos", Constantes.MODULE_PROD_PRODUCT, codEmp);
+                    connectRoleModule(codPerf, codMod);
+                    codMod = insertModule("Module para edicion de productos", Constantes.MODULE_PROD_INVENTORY, codEmp);
+                    connectRoleModule(codPerf, codMod);
+                    codMod = insertModule("Module para ingreso de productos", Constantes.MODULE_PROD_CATEGORY, codEmp);
+                    connectRoleModule(codPerf, codMod);
+                    codMod = insertModule("Module para inventario", Constantes.MODULE_PROD_AMOUNT, codEmp);
+                    connectRoleModule(codPerf, codMod);
+                    codMod = insertModule("Module para productos", Constantes.MODULE_PRODUCTS, codEmp);
+                    connectRoleModule(codPerf, codMod);
+                    codMod = insertModule("Module para administrar la contrasena", Constantes.MODULE_CHANGE_PASS, codEmp);
+                    connectRoleModule(codPerf, codMod);
 
                     final Map<String, Object> mapUser = new HashMap<String,Object>();
                     final DTO_Usuario usuario = new DTO_Usuario();
@@ -190,7 +190,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
                     empleado.setApellido("Administrator");
                     empleado.setCompany(codEmp);
                     empleado.setEstado(Constantes.ST_ACTIVO);
-                    empleado.setPerfil(codPerf);
+                    empleado.setRole(codPerf);
 
                     mapUser.put("empleado", empleado);
                     mapUser.put("usuario", usuario);
@@ -207,16 +207,16 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         }
     }
 
-    private Integer insertModulo(final String desc, final String recurso, final Integer company) {
-        final DTO_Modulo mod = new DTO_Modulo();
-        mod.setDescripcion(desc);
-        mod.setCompany(company);
-        mod.setRecurso(recurso);
+    private Integer insertModule(final String desc, final String recurso, final Integer company) {
+        final DTO_Module mod = new DTO_Module();
+        mod.setDescription(desc);
+        mod.setCompanyId(company);
+        mod.setResource(recurso);
 
         final ServiceInput input = new ServiceInput();
         input.setAccion(Constantes.V_REGISTER);
         input.setObject(mod);
-        final ServiceOutput output = moduloService.execute(input);
+        final ServiceOutput output = moduleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final Integer cod = (Integer) output.getObject();
             return cod;
@@ -225,15 +225,15 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         }
     }
 
-    private Boolean connectPerfilModulo(final Integer perf, final Integer mod) {
-        final DTO_PerfilModulo perfMod = new DTO_PerfilModulo();
-        perfMod.setModulo(mod);
-        perfMod.setPerfil(perf);
+    private Boolean connectRoleModule(final Integer perf, final Integer mod) {
+        final DTO_RoleModule perfMod = new DTO_RoleModule();
+        perfMod.setModuleId(mod);
+        perfMod.setRole(perf);
 
         final ServiceInput input = new ServiceInput();
         input.setAccion(Constantes.V_REGISTERPM);
         input.setObject(perfMod);
-        final ServiceOutput output = perfilModuloService.execute(input);
+        final ServiceOutput output = roleModuleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             return true;
         } else {

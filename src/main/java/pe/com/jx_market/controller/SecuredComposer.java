@@ -54,7 +54,7 @@ public abstract class SecuredComposer<T extends Component>
         }
         final ServiceInput<DTO_Empleado> input = new ServiceInput<DTO_Empleado>();
         input.addMapPair("empleado", empleado);
-        input.addMapPair("modulo-array", resources);
+        input.addMapPair("module-array", resources);
         final ServiceOutput<DTO_Empleado> output = autorizacionService.execute(input);
         if (output.getErrorCode() == Constantes.AUTH_ERROR) {
             throw new RuntimeException("Acceso no autorizado!");

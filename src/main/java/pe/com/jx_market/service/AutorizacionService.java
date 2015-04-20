@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.jx_market.domain.DTO_Empleado;
-import pe.com.jx_market.domain.DTO_Perfil;
-import pe.com.jx_market.persistence.PerfilModuloMapper;
+import pe.com.jx_market.domain.DTO_Role;
+import pe.com.jx_market.persistence.RoleModuleMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
- * Servicio de Autorizacion de recursos por perfil
+ * Servicio de Autorizacion de recursos por role
  *
  * @author americati
  *
@@ -25,7 +25,7 @@ public class AutorizacionService<T>
     implements BusinessService<T>
 {
     @Autowired
-    private PerfilModuloMapper perfilModuloMapper;
+    private RoleModuleMapper roleModuleMapper;
 
     /**
      * El ServiceInput contendrá un objeto DTO_Contacto y un objeto con un recurso
@@ -41,20 +41,20 @@ public class AutorizacionService<T>
     {
         final ServiceOutput<T> output = new ServiceOutput<T>();
         final DTO_Empleado empleado = (DTO_Empleado) input.getMapa().get("empleado");
-        final DTO_Perfil perfil = new DTO_Perfil();
-        perfil.setCodigo(empleado.getPerfil());
-        String[] modulos;
-        if (input.getMapa().containsKey("modulo")) {
-            final String modulo = (String) input.getMapa().get("modulo");
-            modulos = new String[1];
-            modulos[0] = modulo;
+        final DTO_Role role = new DTO_Role();
+        role.setId(empleado.getRole());
+        String[] modules;
+        if (input.getMapa().containsKey("module")) {
+            final String module = (String) input.getMapa().get("module");
+            modules = new String[1];
+            modules[0] = module;
         } else {
-            modulos = (String[]) input.getMapa().get("modulo-array");
+            modules = (String[]) input.getMapa().get("module-array");
         }
-        final Set<String> modulosDelPerfil = perfilModuloMapper.getModuloStringPorPerfil(perfil);
+        final Set<String> modulesDelRole = roleModuleMapper.getModuleString4Role(role);
         // debemos validar que todos los recursos solicitados estan en el array
-        for (int z = 0; z < modulos.length; z++) {
-            if (!modulosDelPerfil.contains(modulos[z])) {
+        for (int z = 0; z < modules.length; z++) {
+            if (!modulesDelRole.contains(modules[z])) {
                 output.setErrorCode(Constantes.AUTH_ERROR);
                 return output;
             }
@@ -63,14 +63,14 @@ public class AutorizacionService<T>
         return output;
     }
 
-    public PerfilModuloMapper getDao()
+    public RoleModuleMapper getDao()
     {
-        return perfilModuloMapper;
+        return roleModuleMapper;
     }
 
-    public void setDao(final PerfilModuloMapper perfilModuloMapper)
+    public void setDao(final RoleModuleMapper roleModuleMapper)
     {
-        this.perfilModuloMapper = perfilModuloMapper;
+        this.roleModuleMapper = roleModuleMapper;
     }
 
 }

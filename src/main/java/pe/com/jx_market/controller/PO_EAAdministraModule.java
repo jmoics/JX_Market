@@ -17,61 +17,61 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import pe.com.jx_market.domain.DTO_Company;
-import pe.com.jx_market.domain.DTO_Modulo;
+import pe.com.jx_market.domain.DTO_Module;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-public class PO_EAAdministraModulo
+public class PO_EAAdministraModule
     extends SecuredWindow
 {
 
-    static Log logger = LogFactory.getLog(PO_EAAdministraModulo.class);
+    static Log logger = LogFactory.getLog(PO_EAAdministraModule.class);
     private Textbox txtRecurso, txtDescripcion;
-    private Grid grdModulo;
-    private Groupbox grpModulo;
-    private BusinessService moduloService;
+    private Grid grdModule;
+    private Groupbox grpModule;
+    private BusinessService moduleService;
     private DTO_Company company;
 
     @Override
     public void realOnCreate()
     {
-        moduloService = ContextLoader.getService(this, "moduloService");
+        moduleService = ContextLoader.getService(this, "moduleService");
         txtRecurso = (Textbox) getFellow("txtRecurso");
         txtDescripcion = (Textbox) getFellow("txtDescripcion");
-        grdModulo = (Grid) getFellow("grdModulo");
-        grpModulo = (Groupbox) getFellow("grpModulo");
+        grdModule = (Grid) getFellow("grdModule");
+        grpModule = (Groupbox) getFellow("grpModule");
         company = (DTO_Company) getDesktop().getSession().getAttribute("company");
-        mostrarModulos();
+        mostrarModules();
     }
 
     public void onLimpiar()
     {
-        grdModulo.getRows().getChildren().clear();
+        grdModule.getRows().getChildren().clear();
         txtRecurso.setValue("");
         txtDescripcion.setValue("");
     }
 
-    public void crearNuevoModulo()
+    public void crearNuevoModule()
     {
         // row1.setVisible(true);
-        final DTO_Modulo unew = new DTO_Modulo();
-        unew.setRecurso(txtRecurso.getValue());
-        unew.setDescripcion(txtDescripcion.getValue());
-        unew.setCompany(company.getId());
+        final DTO_Module unew = new DTO_Module();
+        unew.setResource(txtRecurso.getValue());
+        unew.setDescription(txtDescripcion.getValue());
+        unew.setCompanyId(company.getId());
 
         if (!txtRecurso.getValue().isEmpty() && !txtDescripcion.getValue().isEmpty()) {
             final ServiceInput input = new ServiceInput(unew);
             input.setAccion(Constantes.V_REGISTER);
 
-            final ServiceOutput output = moduloService.execute(input);
+            final ServiceOutput output = moduleService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo("", "Modulo creado correctamente", null);
+                alertaInfo("", "Module creado correctamente", null);
                 onLimpiar();
-                mostrarModulos();
+                mostrarModules();
             } else {
-                alertaError("Error al crear Modulo", "error al crear Modulo", null);
+                alertaError("Error al crear Module", "error al crear Module", null);
             }
         } else {
             alertaInfo("Todos los campos deben ser llenados", "No se ingresaron datos para codigo y descripcion", null);
@@ -79,29 +79,29 @@ public class PO_EAAdministraModulo
     }
 
     @SuppressWarnings("unchecked")
-    public void mostrarModulos()
+    public void mostrarModules()
     {
-        final DTO_Modulo mod = new DTO_Modulo();
-        mod.setCompany(company.getId());
+        final DTO_Module mod = new DTO_Module();
+        mod.setCompanyId(company.getId());
         final ServiceInput input = new ServiceInput(mod);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = moduloService.execute(input);
+        final ServiceOutput output = moduleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Modulo> ulist = output.getLista();
-            for (final DTO_Modulo sOut : ulist) {
+            final List<DTO_Module> ulist = output.getLista();
+            for (final DTO_Module sOut : ulist) {
                 agregarFila(sOut);
             }
         } else {
-            alertaInfo("Error al cargar los modulos", "Error al cargar modulos", null);
+            alertaInfo("Error al cargar los modules", "Error al cargar modules", null);
         }
     }
 
-    public void agregarFila(final DTO_Modulo mod)
+    public void agregarFila(final DTO_Module mod)
     {
         final Row fila = new Row();
-        fila.setAttribute("modulo", mod);
+        fila.setAttribute("module", mod);
 
-        Textbox txt = new Textbox(mod.getRecurso());
+        Textbox txt = new Textbox(mod.getResource());
         txt.setWidth("190px");
         txt.setReadonly(true);
         txt.addEventListener(Events.ON_CANCEL,
@@ -117,14 +117,14 @@ public class PO_EAAdministraModulo
                                                 .getChildren().get(2))).getChildren().get(1))
                                                 .setVisible(false);
                                 ((Textbox) e.getTarget()).setReadonly(true);
-                                grpModulo.setOpen(true);
+                                grpModule.setOpen(true);
                                 onLimpiar();
-                                mostrarModulos();
+                                mostrarModules();
                             }
                         });
         fila.appendChild(txt);
 
-        txt = new Textbox(mod.getDescripcion());
+        txt = new Textbox(mod.getDescription());
         txt.setWidth("285px");
         txt.setReadonly(true);
         txt.addEventListener(Events.ON_CANCEL,
@@ -140,9 +140,9 @@ public class PO_EAAdministraModulo
                                                 .getChildren().get(2))).getChildren().get(1))
                                                 .setVisible(false);
                                 ((Textbox) e.getTarget()).setReadonly(true);
-                                grpModulo.setOpen(true);
+                                grpModule.setOpen(true);
                                 onLimpiar();
-                                mostrarModulos();
+                                mostrarModules();
                             }
                         });
         fila.appendChild(txt);
@@ -158,8 +158,8 @@ public class PO_EAAdministraModulo
                                 ((Image) e.getTarget()).setVisible(false);
                                 ((Image) ((Div) e.getTarget().getParent())
                                                 .getChildren().get(1)).setVisible(true);
-                                for (int i = 0; i < grdModulo.getRows().getChildren().size(); i++) {
-                                    if (!grdModulo.getRows().getChildren().get(i)
+                                for (int i = 0; i < grdModule.getRows().getChildren().size(); i++) {
+                                    if (!grdModule.getRows().getChildren().get(i)
                                                     .equals((e.getTarget().getParent().getParent()))) {
                                         ((Image) ((Div) (((Row) (((Rows) e.getTarget().getParent().getParent().getParent())
                                                         .getChildren().get(i))).getChildren().get(2))).getChildren().get(0))
@@ -182,7 +182,7 @@ public class PO_EAAdministraModulo
                                                 .getChildren().get(0)).setVisible(false);
                                 ((Image) (((Div) ((Row) e.getTarget().getParent().getParent()).getChildren().get(3)))
                                                 .getChildren().get(1)).setVisible(true);
-                                grpModulo.setOpen(false);
+                                grpModule.setOpen(false);
                             }
                         });
 
@@ -202,9 +202,9 @@ public class PO_EAAdministraModulo
                                                 .getChildren().get(0)).setVisible(true);
                                 ((Image) (((Div) ((Row) e.getTarget().getParent().getParent()).getChildren().get(3)))
                                                 .getChildren().get(1)).setVisible(false);
-                                grpModulo.setOpen(true);
-                                for (int i = 0; i < grdModulo.getRows().getChildren().size(); i++) {
-                                    if (!grdModulo.getRows().getChildren().get(i)
+                                grpModule.setOpen(true);
+                                for (int i = 0; i < grdModule.getRows().getChildren().size(); i++) {
+                                    if (!grdModule.getRows().getChildren().get(i)
                                                     .equals((e.getTarget().getParent().getParent()))) {
                                         ((Image) ((Div) (((Row) (((Rows) e.getTarget().getParent().getParent().getParent())
                                                         .getChildren().get(i))).getChildren().get(2))).getChildren().get(0))
@@ -220,10 +220,10 @@ public class PO_EAAdministraModulo
                                                         .setVisible(false);
                                     }
                                 }
-                                mod.setRecurso(((Textbox) ((Row) e.getTarget().getParent().getParent()).getChildren().get(0)).getValue());
-                                mod.setDescripcion(((Textbox) ((Row) e.getTarget().getParent().getParent()).getChildren().get(1))
+                                mod.setResource(((Textbox) ((Row) e.getTarget().getParent().getParent()).getChildren().get(0)).getValue());
+                                mod.setDescription(((Textbox) ((Row) e.getTarget().getParent().getParent()).getChildren().get(1))
                                                 .getValue());
-                                actualizaModulo(mod);
+                                actualizaModule(mod);
                             }
                         });
 
@@ -245,7 +245,7 @@ public class PO_EAAdministraModulo
                             public void onEvent(final Event e)
                                 throws UiException
                             {
-                                final int msg = Messagebox.show("¿Está seguro de eliminar el Modulo?",
+                                final int msg = Messagebox.show("¿Está seguro de eliminar el Module?",
                                                 company.getBusinessName(), Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
                                 if (msg == Messagebox.YES) {
                                     eliminaFila(mod);
@@ -260,37 +260,37 @@ public class PO_EAAdministraModulo
         divEliminar.appendChild(imgEliminarDisab);
         fila.appendChild(divEliminar);
 
-        grdModulo.getRows().appendChild(fila);
+        grdModule.getRows().appendChild(fila);
     }
 
-    public void actualizaModulo(final DTO_Modulo rec)
+    public void actualizaModule(final DTO_Module rec)
     {
         final ServiceInput input = new ServiceInput(rec);
         input.setAccion(Constantes.V_REGISTER);
 
-        final ServiceOutput output = moduloService.execute(input);
+        final ServiceOutput output = moduleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "El Modulo se actualizo correctamente", null);
+            alertaInfo("", "El Module se actualizo correctamente", null);
         } else {
-            alertaError("Error al actualizar el Modulo", "Error al actualizar el Modulo", null);
+            alertaError("Error al actualizar el Module", "Error al actualizar el Module", null);
         }
 
         // onLimpiar();
         // mostrarTCampos();
     }
 
-    public void eliminaFila(final DTO_Modulo rec)
+    public void eliminaFila(final DTO_Module rec)
         throws UiException
     {
         final ServiceInput input = new ServiceInput(rec);
         input.setAccion(Constantes.V_DELETE);
-        final ServiceOutput output = moduloService.execute(input);
+        final ServiceOutput output = moduleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "El Modulo se elimino correctamente", null);
+            alertaInfo("", "El Module se elimino correctamente", null);
             onLimpiar();
-            mostrarModulos();
+            mostrarModules();
         } else {
-            alertaError("Error al eliminar el Modulo", "Error al eliminar el Modulo", null);
+            alertaError("Error al eliminar el Module", "Error al eliminar el Module", null);
         }
     }
 
@@ -326,6 +326,6 @@ public class PO_EAAdministraModulo
     @Override
     String[] requiredResources()
     {
-        return new String[] { Constantes.MODULO_ADM_MODULO };
+        return new String[] { Constantes.MODULE_ADM_MODULE };
     }
 }

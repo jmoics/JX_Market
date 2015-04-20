@@ -13,7 +13,7 @@ import java.util.List;
 public class DTO_Product implements Serializable
 {
     private Integer id;
-    private Integer company;
+    private Integer companyId;
     private List<DTO_Category> categories;
     private String productName;
     private String productDescription;
@@ -31,13 +31,13 @@ public class DTO_Product implements Serializable
     {
         this.id = id;
     }
-    public Integer getCompany()
+    public Integer getCompanyId()
     {
-        return company;
+        return companyId;
     }
-    public void setCompany(final Integer company)
+    public void setCompanyId(final Integer _companyId)
     {
-        this.company = company;
+        this.companyId = _companyId;
     }
     public List<DTO_Category> getCategories()
     {

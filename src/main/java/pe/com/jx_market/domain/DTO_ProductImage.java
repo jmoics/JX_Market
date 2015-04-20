@@ -7,7 +7,7 @@ public class DTO_ProductImage
 {
 
     private Integer id;
-    private Integer company;
+    private Integer companyId;
     private String imageName;
     private Integer productId;
     private boolean defaul;
@@ -24,14 +24,14 @@ public class DTO_ProductImage
         this.id = id;
     }
 
-    public Integer getCompany()
+    public Integer getCompanyId()
     {
-        return company;
+        return companyId;
     }
 
-    public void setCompany(final Integer company)
+    public void setCompanyId(final Integer _companyId)
     {
-        this.company = company;
+        this.companyId = _companyId;
     }
 
     public String getImageName()

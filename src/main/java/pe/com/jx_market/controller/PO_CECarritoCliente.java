@@ -25,10 +25,10 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.domain.DTO_DetallePedido;
 import pe.com.jx_market.domain.DTO_Pedido;
+import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -171,8 +171,8 @@ public class PO_CECarritoCliente extends Window
         for (final Entry<Integer, Map<DTO_Product, Integer>> entry : map.entrySet()) {
             for (final Entry<DTO_Product, Integer> entry2 : entry.getValue().entrySet()) {
                 final DTO_Product prod = entry2.getKey();
-                if (mapPed.containsKey(prod.getCompany())) {
-                    final Map<DTO_Pedido, List<DTO_DetallePedido>> mapAux = mapPed.get(prod.getCompany());
+                if (mapPed.containsKey(prod.getCompanyId())) {
+                    final Map<DTO_Pedido, List<DTO_DetallePedido>> mapAux = mapPed.get(prod.getCompanyId());
                     for (final Entry<DTO_Pedido, List<DTO_DetallePedido>> entry3 : mapAux.entrySet()) {
                         final DTO_Pedido pedAux = entry3.getKey();
                         final BigDecimal total = pedAux.getTotal();
@@ -188,12 +188,12 @@ public class PO_CECarritoCliente extends Window
                         mapAux.remove(entry3.getKey());
                         mapAux.put(pedAux, lstDet);
 
-                        mapPed.put(prod.getCompany(), mapAux);
+                        mapPed.put(prod.getCompanyId(), mapAux);
                     }
 
                 } else {
                     final DTO_Pedido pedAux = construirPedido();
-                    pedAux.setCompany(prod.getCompany());
+                    pedAux.setCompany(prod.getCompanyId());
                     //pedAux.setTotal(prod.getPrecio().multiply(new BigDecimal(entry2.getValue())));
 
                     final List<DTO_DetallePedido> lstDet = new ArrayList<DTO_DetallePedido>();
@@ -205,7 +205,7 @@ public class PO_CECarritoCliente extends Window
                     final Map<DTO_Pedido, List<DTO_DetallePedido>> mapAux = new HashMap<DTO_Pedido, List<DTO_DetallePedido>>();
                     mapAux.put(pedAux, lstDet);
 
-                    mapPed.put(prod.getCompany(), mapAux);
+                    mapPed.put(prod.getCompanyId(), mapAux);
                 }
             }
         }

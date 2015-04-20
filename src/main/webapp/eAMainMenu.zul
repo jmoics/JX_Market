@@ -83,11 +83,11 @@
                                           label="${labels.pe.com.jx_market.eAMainMenu.admin.area.Label }" />
                                 <menuitem src="/media/icon_users.png" id="id_option_adm_emp"
                                           label="${labels.pe.com.jx_market.eAMainMenu.admin.employee.Label }" />
-                                <menuitem src="/media/perfiles.png" id="id_option_adm_perf"
+                                <menuitem src="/media/roles.png" id="id_option_adm_perf"
                                           label="${labels.pe.com.jx_market.eAMainMenu.admin.position.Label }" />
                                 <menuitem src="/media/recursos.png" id="id_option_adm_mod"
                                           label="${labels.pe.com.jx_market.eAMainMenu.admin.resource.Label }"  />
-                                <menuitem src="/media/perfiles.png" id="id_option_adm_perfi_modulo"
+                                <menuitem src="/media/roles.png" id="id_option_adm_perfi_module"
                                           label="${labels.pe.com.jx_market.eAMainMenu.admin.resource4position.Label }" />
                             </menupopup>
                         </menu>

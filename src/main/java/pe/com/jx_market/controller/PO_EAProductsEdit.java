@@ -156,7 +156,7 @@ public class PO_EAProductsEdit
             product.setActive((Boolean) cmbStatus.getSelectedItem().getValue());
             product.setTradeMark((DTO_TradeMark) cmbTradeMark.getSelectedItem().getValue());
             product.setProductDescription(txtDesc.getValue());
-            product.setCompany(company.getId());
+            product.setCompanyId(company.getId());
             product.setProductName(txtNombre.getValue());
             // product.setPrecio(decPrec.getValue());
             /*if (imgProducto != null && !imgProducto.equals(product.getImagen())) {
@@ -173,6 +173,7 @@ public class PO_EAProductsEdit
                 if (resp == Messagebox.OK) {
                     desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
                     ContextLoader.recargar(desktop, Constantes.Form.PRODUCTS_FORM.getForm());
+                    //wEAEP.detach();
                 }
             } else {
                 alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editProduct.Error.Label"),
@@ -182,9 +183,6 @@ public class PO_EAProductsEdit
             alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editProduct.Info2.Label"),
                                 "No se ingreso data en todos los campos", null);
         }
-        ContextLoader.recargar(desktop, Constantes.Form.PRODUCTS_FORM.getForm());
-
-        wEAEP.detach();
     }
 
     @Listen("onClick = #btnSave2")
@@ -197,7 +195,7 @@ public class PO_EAProductsEdit
         if (tree.getItems() != null && !tree.getItems().isEmpty()) {
             final DTO_Product prod4DelCat = new DTO_Product();
             prod4DelCat.setId(product.getId());
-            prod4DelCat.setCompany(product.getCompany());
+            prod4DelCat.setCompanyId(product.getCompanyId());
             prod4DelCat.setCategories(new ArrayList<DTO_Category>());
             for (final Treeitem item : tree.getItems()) {
                 saveCategories(item, mapCat4Prod, prod4DelCat);
@@ -287,7 +285,7 @@ public class PO_EAProductsEdit
     public CategoryTreeNode getCategories()
     {
         final DTO_Category cat = new DTO_Category();
-        cat.setCompany(company.getId());
+        cat.setCompanyId(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);
@@ -511,7 +509,7 @@ public class PO_EAProductsEdit
                     lbImageSize.setValue("" + _media.getByteData().length);
 
                     final DTO_ProductImage img4Prod = new DTO_ProductImage();
-                    img4Prod.setCompany(company.getId());
+                    img4Prod.setCompanyId(company.getId());
                     img4Prod.setImage(imgFoto.getContent().getByteData());
                     img4Prod.setImageName(_media.getName());
                     img4Prod.setActive(true);
@@ -653,6 +651,6 @@ public class PO_EAProductsEdit
     @Override
     String[] requiredResources()
     {
-        return new String[] { Constantes.MODULO_PROD_PRODUCT };
+        return new String[] { Constantes.MODULE_PROD_PRODUCT };
     }
 }

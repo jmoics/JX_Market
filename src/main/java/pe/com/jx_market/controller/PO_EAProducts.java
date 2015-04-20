@@ -103,6 +103,7 @@ public class PO_EAProducts
 
         if (desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD) != null
                         && (Boolean) desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD)) {
+            desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, false);
             searchProducts();
         }
     }
@@ -157,7 +158,7 @@ public class PO_EAProducts
     private void listCategories()
     {
         final DTO_Category cat = new DTO_Category();
-        cat.setCompany(company.getId());
+        cat.setCompanyId(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAccion(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);
@@ -358,6 +359,6 @@ public class PO_EAProducts
 
     /*
      * @Override String[] requiredResources() { return new String[] {
-     * Constantes.MODULO_PROD_PRODUCT }; }
+     * Constantes.MODULE_PROD_PRODUCT }; }
      */
 }
