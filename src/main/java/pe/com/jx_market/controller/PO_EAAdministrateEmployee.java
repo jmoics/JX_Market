@@ -131,7 +131,7 @@ public class PO_EAAdministrateEmployee
         employee.setPhone(telefono);
         employee.setEmail(mail);
         employee.setActive(estado);
-        employee.setRole(role);
+        employee.setRoleId(role);
         employee.setCompanyId(company.getId());
         employee.setCellPhone(celular);
         employee.setCity(ciudad);
@@ -252,7 +252,7 @@ public class PO_EAAdministrateEmployee
         final List<Comboitem> roles = cmbRole.getItems();
         for(final Comboitem item : roles) {
             final DTO_Role role = (DTO_Role) item.getAttribute("role");
-            if(role.getId().equals(employee.getRole())) {
+            if(role.getId().equals(employee.getRoleId())) {
                 cmbRole.setSelectedItem(item);
             }
         }
@@ -270,7 +270,7 @@ public class PO_EAAdministrateEmployee
         lblUser.setValue((getUser(employee.getUserId())).getUsername());
         lblNombre.setValue(employee.getEmployeeName());
         lblApellidos.setValue(employee.getEmployeeLastName());
-        lblRole.setValue((getRole(employee.getRole()).getRoleName()));
+        lblRole.setValue((getRole(employee.getRoleId()).getRoleName()));
         lblCiudad.setValue(employee.getCity());
         lblDNI.setValue(employee.getDocumentNumber());
         final String estado = Constantes.ST_ACTIVO.equals(employee.getActive()) ? Constantes.STATUS_ACTIVO
@@ -303,7 +303,7 @@ public class PO_EAAdministrateEmployee
                 fila.appendChild(new Label(uOut.getEmployeeName()));
                 fila.appendChild(new Label(uOut.getEmployeeLastName()));
                 fila.appendChild(new Label(getUser(uOut.getUserId()).getUsername()));
-                fila.appendChild(new Label((getRole(uOut.getRole())).getRoleName()));
+                fila.appendChild(new Label((getRole(uOut.getRoleId())).getRoleName()));
 
                 final Image ImDetalles = new Image("media/details.png");
                 ImDetalles.setStyle("cursor:pointer");

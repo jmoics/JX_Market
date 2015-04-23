@@ -17,6 +17,8 @@
             emp.name as employeeName,
             emp.birthday as birthday,
             emp.lastname as employeeLastName,
+            emp.lastname2 as employeeLastName2,
+            emp.doctypeid as documentTypeId,
             emp.docnumber as documentNumber,
             emp.address as address,
             emp.phone as phone,
@@ -26,7 +28,7 @@
             emp.ubigeo as ubigeo,
             emp.active as active
         FROM
-            T_EMP_EMPLOYEE emp
+            T_BUS_EMPLOYEE emp
         WHERE
             emp.companyid = #{companyId}
         <if test="userId != null">AND
@@ -39,27 +41,29 @@
 
     <insert id="insertEmployee" parameterType="DTO_Employee">
         INSERT INTO
-        T_EMP_EMPLOYEE
+        T_BUS_EMPLOYEE
             (userid, companyid, roleid,
-            name, birthday, lastname,
-            docnumber, address, phone,
+            name, birthday, lastname, lastname2,
+            doctypeid, docnumber, address, phone,
             cellphone, email, city,
             ubigeo, active)
         VALUES
             (#{userId}, #{companyId}, #{roleId},
-            #{employeeName}, #{birthday}, #{employeeLastName},
-            #{documentNumber}, #{address}, #{phone},
+            #{employeeName}, #{birthday}, #{employeeLastName}, #{employeeLastName2},
+            #{documentTypeId}, #{documentNumber}, #{address}, #{phone},
             #{cellPhone}, #{email}, #{city},
             #{ubigeo}, #{active})
     </insert>
 
     <update id="updateEmployee" parameterType="DTO_Employee">
-        UPDATE T_EMP_EMPLOYEE
+        UPDATE T_BUS_EMPLOYEE
         SET
             roleid = #{roleId},
             name = #{employeeName},
             birthday = #{birthday},
             lastname = #{employeeLastName},
+            lastname2 = #{employeeLastName2},
+            doctypeid = #{documentTypeId},
             docnumber = #{documentNumber},
             address = #{address},
             phone = #{phone},
@@ -76,7 +80,7 @@
 
     <delete id="deleteEmployee" parameterType="DTO_Employee">
       DELETE FROM
-         T_EMP_EMPLOYEE
+         T_BUS_EMPLOYEE
       WHERE
          companyid = #{companyId}
       AND

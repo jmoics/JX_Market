@@ -12,7 +12,7 @@
         SELECT
             ped.pedido_n_codigo as codigo,
             ped.companyid as company,
-            ped.cliente_n_codigo as cliente,
+            ped.client_n_codigo as client,
             ped.tipoped_n_codigo as tipo,
             ped.pedido_d_fecha as fecha,
             ped.pedido_n_igv as igv,
@@ -21,8 +21,8 @@
             T_BUS_PEDIDO ped
         WHERE
             ped.companyid = #{company}
-        <if test="cliente != null">AND
-            ped.cliente_n_codigo = #{cliente}
+        <if test="client != null">AND
+            ped.client_n_codigo = #{client}
         </if>
     </select>
     
@@ -30,7 +30,7 @@
         SELECT
             ped.pedido_n_codigo as codigo,
             ped.companyid as company,
-            ped.cliente_n_codigo as cliente,
+            ped.client_n_codigo as client,
             ped.tipoped_n_codigo as tipo,
             ped.pedido_d_fecha as fecha,
             ped.pedido_n_igv as igv,
@@ -52,10 +52,10 @@
 
     <insert id="insertPedido" parameterType="DTO_Pedido">
         INSERT INTO T_BUS_PEDIDO
-            (companyid, cliente_n_codigo, tipoped_n_codigo,
+            (companyid, client_n_codigo, tipoped_n_codigo,
             pedido_d_fecha, pedido_n_igv, pedido_n_total)
         VALUES
-            (#{company}, #{cliente}, #{tipo},
+            (#{company}, #{client}, #{tipo},
             #{fecha}, #{igv}, #{total})
         <selectKey keyProperty="codigo" resultType="int" order="AFTER"> 
            select LAST_INSERT_ID() as value
@@ -74,7 +74,7 @@
         SET
             pedido_n_codigo = #{codigo},
             companyid = #{company},
-            cliente_n_codigo = #{cliente},
+            client_n_codigo = #{client},
             tipoped_n_codigo = #{tipo},
             pedido_d_fecha = #{fecha},
             pedido_n_igv = #{igv},

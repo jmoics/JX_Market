@@ -4,15 +4,15 @@ import org.apache.commons.validator.EmailValidator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 
-import pe.com.jx_market.domain.DTO_Cliente;
+import pe.com.jx_market.domain.DTO_Client;
 
 
-public class ValidaRegistroCliente extends ValidadorSpringTemplate {
+public class ValidaRegistroClient extends ValidadorSpringTemplate {
 
 	@Override
     public void doValida(final Object obj, final Errors errors) {
 
-		final DTO_Cliente cliente = (DTO_Cliente) obj;
+		final DTO_Client client = (DTO_Client) obj;
 
 		ValidationUtils.rejectIfEmpty(errors, "ciudad", "none", "Debe llenar su nacionalidad");
 		ValidationUtils.rejectIfEmpty(errors, "dni", "none", "Debe llenar su Número de Documento");
@@ -25,7 +25,7 @@ public class ValidaRegistroCliente extends ValidadorSpringTemplate {
 		ValidationUtils.rejectIfEmpty(errors, "email", "none", "Debe llenar su e-mail");
 
 		final EmailValidator evalid = EmailValidator.getInstance();
-		if(! evalid.isValid(cliente.getEmail())) {
+		if(! evalid.isValid(client.getEmail())) {
 			errors.rejectValue("email", "none", "La dirección de email no es válida");
 		}
 	}

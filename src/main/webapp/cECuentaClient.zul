@@ -1,12 +1,12 @@
 <?page title="JX_Market" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:zk="http://www.zkoss.org/2005/zk">
-    <window zclass="null" id="w_CECC" use="pe.com.jx_market.controller.PO_CECuentaCliente">
+    <window zclass="null" id="w_CECC" use="pe.com.jx_market.controller.PO_CECuentaClient">
         <style id="sT" src="style.css"/>
         <h:script type="text/javascript" src="media/js/boxOver.js"></h:script>
         <div class="center_title_bar">Sus pedidos</div>
         <listbox style="margin: 25px 0 0 15px" width="550px" id="lstPed" mold="paging" pageSize="10">
             <listhead>
-                <listheader label="Cliente" width="180px"/>
+                <listheader label="Client" width="180px"/>
                 <listheader label="Fecha" width="100px"/>
                 <listheader label="Tipo Pedido" width="140px"/>
                 <listheader label="IGV" width="60px"/>

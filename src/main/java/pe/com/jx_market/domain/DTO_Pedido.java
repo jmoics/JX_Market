@@ -8,7 +8,7 @@ public class DTO_Pedido implements Serializable
 {
     private Integer codigo;
     private Integer company;
-    private Integer cliente;
+    private Integer client;
     private Integer tipo;
     private Date fecha;
     private BigDecimal igv;
@@ -30,13 +30,13 @@ public class DTO_Pedido implements Serializable
     {
         this.company = company;
     }
-    public Integer getCliente()
+    public Integer getClient()
     {
-        return cliente;
+        return client;
     }
-    public void setCliente(final Integer cliente)
+    public void setClient(final Integer client)
     {
-        this.cliente = cliente;
+        this.client = client;
     }
     public Integer getTipo()
     {

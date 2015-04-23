@@ -66,15 +66,15 @@
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <label onClick='w_in.saltarPagina("cECuentaCliente.zul", false)' class="nav3">Mi Cuenta</label>
+                        <label onClick='w_in.saltarPagina("cECuentaClient.zul", false)' class="nav3">Mi Cuenta</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <label onClick='w_in.saltarPagina("cELoginCliente.zul", true)' class="nav4">Inicie Sesion</label>
+                        <label onClick='w_in.saltarPagina("cELoginClient.zul", true)' class="nav4">Inicie Sesion</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <label onClick='w_in.saltarPagina("cERegistroCliente.zul", true)' class="nav5">Registrese</label>
+                        <label onClick='w_in.saltarPagina("cERegistroClient.zul", true)' class="nav5">Registrese</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
@@ -164,7 +164,7 @@
 
                     <h:div class="cart_icon">
                         <image src="media/images/shoppingcart.png" width="48" height="48" border="0" class="link"
-                                onClick='w_in.incluir("cECarritoCliente.zul")'/>
+                                onClick='w_in.incluir("cECarritoClient.zul")'/>
                     </h:div>
                 </h:div>
 

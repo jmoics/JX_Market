@@ -19,7 +19,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 
 import pe.com.jx_market.domain.DTO_Category;
-import pe.com.jx_market.domain.DTO_Cliente;
+import pe.com.jx_market.domain.DTO_Client;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -56,9 +56,9 @@ public class PO_Index
             Executions.sendRedirect(null);
         }
 
-        if (getDesktop().getSession().getAttribute("cliente") != null) {
-            final DTO_Cliente cliente = (DTO_Cliente) getDesktop().getSession().getAttribute("cliente");
-            lbUser.setValue(cliente.getApellido() + " " + cliente.getNombre());
+        if (getDesktop().getSession().getAttribute("client") != null) {
+            final DTO_Client client = (DTO_Client) getDesktop().getSession().getAttribute("client");
+            lbUser.setValue(client.getClientLastName() + " " + client.getClientName());
             lbSalir.setVisible(true);
 
             actualizarCarrito();
@@ -148,7 +148,7 @@ public class PO_Index
 
     public void cerrarSesion()
     {
-        getDesktop().getSession().removeAttribute("cliente");
+        getDesktop().getSession().removeAttribute("client");
         getDesktop().getSession().removeAttribute("carrito");
         getDesktop().getSession().removeAttribute("actualizar");
 

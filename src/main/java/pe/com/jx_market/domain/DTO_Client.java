@@ -1,19 +1,17 @@
 package pe.com.jx_market.domain;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class DTO_Employee
-    implements Serializable
+public class DTO_Client
+    implements java.io.Serializable
 {
 
-    private String id;
-    private Integer roleId;
-    private Integer userId;
+    private Integer id;
     private Integer companyId;
-    private String employeeName;
-    private String employeeLastName;
-    private String employeeLastName2;
+    private Integer userId;
+    private String clientName;
+    private String clientLastName;
+    private String clientLastName2;
     private Date birthday;
     private Integer documentTypeId;
     private String documentNumber;
@@ -23,36 +21,17 @@ public class DTO_Employee
     private String email;
     private String city;
     private String ubigeo;
+    private Integer postalCode;
     private Boolean active;
 
-    public String getId()
+    public Integer getId()
     {
         return id;
     }
 
-    public void setId(final String id)
+    public void setId(final Integer id)
     {
         this.id = id;
-    }
-
-    public Integer getRoleId()
-    {
-        return roleId;
-    }
-
-    public void setRoleId(final Integer roleId)
-    {
-        this.roleId = roleId;
-    }
-
-    public Integer getUserId()
-    {
-        return userId;
-    }
-
-    public void setUserId(final Integer userId)
-    {
-        this.userId = userId;
     }
 
     public Integer getCompanyId()
@@ -65,24 +44,44 @@ public class DTO_Employee
         this.companyId = companyId;
     }
 
-    public String getEmployeeName()
+    public Integer getUserId()
     {
-        return employeeName;
+        return userId;
     }
 
-    public void setEmployeeName(final String employeeName)
+    public void setUserId(final Integer userId)
     {
-        this.employeeName = employeeName;
+        this.userId = userId;
     }
 
-    public String getEmployeeLastName()
+    public String getClientName()
     {
-        return employeeLastName;
+        return clientName;
     }
 
-    public void setEmployeeLastName(final String employeeLastName)
+    public void setClientName(final String clientName)
     {
-        this.employeeLastName = employeeLastName;
+        this.clientName = clientName;
+    }
+
+    public String getClientLastName()
+    {
+        return clientLastName;
+    }
+
+    public void setClientLastName(final String clientLastName)
+    {
+        this.clientLastName = clientLastName;
+    }
+
+    public String getClientLastName2()
+    {
+        return clientLastName2;
+    }
+
+    public void setClientLastName2(final String clientLastName2)
+    {
+        this.clientLastName2 = clientLastName2;
     }
 
     public Date getBirthday()
@@ -95,14 +94,14 @@ public class DTO_Employee
         this.birthday = birthday;
     }
 
-    public String getEmployeeLastName2()
+    public String getDocumentNumber()
     {
-        return employeeLastName2;
+        return documentNumber;
     }
 
-    public void setEmployeeLastName2(final String employeeLastName2)
+    public void setDocumentNumber(final String documentNumber)
     {
-        this.employeeLastName2 = employeeLastName2;
+        this.documentNumber = documentNumber;
     }
 
     public Integer getDocumentTypeId()
@@ -113,16 +112,6 @@ public class DTO_Employee
     public void setDocumentTypeId(final Integer documentTypeId)
     {
         this.documentTypeId = documentTypeId;
-    }
-
-    public String getDocumentNumber()
-    {
-        return documentNumber;
-    }
-
-    public void setDocumentNumber(final String documentNumber)
-    {
-        this.documentNumber = documentNumber;
     }
 
     public String getAddress()
@@ -183,6 +172,16 @@ public class DTO_Employee
     public void setUbigeo(final String ubigeo)
     {
         this.ubigeo = ubigeo;
+    }
+
+    public Integer getPostalCode()
+    {
+        return postalCode;
+    }
+
+    public void setPostalCode(final Integer postalCode)
+    {
+        this.postalCode = postalCode;
     }
 
     public Boolean getActive()

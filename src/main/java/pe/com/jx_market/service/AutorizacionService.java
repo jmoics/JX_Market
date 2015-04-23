@@ -42,7 +42,7 @@ public class AutorizacionService<T>
         final ServiceOutput<T> output = new ServiceOutput<T>();
         final DTO_Employee employee = (DTO_Employee) input.getMapa().get("employee");
         final DTO_Role role = new DTO_Role();
-        role.setId(employee.getRole());
+        role.setId(employee.getRoleId());
         String[] modules;
         if (input.getMapa().containsKey("module")) {
             final String module = (String) input.getMapa().get("module");

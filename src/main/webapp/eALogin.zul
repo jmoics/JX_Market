@@ -61,7 +61,7 @@
          <html:p />
          <div id="badauth" visible="false" style="color: #ff0000">
             El user o contraseña ingresados no son válidos. Intente nuevamente. Si el problema
-            persiste, por favor contacte al área de Servicios al Cliente JX-Market.
+            persiste, por favor contacte al área de Servicios al Client JX-Market.
          </div>
       </window>
    </div>

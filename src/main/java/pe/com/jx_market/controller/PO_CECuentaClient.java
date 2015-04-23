@@ -20,18 +20,18 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Product;
-import pe.com.jx_market.domain.DTO_Cliente;
+import pe.com.jx_market.domain.DTO_Client;
 import pe.com.jx_market.domain.DTO_DetallePedido;
 import pe.com.jx_market.domain.DTO_Pedido;
+import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-public class PO_CECuentaCliente extends Window
+public class PO_CECuentaClient extends Window
 {
-    static Log logger = LogFactory.getLog(PO_CECuentaCliente.class);
+    static Log logger = LogFactory.getLog(PO_CECuentaClient.class);
     private final NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
     private BusinessService pedidosService, productService;
     private Listbox lstPed, lstDet;
@@ -45,7 +45,7 @@ public class PO_CECuentaCliente extends Window
         pedidosService = ContextLoader.getService(this, "pedidosService");
         productService = ContextLoader.getService(this, "productService");
 
-        if (getDesktop().getSession().getAttribute("cliente") != null) {
+        if (getDesktop().getSession().getAttribute("client") != null) {
             listarPedidos();
         }
     }
@@ -55,9 +55,9 @@ public class PO_CECuentaCliente extends Window
     {
         lstDet.setVisible(false);
         lstPed.setVisible(true);
-        final DTO_Cliente cliente = (DTO_Cliente) getDesktop().getSession().getAttribute("cliente");
+        final DTO_Client client = (DTO_Client) getDesktop().getSession().getAttribute("client");
         final DTO_Pedido pedAux = new DTO_Pedido();
-        pedAux.setCliente(cliente.getCodigo());
+        pedAux.setClient(client.getId());
         pedAux.setCompany(Constantes.INSTITUCION_JX_MARKET);
 
         final ServiceInput input = new ServiceInput();
@@ -71,7 +71,7 @@ public class PO_CECuentaCliente extends Window
                 final Listitem item = new Listitem();
 
                 Listcell cell = new Listcell();
-                cell.setLabel(cliente.getApellido() + " " + cliente.getNombre());
+                cell.setLabel(client.getClientLastName() + " " + client.getClientName());
                 cell.setParent(item);
 
                 cell = new Listcell();

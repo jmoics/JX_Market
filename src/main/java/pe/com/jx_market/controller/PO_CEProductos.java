@@ -185,7 +185,7 @@ public class PO_CEProductos extends Window
 
     @SuppressWarnings("unchecked")
     private void agregarCarrito(final DTO_Product prod) {
-        if (getDesktop().getSession().getAttribute("cliente") != null
+        if (getDesktop().getSession().getAttribute("client") != null
                         && getDesktop().getSession().getAttribute("carrito") != null) {
             final Map<Integer, Map<DTO_Product, Integer>> map = (Map<Integer, Map<DTO_Product, Integer>>) getDesktop()
                                                                                     .getSession().getAttribute("carrito");
@@ -195,9 +195,9 @@ public class PO_CEProductos extends Window
                 map2.put(prod, 1);
                 map.put(prod.getId(), map2);
             }
-            incluir("cECarritoCliente.zul");
+            incluir("cECarritoClient.zul");
         } else {
-            Executions.sendRedirect("cELoginCliente.zul");
+            Executions.sendRedirect("cELoginClient.zul");
         }
     }
 

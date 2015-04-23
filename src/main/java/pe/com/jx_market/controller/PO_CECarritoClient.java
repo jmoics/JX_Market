@@ -25,7 +25,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Cliente;
+import pe.com.jx_market.domain.DTO_Client;
 import pe.com.jx_market.domain.DTO_DetallePedido;
 import pe.com.jx_market.domain.DTO_Pedido;
 import pe.com.jx_market.domain.DTO_Product;
@@ -34,9 +34,9 @@ import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-public class PO_CECarritoCliente extends Window
+public class PO_CECarritoClient extends Window
 {
-    static Log logger = LogFactory.getLog(PO_CECarritoCliente.class);
+    static Log logger = LogFactory.getLog(PO_CECarritoClient.class);
     private final NumberFormat formateador = NumberFormat.getNumberInstance(Locale.ENGLISH);
     private BusinessService productService, categoryService, pedidosService;
     private Grid grdProds;
@@ -228,9 +228,9 @@ public class PO_CECarritoCliente extends Window
     }
 
     private DTO_Pedido construirPedido() {
-        final DTO_Cliente cli = (DTO_Cliente) getDesktop().getSession().getAttribute("cliente");
+        final DTO_Client cli = (DTO_Client) getDesktop().getSession().getAttribute("client");
         final DTO_Pedido ped = new DTO_Pedido();
-        ped.setCliente(cli.getCodigo());
+        ped.setClient(cli.getId());
         ped.setFecha(new Date());
         ped.setIgv(BigDecimal.ZERO);
         ped.setTipo(1);

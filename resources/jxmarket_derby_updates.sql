@@ -38,16 +38,22 @@ INSERT INTO T_SEG_MODULE (COMPANYID, DESCRIPTION, RESOURCE) VALUES (2,'Module pa
                 (2,'Modulo para administrar la contrasena','MODULE_CHANGE_PASS');
 
 INSERT INTO T_SEG_ROLE2MODULE (ROLEID, MODULEID, ACTIVE)
-         VALUES (1,1,true),(1,2,true),(1,3,true),(1,4,true),(1,5,true),(1,6,true),(1,7,true),(1,8,true),(1,9,true),(1,10,true),(1,11,true),(1,12,true),
-                (2,2,true),(2,4,true),(3,2,true),(3,3,true),(3,4,true),(3,5,true),(3,11,true),(4,1,true),(4,6,true),(4,7,true),(4,11,true),
-                (5,2,true),(5,4,true),(5,5,true),(5,6,true),(5,7,true),(5,10,true),(5,11,true);
+            VALUES (1,1,true),(1,2,true),(1,3,true),(1,4,true),(1,5,true),(1,6,true),(1,7,true),(1,8,true),(1,9,true),(1,10,true),(1,11,true),(1,12,true),
+                   (2,2,true),(2,4,true),(3,2,true),(3,3,true),(3,4,true),(3,5,true),(3,11,true),(4,1,true),(4,6,true),(4,7,true),(4,11,true),
+                   (5,2,true),(5,4,true),(5,5,true),(5,6,true),(5,7,true),(5,10,true),(5,11,true);
 
-INSERT INTO T_EMP_EMPLOYEE (ROLEID, USERID, COMPANYID, NAME, LASTNAME,  DOCNUMBER, ADDRESS, PHONE, CELLPHONE, EMAIL, CITY, UBIGEO, BIRTHDAY, ACTIVE)
-           VALUES (1,4,2,'Jorge','Cueva','44128463','Mi casa','4823262','945190242','jmoics@gmail.com','Lima','010101','1987-12-01',true),
-                  (3,2,2,'jorge','cueva samames','44128463','mi house','4563423','987755443','','lima','lima',NULL,true);
+INSERT INTO T_BUS_PARAMTYPE (COMPANYID,NAME,DESCRIPTION)
+            VALUES (2,'Tipo de Documento','Parametros para guardar los tipos de documento');
+
+INSERT INTO T_BUS_PARAMETER (COMPANYID,PARAMTYPEID,NAME,DESCRIPTION)
+            VALUES (2,1,'DNI','DNI'),(2,1,'CE','Carnet de Extranjería');
+
+INSERT INTO T_BUS_EMPLOYEE (ROLEID, USERID, COMPANYID, NAME, LASTNAME, LASTNAME2, DOCTYPEID, DOCNUMBER, ADDRESS, PHONE, CELLPHONE, EMAIL, CITY, UBIGEO, BIRTHDAY, ACTIVE)
+            VALUES (1,4,2,'Jorge','Cueva','Samames',1,'44128463','Mi casa','4823262','945190242','jmoics@gmail.com','Lima','150135','1987-12-01',true),
+                  (3,2,2,'George','Cave',null,1,'44128463','mi house','4563423','987755443','','lima','lima','1987-04-03',true);
 
 INSERT INTO T_BUS_CATEGORY (COMPANYID, NAME, ACTIVE, PARENTID)
-           VALUES (2, 'Cómputo y Videojuegos', true, null),
+            VALUES (2, 'Cómputo y Videojuegos', true, null),
                   (2, 'Cómputo', true, 1),
                   (2, 'Tablets y Accesorios', true, 1),
                   (2, 'Videojuegos', true, 1),
@@ -57,7 +63,7 @@ INSERT INTO T_BUS_CATEGORY (COMPANYID, NAME, ACTIVE, PARENTID)
                   (2, 'TV y Video', true, 7);
 
 INSERT INTO T_BUS_TRADEMARK (COMPANYID, NAME, ACTIVE, IMAGE)
-           VALUES (2, 'Sony', true, null),
+            VALUES (2, 'Sony', true, null),
                   (2, 'Toshiba', true, null),
                   (2, 'LG', true, null),
                   (2, 'Samsung', true, null);
@@ -84,12 +90,13 @@ INSERT INTO T_BUS_COSTO (PRODUCTID, DESDE, HASTA, MONTO)
                   (4,'2015-01-01','2015-05-31',500.00),(5,'2015-01-01','2015-05-31',28.00), (6,'2015-01-01','2015-05-31',32.00),
                   (7,'2015-01-01','2015-05-31',450.00);
 
-INSERT INTO T_BUS_CLIENTE (COMPANYID, USERID, CLIENTE_V_NOMBRE, CLIENTE_V_APELLIDO, CLIENTE_D_FECHANAC, CLIENTE_N_DNI, CLIENTE_V_DIRECCION, CLIENTE_V_TELEFONO, CLIENTE_V_CELULAR, CLIENTE_V_EMAIL, CLIENTE_V_CIUDAD, CLIENTE_V_REGION, CLIENTE_V_CODPOSTAL, CLIENTE_N_ACTIVO) VALUES (1,2,'Jorge','Cueva Samames','1987-02-12',45645645,'mi casa','4564564','987987987','jmoics@gmail.com','Lima',NULL,NULL,NULL),
-                 (1,7,'Jackeline','Rios Ramos','1989-08-20',45645645,'su casa','4564564','987987987','jacky@gmail.com','Lima','Lima',NULL,1);
+INSERT INTO T_BUS_CLIENT (COMPANYID, USERID, NAME, LASTNAME, LASTNAME2, BIRTHDAY, DOCTYPEID,DOCNUMBER, ADDRESS, PHONE, CELLPHONE, EMAIL, CITY, UBIGEO, POSTCODE, ACTIVE)
+          VALUES (1,2,'Jorge','Cueva','Samames','1987-02-12',1,'44128463','mi casa','4564564','987987987','jmoics@gmail.com','Lima','150135',NULL,true),
+                 (1,7,'Jackeline','Rios','Ramos','1989-08-20',1,'45645645','su casa','4564564','987987987','jacky@gmail.com','Lima','150135',NULL,true);
 
 INSERT INTO T_BUS_PEDIDO_TIPO (TIPOPED_V_DESCRIPCION) VALUES ('Entrega a domicilio'),('Recoger el producto');
 
-INSERT INTO T_BUS_PEDIDO (COMPANYID,CLIENTE_N_CODIGO,TIPOPED_N_CODIGO,PEDIDO_D_FECHA,PEDIDO_N_IGV,PEDIDO_N_TOTAL) VALUES (1,1,1,'2011-01-05',0,6300.00),(2,1,1,'2011-01-05',0,4900.00),(3,1,1,'2011-01-05',0,1400.00);
+INSERT INTO T_BUS_PEDIDO (COMPANYID,CLIENTID,TIPOPED_N_CODIGO,PEDIDO_D_FECHA,PEDIDO_N_IGV,PEDIDO_N_TOTAL) VALUES (1,1,1,'2011-01-05',0,6300.00),(2,1,1,'2011-01-05',0,4900.00),(3,1,1,'2011-01-05',0,1400.00);
 
 INSERT INTO T_BUS_PEDIDO2PEDIDO VALUES (1,2),(1,3);
 

@@ -1,6 +1,6 @@
 <?page id="menup" title="JX_Market" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:zk="http://www.zkoss.org/2005/zk">
-<div id="d_cERC" use="pe.com.jx_market.controller.PO_CERegistroCliente">
+<div id="d_cERC" use="pe.com.jx_market.controller.PO_CERegistroClient">
     <style id="sT" src="style.css"/>
     <h:script type="text/javascript" src="media/js/boxOver.js"></h:script>
 
@@ -66,15 +66,15 @@
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <label onClick='d_cERC.saltarPagina("cECuentaCliente.zul", true)' class="nav3">Mi Cuenta</label>
+                        <label onClick='d_cERC.saltarPagina("cECuentaClient.zul", true)' class="nav3">Mi Cuenta</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <label onClick='d_cERC.saltarPagina("cELoginCliente.zul", true)' class="nav4">Inicie Sesion</label>
+                        <label onClick='d_cERC.saltarPagina("cELoginClient.zul", true)' class="nav4">Inicie Sesion</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
-                        <label onClick='d_cERC.saltarPagina("cERegistroCliente.zul", false)' class="nav5">Registrese</label>
+                        <label onClick='d_cERC.saltarPagina("cERegistroClient.zul", false)' class="nav5">Registrese</label>
                     </h:li>
                     <h:li class="divider"></h:li>
                     <h:li>
@@ -107,9 +107,9 @@
             <div class="center_content">
                 <div class="center_title_bar">Crear una cuenta en JX_Market</div>
                 <radiogroup id="radgTipDoc" >
-                    <radio label="Cliente" 
+                    <radio label="Client" 
                         checked="true" sclass="post-normal-text"
-                        onCheck="d_cERC.esCliente()" />
+                        onCheck="d_cERC.esClient()" />
                     <radio label="Company" sclass="post-normal-text"
                         onCheck="d_cERC.esCompany()" />
                 </radiogroup>
@@ -226,7 +226,7 @@
                         <div align="right" style="margin-left:10px">
                             <button id="s" image="media/filesave.png"
                                 label="Registrar " dir="reverse"
-                                zk:onClick="d_cERC.registrarCliente()" />
+                                zk:onClick="d_cERC.registrarClient()" />
                         </div>
                     </hbox>
                 </div>

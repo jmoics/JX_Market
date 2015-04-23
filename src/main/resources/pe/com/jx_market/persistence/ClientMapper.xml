@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.ClientMapper">
+
+  <cache />
+
+    <!-- MANTENIMIENTO DE CLIENTES -->
+
+    <select id="getClients" parameterType="DTO_Client" resultType="DTO_Client">
+        SELECT
+            cl.id as id,
+            cl.userid as userId,
+            cl.companyid as companyId,
+            cl.name as clientName,
+            cl.birthday as birthday,
+            cl.lastname as clientLastName,
+            cl.lastname2 as clientLastName2,
+            cl.doctypeid as documentTypeId,
+            cl.docnumber as documentNumber,
+            cl.address as address,
+            cl.phone as phone,
+            cl.cellphone as cellphone,
+            cl.email as email,
+            cl.city as city,
+            cl.ubigeo as ubigeo,
+            cl.client_v_codpostal as codPostal,
+            cl.active as active
+        FROM
+            T_BUS_CLIENT cl
+        WHERE
+            cl.companyid = #{companyId}
+        <if test="userId != null">AND
+            cl.userid = #{userId}
+        </if>
+        <if test="id != null">AND
+            cl.id = #{id}
+        </if>
+        ORDER BY
+            cl.id
+    </select>
+
+    <insert id="insertClient" parameterType="DTO_Client">
+        INSERT INTO
+        T_BUS_CLIENT
+            (userid, companyid,
+            name, birthday, lastname, lastname2,
+            doctypeid,docnumber, address, phone,
+            cellphone, email, city,
+            ubigeo, client_v_codpostal, active)
+        VALUES
+            (#{userId}, #{companyId},
+            #{clientName}, #{birthday}, #{clientLastName},#{clientLastName2},
+            #{documentTypeId},#{documentNumber}, #{address}, #{phone},
+            #{cellphone}, #{email}, #{city},
+            #{ubigeo}, #{codPostal}, #{active})
+    </insert>
+
+    <update id="updateClient" parameterType="DTO_Client">
+        UPDATE T_BUS_CLIENT
+        SET
+            name = #{clientName},
+            birthday = #{birthday},
+            lastname = #{clientLastName},
+            lastname2 = #{clientLastName2},
+            doctypeid = #{documentTypeId},
+            docnumber = #{documentNumber},
+            address = #{address},
+            phone = #{phone},
+            cellphone = #{cellphone},
+            email = #{email},
+            city = #{city},
+            ubigeo = #{ubigeo},
+            active = #{active}
+        WHERE
+            id = #{id}
+        AND
+            companyid = #{companyId}
+    </update>
+
+    <delete id="deleteClient" parameterType="DTO_Client">
+      DELETE FROM
+         T_BUS_CLIENT
+      WHERE
+         companyid = #{companyId}
+      AND
+         id = #{id}
+    </delete>
+
+</mapper>

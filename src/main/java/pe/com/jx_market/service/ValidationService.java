@@ -18,7 +18,7 @@ public class ValidationService
     implements BusinessService
 {
     static Log logger = LogFactory.getLog(ValidationService.class);
-    private Validador registraCliente, registraSolicitud;
+    private Validador registraClient, registraSolicitud;
 
     @Override
     @Transactional
@@ -26,8 +26,8 @@ public class ValidationService
     {
         final ServiceOutput output = new ServiceOutput();
         Validador val = null;
-        if (input.getAccion().equals("registraCliente")) {
-            val = getRegistraCliente();
+        if (input.getAccion().equals("registraClient")) {
+            val = getRegistraClient();
         } else if (input.getAccion().equals("registraSolicitud")) {
             val = getRegistraSolicitud();
         }
@@ -50,14 +50,14 @@ public class ValidationService
         return output;
     }
 
-    public Validador getRegistraCliente()
+    public Validador getRegistraClient()
     {
-        return registraCliente;
+        return registraClient;
     }
 
-    public void setRegistraCliente(final Validador registraCliente)
+    public void setRegistraClient(final Validador registraClient)
     {
-        this.registraCliente = registraCliente;
+        this.registraClient = registraClient;
     }
 
     public Validador getRegistraSolicitud()

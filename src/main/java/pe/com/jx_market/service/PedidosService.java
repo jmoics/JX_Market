@@ -54,7 +54,7 @@ public class PedidosService implements BusinessService
             return output;
         } else if (Constantes.V_LIST.equals(input.getAccion())) {
             final Map<DTO_Pedido, List<DTO_DetallePedido>> mapPed = new HashMap<DTO_Pedido, List<DTO_DetallePedido>>();
-            //Pedidos de JX_Market para un cliente
+            //Pedidos de JX_Market para un client
             final List<DTO_Pedido> lstPedCli = pedidoMapper.getPedidos((DTO_Pedido) input.getObject());
             for (final DTO_Pedido ped : lstPedCli) {
                 final List<DTO_DetallePedido> lstPedEmp = new ArrayList<DTO_DetallePedido>();
@@ -120,7 +120,7 @@ public class PedidosService implements BusinessService
 
     private DTO_Pedido obtenerPedido (final DTO_Pedido ped) {
         final DTO_Pedido pedAux = new DTO_Pedido();
-        pedAux.setCliente(ped.getCliente());
+        pedAux.setClient(ped.getClient());
         pedAux.setCompany(ped.getCompany());
         pedAux.setFecha(ped.getFecha());
         pedAux.setIgv(ped.getIgv());

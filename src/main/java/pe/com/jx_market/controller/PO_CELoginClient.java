@@ -11,7 +11,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Textbox;
 
-import pe.com.jx_market.domain.DTO_Cliente;
+import pe.com.jx_market.domain.DTO_Client;
 import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.utilities.BusinessService;
@@ -19,18 +19,18 @@ import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-public class PO_CELoginCliente extends Div
+public class PO_CELoginClient extends Div
 {
-    static Log logger = LogFactory.getLog(PO_CELoginCliente.class);
+    static Log logger = LogFactory.getLog(PO_CELoginClient.class);
     private Textbox txtUser, txtPass;
-    private BusinessService validationService, userService, clienteService;
+    private BusinessService validationService, userService, clientService;
 
     public void onCreate() {
         txtUser = (Textbox) getFellow("txtUser");
         txtPass = (Textbox) getFellow("txtPass");
         validationService = ContextLoader.getService(this, "validationService");
         userService = ContextLoader.getService(this, "userService");
-        clienteService = ContextLoader.getService(this, "clienteService");
+        clientService = ContextLoader.getService(this, "clientService");
     }
 
     public void iniciarSesion() {
@@ -41,9 +41,9 @@ public class PO_CELoginCliente extends Div
 
         final DTO_User validado = getUser(user);
         if (validado != null) {
-            final DTO_Cliente cliente = getCliente(validado);
-            if (cliente != null) {
-                getDesktop().getSession().setAttribute("cliente", cliente);
+            final DTO_Client client = getClient(validado);
+            if (client != null) {
+                getDesktop().getSession().setAttribute("client", client);
                 final Map<Integer, Map<DTO_Product, Integer>> map = new HashMap<Integer, Map<DTO_Product, Integer>>();
                 getDesktop().getSession().setAttribute("carrito", map);
                 final Map<String, Object> map2 = new HashMap<String, Object>();
@@ -63,16 +63,16 @@ public class PO_CELoginCliente extends Div
         }
     }
 
-    public DTO_Cliente getCliente(final DTO_User usu)
+    public DTO_Client getClient(final DTO_User usu)
     {
-        final DTO_Cliente cli = new DTO_Cliente();
-        cli.setCompany(usu.getCompanyId());
-        cli.setUser(usu.getId());
+        final DTO_Client cli = new DTO_Client();
+        cli.setCompanyId(usu.getCompanyId());
+        cli.setUserId(usu.getId());
         final ServiceInput input = new ServiceInput(cli);
         input.setAccion(Constantes.V_GET);
-        final ServiceOutput output = clienteService.execute(input);
+        final ServiceOutput output = clientService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            return (DTO_Cliente) output.getObject();
+            return (DTO_Client) output.getObject();
         } else {
             return null;
         }

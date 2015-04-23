@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.domain.DTO_Cliente;
+import pe.com.jx_market.domain.DTO_Client;
 import pe.com.jx_market.domain.DTO_User;
-import pe.com.jx_market.persistence.ClienteMapper;
+import pe.com.jx_market.persistence.ClientMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -25,12 +25,12 @@ import pe.com.jx_market.utilities.ServiceOutput;
  *
  */
 @Service
-public class ClienteService
+public class ClientService
     implements BusinessService
 {
-    static Log logger = LogFactory.getLog(ClienteService.class);
+    static Log logger = LogFactory.getLog(ClientService.class);
     @Autowired
-    private ClienteMapper clienteMapper;
+    private ClientMapper clientMapper;
     @Autowired
     private BusinessService userService;
 
@@ -55,13 +55,13 @@ public class ClienteService
 
         final ServiceOutput output = new ServiceOutput();
         if (Constantes.V_LIST.equals(input.getAccion())) {
-            final DTO_Cliente cliente = (DTO_Cliente) input.getObject();
-            output.setLista(clienteMapper.getClientes(cliente));
+            final DTO_Client client = (DTO_Client) input.getObject();
+            output.setLista(clientMapper.getClients(client));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getAccion())) {
-            final DTO_Cliente cliente = (DTO_Cliente) input.getObject();
-            final List<DTO_Cliente> cliLstTmp = clienteMapper.getClientes(cliente);
+            final DTO_Client client = (DTO_Client) input.getObject();
+            final List<DTO_Client> cliLstTmp = clientMapper.getClients(client);
             if (cliLstTmp != null && !cliLstTmp.isEmpty()) {
                 output.setObject(cliLstTmp.get(0));
                 output.setErrorCode(Constantes.OK);
@@ -69,7 +69,7 @@ public class ClienteService
             return output;
         }else if (Constantes.V_REGISTER.equals(input.getAccion())) {
             final Map map = input.getMapa();
-            final DTO_Cliente cliente = (DTO_Cliente) map.get("cliente");
+            final DTO_Client client = (DTO_Client) map.get("client");
             DTO_User user = (DTO_User) map.get("user");
             final ServiceInput inp = new ServiceInput(user);
             if(user != null) {
@@ -78,7 +78,7 @@ public class ClienteService
                     final ServiceOutput out = userService.execute(inp);
                     if (out.getErrorCode() == Constantes.OK) {
                         user = getUser(user);
-                        cliente.setUser(user.getId());
+                        client.setUserId(user.getId());
                     }
                 } else {
                     user = getUser(user);
@@ -96,16 +96,16 @@ public class ClienteService
                     }
                 }
             }
-            final DTO_Cliente clTmp = (DTO_Cliente) clienteMapper.getClientes(cliente);
+            final DTO_Client clTmp = (DTO_Client) clientMapper.getClients(client);
             if (clTmp == null) {
-                clienteMapper.insertCliente(cliente);
+                clientMapper.insertClient(client);
             } else {
-                clienteMapper.updateCliente(cliente);
+                clientMapper.updateClient(client);
             }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_DELETE.equals(input.getAccion())) {
-            clienteMapper.eliminaCliente((DTO_Cliente) input.getObject());
+            clientMapper.eliminaClient((DTO_Client) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         } else {
@@ -124,12 +124,12 @@ public class ClienteService
         }
     }
 
-    public ClienteMapper getDao () {
-        return clienteMapper;
+    public ClientMapper getDao () {
+        return clientMapper;
     }
 
-    public void setDao (final ClienteMapper clienteMapper) {
-        this.clienteMapper = clienteMapper;
+    public void setDao (final ClientMapper clientMapper) {
+        this.clientMapper = clientMapper;
     }
 
     public BusinessService getUserService()

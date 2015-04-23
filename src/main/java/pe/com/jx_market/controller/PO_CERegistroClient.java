@@ -18,7 +18,7 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Textbox;
 
-import pe.com.jx_market.domain.DTO_Cliente;
+import pe.com.jx_market.domain.DTO_Client;
 import pe.com.jx_market.domain.DTO_Solicitud;
 import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.service.EnviarCorreo;
@@ -27,17 +27,17 @@ import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-public class PO_CERegistroCliente
+public class PO_CERegistroClient
     extends Div
 {
-    static Log logger = LogFactory.getLog(PO_CERegistroCliente.class);
+    static Log logger = LogFactory.getLog(PO_CERegistroClient.class);
     private Textbox txtApellidos, txtNombres, txtMail, txtPass, txtRepPass,
                     txtTelef, txtCelu, txtCiudad, txtDireccion, txtCaptcha, txtRS, txtMailEmp, txtRuc;
     private Captcha cpa;
     private Intbox intNumDoc;
     private Datebox datFecNacim;
     private Grid grdRegCli, grdRegEmp;
-    private BusinessService validationService, userService, clienteService, solicitudService;
+    private BusinessService validationService, userService, clientService, solicitudService;
 
     public void onCreate()
     {
@@ -63,7 +63,7 @@ public class PO_CERegistroCliente
 
         validationService = ContextLoader.getService(this, "validationService");
         userService = ContextLoader.getService(this, "userService");
-        clienteService = ContextLoader.getService(this, "clienteService");
+        clientService = ContextLoader.getService(this, "clientService");
         solicitudService = ContextLoader.getService(this, "solicitudService");
 
         try {
@@ -73,13 +73,13 @@ public class PO_CERegistroCliente
         }
     }
 
-    public void registrarCliente()
+    public void registrarClient()
     {
         if (txtCaptcha.getValue().toLowerCase().equals(cpa.getValue().trim().toLowerCase())) {
             if (grdRegCli.isVisible()) {
-                final DTO_Cliente cliente = new DTO_Cliente();
+                final DTO_Client client = new DTO_Client();
                 final DTO_User user = new DTO_User();
-                final List<String> lst = guardaDTO(cliente, user);
+                final List<String> lst = guardaDTO(client, user);
                 if (lst != null) {
                     int i = 0;
                     String msg = "";
@@ -91,18 +91,18 @@ public class PO_CERegistroCliente
                     alertaInfo(msg, msg, null);
                 } else {
                     final Map<String, Object> map = new HashMap<String, Object>();
-                    map.put("cliente", cliente);
+                    map.put("client", client);
                     map.put("user", user);
                     final ServiceInput input = new ServiceInput();
                     input.setAccion(Constantes.V_REGISTER);
                     input.setMapa(map);
-                    final ServiceOutput output = clienteService.execute(input);
+                    final ServiceOutput output = clientService.execute(input);
                     if (output.getErrorCode() == Constantes.OK) {
                         final int rpta = Messagebox.show("Su registro fue realizado correctamente",
                                                     "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
                         if (rpta == Messagebox.OK) {
                         	final EnviarCorreo correo = new EnviarCorreo();
-                        	final boolean enviado = correo.enviarCorreo(cliente.getEmail(),"Bienvenido a JXMARKET","Su registro fue exitoso");
+                        	final boolean enviado = correo.enviarCorreo(client.getEmail(),"Bienvenido a JXMARKET","Su registro fue exitoso");
                         	System.out.println("enviado: "+enviado);
 
                             getDesktop().getSession().setAttribute("sendPage", getDesktop().getBookmark());
@@ -153,28 +153,28 @@ public class PO_CERegistroCliente
         }
     }
 
-    public List<String> guardaDTO(final DTO_Cliente cliente,
+    public List<String> guardaDTO(final DTO_Client client,
                                   final DTO_User user)
     {
-        cliente.setCompany(Constantes.INSTITUCION_JX_MARKET);
+        client.setCompanyId(Constantes.INSTITUCION_JX_MARKET);
 
         // modificar cuando se agregue activacion desde email
-        cliente.setEstado(Constantes.ST_ACTIVO);
+        client.setActive(Constantes.STB_ACTIVO);
 
-        cliente.setCiudad(txtCiudad.getValue());
-        cliente.setRegion(txtCiudad.getValue());
-        cliente.setDni(intNumDoc.getValue());
+        client.setCity(txtCiudad.getValue());
+        client.setUbigeo(txtCiudad.getValue());
+        client.setDocumentNumber(""+intNumDoc.getValue());
 
-        cliente.setApellido(txtApellidos.getValue());
-        cliente.setNombre(txtNombres.getValue());
+        client.setClientLastName(txtApellidos.getValue());
+        client.setClientName(txtNombres.getValue());
 
-        cliente.setFecNac(datFecNacim.getValue());
+        client.setBirthday(datFecNacim.getValue());
 
-        cliente.setDireccion(txtDireccion.getValue());
+        client.setAddress(txtDireccion.getValue());
 
-        cliente.setTelefono(txtTelef.getValue());
+        client.setPhone(txtTelef.getValue());
 
-        cliente.setEmail(txtMail.getValue());
+        client.setEmail(txtMail.getValue());
 
         if (!verificaDisponibilidad(user)) {
             final List<String> ans = new ArrayList<String>();
@@ -182,7 +182,7 @@ public class PO_CERegistroCliente
             return ans;
         }
 
-        List<String> lst = validacionDTO(cliente);
+        List<String> lst = validacionDTO(client);
         if (lst == null) {
             lst = new ArrayList<String>();
         }
@@ -193,12 +193,12 @@ public class PO_CERegistroCliente
             if (edad < 18) {
                 lst.add("Usted debe ser mayor de edad (18 años) para poder registrarse");
             } else {
-                cliente.setFecNac(datFecNacim.getValue());
+                client.setBirthday(datFecNacim.getValue());
             }
         }
 
         if (validaCaracteres(txtTelef.getValue(), Constantes.VALID_TELEFONO)) {
-            cliente.setTelefono(txtTelef.getValue());
+            client.setPhone(txtTelef.getValue());
         } else {
             if (!txtTelef.getValue().isEmpty()) {
                 lst.add("El número de teléfono de domicilio solo debe contener números");
@@ -206,7 +206,7 @@ public class PO_CERegistroCliente
         }
 
         if (validaCaracteres(txtCelu.getValue(), Constantes.VALID_TELEFONO)) {
-            cliente.setCelular(txtCelu.getValue());
+            client.setCellPhone(txtCelu.getValue());
         } else {
             if (!txtCelu.getValue().isEmpty()) {
                 lst.add("El número de teléfono celular solo debe contener números");
@@ -267,9 +267,9 @@ public class PO_CERegistroCliente
     }
 
     @SuppressWarnings("unchecked")
-    private List<String> validacionDTO(final DTO_Cliente cliente)
+    private List<String> validacionDTO(final DTO_Client client)
     {
-        final ServiceInput input = new ServiceInput(cliente, "registraCliente");
+        final ServiceInput input = new ServiceInput(client, "registraClient");
         final ServiceOutput output = validationService.execute(input);
         if (output.getErrorCode() == Constantes.VALIDATION_ERROR) {
             final List<String> errores = output.getLista();
@@ -351,7 +351,7 @@ public class PO_CERegistroCliente
         grdRegCli.setVisible(false);
     }
 
-    public void esCliente()
+    public void esClient()
     {
         grdRegEmp.setVisible(false);
         grdRegCli.setVisible(true);
