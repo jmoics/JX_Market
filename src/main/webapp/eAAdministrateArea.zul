@@ -21,7 +21,7 @@
                                 <grid id="grdArea" width="400px">
                                     <columns>
                                        <column label="Nombre" width="200px" />
-                                       <column label="Ver Empleados" width="90px" />
+                                       <column label="Ver Employees" width="90px" />
                                        <column label="Editar" width="55px" />
                                        <column label="Eliminar" width="55px" />
                                     </columns>
@@ -55,10 +55,10 @@
                     </div>
                 </vbox>
             </div>
-            <popup id="popEmpleados" width="400px">
+            <popup id="popEmployees" width="400px">
                 <div align="center">
                    <toolbarbutton label="Cerrar"
-                     onClick="popEmpleados.close()">
+                     onClick="popEmployees.close()">
                    </toolbarbutton>
                 </div>
             </popup>

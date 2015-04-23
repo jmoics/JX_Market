@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.jx_market.domain.DTO_Cliente;
-import pe.com.jx_market.domain.DTO_Usuario;
+import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.persistence.ClienteMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -25,14 +25,14 @@ import pe.com.jx_market.utilities.ServiceOutput;
  *
  */
 @Service
-public class ClienteService 
-    implements BusinessService 
+public class ClienteService
+    implements BusinessService
 {
     static Log logger = LogFactory.getLog(ClienteService.class);
     @Autowired
     private ClienteMapper clienteMapper;
     @Autowired
-    private BusinessService usuarioService;
+    private BusinessService userService;
 
     /**
      * El ServiceInput contendrá como verbo un String: para realizar una consulta
@@ -61,7 +61,7 @@ public class ClienteService
             return output;
         } else if (Constantes.V_GET.equals(input.getAccion())) {
             final DTO_Cliente cliente = (DTO_Cliente) input.getObject();
-            List<DTO_Cliente> cliLstTmp = clienteMapper.getClientes(cliente);
+            final List<DTO_Cliente> cliLstTmp = clienteMapper.getClientes(cliente);
             if (cliLstTmp != null && !cliLstTmp.isEmpty()) {
                 output.setObject(cliLstTmp.get(0));
                 output.setErrorCode(Constantes.OK);
@@ -70,24 +70,24 @@ public class ClienteService
         }else if (Constantes.V_REGISTER.equals(input.getAccion())) {
             final Map map = input.getMapa();
             final DTO_Cliente cliente = (DTO_Cliente) map.get("cliente");
-            DTO_Usuario usuario = (DTO_Usuario) map.get("usuario");
-            final ServiceInput inp = new ServiceInput(usuario);
-            if(usuario != null) {
-                if (usuario.getCodigo() == null) {
+            DTO_User user = (DTO_User) map.get("user");
+            final ServiceInput inp = new ServiceInput(user);
+            if(user != null) {
+                if (user.getId() == null) {
                     inp.setAccion(Constantes.V_REGISTER);
-                    final ServiceOutput out = usuarioService.execute(inp);
+                    final ServiceOutput out = userService.execute(inp);
                     if (out.getErrorCode() == Constantes.OK) {
-                        usuario = getUsuario(usuario);
-                        cliente.setUsuario(usuario.getCodigo());
+                        user = getUser(user);
+                        cliente.setUser(user.getId());
                     }
                 } else {
-                    usuario = getUsuario(usuario);
+                    user = getUser(user);
                     final Map<String, String> map2 = new HashMap<String, String>();
                     map2.put("nonPass", "nonPass");
                     map2.put("oldPass", null);
                     inp.setMapa(map2);
                     inp.setAccion("chgpass");
-                    final ServiceOutput out = usuarioService.execute(inp);
+                    final ServiceOutput out = userService.execute(inp);
                     if (out.getErrorCode() == Constantes.OK) {
                         logger.info("El password fue cambiado correctamente");
                     } else {
@@ -113,12 +113,12 @@ public class ClienteService
         }
     }
 
-    private DTO_Usuario getUsuario(final DTO_Usuario user) {
+    private DTO_User getUser(final DTO_User user) {
         final ServiceInput inp = new ServiceInput(user);
         inp.setAccion(Constantes.V_GET);
-        final ServiceOutput out = usuarioService.execute(inp);
+        final ServiceOutput out = userService.execute(inp);
         if(out.getErrorCode() == Constantes.OK) {
-            return (DTO_Usuario) out.getObject();
+            return (DTO_User) out.getObject();
         } else {
             return null;
         }
@@ -132,13 +132,13 @@ public class ClienteService
         this.clienteMapper = clienteMapper;
     }
 
-    public BusinessService getUsuarioService()
+    public BusinessService getUserService()
     {
-        return usuarioService;
+        return userService;
     }
 
-    public void setUsuarioService(final BusinessService usuarioService)
+    public void setUserService(final BusinessService userService)
     {
-        this.usuarioService = usuarioService;
+        this.userService = userService;
     }
 }

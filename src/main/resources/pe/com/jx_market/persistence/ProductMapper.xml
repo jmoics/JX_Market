@@ -195,7 +195,7 @@
     </resultMap>
     <resultMap id="tradeMarkResultMap" type="DTO_TradeMark">
         <id property="id" column="tradeMarkId" />
-        <result property="company" column="tradeMarkCompanyId" />
+        <result property="companyId" column="tradeMarkCompanyId" />
         <result property="tradeMarkName" column="tradeMarkName" />
         <result property="active" column="tradeMarkActive" />
     </resultMap>

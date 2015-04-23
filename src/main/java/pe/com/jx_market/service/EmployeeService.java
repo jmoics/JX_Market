@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.domain.DTO_Empleado;
-import pe.com.jx_market.domain.DTO_Usuario;
-import pe.com.jx_market.persistence.EmpleadoMapper;
+import pe.com.jx_market.domain.DTO_Employee;
+import pe.com.jx_market.domain.DTO_User;
+import pe.com.jx_market.persistence.EmployeeMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -25,14 +25,14 @@ import pe.com.jx_market.utilities.ServiceOutput;
  *
  */
 @Service
-public class EmpleadoService 
-    implements BusinessService 
+public class EmployeeService
+    implements BusinessService
 {
-    static Log logger = LogFactory.getLog(EmpleadoService.class);
+    static Log logger = LogFactory.getLog(EmployeeService.class);
     @Autowired
-    private EmpleadoMapper empleadoMapper;
+    private EmployeeMapper employeeMapper;
     @Autowired
-    private BusinessService usuarioService;
+    private BusinessService userService;
 
     /**
      * El ServiceInput contendrá como verbo un String: para realizar una consulta
@@ -54,36 +54,36 @@ public class EmpleadoService
 
         final ServiceOutput output = new ServiceOutput();
         if (Constantes.V_LIST.equals(input.getAccion())) {
-            final DTO_Empleado empleado = (DTO_Empleado) input.getObject();
-            output.setLista(empleadoMapper.getEmpleados(empleado));
+            final DTO_Employee employee = (DTO_Employee) input.getObject();
+            output.setLista(employeeMapper.getEmployees(employee));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getAccion())) {
-            final DTO_Empleado empleado = (DTO_Empleado) input.getObject();
-            output.setObject(empleadoMapper.getEmpleados(empleado).get(0));
+            final DTO_Employee employee = (DTO_Employee) input.getObject();
+            output.setObject(employeeMapper.getEmployees(employee).get(0));
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_REGISTER.equals(input.getAccion())) {
             final Map map = input.getMapa();
-            final DTO_Empleado empleado = (DTO_Empleado) map.get("empleado");
-            DTO_Usuario usuario = (DTO_Usuario) map.get("usuario");
-            final ServiceInput inp = new ServiceInput(usuario);
-            if(usuario != null) {
-                if (usuario.getCodigo() == null) {
+            final DTO_Employee employee = (DTO_Employee) map.get("employee");
+            DTO_User user = (DTO_User) map.get("user");
+            final ServiceInput inp = new ServiceInput(user);
+            if(user != null) {
+                if (user.getId() == null) {
                     inp.setAccion(Constantes.V_REGISTER);
-                    final ServiceOutput out = usuarioService.execute(inp);
+                    final ServiceOutput out = userService.execute(inp);
                     if (out.getErrorCode() == Constantes.OK) {
-                        usuario = getUsuario(usuario);
-                        empleado.setUsuario(usuario.getCodigo());
+                        user = getUser(user);
+                        employee.setUserId(user.getId());
                     }
                 } else {
-                    usuario = getUsuario(usuario);
+                    user = getUser(user);
                     final Map<String, String> map2 = new HashMap<String, String>();
                     map2.put("nonPass", "nonPass");
                     map2.put("oldPass", null);
                     inp.setMapa(map2);
                     inp.setAccion("chgpass");
-                    final ServiceOutput out = usuarioService.execute(inp);
+                    final ServiceOutput out = userService.execute(inp);
                     if (out.getErrorCode() == Constantes.OK) {
                         logger.info("El password fue cambiado correctamente");
                     } else {
@@ -92,16 +92,16 @@ public class EmpleadoService
                     }
                 }
             }
-            List<DTO_Empleado> empTmp = empleadoMapper.getEmpleados(empleado);
+            final List<DTO_Employee> empTmp = employeeMapper.getEmployees(employee);
             if (empTmp == null || empTmp.isEmpty()) {
-                empleadoMapper.insertEmpleado(empleado);
+                employeeMapper.insertEmployee(employee);
             } else {
-                empleadoMapper.updateEmpleado(empleado);
+                employeeMapper.updateEmployee(employee);
             }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_DELETE.equals(input.getAccion())) {
-            empleadoMapper.eliminaEmpleado((DTO_Empleado) input.getObject());
+            employeeMapper.eliminaEmployee((DTO_Employee) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         } else {
@@ -109,33 +109,33 @@ public class EmpleadoService
         }
     }
 
-    private DTO_Usuario getUsuario(final DTO_Usuario user) {
+    private DTO_User getUser(final DTO_User user) {
         final ServiceInput inp = new ServiceInput(user);
         inp.setAccion(Constantes.V_GET);
-        final ServiceOutput out = usuarioService.execute(inp);
+        final ServiceOutput out = userService.execute(inp);
         if(out.getErrorCode() == Constantes.OK) {
-            return (DTO_Usuario) out.getObject();
+            return (DTO_User) out.getObject();
         } else {
             return null;
         }
     }
 
-    public BusinessService getUsuarioService()
+    public BusinessService getUserService()
     {
-        return usuarioService;
+        return userService;
     }
 
-    public void setUsuarioService(final BusinessService usuarioService)
+    public void setUserService(final BusinessService userService)
     {
-        this.usuarioService = usuarioService;
+        this.userService = userService;
     }
 
-    public EmpleadoMapper getDao () {
-        return empleadoMapper;
+    public EmployeeMapper getDao () {
+        return employeeMapper;
     }
 
-    public void setDao (final EmpleadoMapper empleadoMapper) {
-        this.empleadoMapper = empleadoMapper;
+    public void setDao (final EmployeeMapper employeeMapper) {
+        this.employeeMapper = employeeMapper;
     }
 
 }

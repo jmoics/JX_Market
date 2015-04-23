@@ -3,19 +3,7 @@
 <window id="wEAPC" apply="pe.com.jx_market.controller.PO_EAProductsCreate" sizable="true"
         width="700px" height="540px" position="center,center" closable="true"
         action="show: slideDown;hide: slideUp">
-    <style>
-        .h-inline-block {
-            display: inline-block;
-            _display: inline;
-        }
-        .z-grid {
-            border-left-width: 1px;
-            border-right-width: 1px;
-        }
-        .z-hbox {
-            -webkit-border-horizontal-spacing: 0px;
-        }
-    </style>
+    <style src="s-style.css"/>
     <tabbox hflex="1" vflex="1">
         <tabs>
             <tab id="tabProduct" label="Artículo" />
@@ -27,12 +15,11 @@
             <tabpanel>
                 <vbox height="100%" width="100%">
                     <div align="center" height="10%">
-                        <label zclass="z-south-header"
-                            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                        <label zclass="z-south-header" sclass="s-header">
                             ${labels.pe.com.jx_market.eAProductsCreate.Title}
                         </label>
                     </div>
-                    <grid width="100%" fixedLayout="true">
+                    <grid width="100%" fixedLayout="true" sclass="s-grid-popup">
                         <auxhead>
                             <auxheader label="${labels.pe.com.jx_market.eAProductsCreate.SubTitle}" colspan="3" />
                         </auxhead>
@@ -66,7 +53,7 @@
                             </row>
                         </rows>
                     </grid>
-                    <hbox align="end" pack="end" hflex="1" vflex="1">
+                    <hbox align="end" pack="end" hflex="1" vflex="1" sclass="s-hbox-popup">
                         <button id="btnSave" label="${labels.pe.com.jx_market.eAProductsCreate.btnSave.Label }"
                             image="/media/filesave.png" />
                         <button id="btnClose" label="${labels.pe.com.jx_market.eAProductsCreate.btnClose.Label }"
@@ -77,8 +64,7 @@
             <tabpanel>
                 <vbox height="100%" width="100%" vflex="1">
                     <div align="center" height="10%" >
-                        <label zclass="z-south-header"
-                            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                        <label zclass="z-south-header" sclass="s-header">
                             ${labels.pe.com.jx_market.eAProductsCreate.Categories.Title}
                         </label>
                     </div>
@@ -95,7 +81,7 @@
                             </treeitem>
                         </template>-->
                     </tree>
-                    <hbox align="end" pack="end" hflex="1" vflex="1">
+                    <hbox align="end" pack="end" hflex="1" vflex="1" sclass="s-hbox-popup">
                         <button id="btnSave2" label="${labels.pe.com.jx_market.eAProductsCreate.btnSave2.Label}"
                             image="/media/filesave.png" />
                         <button id="btnClose2" label="${labels.pe.com.jx_market.eAProductsCreate.btnClose2.Label}"
@@ -135,7 +121,7 @@
                             </row>
                         </rows>
                     </grid>
-                    <hbox align="end" pack="end" hflex="1" vflex="1">
+                    <hbox align="end" pack="end" hflex="1" vflex="1" sclass="s-hbox-popup">
                         <button id="btnSave3" label="${labels.pe.com.jx_market.eAProductsCreate.btnSave3.Label}"
                             image="/media/filesave.png" />
                         <button id="btnClose3" label="${labels.pe.com.jx_market.eAProductsCreate.btnClose3.Label}"

@@ -95,6 +95,7 @@ public class PO_EAProductsEdit
     private Desktop desktop;
     private CategoryTreeNode categoryTreeNode;
     private AdvancedTreeModel categoryTreeModel;
+    private PO_EAProducts productParentUI;
 
     @Override
     public void doAfterCompose(final Window _comp)
@@ -121,6 +122,10 @@ public class PO_EAProductsEdit
             tree.setMultiple(true);
             loadData();
             buildTradeMarkCombo();
+
+            // Obtenemos el controlador de la pantalla principal de marcas.
+            final Map<?, ?> mapArg = desktop.getExecution().getArg();
+            productParentUI = (PO_EAProducts) mapArg.get("parent");
         }
     }
 
@@ -171,9 +176,9 @@ public class PO_EAProductsEdit
                                 product.getProductName()),
                                 "Los datos del producto se actualizaron correctamente", null);
                 if (resp == Messagebox.OK) {
-                    desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
-                    ContextLoader.recargar(desktop, Constantes.Form.PRODUCTS_FORM.getForm());
-                    //wEAEP.detach();
+                    productParentUI.searchProducts();
+                    //desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
+                    //ContextLoader.recargar(desktop, Constantes.Form.PRODUCTS_FORM.getForm());
                 }
             } else {
                 alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editProduct.Error.Label"),

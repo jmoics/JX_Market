@@ -6,25 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.domain.DTO_Usuario;
-import pe.com.jx_market.persistence.UsuarioMapper;
+import pe.com.jx_market.domain.DTO_User;
+import pe.com.jx_market.persistence.UserMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
- * Servicio de Autenticacion de Usuarios.
+ * Servicio de Autenticacion de Users.
  *
  */
 @Service
 public class AuthService
-    implements BusinessService<DTO_Usuario>
+    implements BusinessService<DTO_User>
 {
 
     static Log logger = LogFactory.getLog(AuthService.class);
     @Autowired
-    private UsuarioMapper usuarioMapper;
+    private UserMapper userMapper;
     @Autowired
     private BusinessService<String> passwordHashService;
 
@@ -38,16 +38,16 @@ public class AuthService
      */
     @Override
     @Transactional
-    public ServiceOutput<DTO_Usuario> execute(final ServiceInput<DTO_Usuario> input)
+    public ServiceOutput<DTO_User> execute(final ServiceInput<DTO_User> input)
     {
-        final ServiceOutput<DTO_Usuario> output = new ServiceOutput<DTO_Usuario>();
-        final DTO_Usuario suposedUser = input.getObject();
-        final String password = suposedUser.getContrasena();
-        suposedUser.setContrasena("erased");
-        final DTO_Usuario us = usuarioMapper.getUsuarioXUsername(suposedUser);
+        final ServiceOutput<DTO_User> output = new ServiceOutput<DTO_User>();
+        final DTO_User suposedUser = input.getObject();
+        final String password = suposedUser.getPassword();
+        suposedUser.setPassword("erased");
+        final DTO_User us = userMapper.getUser4Username(suposedUser);
 
         if (us == null) {
-            logger.error("No se proporciono usuario valido");
+            logger.error("No se proporciono user valido");
             output.setErrorCode(Constantes.NOT_FOUND);
             return output;
         }
@@ -57,12 +57,12 @@ public class AuthService
             return output;
         }
 
-        if (encriptacion(password).equals(us.getContrasena())) {
+        if (encriptacion(password).equals(us.getPassword())) {
             output.setObject(us);
             output.setErrorCode(Constantes.OK);
             return output;
             // por mientras ya que no hay encriptacion....
-        } else if (password.equals(us.getContrasena())) {
+        } else if (password.equals(us.getPassword())) {
             output.setObject(us);
             output.setErrorCode(Constantes.OK);
             return output;
@@ -86,14 +86,14 @@ public class AuthService
         return passEncriptada;
     }
 
-    public UsuarioMapper getDao()
+    public UserMapper getDao()
     {
-        return usuarioMapper;
+        return userMapper;
     }
 
-    public void setDao(final UsuarioMapper usuarioMapper)
+    public void setDao(final UserMapper userMapper)
     {
-        this.usuarioMapper = usuarioMapper;
+        this.userMapper = userMapper;
     }
 
     public BusinessService<String> getPasswordHashService()

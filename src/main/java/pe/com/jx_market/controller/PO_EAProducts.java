@@ -327,7 +327,9 @@ public class PO_EAProducts
             desktop.getSession().setAttribute(Constantes.ATTRIBUTE_PRODUCT,
                             lstProd.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_PRODUCT));
             final Map<String, Object> dataArgs = new HashMap<String, Object>();
-            final Window w = (Window) Executions.createComponents(Constantes.Form.PRODUCTS_EDIT_FORM.getForm(), null, dataArgs);
+            dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
+            final Window w = (Window) Executions.createComponents(Constantes.Form.PRODUCTS_EDIT_FORM.getForm(),
+                            null, dataArgs);
             w.setPage(wEAP.getPage());
             //w.setParent(wEACC);
             //w.doOverlapped();
@@ -342,7 +344,9 @@ public class PO_EAProducts
     @Listen("onClick = #btnCreate")
     public void runWindowCreate(final MouseEvent event) {
         final Map<String, Object> dataArgs = new HashMap<String, Object>();
-        final Window w = (Window) Executions.createComponents(Constantes.Form.PRODUCTS_CREATE_FORM.getForm(), null, dataArgs);
+        dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
+        final Window w = (Window) Executions.createComponents(Constantes.Form.PRODUCTS_CREATE_FORM.getForm(),
+                        null, dataArgs);
         w.setPage(wEAP.getPage());
         //w.setParent(wEACC);
         //w.doOverlapped();

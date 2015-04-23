@@ -33,7 +33,7 @@ public class PO_EAAdministrateArea
     private Grid grdArea;
     private DTO_Company company;
     private BusinessService areaService;
-    private Popup popEmpleados;
+    private Popup popEmployees;
 
     @Override
     public void realOnCreate()
@@ -42,7 +42,7 @@ public class PO_EAAdministrateArea
         grpNuevo = (Groupbox) getFellow("grpNuevo");
         grdArea = (Grid) getFellow("grdArea");
         areaService = ContextLoader.getService(this, "areaService");
-        popEmpleados = (Popup) getFellow("popEmpleados");
+        popEmployees = (Popup) getFellow("popEmployees");
         company = (DTO_Company) getDesktop().getSession().getAttribute("company");
         mostrarAreas();
     }
@@ -120,7 +120,7 @@ public class PO_EAAdministrateArea
 
         final Image ImDetalles = new Image("media/details.png");
         ImDetalles.setStyle("cursor:pointer");
-        ImDetalles.setPopup(popEmpleados);
+        ImDetalles.setPopup(popEmployees);
         ImDetalles.addEventListener("onClick",
                         new org.zkoss.zk.ui.event.EventListener() {
                             @Override
@@ -128,9 +128,9 @@ public class PO_EAAdministrateArea
                                 throws UiException
                             {
                                 /*
-                                 * cargarPop((DTO_Empleado) ((Row)
+                                 * cargarPop((DTO_Employee) ((Row)
                                  * e.getTarget().
-                                 * getParent()).getAttribute("empleado"));
+                                 * getParent()).getAttribute("employee"));
                                  */
 
                             }

@@ -124,8 +124,8 @@ public class PO_EATradeMark
                             null, dataArgs);
             w.setPage(wEAT.getPage());
             //w.setParent(wEAT);
-            //w.doOverlapped();
-            w.doHighlighted();
+            w.doOverlapped();
+            //w.doHighlighted();
             //w.doEmbedded();
         } else {
             alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAPTradeMark.runWindowEdit.Info.Label"),

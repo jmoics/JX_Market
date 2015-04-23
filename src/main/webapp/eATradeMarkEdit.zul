@@ -2,27 +2,15 @@
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
 <window id="wEATE" apply="pe.com.jx_market.controller.PO_EATradeMarkEdit" sizable="true"
         width="500px" height="540px" position="center,center" closable="true"
-        action="show: slideDown;hide: slideUp">
-    <style>
-        .z-grid {
-            border-left-width: 1px;
-            border-right-width: 1px;
-        }
-        .z-hbox {
-            -webkit-border-horizontal-spacing: 0px;
-        }
-        .z-window-content {
-            padding: 5px;
-        }
-    </style>
-    <vbox height="100%" width="100%">
+        action="show: slideDown;hide: slideUp" sclass="s-window-content-popup">
+    <style src="s-style.css"/>
+    <vbox height="100%" width="100%" sclass="s-box-popup">
         <div align="center" height="10%">
-            <label zclass="z-south-header"
-                style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+            <label zclass="z-south-header" sclass="s-header">
                 ${labels.pe.com.jx_market.eATradeMarkEdit.Title}
             </label>
         </div>
-        <grid width="100%" fixedLayout="true">
+        <grid width="100%" fixedLayout="true" sclass="s-grid-popup">
             <auxhead>
                 <auxheader label="${labels.pe.com.jx_market.eATradeMarkEdit.SubTitle}" colspan="2" />
             </auxhead>
@@ -41,7 +29,7 @@
                 </row>
             </rows>
         </grid>
-        <hbox align="end" pack="end" hflex="1" vflex="1">
+        <hbox align="end" pack="end" hflex="1" vflex="1" sclass="s-hbox-popup">
             <button id="btnSave" label="${labels.pe.com.jx_market.eATradeMarkEdit.btnSave.Label }"
                 image="/media/filesave.png" />
             <button id="btnClose" label="${labels.pe.com.jx_market.eATradeMarkEdit.btnClose.Label }"

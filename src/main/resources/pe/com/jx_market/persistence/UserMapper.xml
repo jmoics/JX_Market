@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.UserMapper">
+
+  <cache />
+
+    <!-- MANTENIMIENTO DE USUARIOS -->
+
+    <select id="getUser4Username" parameterType="DTO_User" resultType="DTO_User">
+        SELECT
+            us.id as id,
+            us.username as username,
+            us.password as password,
+            us.companyid as companyId
+        FROM
+            T_SEG_USER us
+        WHERE
+            us.username = #{username}
+        AND
+            us.companyid = #{companyId}
+    </select>
+
+    <select id="getUsers" parameterType="DTO_User" resultType="DTO_User">
+        SELECT
+            us.id as id,
+            us.username as username,
+            us.companyid as companyId
+        FROM
+            T_SEG_USER us
+        WHERE
+            us.companyid = #{companyId}
+        <if test="id != null">AND
+            us.id = #{id}
+        </if>
+        ORDER BY
+            us.id
+    </select>
+
+    <insert id="insertUser" parameterType="DTO_User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO T_SEG_USER
+            (username,password,companyid)
+        VALUES
+            (#{username}, #{password}, #{companyId})
+    </insert>
+
+    <update id="updateUser" parameterType="DTO_User">
+        UPDATE T_SEG_USER
+        SET
+            username = #{username}
+        WHERE
+            id = #{id}
+        AND
+            companyid = #{companyId}
+    </update>
+
+    <update id="cambiaPassword" parameterType="DTO_User">
+        UPDATE T_SEG_USER
+        SET
+            password = #{password}
+        WHERE
+            username = #{username}
+        AND
+            companyid = #{companyId}
+    </update>
+
+</mapper>

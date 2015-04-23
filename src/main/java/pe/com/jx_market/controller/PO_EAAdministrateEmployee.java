@@ -25,37 +25,37 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import pe.com.jx_market.domain.DTO_Company;
-import pe.com.jx_market.domain.DTO_Empleado;
+import pe.com.jx_market.domain.DTO_Employee;
 import pe.com.jx_market.domain.DTO_Role;
-import pe.com.jx_market.domain.DTO_Usuario;
+import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-public class PO_EAAdministrateEmpleado
+public class PO_EAAdministrateEmployee
     extends SecuredWindow
 {
 
-    static Log logger = LogFactory.getLog(PO_EAAdministrateEmpleado.class);
+    static Log logger = LogFactory.getLog(PO_EAAdministrateEmployee.class);
     private Grid grdEmp;
-    private Textbox txtUsuario, txtPass, txtNombre, txtApellidos, txtDNI, txtTelefono, txtCelular, txtMail,
+    private Textbox txtUser, txtPass, txtNombre, txtApellidos, txtDNI, txtTelefono, txtCelular, txtMail,
                     txtDireccion, txtCiudad, txtRegion;
-    private Label lblUsuario, lblNombre, lblApellidos, lblDNI, lblRole, lblTelefono, lblMail, lblCiudad, lblEstado;
+    private Label lblUser, lblNombre, lblApellidos, lblDNI, lblRole, lblTelefono, lblMail, lblCiudad, lblEstado;
     private Datebox datNac;
     private Button btnInfo, btnCancel, btnCrear;
     private Caption capNombre, capInfo;
-    private Groupbox grpEmpleados;
+    private Groupbox grpEmployees;
     private Popup popDetails;
     private Combobox cmbRole, cmbEstado;
     private DTO_Company company;
-    private BusinessService empleadoService, roleService, usuarioService;
+    private BusinessService employeeService, roleService, userService;
 
     @Override
     public void realOnCreate()
     {
         grdEmp = (Grid) getFellow("grdEmp");
-        txtUsuario = (Textbox) getFellow("txtUsuario");
+        txtUser = (Textbox) getFellow("txtUser");
         txtPass = (Textbox) getFellow("txtPass");
         txtNombre = (Textbox) getFellow("txtNombre");
         txtApellidos = (Textbox) getFellow("txtApellidos");
@@ -66,7 +66,7 @@ public class PO_EAAdministrateEmpleado
         txtDireccion = (Textbox) getFellow("txtDireccion");
         txtCiudad = (Textbox) getFellow("txtCiudad");
         txtRegion = (Textbox) getFellow("txtRegion");
-        lblUsuario = (Label) getFellow("lblUsuario");
+        lblUser = (Label) getFellow("lblUser");
         lblNombre = (Label) getFellow("lblNombre");
         lblApellidos = (Label) getFellow("lblApellidos");
         lblRole = (Label) getFellow("lblRole");
@@ -80,25 +80,25 @@ public class PO_EAAdministrateEmpleado
         btnInfo = (Button) getFellow("btnInfo");
         btnCancel = (Button) getFellow("btnCancel");
         btnCrear = (Button) getFellow("btnCrear");
-        grpEmpleados = (Groupbox) getFellow("grpEmpleados");
+        grpEmployees = (Groupbox) getFellow("grpEmployees");
         capNombre = (Caption) getFellow("capNombre");
         capInfo = (Caption) getFellow("capInfo");
         popDetails = (Popup) getFellow("popDetails");
-        empleadoService = ContextLoader.getService(this, "empleadoService");
+        employeeService = ContextLoader.getService(this, "employeeService");
         roleService = ContextLoader.getService(this, "roleService");
-        usuarioService = ContextLoader.getService(this, "usuarioService");
+        userService = ContextLoader.getService(this, "userService");
 
         company = (DTO_Company) getDesktop().getSession().getAttribute("company");
         cargarRoles();
         CargarTabla();
     }
 
-    public void elimina(final DTO_Empleado empleado)
+    public void elimina(final DTO_Employee employee)
     {
 
-        final ServiceInput input = new ServiceInput(empleado);
+        final ServiceInput input = new ServiceInput(employee);
         input.setAccion("delete");
-        final ServiceOutput output = empleadoService.execute(input);
+        final ServiceOutput output = employeeService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             logger.info("El contacto se elimino correctamente");
         } else {
@@ -109,7 +109,7 @@ public class PO_EAAdministrateEmpleado
 
     }
 
-    public void editar(final DTO_Empleado emp,
+    public void editar(final DTO_Employee emp,
                        final String username,
                        final String pass,
                        final String nombre,
@@ -117,55 +117,55 @@ public class PO_EAAdministrateEmpleado
                        final String dni,
                        final String telefono,
                        final String mail,
-                       final Integer estado,
+                       final Boolean estado,
                        final Integer role,
                        final String celular,
                        final String ciudad,
                        final String direccion,
                        final String region)
     {
-        final DTO_Empleado empleado = new DTO_Empleado(); // nuevo usuario
-        empleado.setNombre(nombre);
-        empleado.setApellido(apellido);
-        empleado.setDni(dni);
-        empleado.setTelefono(telefono);
-        empleado.setEmail(mail);
-        empleado.setEstado(estado);
-        empleado.setRole(role);
-        empleado.setCompany(company.getId());
-        empleado.setCelular(celular);
-        empleado.setCiudad(ciudad);
-        empleado.setDireccion(direccion);
-        empleado.setRegion(region);
+        final DTO_Employee employee = new DTO_Employee(); // nuevo user
+        employee.setEmployeeName(nombre);
+        employee.setEmployeeLastName(apellido);
+        employee.setDocumentNumber(dni);
+        employee.setPhone(telefono);
+        employee.setEmail(mail);
+        employee.setActive(estado);
+        employee.setRole(role);
+        employee.setCompanyId(company.getId());
+        employee.setCellPhone(celular);
+        employee.setCity(ciudad);
+        employee.setAddress(direccion);
+        employee.setUbigeo(region);
 
         final ServiceInput input = new ServiceInput();
         final Map<String, Object> map = new HashMap<String,Object>();
-        map.put("empleado", empleado);
+        map.put("employee", employee);
         if(emp == null) {
-            final DTO_Usuario usuario = new DTO_Usuario();
-            usuario.setUsername(username);
-            usuario.setContrasena(pass);
-            usuario.setCompany(company.getId());
+            final DTO_User user = new DTO_User();
+            user.setUsername(username);
+            user.setPassword(pass);
+            user.setCompanyId(company.getId());
 
-            map.put("usuario", usuario);
+            map.put("user", user);
         } else if (emp != null && pass != null && pass.length() != 0) {
             //para cambiar pass
-            empleado.setCodigo(emp.getCodigo());
-            final DTO_Usuario usuario = new DTO_Usuario();
-            usuario.setCodigo(emp.getUsuario());
-            usuario.setUsername(username);
-            usuario.setContrasena(pass);
-            usuario.setCompany(company.getId());
+            employee.setId(emp.getId());
+            final DTO_User user = new DTO_User();
+            user.setId(emp.getUserId());
+            user.setUsername(username);
+            user.setPassword(pass);
+            user.setCompanyId(company.getId());
 
-            map.put("usuario", usuario);
+            map.put("user", user);
         } else {
-            empleado.setCodigo(emp.getCodigo());
+            employee.setId(emp.getId());
         }
         input.setAccion(Constantes.V_REGISTER);
         input.setMapa(map);
-        final ServiceOutput output = empleadoService.execute(input);
+        final ServiceOutput output = employeeService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("El empleado se registro correctamente", "El contacto se registro correctamente", null);
+            alertaInfo("El employee se registro correctamente", "El contacto se registro correctamente", null);
         } else {
             alertaError("Error al registrar el contacto", "Error al registrar el contacto", null);
         }
@@ -173,20 +173,20 @@ public class PO_EAAdministrateEmpleado
 
     public void cancelar()
     {
-        txtUsuario.setReadonly(false);
+        txtUser.setReadonly(false);
         CargarTabla();
     }
 
     public void actualizar()
     {
-        if (!txtUsuario.getValue().equals("") && !txtNombre.getValue().equals("") &&
+        if (!txtUser.getValue().equals("") && !txtNombre.getValue().equals("") &&
                         !txtApellidos.getValue().equals("") && !txtDNI.getValue().equals("") &&
                         cmbRole.getSelectedItem() != null && cmbEstado.getSelectedItem() != null) {
 
-            editar((DTO_Empleado) txtUsuario.getAttribute("usuario"), txtUsuario.getValue(),
+            editar((DTO_Employee) txtUser.getAttribute("user"), txtUser.getValue(),
                             txtPass.getValue(), txtNombre.getValue(), txtApellidos.getValue(),
                             txtDNI.getValue(), txtTelefono.getValue(), txtMail.getValue(),
-                            Integer.parseInt((String)cmbEstado.getSelectedItem().getValue()),
+                            (Boolean)cmbEstado.getSelectedItem().getValue(),
                             ((DTO_Role) cmbRole.getSelectedItem().getAttribute("role")).getId(),
                             txtCelular.getValue(), txtCiudad.getValue(), txtDireccion.getValue(), txtRegion.getValue());
             CargarTabla();
@@ -195,7 +195,7 @@ public class PO_EAAdministrateEmpleado
             btnInfo.setVisible(false);
             btnCancel.setVisible(false);
             capInfo.setLabel("Nuevo Contacto");
-            txtUsuario.setReadonly(false);
+            txtUser.setReadonly(false);
         } else { // validar para cada campo obligatorio
             alertaInfo("Faltan llenar algunos campos", "No se llenaron los campos obligatorios", null);
         }
@@ -203,12 +203,12 @@ public class PO_EAAdministrateEmpleado
 
     public void crear()
     {
-        if (!txtPass.getValue().equals("") && !txtUsuario.getValue().equals("") && !txtNombre.getValue().equals("") &&
+        if (!txtPass.getValue().equals("") && !txtUser.getValue().equals("") && !txtNombre.getValue().equals("") &&
                         !txtApellidos.getValue().equals("") && !txtDNI.getValue().equals("") &&
                         cmbRole.getSelectedItem() != null && cmbEstado.getSelectedItem() != null) {
-            editar(null, txtUsuario.getValue(), txtPass.getValue(), txtNombre.getValue(), txtApellidos.getValue(),
+            editar(null, txtUser.getValue(), txtPass.getValue(), txtNombre.getValue(), txtApellidos.getValue(),
                             txtDNI.getValue(), txtTelefono.getValue(), txtMail.getValue(),
-                            Integer.parseInt((String)cmbEstado.getSelectedItem().getValue()),
+                            (Boolean)cmbEstado.getSelectedItem().getValue(),
                             ((DTO_Role) cmbRole.getSelectedItem().getAttribute("role")).getId(),
                             txtCelular.getValue(), txtCiudad.getValue(), txtDireccion.getValue(), txtRegion.getValue());
             CargarTabla();
@@ -224,85 +224,85 @@ public class PO_EAAdministrateEmpleado
         txtApellidos.setValue("");
         txtTelefono.setValue("");
         txtMail.setValue("");
-        txtUsuario.setValue("");
+        txtUser.setValue("");
         txtPass.setValue("");
         cmbEstado.setSelectedItem(null);
         cmbRole.setSelectedItem(null);
     }
 
     @SuppressWarnings("unchecked")
-    public void cargarInformacionContacto(final DTO_Empleado empleado)
+    public void cargarInformacionContacto(final DTO_Employee employee)
     {
         capInfo.setLabel("Información del Contacto");
         btnCrear.setVisible(false);
-        txtUsuario.setAttribute("usuario", empleado);
-        txtUsuario.setReadonly(true);
-        txtUsuario.setValue((getUsuario(empleado.getUsuario())).getUsername());
-        txtNombre.setValue(empleado.getNombre());
-        txtApellidos.setValue(empleado.getApellido());
-        txtDNI.setValue(empleado.getDni());
-        txtDireccion.setValue(empleado.getDireccion() != null ? empleado.getDireccion() : "");
-        txtCelular.setValue(empleado.getCelular() != null ? empleado.getCelular() : "");
-        txtCiudad.setValue(empleado.getCiudad() != null ? empleado.getCiudad() : "");
-        txtRegion.setValue(empleado.getRegion() != null ? empleado.getRegion() : "");
-        txtTelefono.setValue(empleado.getTelefono() != null ? empleado.getTelefono() : "");
-        txtMail.setValue(empleado.getEmail());
+        txtUser.setAttribute("user", employee);
+        txtUser.setReadonly(true);
+        txtUser.setValue((getUser(employee.getUserId())).getUsername());
+        txtNombre.setValue(employee.getEmployeeName());
+        txtApellidos.setValue(employee.getEmployeeLastName());
+        txtDNI.setValue(employee.getDocumentNumber());
+        txtDireccion.setValue(employee.getAddress() != null ? employee.getAddress() : "");
+        txtCelular.setValue(employee.getPhone() != null ? employee.getPhone() : "");
+        txtCiudad.setValue(employee.getCity() != null ? employee.getCity() : "");
+        txtRegion.setValue(employee.getUbigeo() != null ? employee.getUbigeo() : "");
+        txtTelefono.setValue(employee.getCellPhone() != null ? employee.getCellPhone() : "");
+        txtMail.setValue(employee.getEmail());
         txtPass.setValue("");
 
         final List<Comboitem> roles = cmbRole.getItems();
         for(final Comboitem item : roles) {
             final DTO_Role role = (DTO_Role) item.getAttribute("role");
-            if(role.getId().equals(empleado.getRole())) {
+            if(role.getId().equals(employee.getRole())) {
                 cmbRole.setSelectedItem(item);
             }
         }
         final List<Comboitem> estados = cmbEstado.getItems();
         for(final Comboitem item : estados) {
             final Integer stat = Integer.parseInt((String) item.getValue());
-            if(stat.equals(empleado.getEstado())) {
+            if(stat.equals(employee.getActive())) {
                 cmbEstado.setSelectedItem(item);
             }
         }
     }
 
-    public void cargarPop(final DTO_Empleado empleado)
+    public void cargarPop(final DTO_Employee employee)
     {
-        lblUsuario.setValue((getUsuario(empleado.getUsuario())).getUsername());
-        lblNombre.setValue(empleado.getNombre());
-        lblApellidos.setValue(empleado.getApellido());
-        lblRole.setValue((getRole(empleado.getRole()).getRoleName()));
-        lblCiudad.setValue(empleado.getCiudad());
-        lblDNI.setValue(empleado.getDni());
-        final String estado = Constantes.ST_ACTIVO.equals(empleado.getEstado()) ? Constantes.STATUS_ACTIVO
+        lblUser.setValue((getUser(employee.getUserId())).getUsername());
+        lblNombre.setValue(employee.getEmployeeName());
+        lblApellidos.setValue(employee.getEmployeeLastName());
+        lblRole.setValue((getRole(employee.getRole()).getRoleName()));
+        lblCiudad.setValue(employee.getCity());
+        lblDNI.setValue(employee.getDocumentNumber());
+        final String estado = Constantes.ST_ACTIVO.equals(employee.getActive()) ? Constantes.STATUS_ACTIVO
                                                                                      : Constantes.STATUS_INACTIVO;
         lblEstado.setValue(estado);
-        lblMail.setValue(empleado.getEmail());
-        lblTelefono.setValue(empleado.getTelefono());
+        lblMail.setValue(employee.getEmail());
+        lblTelefono.setValue(employee.getPhone());
     }
 
     public void CargarTabla()
     {
         grdEmp.getRows().getChildren().clear();
-        final DTO_Empleado emp = new DTO_Empleado();
-        emp.setCompany(company.getId());
+        final DTO_Employee emp = new DTO_Employee();
+        emp.setCompanyId(company.getId());
         final ServiceInput input = new ServiceInput(emp);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = empleadoService.execute(input);
+        final ServiceOutput output = employeeService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Empleado> ulist = output.getLista();
-            for (final DTO_Empleado uOut : ulist) {
+            final List<DTO_Employee> ulist = output.getLista();
+            for (final DTO_Employee uOut : ulist) {
                 final Row fila = new Row();
-                fila.setAttribute("empleado", uOut);
+                fila.setAttribute("employee", uOut);
                 // Fecha Creacion
                 /*
                  fila.appendChild(new Label(new SimpleDateFormat("dd/MM/yyyy")
                  .format(uOut.getFecha_creacion())));
                  */
                 // Username
-                // fila.appendChild(new Label(uOut.getUsuario()));
-                fila.appendChild(new Label(uOut.getNombre()));
-                fila.appendChild(new Label(uOut.getApellido()));
-                fila.appendChild(new Label(getUsuario(uOut.getUsuario()).getUsername()));
+                // fila.appendChild(new Label(uOut.getUser()));
+                fila.appendChild(new Label(uOut.getEmployeeName()));
+                fila.appendChild(new Label(uOut.getEmployeeLastName()));
+                fila.appendChild(new Label(getUser(uOut.getUserId()).getUsername()));
                 fila.appendChild(new Label((getRole(uOut.getRole())).getRoleName()));
 
                 final Image ImDetalles = new Image("media/details.png");
@@ -314,8 +314,8 @@ public class PO_EAAdministrateEmpleado
                                     public void onEvent(final Event e)
                                         throws UiException
                                     {
-                                         cargarPop((DTO_Empleado) ((Row)
-                                         e.getTarget().getParent()).getAttribute("empleado"));
+                                         cargarPop((DTO_Employee) ((Row)
+                                         e.getTarget().getParent()).getAttribute("employee"));
 
                                     }
                                 });
@@ -363,9 +363,9 @@ public class PO_EAAdministrateEmpleado
                                         btnCancel.setVisible(true);
                                         btnInfo.setVisible(true);
 
-                                        cargarInformacionContacto((DTO_Empleado) ((Row) e
+                                        cargarInformacionContacto((DTO_Employee) ((Row) e
                                         .getTarget().getParent().getParent())
-                                        .getAttribute("empleado"));
+                                        .getAttribute("employee"));
                                     }
                                 });
 
@@ -383,15 +383,15 @@ public class PO_EAAdministrateEmpleado
                                     public void onEvent(final Event e)
                                         throws UiException
                                     {
-                                        final int msg = Messagebox.show("¿Está seguro de eliminar el Empleado?",
+                                        final int msg = Messagebox.show("¿Está seguro de eliminar el Employee?",
                                                                     company.getBusinessName(),
                                                                     Messagebox.YES | Messagebox.NO,
                                                                     Messagebox.QUESTION);
                                         if (msg == Messagebox.YES) {
-                                            elimina((DTO_Empleado) ((Row) e
+                                            elimina((DTO_Employee) ((Row) e
                                                             .getTarget().getParent()
                                                             .getParent())
-                                                            .getAttribute("empleado"));
+                                                            .getAttribute("employee"));
                                         }
 
                                     }
@@ -410,16 +410,16 @@ public class PO_EAAdministrateEmpleado
         }
     }
 
-    private DTO_Usuario getUsuario(final Integer codigo)
+    private DTO_User getUser(final Integer codigo)
     {
-        final DTO_Usuario usuario = new DTO_Usuario();
-        usuario.setCodigo(codigo);
-        usuario.setCompany(company.getId());
-        final ServiceInput input = new ServiceInput(usuario);
+        final DTO_User user = new DTO_User();
+        user.setId(codigo);
+        user.setCompanyId(company.getId());
+        final ServiceInput input = new ServiceInput(user);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = usuarioService.execute(input);
+        final ServiceOutput output = userService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            return (DTO_Usuario) output.getLista().get(0);
+            return (DTO_User) output.getLista().get(0);
         } else {
             return null;
         }
@@ -491,6 +491,6 @@ public class PO_EAAdministrateEmpleado
     @Override
     String[] requiredResources()
     {
-        return new String[]{Constantes.MODULE_ADM_EMPLEADO };
+        return new String[]{Constantes.MODULE_ADM_EMPLOYEE };
     }
 }

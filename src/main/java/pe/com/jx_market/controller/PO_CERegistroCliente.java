@@ -20,7 +20,7 @@ import org.zkoss.zul.Textbox;
 
 import pe.com.jx_market.domain.DTO_Cliente;
 import pe.com.jx_market.domain.DTO_Solicitud;
-import pe.com.jx_market.domain.DTO_Usuario;
+import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.service.EnviarCorreo;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -37,7 +37,7 @@ public class PO_CERegistroCliente
     private Intbox intNumDoc;
     private Datebox datFecNacim;
     private Grid grdRegCli, grdRegEmp;
-    private BusinessService validationService, usuarioService, clienteService, solicitudService;
+    private BusinessService validationService, userService, clienteService, solicitudService;
 
     public void onCreate()
     {
@@ -62,7 +62,7 @@ public class PO_CERegistroCliente
         txtRuc = (Textbox) getFellow("txtRuc");
 
         validationService = ContextLoader.getService(this, "validationService");
-        usuarioService = ContextLoader.getService(this, "usuarioService");
+        userService = ContextLoader.getService(this, "userService");
         clienteService = ContextLoader.getService(this, "clienteService");
         solicitudService = ContextLoader.getService(this, "solicitudService");
 
@@ -78,8 +78,8 @@ public class PO_CERegistroCliente
         if (txtCaptcha.getValue().toLowerCase().equals(cpa.getValue().trim().toLowerCase())) {
             if (grdRegCli.isVisible()) {
                 final DTO_Cliente cliente = new DTO_Cliente();
-                final DTO_Usuario usuario = new DTO_Usuario();
-                final List<String> lst = guardaDTO(cliente, usuario);
+                final DTO_User user = new DTO_User();
+                final List<String> lst = guardaDTO(cliente, user);
                 if (lst != null) {
                     int i = 0;
                     String msg = "";
@@ -92,7 +92,7 @@ public class PO_CERegistroCliente
                 } else {
                     final Map<String, Object> map = new HashMap<String, Object>();
                     map.put("cliente", cliente);
-                    map.put("usuario", usuario);
+                    map.put("user", user);
                     final ServiceInput input = new ServiceInput();
                     input.setAccion(Constantes.V_REGISTER);
                     input.setMapa(map);
@@ -154,7 +154,7 @@ public class PO_CERegistroCliente
     }
 
     public List<String> guardaDTO(final DTO_Cliente cliente,
-                                  final DTO_Usuario usuario)
+                                  final DTO_User user)
     {
         cliente.setCompany(Constantes.INSTITUCION_JX_MARKET);
 
@@ -176,9 +176,9 @@ public class PO_CERegistroCliente
 
         cliente.setEmail(txtMail.getValue());
 
-        if (!verificaDisponibilidad(usuario)) {
+        if (!verificaDisponibilidad(user)) {
             final List<String> ans = new ArrayList<String>();
-            ans.add("Ya existe un usuario con el e-mail ingresado");
+            ans.add("Ya existe un user con el e-mail ingresado");
             return ans;
         }
 
@@ -213,14 +213,14 @@ public class PO_CERegistroCliente
             }
         }
 
-        usuario.setCompany(Constantes.INSTITUCION_JX_MARKET);
-        usuario.setUsername(txtMail.getValue());
+        user.setCompanyId(Constantes.INSTITUCION_JX_MARKET);
+        user.setUsername(txtMail.getValue());
 
         if (!txtPass.getValue().isEmpty() || !txtRepPass.getValue().isEmpty()) {
             if (txtPass.getValue().equals(txtRepPass.getValue())) {
                 if (txtPass.getValue().length() >= 4) {
                     if (!txtPass.getValue().equals("1234")) {
-                        usuario.setContrasena(txtPass.getValue());
+                        user.setPassword(txtPass.getValue());
                     } else {
                         lst.add("Debe ingresar una contraseña más compleja");
                     }
@@ -329,12 +329,12 @@ public class PO_CERegistroCliente
         return false;
     }
 
-    private boolean verificaDisponibilidad(final DTO_Usuario usuario)
+    private boolean verificaDisponibilidad(final DTO_User user)
     {
         boolean dis = true;
-        final ServiceInput input = new ServiceInput(usuario);
+        final ServiceInput input = new ServiceInput(user);
         input.setAccion("consultaSiEstaDisponible");
-        final ServiceOutput output = usuarioService.execute(input);
+        final ServiceOutput output = userService.execute(input);
         if (Constantes.ALREADY_USED == output.getErrorCode()) {
             dis = false;
         } else if (Constantes.OK == output.getErrorCode()) {

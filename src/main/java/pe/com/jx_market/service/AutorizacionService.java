@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.domain.DTO_Empleado;
+import pe.com.jx_market.domain.DTO_Employee;
 import pe.com.jx_market.domain.DTO_Role;
 import pe.com.jx_market.persistence.RoleModuleMapper;
 import pe.com.jx_market.utilities.BusinessService;
@@ -40,9 +40,9 @@ public class AutorizacionService<T>
     public ServiceOutput<T> execute(final ServiceInput<T> input)
     {
         final ServiceOutput<T> output = new ServiceOutput<T>();
-        final DTO_Empleado empleado = (DTO_Empleado) input.getMapa().get("empleado");
+        final DTO_Employee employee = (DTO_Employee) input.getMapa().get("employee");
         final DTO_Role role = new DTO_Role();
-        role.setId(empleado.getRole());
+        role.setId(employee.getRole());
         String[] modules;
         if (input.getMapa().containsKey("module")) {
             final String module = (String) input.getMapa().get("module");

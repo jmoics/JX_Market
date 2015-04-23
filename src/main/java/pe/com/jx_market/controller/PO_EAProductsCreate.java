@@ -94,6 +94,7 @@ public class PO_EAProductsCreate
     private DTO_Product product;
     private CategoryTreeNode categoryTreeNode;
     private AdvancedTreeModel categoryTreeModel;
+    private PO_EAProducts productParentUI;
 
     @Override
     public void doAfterCompose(final Window _comp)
@@ -115,6 +116,10 @@ public class PO_EAProductsCreate
         tree.setModel(categoryTreeModel);
 
         buildTradeMarkCombo();
+
+        // Obtenemos el controlador de la pantalla principal de marcas.
+        final Map<?, ?> mapArg = desktop.getExecution().getArg();
+        productParentUI = (PO_EAProducts) mapArg.get("parent");
     }
 
     private void buildTradeMarkCombo()
@@ -162,8 +167,9 @@ public class PO_EAProductsCreate
                 this.product.setCategories(new ArrayList<DTO_Category>());
                 this.product.setImages(new ArrayList<DTO_ProductImage>());
                 if (resp == Messagebox.OK) {
-                    desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
-                    ContextLoader.recargar(desktop, Constantes.Form.PRODUCTS_FORM.getForm());
+                    productParentUI.searchProducts();
+                    //desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
+                    //ContextLoader.recargar(desktop, Constantes.Form.PRODUCTS_FORM.getForm());
                     //wEAEP.detach();
                 }
             } else {

@@ -115,7 +115,7 @@ public class Constantes {
     public static final String MODULE_ADMINISTRACION = "MODULE_ADMINISTRACION";
     public static final String MODULE_ADM_ROLE = "MODULE_ADM_ROLE";
     public static final String MODULE_ADM_AREA = "MODULE_ADM_AREA";
-    public static final String MODULE_ADM_EMPLEADO = "MODULE_ADM_EMPLEADO";
+    public static final String MODULE_ADM_EMPLOYEE = "MODULE_ADM_EMPLOYEE";
     public static final String MODULE_ADM_MODULE = "MODULE_ADM_MODULE";
     public static final String MODULE_ADM_ROLEMODULE = "MODULE_ADM_ROLEMODULE";
     public static final String MODULE_CHANGE_PASS = "MODULE_CHANGE_PASS";

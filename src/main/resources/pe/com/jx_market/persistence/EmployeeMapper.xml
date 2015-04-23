@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.EmployeeMapper">
+
+  <cache />
+
+    <!-- MANTENIMIENTO DE EMPLEADOS -->
+
+    <select id="getEmployees" parameterType="DTO_Employee" resultType="DTO_Employee">
+        SELECT
+            emp.id as id,
+            emp.userid as userId,
+            emp.companyid as companyId,
+            emp.roleid as roleId,
+            emp.name as employeeName,
+            emp.birthday as birthday,
+            emp.lastname as employeeLastName,
+            emp.docnumber as documentNumber,
+            emp.address as address,
+            emp.phone as phone,
+            emp.cellphone as cellPhone,
+            emp.email as email,
+            emp.city as city,
+            emp.ubigeo as ubigeo,
+            emp.active as active
+        FROM
+            T_EMP_EMPLOYEE emp
+        WHERE
+            emp.companyid = #{companyId}
+        <if test="userId != null">AND
+            emp.userid = #{userId}
+        </if>
+        <if test="id != null">AND
+            emp.id = #{id}
+        </if>
+    </select>
+
+    <insert id="insertEmployee" parameterType="DTO_Employee">
+        INSERT INTO
+        T_EMP_EMPLOYEE
+            (userid, companyid, roleid,
+            name, birthday, lastname,
+            docnumber, address, phone,
+            cellphone, email, city,
+            ubigeo, active)
+        VALUES
+            (#{userId}, #{companyId}, #{roleId},
+            #{employeeName}, #{birthday}, #{employeeLastName},
+            #{documentNumber}, #{address}, #{phone},
+            #{cellPhone}, #{email}, #{city},
+            #{ubigeo}, #{active})
+    </insert>
+
+    <update id="updateEmployee" parameterType="DTO_Employee">
+        UPDATE T_EMP_EMPLOYEE
+        SET
+            roleid = #{roleId},
+            name = #{employeeName},
+            birthday = #{birthday},
+            lastname = #{employeeLastName},
+            docnumber = #{documentNumber},
+            address = #{address},
+            phone = #{phone},
+            cellphone = #{cellPhone},
+            email = #{email},
+            city = #{city},
+            ubigeo = #{ubigeo},
+            active = #{active}
+        WHERE
+            id = #{id}
+        AND
+            companyid = #{companyId}
+    </update>
+
+    <delete id="deleteEmployee" parameterType="DTO_Employee">
+      DELETE FROM
+         T_EMP_EMPLOYEE
+      WHERE
+         companyid = #{companyId}
+      AND
+         id = #{id}
+    </delete>
+
+</mapper>

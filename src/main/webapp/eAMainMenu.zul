@@ -1,5 +1,6 @@
 <?page id="menup" title="JX_Market" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
+<style src="s-style.css"/>
 <div align="center" height="100%">
     <borderlayout height="100%" width="100%" id="blEAMP" apply="pe.com.jx_market.controller.PO_EAMainMenu">
         <north size="10%" collapsible="false">
@@ -117,7 +118,7 @@
                 </div>
             </vbox>
         </west>
-        <center autoscroll="true">
+        <center autoscroll="true" sclass="s-center">
             <include id="inc" hflex="1" />
         </center>
         <south size="4%" style="visibility:visible;">

@@ -8,7 +8,7 @@ package pe.com.jx_market.testing;
  * @author George
  *
  */
-public class EmpleadoServiceTest
+public class EmployeeServiceTest
 {
 
 }

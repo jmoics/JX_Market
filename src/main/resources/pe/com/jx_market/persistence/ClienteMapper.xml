@@ -11,7 +11,7 @@
     <select id="getClientes" parameterType="DTO_Cliente" resultType="DTO_Cliente">
         SELECT
             cl.cliente_n_codigo as codigo,
-            cl.usuario_n_codigo as usuario,
+            cl.user_n_codigo as user,
             cl.companyid as company,
             cl.cliente_v_nombre as nombre,
             cl.cliente_d_fechanac as fecNac,
@@ -29,8 +29,8 @@
             T_BUS_CLIENTE cl
         WHERE
             cl.companyid = #{company}
-        <if test="usuario != null">AND
-            cl.usuario_n_codigo = #{usuario}
+        <if test="user != null">AND
+            cl.user_n_codigo = #{user}
         </if>
         <if test="codigo != null">AND
             cl.cliente_n_codigo = #{codigo}
@@ -42,13 +42,13 @@
     <insert id="insertCliente" parameterType="DTO_Cliente">
         INSERT INTO
         T_BUS_CLIENTE
-            (usuario_n_codigo, companyid,
+            (user_n_codigo, companyid,
             cliente_v_nombre, cliente_d_fechanac, cliente_v_apellido,
             cliente_n_dni, cliente_v_direccion, cliente_v_telefono,
             cliente_v_celular, cliente_v_email, cliente_v_ciudad,
             cliente_v_region, cliente_v_codpostal, cliente_n_activo)
         VALUES
-            (#{usuario}, #{company},
+            (#{user}, #{company},
             #{nombre}, #{fecNac}, #{apellido},
             #{dni}, #{direccion}, #{telefono},
             #{celular}, #{email}, #{ciudad},

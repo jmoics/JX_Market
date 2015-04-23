@@ -11,9 +11,9 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Textbox;
 
-import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.domain.DTO_Cliente;
-import pe.com.jx_market.domain.DTO_Usuario;
+import pe.com.jx_market.domain.DTO_Product;
+import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -23,23 +23,23 @@ public class PO_CELoginCliente extends Div
 {
     static Log logger = LogFactory.getLog(PO_CELoginCliente.class);
     private Textbox txtUser, txtPass;
-    private BusinessService validationService, usuarioService, clienteService;
+    private BusinessService validationService, userService, clienteService;
 
     public void onCreate() {
         txtUser = (Textbox) getFellow("txtUser");
         txtPass = (Textbox) getFellow("txtPass");
         validationService = ContextLoader.getService(this, "validationService");
-        usuarioService = ContextLoader.getService(this, "usuarioService");
+        userService = ContextLoader.getService(this, "userService");
         clienteService = ContextLoader.getService(this, "clienteService");
     }
 
     public void iniciarSesion() {
-        final DTO_Usuario usuario = new DTO_Usuario();
-        usuario.setUsername(txtUser.getValue());
-        usuario.setContrasena(txtPass.getValue());
-        usuario.setCompany(Constantes.INSTITUCION_JX_MARKET);
+        final DTO_User user = new DTO_User();
+        user.setUsername(txtUser.getValue());
+        user.setPassword(txtPass.getValue());
+        user.setCompanyId(Constantes.INSTITUCION_JX_MARKET);
 
-        final DTO_Usuario validado = getUsuario(usuario);
+        final DTO_User validado = getUser(user);
         if (validado != null) {
             final DTO_Cliente cliente = getCliente(validado);
             if (cliente != null) {
@@ -51,7 +51,7 @@ public class PO_CELoginCliente extends Div
                 map2.put("cantidad", 0);
                 getDesktop().getSession().setAttribute("totales", map2);
                 getDesktop().getSession().setAttribute("sendPage", getDesktop().getBookmark());
-                
+
                 Executions.sendRedirect("index.zul");
             } else {
                 // Hacer algo para que indique que no se pudo loguear
@@ -63,11 +63,11 @@ public class PO_CELoginCliente extends Div
         }
     }
 
-    public DTO_Cliente getCliente(final DTO_Usuario usu)
+    public DTO_Cliente getCliente(final DTO_User usu)
     {
         final DTO_Cliente cli = new DTO_Cliente();
-        cli.setCompany(usu.getCompany());
-        cli.setUsuario(usu.getCodigo());
+        cli.setCompany(usu.getCompanyId());
+        cli.setUser(usu.getId());
         final ServiceInput input = new ServiceInput(cli);
         input.setAccion(Constantes.V_GET);
         final ServiceOutput output = clienteService.execute(input);
@@ -78,20 +78,20 @@ public class PO_CELoginCliente extends Div
         }
     }
 
-    public DTO_Usuario getUsuario(final DTO_Usuario C)
+    public DTO_User getUser(final DTO_User C)
     {
-        DTO_Usuario usuario;
+        DTO_User user;
         final BusinessService authService = ContextLoader.getService(this, "authService");
         final ServiceInput input = new ServiceInput(C);
 
         final ServiceOutput output = authService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            usuario = (DTO_Usuario) output.getObject();
+            user = (DTO_User) output.getObject();
         } else {
-            usuario = null;
+            user = null;
         }
 
-        return usuario;
+        return user;
     }
 
     public void saltarPagina(final String txt, final boolean anotherPage) {

@@ -29,7 +29,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Company;
-import pe.com.jx_market.domain.DTO_Empleado;
+import pe.com.jx_market.domain.DTO_Employee;
 import pe.com.jx_market.utilities.Constantes;
 
 /**
@@ -61,11 +61,11 @@ public class PO_EAHeader
         loadPhoto(company.getDomain());
         setGraficoFoto();
 
-        final DTO_Empleado empleado = (DTO_Empleado) desktop.getSession().getAttribute("empleado");
-        if (empleado == null) {
+        final DTO_Employee employee = (DTO_Employee) desktop.getSession().getAttribute("employee");
+        if (employee == null) {
             throw new RuntimeException("La sesion se perdio, vuelva a ingresar por favor");
         }
-        userdata.setValue(empleado.getApellido() + " " + empleado.getNombre());
+        userdata.setValue(employee.getEmployeeLastName() + " " + employee.getEmployeeName());
         getLocaleCombo();
         cmbLocale.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
             @Override
@@ -161,7 +161,7 @@ public class PO_EAHeader
         desktop.getSession().removeAttribute("login");
         desktop.getSession().removeAttribute("actualizar");
         desktop.getSession().removeAttribute("company");
-        desktop.getSession().removeAttribute("empleado");
+        desktop.getSession().removeAttribute("employee");
         // getDesktop().getSession().removeAttribute("paginaActual");
         Executions.sendRedirect("eALogin.zul");
     }

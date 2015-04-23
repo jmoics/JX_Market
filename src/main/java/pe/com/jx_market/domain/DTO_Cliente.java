@@ -8,7 +8,7 @@ public class DTO_Cliente
 
     private Integer codigo;
     private Integer company;
-    private Integer usuario;
+    private Integer user;
     private String nombre;
     private String apellido;
     private Date fecNac;
@@ -42,14 +42,14 @@ public class DTO_Cliente
         this.company = company;
     }
 
-    public Integer getUsuario()
+    public Integer getUser()
     {
-        return usuario;
+        return user;
     }
 
-    public void setUsuario(final Integer usuario)
+    public void setUser(final Integer user)
     {
-        this.usuario = usuario;
+        this.user = user;
     }
 
     public String getNombre()

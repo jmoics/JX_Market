@@ -11,7 +11,7 @@
         </auxhead>
         <rows>
             <row>
-                Usuario <textbox id="nameBox" hflex="1" constraint="no empty"/>
+                User <textbox id="nameBox" hflex="1" constraint="no empty"/>
             </row>
             <row>
                 Género:

@@ -17,8 +17,8 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Company;
-import pe.com.jx_market.domain.DTO_Empleado;
-import pe.com.jx_market.domain.DTO_Usuario;
+import pe.com.jx_market.domain.DTO_Employee;
+import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -43,9 +43,9 @@ public class PO_EALogin
     @WireVariable
     private BusinessService<DTO_Company> companyService;
     @WireVariable
-    private BusinessService<DTO_Usuario> authService;
+    private BusinessService<DTO_User> authService;
     @WireVariable
-    private BusinessService<DTO_Empleado> empleadoService;
+    private BusinessService<DTO_Employee> employeeService;
 
     @Override
     public void doAfterCompose(final Window comp)
@@ -81,18 +81,18 @@ public class PO_EALogin
     public void authenticate()
         throws InterruptedException
     {
-        final DTO_Usuario usuario = new DTO_Usuario();
-        usuario.setUsername(txtUser.getValue());
-        usuario.setContrasena(txtPass.getValue());
+        final DTO_User user = new DTO_User();
+        user.setUsername(txtUser.getValue());
+        user.setPassword(txtPass.getValue());
         if (cmbEmp.getSelectedItem() != null) {
             final DTO_Company company = (DTO_Company) cmbEmp.getSelectedItem().getAttribute("company");
             if (company != null) {
-                usuario.setCompany(company.getId());
+                user.setCompanyId(company.getId());
 
-                final DTO_Usuario validado = getUsuario(usuario);
+                final DTO_User validado = getUser(user);
                 if (validado != null) {
-                    final DTO_Empleado empleado = getEmpleado(validado);
-                    desktop.getSession().setAttribute("empleado", empleado);
+                    final DTO_Employee employee = getEmployee(validado);
+                    desktop.getSession().setAttribute("employee", employee);
                     desktop.getSession().setAttribute("login", validado);
                     desktop.getSession().setAttribute("company", company);
                     if (company.getId().equals(Constantes.INSTITUCION_JX_MARKET)) {
@@ -114,31 +114,31 @@ public class PO_EALogin
         }
     }
 
-    public DTO_Usuario getUsuario(final DTO_Usuario C)
+    public DTO_User getUser(final DTO_User C)
     {
-        DTO_Usuario usuario;
-        //authService = (BusinessService<DTO_Usuario>) ContextLoader.getService(wEAL, "authService");
-        final ServiceInput<DTO_Usuario> input = new ServiceInput<DTO_Usuario>(C);
+        DTO_User user;
+        //authService = (BusinessService<DTO_User>) ContextLoader.getService(wEAL, "authService");
+        final ServiceInput<DTO_User> input = new ServiceInput<DTO_User>(C);
 
-        final ServiceOutput<DTO_Usuario> output = authService.execute(input);
+        final ServiceOutput<DTO_User> output = authService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            usuario = output.getObject();
+            user = output.getObject();
         } else {
-            usuario = null;
+            user = null;
         }
 
-        return usuario;
+        return user;
     }
 
-    public DTO_Empleado getEmpleado(final DTO_Usuario usu)
+    public DTO_Employee getEmployee(final DTO_User usu)
     {
-        //empleadoService = (BusinessService<DTO_Empleado>) ContextLoader.getService(wEAL, "empleadoService");
-        final DTO_Empleado emp = new DTO_Empleado();
-        emp.setCompany(usu.getCompany());
-        emp.setUsuario(usu.getCodigo());
-        final ServiceInput<DTO_Empleado> input = new ServiceInput<DTO_Empleado>(emp);
+        //employeeService = (BusinessService<DTO_Employee>) ContextLoader.getService(wEAL, "employeeService");
+        final DTO_Employee emp = new DTO_Employee();
+        emp.setCompanyId(usu.getCompanyId());
+        emp.setUserId(usu.getId());
+        final ServiceInput<DTO_Employee> input = new ServiceInput<DTO_Employee>(emp);
         input.setAccion(Constantes.V_GET);
-        final ServiceOutput<DTO_Empleado> output = empleadoService.execute(input);
+        final ServiceOutput<DTO_Employee> output = employeeService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             return output.getObject();
         } else {

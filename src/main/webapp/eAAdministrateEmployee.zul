@@ -4,7 +4,7 @@
    <div align="center">
       <html:p />
       <window width="700px"
-         use="pe.com.jx_market.controller.PO_EAAdministrateEmpleado"
+         use="pe.com.jx_market.controller.PO_EAAdministrateEmployee"
          id="winEAAE">
 
          <div align="center">
@@ -17,7 +17,7 @@
                   </label>
                </div>
                <html:p />
-               <groupbox id="grpEmpleados" visible="true" mold="3d"
+               <groupbox id="grpEmployees" visible="true" mold="3d"
                   width="695px">
                   <caption label="" id="capNombre" />
                   <html:p />
@@ -26,7 +26,7 @@
                      <columns>
                         <column label="Nombres" />
                         <column label="Apellidos" />
-                        <column label="Usuario" />
+                        <column label="User" />
                         <column label="Role" />
                         <column label="Ver Detalles" width="80px" />
                         <column label="Editar" width="60px" />
@@ -38,7 +38,7 @@
                      <div align="center">
                         <label
                            style="font-family: sans-serif; font-weight:normal; color:#473C8B;font-size:14px">
-                           Detalle de Empleado
+                           Detalle de Employee
                         </label>
                      </div>
                      <html:p />
@@ -49,8 +49,8 @@
                         </columns>
                         <rows>
                            <row>
-                              <label value="Usuario" />
-                              <label id="lblUsuario" value="" />
+                              <label value="User" />
+                              <label id="lblUser" value="" />
                            </row>
                            <row>
                               <label value="Nombre" />
@@ -94,15 +94,15 @@
                   </popup>
                   <html:p />
                   <groupbox mold="3d" width="420px">
-                     <caption label="Nuevo Empleado" id="capInfo" />
+                     <caption label="Nuevo Employee" id="capInfo" />
                      <div width="400px" align="center">
                         <grid fixedLayout="true" width="380px">
                            <rows>
                               <row>
                                  <label style="font-size:small">
-                                    (*) Usuario:
+                                    (*) User:
                                  </label>
-                                 <textbox id="txtUsuario" value=""
+                                 <textbox id="txtUser" value=""
                                     constraint="/^[a-zA-Z0-9_]*$/: Username es inválido"
                                     maxlength="20">
                                  </textbox>

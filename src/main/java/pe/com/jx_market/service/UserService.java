@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.domain.DTO_Usuario;
-import pe.com.jx_market.persistence.UsuarioMapper;
+import pe.com.jx_market.domain.DTO_User;
+import pe.com.jx_market.persistence.UserMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -21,11 +21,11 @@ import pe.com.jx_market.utilities.ServiceOutput;
  *
  */
 @Service
-public class UsuarioService
+public class UserService
     implements BusinessService
 {
     @Autowired
-    private UsuarioMapper usuarioDAO;
+    private UserMapper userDAO;
     @Autowired
     private BusinessService passwordHashService;
 
@@ -51,31 +51,31 @@ public class UsuarioService
 
         final ServiceOutput output = new ServiceOutput();
         if (Constantes.V_LIST.equals(input.getAccion())) {
-            final DTO_Usuario usuario = (DTO_Usuario) input.getObject();
-            output.setLista(usuarioDAO.getUsuarios(usuario));
+            final DTO_User user = (DTO_User) input.getObject();
+            output.setLista(userDAO.getUsers(user));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getAccion())) {
-            output.setObject(usuarioDAO.getUsuarioXUsername((DTO_Usuario) input.getObject()));
+            output.setObject(userDAO.getUser4Username((DTO_User) input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
         }else if (Constantes.V_REGISTER.equals(input.getAccion())) {
-            final DTO_Usuario usuario = (DTO_Usuario) input.getObject();
-            usuario.setContrasena(encriptaPass(usuario.getContrasena()));
-            DTO_Usuario nonused = usuarioDAO.getUsuarioXUsername(usuario);
+            final DTO_User user = (DTO_User) input.getObject();
+            user.setPassword(encriptaPass(user.getPassword()));
+            final DTO_User nonused = userDAO.getUser4Username(user);
             if (nonused == null) {
-                final Integer idUser = usuarioDAO.insertUsuario(usuario);
+                final Integer idUser = userDAO.insertUser(user);
                 output.setErrorCode(Constantes.OK);
             } else {
                 output.setErrorCode(Constantes.ERROR_RC);
             }
             return output;
         } else if (Constantes.V_DELETE.equals(input.getAccion())) {
-            usuarioDAO.eliminaUsuario((DTO_Usuario) input.getObject());
+            userDAO.eliminaUser((DTO_User) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         } else if ("consultaSiEstaDisponible".equals(input.getAccion())) {
-            final DTO_Usuario us = usuarioDAO.getUsuarioXUsername((DTO_Usuario) input.getObject());
+            final DTO_User us = userDAO.getUser4Username((DTO_User) input.getObject());
             if (us == null) {
                 output.setErrorCode(Constantes.OK);
             } else {
@@ -83,8 +83,8 @@ public class UsuarioService
             }
             return output;
         } else if ("chgpass".equals(input.getAccion())) {
-            final DTO_Usuario usuario = (DTO_Usuario) input.getObject();
-            final String nuevoPassword = usuario.getContrasena();
+            final DTO_User user = (DTO_User) input.getObject();
+            final String nuevoPassword = user.getPassword();
             final Map map = input.getMapa();
             //final String oldPass = (String) map.get("oldPass");
             String nonPass = null;
@@ -101,16 +101,16 @@ public class UsuarioService
                 output.setErrorCode(Constantes.BAD_PASS);
                 return output;
             }
-            /*if (nonPass == null && !checkPasswordAnterior(usuario, oldPass)) {
+            /*if (nonPass == null && !checkPasswordAnterior(user, oldPass)) {
                 output.setErrorCode(Constantes.BAD_PASS);
                 return output;
             }*/
             // encriptar el password..
-            usuario.setContrasena(encriptaPass(nuevoPassword));
+            user.setPassword(encriptaPass(nuevoPassword));
 
-            DTO_Usuario usrTmp = usuarioDAO.getUsuarioXUsername(usuario);
+            final DTO_User usrTmp = userDAO.getUser4Username(user);
             if (usrTmp != null) {
-                usuarioDAO.cambiaPassword(usuario);
+                userDAO.cambiaPassword(user);
                 output.setErrorCode(Constantes.OK);
                 return output;
             } else {
@@ -133,16 +133,16 @@ public class UsuarioService
         return true;
     }
 
-    private boolean checkPasswordAnterior(final DTO_Usuario us,
+    private boolean checkPasswordAnterior(final DTO_User us,
                                           final String pass)
     {
-        final DTO_Usuario usuario = usuarioDAO.getUsuarioXUsername(us);
+        final DTO_User user = userDAO.getUser4Username(us);
         String passEncriptado;
         // encriptar password enviado
         final ServiceOutput output = passwordHashService.execute(new ServiceInput(pass));
         if (output.getErrorCode() == Constantes.OK) {
             passEncriptado = (String) output.getObject();
-            if (passEncriptado.equals(usuario.getContrasena())) {
+            if (passEncriptado.equals(user.getPassword())) {
                 return true;
             }
         }
@@ -158,14 +158,14 @@ public class UsuarioService
         return null;
     }
 
-    public UsuarioMapper getDao()
+    public UserMapper getDao()
     {
-        return usuarioDAO;
+        return userDAO;
     }
 
-    public void setDao(final UsuarioMapper usuarioDAO)
+    public void setDao(final UserMapper userDAO)
     {
-        this.usuarioDAO = usuarioDAO;
+        this.userDAO = userDAO;
     }
 
     public BusinessService getPasswordHashService()

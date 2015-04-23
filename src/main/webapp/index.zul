@@ -99,7 +99,7 @@
             </h:div><!-- end of menu tab -->
 
             <div class="crumb_navigation">
-                Usuario:
+                User:
                 <label value="" id="lbUser" class="current"/>
             </div>
 

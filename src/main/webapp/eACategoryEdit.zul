@@ -3,16 +3,10 @@
         apply="pe.com.jx_market.controller.PO_EACategoryEdit"
         position="center,center" closable="true"
         action="show: slideDown;hide: slideUp">
-    <style>
-        .h-inline-block {
-            display: inline-block;
-            _display: inline;
-        }
-    </style>
-    <vbox height="100%" width="100%">
+    <style src="s-style.css"/>
+    <vbox height="100%" width="100%" sclass="s-box-popup">
         <div align="center" height="10%">
-            <label zclass="z-south-header"
-                style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+            <label zclass="z-south-header" sclass="s-header">
                 ${labels.pe.com.jx_market.eACategoryEdit.Title}
             </label>
         </div>
@@ -31,7 +25,7 @@
                 </template>-->
             </tree>
         </div>
-        <hbox align="center" pack="end" hflex="1" vflex="1">
+        <hbox align="center" pack="end" hflex="1" vflex="1" sclass="s-hbox-popup">
             <button id="btnSave" label="${labels.pe.com.jx_market.eACategoryCreate.save.Label}"
                 image="/media/filesave.png" />
             <button id="btnClose" label="${labels.pe.com.jx_market.eACategoryCreate.close.Label}"

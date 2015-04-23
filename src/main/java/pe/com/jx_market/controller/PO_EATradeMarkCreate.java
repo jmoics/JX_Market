@@ -38,7 +38,7 @@ public class PO_EATradeMarkCreate
     @WireVariable
     private Desktop desktop;
     private DTO_Company company;
-    private PO_EATradeMark tradeMarkParent;
+    private PO_EATradeMark tradeMarkParentUI;
 
     @Override
     public void doAfterCompose(final Window _comp)
@@ -48,9 +48,9 @@ public class PO_EATradeMarkCreate
 
         company = (DTO_Company) _comp.getDesktop().getSession().getAttribute("company");
         buildActiveCombo(cmbActive);
-     // Obtenemos el controlador de la pantalla principal de marcas.
+        // Obtenemos el controlador de la pantalla principal de marcas.
         final Map<?, ?> mapArg = desktop.getExecution().getArg();
-        tradeMarkParent = (PO_EATradeMark) mapArg.get("parent");
+        tradeMarkParentUI = (PO_EATradeMark) mapArg.get("parent");
     }
 
     @Listen("onClick = #btnSave")
@@ -68,10 +68,10 @@ public class PO_EATradeMarkCreate
                 final int resp = alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAPTradeMarkCreate.createTradeMark.Info.Label"),
                                 Labels.getLabel("pe.com.jx_market.PO_EATradeMarkCreate.createTradeMark.Info.Label"), null);
                 if (resp == Messagebox.OK) {
-                    tradeMarkParent.searchTradeMarks();
+                    tradeMarkParentUI.searchTradeMarks();
                     //desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
                     //ContextLoader.recargar(desktop, Constantes.Form.TRADEMARK_FORM.getForm());
-                    //wEAEP.detach();
+                    //wEATC.detach();
                 }
             } else {
                 alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAPTradeMarkCreate.createTradeMark.Error.Label"),

@@ -15,12 +15,12 @@ import org.zkoss.zul.Messagebox;
 
 import pe.com.jx_market.domain.DTO_Area;
 import pe.com.jx_market.domain.DTO_Company;
-import pe.com.jx_market.domain.DTO_Empleado;
+import pe.com.jx_market.domain.DTO_Employee;
 import pe.com.jx_market.domain.DTO_Module;
 import pe.com.jx_market.domain.DTO_Role;
 import pe.com.jx_market.domain.DTO_RoleModule;
 import pe.com.jx_market.domain.DTO_Solicitud;
-import pe.com.jx_market.domain.DTO_Usuario;
+import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -29,7 +29,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
 public class PO_EESolicitudesPendientes extends SecuredWindow
 {
     static Log logger = LogFactory.getLog(PO_EESolicitudesPendientes.class);
-    private BusinessService solicitudService, companyService, areaService, roleService, moduleService, roleModuleService, empleadoService;
+    private BusinessService solicitudService, companyService, areaService, roleService, moduleService, roleModuleService, employeeService;
     private Listbox lstSolicitud;
 
     @Override
@@ -42,7 +42,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         roleService = ContextLoader.getService(this, "roleService");
         moduleService = ContextLoader.getService(this, "moduleService");
         roleModuleService = ContextLoader.getService(this, "roleModuleService");
-        empleadoService = ContextLoader.getService(this, "empleadoService");
+        employeeService = ContextLoader.getService(this, "employeeService");
         busquedaSolicitudes();
     }
 
@@ -159,7 +159,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
                     connectRoleModule(codPerf, codMod);
                     codMod = insertModule("module para administracion de areas", Constantes.MODULE_ADM_AREA, codEmp);
                     connectRoleModule(codPerf, codMod);
-                    codMod = insertModule("Module para administracion de empleados", Constantes.MODULE_ADM_EMPLEADO, codEmp);
+                    codMod = insertModule("Module para administracion de employees", Constantes.MODULE_ADM_EMPLOYEE, codEmp);
                     connectRoleModule(codPerf, codMod);
                     codMod = insertModule("Module para administracion de modules", Constantes.MODULE_ADM_MODULE, codEmp);
                     connectRoleModule(codPerf, codMod);
@@ -181,24 +181,24 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
                     connectRoleModule(codPerf, codMod);
 
                     final Map<String, Object> mapUser = new HashMap<String,Object>();
-                    final DTO_Usuario usuario = new DTO_Usuario();
-                    usuario.setCompany(codEmp);
-                    usuario.setUsername("Administrator");
-                    usuario.setContrasena("Administrator");
+                    final DTO_User user = new DTO_User();
+                    user.setCompanyId(codEmp);
+                    user.setUsername("Administrator");
+                    user.setPassword("Administrator");
 
-                    final DTO_Empleado empleado = new DTO_Empleado();
-                    empleado.setApellido("Administrator");
-                    empleado.setCompany(codEmp);
-                    empleado.setEstado(Constantes.ST_ACTIVO);
-                    empleado.setRole(codPerf);
+                    final DTO_Employee employee = new DTO_Employee();
+                    employee.setEmployeeLastName("Administrator");
+                    employee.setCompanyId(codEmp);
+                    employee.setActive(Constantes.STB_ACTIVO);
+                    employee.setRole(codPerf);
 
-                    mapUser.put("empleado", empleado);
-                    mapUser.put("usuario", usuario);
+                    mapUser.put("employee", employee);
+                    mapUser.put("user", user);
 
                     input = new ServiceInput();
                     input.setAccion(Constantes.V_REGISTER);
                     input.setMapa(mapUser);
-                    output = empleadoService.execute(input);
+                    output = employeeService.execute(input);
                     if (output.getErrorCode() == Constantes.OK) {
                         alertaInfo("Se creao la data basica para la nueva company", "nueva data registrada correctamente", null);
                     }
@@ -246,7 +246,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         getDesktop().getSession().removeAttribute("login");
         getDesktop().getSession().removeAttribute("actualizar");
         getDesktop().getSession().removeAttribute("company");
-        getDesktop().getSession().removeAttribute("empleado");
+        getDesktop().getSession().removeAttribute("employee");
         // getDesktop().getSession().removeAttribute("paginaActual");
         Executions.sendRedirect("eALogin.zul");
     }

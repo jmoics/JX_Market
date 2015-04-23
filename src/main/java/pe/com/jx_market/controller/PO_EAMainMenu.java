@@ -18,7 +18,7 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Borderlayout;
 
-import pe.com.jx_market.domain.DTO_Empleado;
+import pe.com.jx_market.domain.DTO_Employee;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -43,7 +43,7 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
         PO_EAMainMenu.MENU_MAP.put("id_option_prod_amount", "");
         PO_EAMainMenu.MENU_MAP.put("id_option_prod_inventory","");
         PO_EAMainMenu.MENU_MAP.put("id_option_adm_areas", "eAAdministrateArea.zul");
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_emp", "eAAdministrateEmpleado.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_emp", "eAAdministrateEmployee.zul");
         PO_EAMainMenu.MENU_MAP.put("id_option_adm_perf", "eAAdministrateRole.zul");
         PO_EAMainMenu.MENU_MAP.put("id_option_adm_mod", "eAAdministrateModule.zul");
         PO_EAMainMenu.MENU_MAP.put("id_option_adm_perfi_module", "eAAdministrateRoleModule.zul");
@@ -54,7 +54,7 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
 
     @WireVariable
     private Desktop desktop;
-    private BusinessService<DTO_Empleado> autorizacionService;
+    private BusinessService<DTO_Employee> autorizacionService;
 
     @Override
     public void doBeforeComposeChildren(final Borderlayout comp)
@@ -69,12 +69,12 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
         throws Exception
     {
         super.doAfterCompose(comp);
-        autorizacionService = (BusinessService<DTO_Empleado>) ContextLoader.getService(comp, "autorizacionService");
+        autorizacionService = (BusinessService<DTO_Employee>) ContextLoader.getService(comp, "autorizacionService");
         incluir(Constantes.Form.EMPTY_FORM.getForm());
 
-        final DTO_Empleado empleado = (DTO_Empleado) comp.getDesktop().getSession().getAttribute("empleado");
+        final DTO_Employee employee = (DTO_Employee) comp.getDesktop().getSession().getAttribute("employee");
 
-        if (empleado == null) {
+        if (employee == null) {
             throw new RuntimeException("La sesion se perdio, vuelva a ingresar por favor");
         }
 
@@ -94,30 +94,30 @@ public class PO_EAMainMenu extends SelectorComposer<Borderlayout>
                             }
                       });
 
-        setVisibilityByResource(comp, "id_option_prod_products", Constantes.MODULE_PROD_PRODUCT, empleado);
-        setVisibilityByResource(comp, "id_option_prod_categ", Constantes.MODULE_PROD_CATEGORY, empleado);
-        setVisibilityByResource(comp, "id_option_prod_tradeMark", Constantes.MODULE_PROD_TRADEMARK, empleado);
-        setVisibilityByResource(comp, "id_option_prod_amount", Constantes.MODULE_PROD_AMOUNT, empleado);
-        setVisibilityByResource(comp, "id_option_prod_inventory", Constantes.MODULE_PROD_INVENTORY, empleado);
-        setVisibilityByResource(comp, "id_option_administracion", Constantes.MODULE_ADMINISTRACION, empleado);
-        setVisibilityByResource(comp, "id_option_adm_areas", Constantes.MODULE_ADM_AREA, empleado);
-        setVisibilityByResource(comp, "id_option_adm_emp", Constantes.MODULE_ADM_EMPLEADO, empleado);
-        setVisibilityByResource(comp, "id_option_adm_mod", Constantes.MODULE_ADM_MODULE, empleado);
-        setVisibilityByResource(comp, "id_option_adm_perf", Constantes.MODULE_ADM_ROLE, empleado);
-        setVisibilityByResource(comp, "id_option_adm_perfi_module", Constantes.MODULE_ADM_ROLEMODULE, empleado);
-        setVisibilityByResource(comp, "id_option_chgpass", Constantes.MODULE_CHANGE_PASS, empleado);
+        setVisibilityByResource(comp, "id_option_prod_products", Constantes.MODULE_PROD_PRODUCT, employee);
+        setVisibilityByResource(comp, "id_option_prod_categ", Constantes.MODULE_PROD_CATEGORY, employee);
+        setVisibilityByResource(comp, "id_option_prod_tradeMark", Constantes.MODULE_PROD_TRADEMARK, employee);
+        setVisibilityByResource(comp, "id_option_prod_amount", Constantes.MODULE_PROD_AMOUNT, employee);
+        setVisibilityByResource(comp, "id_option_prod_inventory", Constantes.MODULE_PROD_INVENTORY, employee);
+        setVisibilityByResource(comp, "id_option_administracion", Constantes.MODULE_ADMINISTRACION, employee);
+        setVisibilityByResource(comp, "id_option_adm_areas", Constantes.MODULE_ADM_AREA, employee);
+        setVisibilityByResource(comp, "id_option_adm_emp", Constantes.MODULE_ADM_EMPLOYEE, employee);
+        setVisibilityByResource(comp, "id_option_adm_mod", Constantes.MODULE_ADM_MODULE, employee);
+        setVisibilityByResource(comp, "id_option_adm_perf", Constantes.MODULE_ADM_ROLE, employee);
+        setVisibilityByResource(comp, "id_option_adm_perfi_module", Constantes.MODULE_ADM_ROLEMODULE, employee);
+        setVisibilityByResource(comp, "id_option_chgpass", Constantes.MODULE_CHANGE_PASS, employee);
     }
 
     private void setVisibilityByResource(final Borderlayout comp,
                                          final String widget,
                                          final String module,
-                                         final DTO_Empleado empleado)
+                                         final DTO_Employee employee)
     {
 
-        final ServiceInput<DTO_Empleado> input = new ServiceInput<DTO_Empleado>();
-        input.addMapPair("empleado", empleado);
+        final ServiceInput<DTO_Employee> input = new ServiceInput<DTO_Employee>();
+        input.addMapPair("employee", employee);
         input.addMapPair("module", module);
-        final ServiceOutput<DTO_Empleado> output = autorizacionService.execute(input);
+        final ServiceOutput<DTO_Employee> output = autorizacionService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
             comp.getFellow(widget).setVisible(false);
         }

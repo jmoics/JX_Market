@@ -1,0 +1,56 @@
+.h-inline-block {
+    display: inline-block;
+    _display: inline;
+}
+.s-north {
+    border-top-width: 1px;
+    border-bottom-width: 0px;
+}
+.s-south {
+    border-bottom-width: 1px;
+}
+.s-south2 {
+    border-bottom-width: 1px;
+    border-top-width: 0px;
+}
+.s-center {
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+}
+.s-center2 {
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+}
+.s-window-content-popup {
+    padding: 5px;
+}
+.s-grid {
+    border-left-width: 0px;
+    border-right-width: 0px;
+}
+.s-grid-popup {
+    border-left-width: 1px;
+    border-right-width: 1px;
+}
+.s-hbox {
+    -webkit-border-horizontal-spacing: 3px;
+}
+.s-hbox-popup {
+    -webkit-border-horizontal-spacing: 0px;
+}
+.s-box-popup {
+	padding: 5px;
+}
+.s-tree-content {
+    border-left-width: 0px;
+    border-right-width: 0px;
+}
+.s-header {
+	background:transparent;
+	font-family: sans-serif;
+	border-bottom:0;
+	font-size:large;
+	font-weight:bold
+}
