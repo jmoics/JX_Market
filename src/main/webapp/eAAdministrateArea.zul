@@ -1,67 +1,47 @@
 <?page title="Seguridad y Servicio al Client" contentType="text/html;charset=UTF-8"?>
-
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-    <div align="center">
-        <html:p />
-        <window width="700px" id="eaAA"
-            use="pe.com.jx_market.controller.PO_EAAdministrateArea">
+<style src="s-style.css"/>
+<style>
+    .z-window-content {
+        padding: 1px;
+    }
+</style>
+<window width="700px" id="wEAAA" hflex="1" vflex="1"
+        apply="pe.com.jx_market.controller.PO_EAAdministrateArea">
+    <borderlayout id="bl" hflex="1" vflex="1">
+        <north size="10%" collapsible="false" sclass="s-north">
             <div align="center">
-                <vbox width="700px">
-                    <html:p />
-                    <div align="center">
-                        <label zclass="z-south-header"
-                            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                            Administración de Areas
-                        </label>
-                        <html:p />
-                        <groupbox mold="3d" width="600px">
-                            <caption label="Areas Registrados" />
-                            <div align="center">
-                                <html:p />
-                                <grid id="grdArea" width="400px">
-                                    <columns>
-                                       <column label="Nombre" width="200px" />
-                                       <column label="Ver Employees" width="90px" />
-                                       <column label="Editar" width="55px" />
-                                       <column label="Eliminar" width="55px" />
-                                    </columns>
-                                    <rows></rows>
-                                </grid>
-                                <html:p />
-                                <html:p />
-
-                                <groupbox mold="3d" width="420px"
-                                    id="grpNuevo">
-                                    <caption label="Nueva Area" />
-                                    <div width="400px" align="center">
-                                        <grid fixedLayout="true" width="380px">
-                                           <rows>
-                                              <row>
-                                                 <label style="font-size:small" value="Nombre de Area" />
-                                                 <textbox id="txtNombre" />
-                                              </row>
-                                           </rows>
-                                        </grid>
-                                        <html:p />
-                                        <div align="center">
-                                            <button label="Crear" onClick="eaAA.crearNuevaArea()">
-                                            </button>
-                                        </div>
-                                    </div>
-                                </groupbox>
-                            </div>
-                            <html:p />
-                        </groupbox>
-                    </div>
-                </vbox>
+                <label zclass="z-south-header" sclass="s-header">
+                    ${labels.pe.com.jx_market.eAAdministrateArea.Title}
+                </label>
             </div>
-            <popup id="popEmployees" width="400px">
-                <div align="center">
-                   <toolbarbutton label="Cerrar"
-                     onClick="popEmployees.close()">
-                   </toolbarbutton>
-                </div>
-            </popup>
-        </window>
-     </div>
+        </north>
+        <center autoscroll="true" sclass="s-center2">
+            <listbox id="lstArea" mold="paging" pagingPosition="bottom" autopaging="true" sizedByContent="true"  hflex="1" vflex="1">
+                <listhead>
+                    <listheader label="Nº" id="headNumber" width="30px"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateArea.AreaName.Label}" sort="auto" hflex="8"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateArea.Employees.Label}" sort="auto" hflex="2"/>
+                </listhead>
+            </listbox>
+        </center>
+        <south size="5%" style="visibility:visible;" sclass="s-south2">
+            <hbox align="center" pack="end" hflex="1" vflex="1" sclass="s-hbox">
+                <button id="btnCreate" label="${labels.pe.com.jx_market.eAAdministrateArea.btnCreate.Label}"
+                    image="/media/filenew.png" />
+                <button id="btnEdit" label="${labels.pe.com.jx_market.eAAdministrateArea.btnEdit.Label}"
+                    image="/media/edit.png" />
+                <button id="btnDelete" label="${labels.pe.com.jx_market.eAAdministrateArea.btnDelete.Label}"
+                    image="/media/editdelete.png" />
+            </hbox>
+        </south>
+    </borderlayout>
+    <popup id="popEmployees" width="400px">
+        <div align="center">
+           <toolbarbutton label="Cerrar"
+                    onClick="popEmployees.close()">
+           </toolbarbutton>
+        </div>
+    </popup>
+</window>
 </zk>

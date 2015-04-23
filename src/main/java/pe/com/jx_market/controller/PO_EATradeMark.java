@@ -15,8 +15,10 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -31,7 +33,7 @@ import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-
+@VariableResolver(DelegatingVariableResolver.class)
 public class PO_EATradeMark
     extends SecuredComposer<Window>
 {
@@ -58,7 +60,7 @@ public class PO_EATradeMark
     {
         super.doAfterCompose(_comp);
 
-        company = (DTO_Company) _comp.getDesktop().getSession().getAttribute("company");
+        company = (DTO_Company) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
         buildActiveCombo(cmbActive);
         if (desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD) != null
                         && (Boolean) desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD)) {

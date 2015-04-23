@@ -8,37 +8,36 @@ import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zul.Combobox;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
+import pe.com.jx_market.domain.DTO_Area;
 import pe.com.jx_market.domain.DTO_Company;
-import pe.com.jx_market.domain.DTO_TradeMark;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-
-public class PO_EATradeMarkCreate
-    extends SecuredComposer<Window>
+@VariableResolver(DelegatingVariableResolver.class)
+public class PO_EAAdministrateAreaCreate
+extends SecuredComposer<Window>
 {
     static Log logger = LogFactory.getLog(PO_EAProductsCreate.class);
     @Wire
-    private Combobox cmbActive;
+    private Textbox txtAreaName;
     @Wire
-    private Textbox txtTradeMarkName;
-    @Wire
-    private Window wEATC;
+    private Window wEAAC;
     @WireVariable
-    private BusinessService<DTO_TradeMark> tradeMarkService;
+    private BusinessService<DTO_Area> areaService;
     @WireVariable
     private Desktop desktop;
     private DTO_Company company;
-    private PO_EATradeMark tradeMarkParentUI;
+    private PO_EAAdministrateArea areaParentUI;
 
     @Override
     public void doAfterCompose(final Window _comp)
@@ -47,45 +46,43 @@ public class PO_EATradeMarkCreate
         super.doAfterCompose(_comp);
 
         company = (DTO_Company) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
-        buildActiveCombo(cmbActive);
         // Obtenemos el controlador de la pantalla principal de marcas.
         final Map<?, ?> mapArg = desktop.getExecution().getArg();
-        tradeMarkParentUI = (PO_EATradeMark) mapArg.get(Constantes.ATTRIBUTE_PARENTFORM);
+        areaParentUI = (PO_EAAdministrateArea) mapArg.get(Constantes.ATTRIBUTE_PARENTFORM);
     }
 
     @Listen("onClick = #btnSave")
-    public void createTradeMark()
+    public void createArea()
     {
-        if (!txtTradeMarkName.getValue().equals("") && cmbActive.getSelectedItem() != null) {
-            final DTO_TradeMark newTrMk = new DTO_TradeMark();
-            newTrMk.setActive((Boolean) cmbActive.getSelectedItem().getValue());
-            newTrMk.setTradeMarkName(txtTradeMarkName.getValue());
+        if (!txtAreaName.getValue().equals("")) {
+            final DTO_Area newTrMk = new DTO_Area();
+            newTrMk.setAreaName(txtAreaName.getValue());
             newTrMk.setCompanyId(company.getId());
-            final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(newTrMk);
+            final ServiceInput<DTO_Area> input = new ServiceInput<DTO_Area>(newTrMk);
             input.setAccion(Constantes.V_REGISTER);
-            final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
+            final ServiceOutput<DTO_Area> output = areaService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
-                final int resp = alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAPTradeMarkCreate.createTradeMark.Info.Label"),
-                                Labels.getLabel("pe.com.jx_market.PO_EATradeMarkCreate.createTradeMark.Info.Label"), null);
+                final int resp = alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateAreaCreate.createArea.Info.Label"),
+                                Labels.getLabel("pe.com.jx_market.PO_EATradeMarkCreate.createArea.Info.Label"), null);
                 if (resp == Messagebox.OK) {
-                    tradeMarkParentUI.searchTradeMarks();
+                    areaParentUI.getAreas();
                     //desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
                     //ContextLoader.recargar(desktop, Constantes.Form.TRADEMARK_FORM.getForm());
                     //wEATC.detach();
                 }
             } else {
-                alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAPTradeMarkCreate.createTradeMark.Error.Label"),
-                                Labels.getLabel("pe.com.jx_market.PO_EAPTradeMarkCreate.createTradeMark.Error.Label"), null);
+                alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateAreaCreate.createArea.Error.Label"),
+                                Labels.getLabel("pe.com.jx_market.PO_EAAdministrateAreaCreate.createArea.Error.Label"), null);
             }
         } else {
-            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAPTradeMarkCreate.createTradeMark.Info2.Label"),
-                            Labels.getLabel("pe.com.jx_market.PO_EAPTradeMarkCreate.createTradeMark.Info2.Label"), null);
+            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateAreaCreate.createArea.Info2.Label"),
+                            Labels.getLabel("pe.com.jx_market.PO_EAAdministrateAreaCreate.createArea.Info2.Label"), null);
         }
     }
 
     @Listen("onClick = #btnClose")
-    public void accionCerrar(final Event _event) {
-        wEATC.detach();
+    public void close(final Event _event) {
+        wEAAC.detach();
     }
 
     @Override

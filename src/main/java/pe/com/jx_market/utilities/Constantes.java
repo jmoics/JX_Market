@@ -142,7 +142,10 @@ public class Constantes {
         PRODUCTS_CREATE_FORM("eAProductsCreate.zul"),
         TRADEMARK_FORM("eATradeMark.zul"),
         TRADEMARK_EDIT_FORM("eATradeMarkEdit.zul"),
-        TRADEMARK_CREATE_FORM("eATradeMarkCreate.zul");
+        TRADEMARK_CREATE_FORM("eATradeMarkCreate.zul"),
+        AREA_FORM("eAAdministrateArea.zul"),
+        AREA_EDIT_FORM("eAAdministrateAreaEdit.zul"),
+        AREA_CREATE_FORM("eAAdministrateAreaCreate.zul");
 
         private final String form;
 
@@ -161,4 +164,5 @@ public class Constantes {
     public static final String ATTRIBUTE_PRODUCT = "product";
     public static final String ATTRIBUTE_PRODUCT_EDITIMAGE = "productEditImage";
     public static final String ATTRIBUTE_TRADEMARK = "tradeMark";
+    public static final String ATTRIBUTE_AREA = "area";
 }

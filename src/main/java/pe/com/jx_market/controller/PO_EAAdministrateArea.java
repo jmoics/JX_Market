@@ -1,21 +1,30 @@
 package pe.com.jx_market.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.Desktop;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Div;
-import org.zkoss.zul.Grid;
-import org.zkoss.zul.Groupbox;
+import org.zkoss.zk.ui.event.MouseEvent;
+import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Image;
-import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Popup;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
-import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Area;
 import pe.com.jx_market.domain.DTO_Company;
@@ -24,269 +33,122 @@ import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
+@VariableResolver(DelegatingVariableResolver.class)
 public class PO_EAAdministrateArea
-    extends SecuredWindow
+    extends SecuredComposer<Window>
 {
     static Log logger = LogFactory.getLog(PO_EAAdministrateArea.class);
-    private Textbox txtNombre;
-    private Groupbox grpNuevo;
-    private Grid grdArea;
-    private DTO_Company company;
-    private BusinessService areaService;
+    @Wire
+    private Listbox lstArea;
+    @Wire
     private Popup popEmployees;
+    @Wire
+    private Window wEAAA;
+    @WireVariable
+    private BusinessService<DTO_Area> areaService;
+    @WireVariable
+    private Desktop desktop;
+    private DTO_Company company;
 
     @Override
-    public void realOnCreate()
+    public void doAfterCompose(final Window _comp)
+        throws Exception
     {
-        txtNombre = (Textbox) getFellow("txtNombre");
-        grpNuevo = (Groupbox) getFellow("grpNuevo");
-        grdArea = (Grid) getFellow("grdArea");
-        areaService = ContextLoader.getService(this, "areaService");
-        popEmployees = (Popup) getFellow("popEmployees");
-        company = (DTO_Company) getDesktop().getSession().getAttribute("company");
-        mostrarAreas();
+        super.doAfterCompose(_comp);
+
+        company = (DTO_Company) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
+        getAreas();
     }
 
-    public void crearNuevaArea()
+    public void getAreas()
     {
-        // row1.setVisible(true);
-
-        if (!txtNombre.getValue().isEmpty()) {
-            final DTO_Area unew = new DTO_Area();
-
-            unew.setAreaName(txtNombre.getValue());
-            unew.setCompanyId(company.getId());
-
-            final ServiceInput input = new ServiceInput(unew);
-            input.setAccion(Constantes.V_REGISTER);
-            final ServiceOutput output = areaService.execute(input);
-            if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo("", "area creada correctamente", null);
-                onLimpiar();
-                mostrarAreas();
-            } else {
-                alertaError("Error al crear area", "error al crear area", null);
-            }
-        } else {
-            alertaInfo("Todos los campos deben ser llenados", "No se ingresaron datos para codigo y descripcion", null);
-        }
-    }
-
-    public void mostrarAreas()
-    {
-        final DTO_Area are = new DTO_Area();
-        are.setCompanyId(company.getId());
-        final ServiceInput input = new ServiceInput(are);
+        lstArea.getItems().clear();
+        final DTO_Area areSe = new DTO_Area();
+        areSe.setCompanyId(company.getId());
+        final ServiceInput<DTO_Area> input = new ServiceInput<DTO_Area>(areSe);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = areaService.execute(input);
+        final ServiceOutput<DTO_Area> output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Area> ulist = output.getLista();
-
-            for (final DTO_Area sOut : ulist) {
-                agregarFila(sOut);
+            final List<DTO_Area> areaLst = output.getLista();
+            int columnNumber = 1;
+            for (final DTO_Area area : areaLst) {
+                final Listitem item = new Listitem();
+                Listcell cell = new Listcell("" + columnNumber);
+                item.appendChild(cell);
+                cell = new Listcell(area.getAreaName());
+                item.appendChild(cell);
+                cell = new Listcell();
+                final Image ImDetalles = new Image("media/details.png");
+                ImDetalles.setStyle("cursor:pointer");
+                ImDetalles.setPopup(popEmployees);
+                ImDetalles.addEventListener(Events.ON_CLICK,
+                new org.zkoss.zk.ui.event.EventListener<Event>() {
+                    @Override
+                    public void onEvent(final Event e)
+                        throws UiException
+                    {
+                        /*
+                         * cargarPop((DTO_Employee) ((Row)
+                         * e.getTarget().
+                         * getParent()).getAttribute("employee"));
+                         */
+                    }
+                });
+                cell.appendChild(ImDetalles);
+                item.appendChild(cell);
+                item.setAttribute(Constantes.ATTRIBUTE_AREA, area);
+                item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>()
+                {
+                    @Override
+                    public void onEvent(final Event e)
+                        throws UiException
+                    {
+                        runWindowEdit((MouseEvent) e);
+                    }
+                });
+                lstArea.appendChild(item);
+                columnNumber++;
             }
         } else {
-            alertaError("Error al cargar areas", "Error al cargar areas", null);
+            alertaError(logger, "Error al cargar areas", "Error al cargar areas", null);
         }
     }
 
-    public void agregarFila(final DTO_Area are)
-    {
-        final Row fila = new Row();
-        fila.setAttribute("area", are);
-
-        final Textbox txt = new Textbox(are.getAreaName());
-        txt.setWidth("180px");
-        txt.setReadonly(true);
-        txt.addEventListener(Events.ON_CANCEL,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                                .getChildren().get(2))).getChildren().get(0))
-                                                .setVisible(true);
-                                ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                                .getChildren().get(2))).getChildren().get(1))
-                                                .setVisible(false);
-                                ((Textbox) e.getTarget()).setReadonly(true);
-                                grpNuevo.setOpen(true);
-                                onLimpiar();
-                                mostrarAreas();
-                            }
-                        });
-        fila.appendChild(txt);
-
-        final Image ImDetalles = new Image("media/details.png");
-        ImDetalles.setStyle("cursor:pointer");
-        ImDetalles.setPopup(popEmployees);
-        ImDetalles.addEventListener("onClick",
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                /*
-                                 * cargarPop((DTO_Employee) ((Row)
-                                 * e.getTarget().
-                                 * getParent()).getAttribute("employee"));
-                                 */
-
-                            }
-                        });
-        fila.appendChild(ImDetalles);
-
-        final Image imgEditar = new Image("media/edit.png");
-        imgEditar.setStyle("cursor: pointer");
-        imgEditar.addEventListener(Events.ON_CLICK,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                ((Image) e.getTarget()).setVisible(false);
-                                ((Image) ((Div) e.getTarget().getParent())
-                                                .getChildren().get(1)).setVisible(true);
-                                for (int i = 0; i < grdArea.getRows().getChildren().size(); i++) {
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(2))).getChildren().get(0))
-                                                    .setVisible(false);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(2))).getChildren().get(2))
-                                                    .setVisible(true);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(3))).getChildren().get(0))
-                                                    .setVisible(false);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(3))).getChildren().get(1))
-                                                    .setVisible(true);
-                                }
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(0)).setReadonly(false);
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(0)).setFocus(true);
-                                ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                                .getParent()).getChildren().get(2)))
-                                                .getChildren().get(0)).setVisible(false);
-                                ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                                .getParent()).getChildren().get(2)))
-                                                .getChildren().get(1)).setVisible(true);
-                                grpNuevo.setOpen(false);
-                            }
-                        });
-
-        final Image imgGuardar = new Image("media/filesave.png");
-        imgGuardar.setStyle("cursor:pointer");
-        imgGuardar.addEventListener(Events.ON_CLICK,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                ((Image) e.getTarget()).setVisible(false);
-                                ((Image) ((Div) e.getTarget().getParent())
-                                                .getChildren().get(0)).setVisible(true);
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(0)).setReadonly(true);
-                                ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                                .getParent()).getChildren().get(2)))
-                                                .getChildren().get(0)).setVisible(true);
-                                ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                                .getParent()).getChildren().get(2)))
-                                                .getChildren().get(1)).setVisible(false);
-                                grpNuevo.setOpen(true);
-                                for (int i = 0; i < grdArea.getRows().getChildren().size(); i++) {
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(2))).getChildren().get(0))
-                                                    .setVisible(true);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(2))).getChildren().get(2))
-                                                    .setVisible(false);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(3))).getChildren().get(0))
-                                                    .setVisible(true);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(3))).getChildren().get(1))
-                                                    .setVisible(false);
-                                }
-                                are.setAreaName(((Textbox)
-                                                ((Row) e.getTarget().getParent().getParent()).getChildren().get(0)).getValue());
-
-                                actualizaArea(are);
-                            }
-                        });
-
-        final Image imgEditarDisab = new Image("media/editdelete.png");
-        imgEditarDisab.setStyle("cursor:pointer");
-        imgEditarDisab.addEventListener(Events.ON_CLICK,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                ((Image) ((Div) e.getTarget().getParent()).getChildren().get(0)).setVisible(true);
-                                ((Image) ((Div) e.getTarget().getParent()).getChildren().get(0)).setVisible(false);
-                                grpNuevo.setOpen(true);
-                                onLimpiar();
-                                mostrarAreas();
-                            }
-                        });
-        imgEditarDisab.setVisible(false);
-
-        imgGuardar.setVisible(false);
-        final Div divEditar = new Div();
-        divEditar.setAlign("center");
-        divEditar.appendChild(imgEditar);
-        divEditar.appendChild(imgGuardar);
-        divEditar.appendChild(imgEditarDisab);
-        fila.appendChild(divEditar);
-
-        final Image imgEliminar = new Image("media/cancel.png");
-        imgEliminar.setStyle("cursor:pointer");
-        imgEliminar.addEventListener(Events.ON_CLICK,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                int msg = 0;
-                                msg = Messagebox.show("¿Está seguro de eliminar el area?",
-                                                company.getBusinessName(), Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
-                                if (msg == Messagebox.YES) {
-                                    eliminaFila((DTO_Area) ((Row) e.getTarget().getParent().getParent())
-                                                                                        .getAttribute("area"));
-                                }
-                            }
-                        });
-        final Image imgEliminarDisab = new Image("media/fileclose.png");
-        imgEliminarDisab.setVisible(false);
-
-        final Div divEliminar = new Div();
-        divEliminar.setAlign("center");
-        divEliminar.appendChild(imgEliminar);
-        divEliminar.appendChild(imgEliminarDisab);
-        fila.appendChild(divEliminar);
-        grdArea.getRows().appendChild(fila);
+    @Listen("onClick = #btnEdit")
+    public void runWindowEdit(final MouseEvent event) {
+        if (lstArea.getSelectedItem() != null) {
+            desktop.getSession().setAttribute(Constantes.ATTRIBUTE_AREA,
+                            lstArea.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_AREA));
+            final Map<String, Object> dataArgs = new HashMap<String, Object>();
+            dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
+            final Window w = (Window) Executions.createComponents(Constantes.Form.AREA_EDIT_FORM.getForm(),
+                            null, dataArgs);
+            w.setPage(wEAAA.getPage());
+            //w.setParent(wEAT);
+            w.doOverlapped();
+            //w.doHighlighted();
+            //w.doEmbedded();
+        } else {
+            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateArea.runWindowEdit.Info.Label"),
+                                "No se selecciono un registro a editar", null);
+        }
     }
 
-    public void actualizaArea(final DTO_Area are)
+    @Listen("onClick = #btnCreate")
+    public void runWindowCreate(final MouseEvent event) {
+        final Map<String, Object> dataArgs = new HashMap<String, Object>();
+        dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
+        final Window w = (Window) Executions.createComponents(Constantes.Form.AREA_CREATE_FORM.getForm(),
+                            null, dataArgs);
+        w.setPage(wEAAA.getPage());
+        //w.setParent(wEAT);
+        //w.doOverlapped();
+        w.doModal();
+        //w.doEmbedded();
+    }
+
+
+    /*public void actualizaArea(final DTO_Area are)
     {
         final ServiceInput input = new ServiceInput(are);
         input.setAccion(Constantes.V_REGISTER);
@@ -300,54 +162,28 @@ public class PO_EAAdministrateArea
 
         // onLimpiar();
         // mostrarTBloqueos();
-    }
+    }*/
 
-    public void eliminaFila(final DTO_Area are)
+    @Listen("onClick = #btnDelete")
+    public void deleteArea(final MouseEvent event)
         throws UiException
     {
-        final ServiceInput input = new ServiceInput(are);
-        input.setAccion(Constantes.V_DELETE);
-        final ServiceOutput output = areaService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "El area se elimino correctamente", null);
-            onLimpiar();
-            mostrarAreas();
+        if (lstArea.getSelectedItem() != null) {
+            final DTO_Area area = (DTO_Area) lstArea.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_AREA);
+            final ServiceInput<DTO_Area> input = new ServiceInput<DTO_Area>(area);
+            input.setAccion(Constantes.V_DELETE);
+            final ServiceOutput<DTO_Area> output = areaService.execute(input);
+            if (output.getErrorCode() == Constantes.OK) {
+                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateArea.deleteArea.Info.Label"),
+                                "El area se elimino correctamente", null);
+                getAreas();
+            } else {
+                alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateArea.deleteArea.Error.Label"),
+                                "Error al eliminar el area", null);
+            }
         } else {
-            alertaError("Error al eliminar el area", "Error al eliminar el area", null);
-        }
-    }
-
-    public void onLimpiar()
-    {
-        grdArea.getRows().getChildren().clear();
-        txtNombre.setValue("");
-    }
-
-    public void alertaInfo(final String txt,
-                           final String txt2,
-                           final Throwable t)
-    {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.INFORMATION);
-        }
-        if (t != null) {
-            logger.info(txt2, t);
-        } else {
-            logger.info(txt2);
-        }
-    }
-
-    public void alertaError(final String txt,
-                            final String txt2,
-                            final Throwable t)
-    {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.EXCLAMATION);
-        }
-        if (t != null) {
-            logger.error(txt2, t);
-        } else {
-            logger.error(txt2);
+            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateArea.deleteArea.Info2.Label"),
+                            "No se selecciono un registro a eliminar", null);
         }
     }
 
