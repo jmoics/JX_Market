@@ -16,7 +16,7 @@ public interface RoleMapper
      * @param role
      * @return
      */
-    public DTO_Role getRoleXId(DTO_Role role);
+    public DTO_Role getRole4Id(DTO_Role role);
 
     /**
      * @param role

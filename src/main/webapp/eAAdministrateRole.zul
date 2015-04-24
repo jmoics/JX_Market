@@ -1,69 +1,42 @@
 <?page title="Seguridad y Servicio al Client" contentType="text/html;charset=UTF-8"?>
-
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-    <div align="center">
-        <html:p />
-        <window width="700px" id="eaAP"
-            use="pe.com.jx_market.controller.PO_EAAdministrateRole">
-            <div align="center">
-                <vbox width="700px">
-                    <html:p />
-                    <div align="center">
-                        <label zclass="z-south-header"
-                            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                            Administración de Roles
-                        </label>
-                        <html:p />
-                        <groupbox mold="3d" width="650px">
-                            <caption label="Roles Registrados" />
-                            <div align="center">
-                                <html:p />
-                                <grid id="grdRole" width="600px">
-                                    <columns>
-                                       <column label="Area" width="120px" />
-                                       <column label="Funcion" width="130px" />
-                                       <column label="Descripción" width="250px" />
-                                       <column label="Editar" width="50px" />
-                                       <column label="Eliminar" width="50px" />
-                                    </columns>
-                                    <rows></rows>
-                                </grid>
-                                <html:p />
-                                <html:p />
-
-                                <groupbox mold="3d" width="420px"
-                                    id="grpNuevo">
-                                    <caption label="Nuevo Role" />
-                                    <div width="400px" align="center">
-                                        <grid fixedLayout="true" width="380px">
-                                           <rows>
-                                              <row>
-                                                 <label style="font-size:small" value="Area" />
-                                                 <combobox id="cmbArea" />
-                                              </row>
-                                              <row>
-                                                 <label style="font-size:small" value="Funcion" />
-                                                 <textbox id="txtFuncion" />
-                                              </row>
-                                              <row>
-                                                 <label style="font-size:small" value="Descripción" />
-                                                 <textbox id="txtDescripcion" maxlength="255" />
-                                              </row>
-                                           </rows>
-                                        </grid>
-                                        <html:p />
-                                        <div align="center">
-                                            <button label="Crear" onClick="eaAP.crearNuevoRole()">
-                                            </button>
-                                        </div>
-                                    </div>
-                                </groupbox>
-                            </div>
-                            <html:p />
-                        </groupbox>
-                    </div>
-                </vbox>
+<style src="s-style.css"/>
+<style>
+    .z-window-content {
+        padding: 1px;
+    }
+</style>
+<window id="wEAAR" hflex="1" vflex="1"
+        apply="pe.com.jx_market.controller.PO_EAAdministrateRole">
+    <borderlayout id="bl" hflex="1" vflex="1">
+        <north size="7%" collapsible="false" sclass="s-north">
+            <div align="center" hflex="1" vflex="1">
+                <label zclass="z-south-header" sclass="s-header">
+                    ${labels.pe.com.jx_market.eAAdministrateRole.Title}
+                </label>
+                <html:p />
             </div>
-        </window>
-    </div>
+        </north>
+        <center autoscroll="true" sclass="s-center2">
+            <listbox id="lstRole" mold="paging" pagingPosition="bottom" autopaging="true" sizedByContent="true"  hflex="1" vflex="1">
+                <listhead>
+                    <listheader label="Nº" id="headNumber" width="30px"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateRole.AreaName.Label}" sort="auto" hflex="2"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateRole.RoleName.Label}" sort="auto" hflex="3"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateRole.Description.Label}" sort="auto" hflex="5"/>
+                </listhead>
+            </listbox>
+        </center>
+        <south size="5%" style="visibility:visible;" sclass="s-south2">
+            <hbox align="center" pack="end" hflex="1" vflex="1" sclass="s-hbox">
+                <button id="btnCreate" label="${labels.pe.com.jx_market.eAAdministrateRole.btnCreate.Label}"
+                    image="/media/filenew.png" />
+                <button id="btnEdit" label="${labels.pe.com.jx_market.eAAdministrateRole.btnEdit.Label}"
+                    image="/media/edit.png" />
+                <button id="btnDelete" label="${labels.pe.com.jx_market.eAAdministrateRole.btnDelete.Label}"
+                    image="/media/editdelete.png" />
+            </hbox>
+        </south>
+    </borderlayout>
+</window>
 </zk>

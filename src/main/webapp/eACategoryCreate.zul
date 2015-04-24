@@ -4,7 +4,7 @@
         position="center,center" closable="true"
         action="show: slideDown;hide: slideUp" sclass="my-window-popup">
     <style src="s-style.css"/>
-    <vbox height="100%" width="100%" sclass="s-box-popup">
+    <vbox height="100%" width="100%" sclass="s-vbox-popup">
         <div align="center" height="10%">
             <label zclass="z-south-header" sclass="s-header">
                 ${labels.pe.com.jx_market.eACategoryCreate.Title}

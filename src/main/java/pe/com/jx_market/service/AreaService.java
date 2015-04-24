@@ -13,38 +13,37 @@ import pe.com.jx_market.utilities.ServiceOutput;
 
 @Service
 public class AreaService
-    implements BusinessService
+    implements BusinessService<DTO_Area>
 {
     @Autowired
     private AreaMapper areaMapper;
 
     @Transactional
     @Override
-    public ServiceOutput execute(final ServiceInput input)
+    public ServiceOutput<DTO_Area> execute(final ServiceInput<DTO_Area> input)
     {
-        final ServiceOutput output = new ServiceOutput();
+        final ServiceOutput<DTO_Area> output = new ServiceOutput<DTO_Area>();
         if (Constantes.V_LIST.equals(input.getAccion())) {
-            output.setLista(areaMapper.getAreas((DTO_Area) input.getObject()));
+            output.setLista(areaMapper.getAreas(input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
-            DTO_Area areaTmp = areaMapper.getAreaXCodigo((DTO_Area) input.getObject());
+            final DTO_Area area = input.getObject();
+            final DTO_Area areaTmp = areaMapper.getAreaXCodigo(area);
             if (areaTmp == null) {
-                final Integer cod = areaMapper.insertArea((DTO_Area) input.getObject());
-                output.setObject(cod);
+                areaMapper.insertArea(area);
             } else {
-                areaMapper.updateArea((DTO_Area) input.getObject());
-                output.setObject(new Integer(-1));
+                areaMapper.updateArea(area);
             }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getAccion())) {
-            final DTO_Area art = areaMapper.getAreaXCodigo((DTO_Area) input.getObject());
+            final DTO_Area art = areaMapper.getAreaXCodigo(input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_DELETE.equals(input.getAccion())) {
-            areaMapper.deleteArea((DTO_Area) input.getObject());
+            areaMapper.deleteArea(input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         } else {

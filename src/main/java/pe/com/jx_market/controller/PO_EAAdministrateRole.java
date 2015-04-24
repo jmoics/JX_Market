@@ -1,24 +1,29 @@
 package pe.com.jx_market.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.Desktop;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Comboitem;
-import org.zkoss.zul.Div;
-import org.zkoss.zul.Grid;
-import org.zkoss.zul.Groupbox;
-import org.zkoss.zul.Image;
-import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
-import org.zkoss.zul.Textbox;
+import org.zkoss.zk.ui.event.MouseEvent;
+import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Window;
 
-import pe.com.jx_market.domain.DTO_Area;
 import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Role;
 import pe.com.jx_market.utilities.BusinessService;
@@ -26,400 +31,124 @@ import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
+@VariableResolver(DelegatingVariableResolver.class)
 public class PO_EAAdministrateRole
-    extends SecuredWindow
+    extends SecuredComposer<Window>
 {
     static Log logger = LogFactory.getLog(PO_EAAdministrateRole.class);
-    private Textbox txtFuncion, txtDescripcion;
-    private Combobox cmbArea;
-    private Groupbox grpNuevo;
-    private Grid grdRole;
+    @Wire
+    private Listbox lstRole;
+    @Wire
+    private Window wEAAR;
+    @WireVariable
+    private BusinessService<DTO_Role> roleService;
+    @WireVariable
+    private Desktop desktop;
     private DTO_Company company;
-    private BusinessService areaService, roleService;
 
     @Override
-    public void realOnCreate()
+    public void doAfterCompose(final Window _comp)
+        throws Exception
     {
-        txtFuncion = (Textbox) getFellow("txtFuncion");
-        txtDescripcion = (Textbox) getFellow("txtDescripcion");
-        cmbArea = (Combobox) getFellow("cmbArea");
-        grpNuevo = (Groupbox) getFellow("grpNuevo");
-        grdRole = (Grid) getFellow("grdRole");
-        areaService = ContextLoader.getService(this, "areaService");
-        roleService = ContextLoader.getService(this, "roleService");
+        super.doAfterCompose(_comp);
 
-        company = (DTO_Company) getDesktop().getSession().getAttribute("company");
-        cargarAreas(cmbArea);
-        mostrarRoles();
+        company = (DTO_Company) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
+        getRoles();
     }
 
-    public void crearNuevoRole()
+    public void getRoles()
     {
-        // row1.setVisible(true);
-
-        if (!txtDescripcion.getValue().isEmpty() && !txtFuncion.getValue().isEmpty() && cmbArea.getSelectedItem() != null) {
-            final DTO_Role unew = new DTO_Role();
-
-            unew.setRoleDescription(txtDescripcion.getValue());
-            unew.setRoleName(txtFuncion.getValue());
-            unew.setAreaId(((DTO_Area) cmbArea.getSelectedItem().getAttribute("area")).getId());
-            unew.setCompanyId(company.getId());
-
-            final ServiceInput input = new ServiceInput(unew);
-            input.setAccion(Constantes.V_REGISTER);
-            final ServiceOutput output = roleService.execute(input);
-            if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo("", "role creado correctamente", null);
-                onLimpiar();
-                mostrarRoles();
-            } else {
-                alertaError("Error al crear role", "error al crear role", null);
-            }
-        } else {
-            alertaInfo("Todos los campos deben ser llenados", "No se ingresaron datos para codigo y descripcion", null);
-        }
-    }
-
-    public void mostrarRoles()
-    {
-        final DTO_Role perf = new DTO_Role();
-        perf.setCompanyId(company.getId());
-        final ServiceInput input = new ServiceInput(perf);
+        lstRole.getItems().clear();
+        final DTO_Role roleSe = new DTO_Role();
+        roleSe.setCompanyId(company.getId());
+        final ServiceInput<DTO_Role> input = new ServiceInput<DTO_Role>(roleSe);
 
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = roleService.execute(input);
+        final ServiceOutput<DTO_Role> output = roleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Role> ulist = output.getLista();
-
-            for (final DTO_Role sOut : ulist) {
-                agregarFila(sOut);
+            final List<DTO_Role> roleLst = output.getLista();
+            int columnNumber = 1;
+            for (final DTO_Role role : roleLst) {
+                final Listitem item = new Listitem();
+                Listcell cell = new Listcell("" + columnNumber);
+                item.appendChild(cell);
+                cell = new Listcell(role.getArea().getAreaName());
+                item.appendChild(cell);
+                cell = new Listcell(role.getRoleName());
+                item.appendChild(cell);
+                cell = new Listcell(role.getRoleDescription());
+                item.appendChild(cell);
+                item.setAttribute(Constantes.ATTRIBUTE_ROLE, role);
+                item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>()
+                {
+                    @Override
+                    public void onEvent(final Event e)
+                        throws UiException
+                    {
+                        runWindowEdit((MouseEvent) e);
+                    }
+                });
+                lstRole.appendChild(item);
+                columnNumber++;
             }
         } else {
-            alertaError("Error al cargar roles", "Error al cargar roles", null);
+            alertaError(logger, "Error al cargar roles", "Error al cargar roles", null);
         }
     }
 
-    public void agregarFila(final DTO_Role perf)
-    {
-        final Row fila = new Row();
-        fila.setAttribute("role", perf);
-
-        final Combobox combo = new Combobox();
-        combo.setWidth("110px");
-        cargarAreas(combo);
-        for (final Comboitem item : combo.getItems()) {
-            if (perf.getAreaId().equals(((DTO_Area) item.getAttribute("area")).getId())) {
-                combo.setSelectedItem(item);
-            }
-        }
-        combo.setDisabled(true);
-        fila.appendChild(combo);
-
-        Textbox txt = new Textbox(perf.getRoleName());
-        txt.setWidth("100px");
-        txt.setReadonly(true);
-        txt.addEventListener(Events.ON_CANCEL,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                                .getChildren().get(3))).getChildren().get(0))
-                                                .setVisible(true);
-                                ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                                .getChildren().get(3))).getChildren().get(1))
-                                                .setVisible(false);
-                                ((Textbox) e.getTarget()).setReadonly(true);
-                                grpNuevo.setOpen(true);
-                                onLimpiar();
-                                mostrarRoles();
-                            }
-                        });
-        fila.appendChild(txt);
-
-        txt = new Textbox(perf.getRoleDescription());
-        txt.setWidth("180px");
-        txt.setReadonly(true);
-        txt.addEventListener(Events.ON_CANCEL,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                                .getChildren().get(3))).getChildren().get(0))
-                                                .setVisible(true);
-                                ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                                .getChildren().get(3))).getChildren().get(1))
-                                                .setVisible(false);
-                                ((Textbox) e.getTarget()).setReadonly(true);
-                                grpNuevo.setOpen(true);
-                                onLimpiar();
-                                mostrarRoles();
-                            }
-                        });
-        fila.appendChild(txt);
-
-        final Image imgEditar = new Image("media/edit.png");
-        imgEditar.setStyle("cursor: pointer");
-        imgEditar.addEventListener(Events.ON_CLICK,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                ((Image) e.getTarget()).setVisible(false);
-                                ((Image) ((Div) e.getTarget().getParent())
-                                                .getChildren().get(1)).setVisible(true);
-                                for (int i = 0; i < grdRole.getRows().getChildren().size(); i++) {
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(3))).getChildren().get(0))
-                                                    .setVisible(false);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(3))).getChildren().get(2))
-                                                    .setVisible(true);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(4))).getChildren().get(0))
-                                                    .setVisible(false);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(4))).getChildren().get(1))
-                                                    .setVisible(true);
-                                }
-                                ((Combobox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(0)).setDisabled(false);
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(1)).setReadonly(false);
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(1)).setFocus(true);
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(2)).setReadonly(false);
-                                ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                                .getParent()).getChildren().get(3)))
-                                                .getChildren().get(0)).setVisible(false);
-                                ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                                .getParent()).getChildren().get(3)))
-                                                .getChildren().get(1)).setVisible(true);
-                                grpNuevo.setOpen(false);
-                            }
-                        });
-
-        final Image imgGuardar = new Image("media/filesave.png");
-        imgGuardar.setStyle("cursor:pointer");
-        imgGuardar.addEventListener(Events.ON_CLICK,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                ((Image) e.getTarget()).setVisible(false);
-                                ((Image) ((Div) e.getTarget().getParent())
-                                                .getChildren().get(0)).setVisible(true);
-                                ((Combobox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(0)).setDisabled(true);
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(1)).setReadonly(true);
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent())
-                                                .getChildren().get(2)).setReadonly(true);
-                                ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                                .getParent()).getChildren().get(3)))
-                                                .getChildren().get(0)).setVisible(true);
-                                ((Image) (((Div) ((Row) e.getTarget().getParent()
-                                                .getParent()).getChildren().get(3)))
-                                                .getChildren().get(1)).setVisible(false);
-                                grpNuevo.setOpen(true);
-                                for (int i = 0; i < grdRole.getRows().getChildren().size(); i++) {
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(3))).getChildren().get(0))
-                                                    .setVisible(true);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(3))).getChildren().get(2))
-                                                    .setVisible(false);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(4))).getChildren().get(0))
-                                                    .setVisible(true);
-                                    ((Image) ((Div) (((Row) (((Rows) e.getTarget()
-                                                    .getParent().getParent().getParent())
-                                                    .getChildren().get(i))).getChildren()
-                                                    .get(4))).getChildren().get(1))
-                                                    .setVisible(false);
-                                }
-                                ((Row) e.getTarget().getParent().getParent()).getAttribute("role");
-                                perf.setRoleName(((Textbox)
-                                                ((Row) e.getTarget().getParent().getParent()).getChildren().get(1)).getValue());
-                                perf.setRoleDescription(((Textbox)
-                                                ((Row) e.getTarget().getParent().getParent()).getChildren().get(2)).getValue());
-                                perf.setAreaId(((DTO_Area) ((Combobox)
-                                                ((Row) e.getTarget().getParent().getParent()).getChildren().get(0))
-                                                                .getSelectedItem().getAttribute("area")).getId());
-                                actualizaRole(perf);
-                            }
-                        });
-
-        final Image imgEditarDisab = new Image("media/editdelete.png");
-        imgEditarDisab.setStyle("cursor:pointer");
-        imgEditarDisab.addEventListener(Events.ON_CLICK,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                ((Image) ((Div) e.getTarget().getParent()).getChildren().get(0)).setVisible(true);
-                                ((Image) ((Div) e.getTarget().getParent()).getChildren().get(0)).setVisible(false);
-                                grpNuevo.setOpen(true);
-                                onLimpiar();
-                                mostrarRoles();
-                            }
-                        });
-        imgEditarDisab.setVisible(false);
-
-        imgGuardar.setVisible(false);
-        final Div divEditar = new Div();
-        divEditar.setAlign("center");
-        divEditar.appendChild(imgEditar);
-        divEditar.appendChild(imgGuardar);
-        divEditar.appendChild(imgEditarDisab);
-        fila.appendChild(divEditar);
-
-        final Image imgEliminar = new Image("media/cancel.png");
-        imgEliminar.setStyle("cursor:pointer");
-        imgEliminar.addEventListener(Events.ON_CLICK,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                final int msg = Messagebox.show("¿Está seguro de eliminar el role?", company.getBusinessName(),
-                                                Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
-                                if (msg == Messagebox.YES) {
-                                    eliminaFila((DTO_Role) ((Row) e.getTarget().getParent().getParent()).getAttribute("role"));
-                                }
-                            }
-                        });
-        final Image imgEliminarDisab = new Image("media/fileclose.png");
-        imgEliminarDisab.setVisible(false);
-
-        final Div divEliminar = new Div();
-        divEliminar.setAlign("center");
-        divEliminar.appendChild(imgEliminar);
-        divEliminar.appendChild(imgEliminarDisab);
-        fila.appendChild(divEliminar);
-        grdRole.getRows().appendChild(fila);
-    }
-
-    public void actualizaRole(final DTO_Role perf)
-    {
-        final ServiceInput input = new ServiceInput(perf);
-        input.setAccion(Constantes.V_REGISTER);
-
-        final ServiceOutput output = roleService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "El role se actualizo correctamente", null);
+    @Listen("onClick = #btnEdit")
+    public void runWindowEdit(final MouseEvent event) {
+        if (lstRole.getSelectedItem() != null) {
+            desktop.getSession().setAttribute(Constantes.ATTRIBUTE_ROLE,
+                            lstRole.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_ROLE));
+            final Map<String, Object> dataArgs = new HashMap<String, Object>();
+            dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
+            final Window w = (Window) Executions.createComponents(Constantes.Form.ROLE_EDIT_FORM.getForm(),
+                            null, dataArgs);
+            w.setPage(wEAAR.getPage());
+            //w.setParent(wEAT);
+            w.doOverlapped();
+            //w.doHighlighted();
+            //w.doEmbedded();
         } else {
-            alertaError("Error al actualizar el role", "Error al actualizar el role", null);
+            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRole.runWindowEdit.Info.Label"),
+                                "No se selecciono un registro a editar", null);
         }
-
-        // onLimpiar();
-        // mostrarTBloqueos();
     }
 
-    public void eliminaFila(final DTO_Role perf)
+    @Listen("onClick = #btnCreate")
+    public void runWindowCreate(final MouseEvent event) {
+        final Map<String, Object> dataArgs = new HashMap<String, Object>();
+        dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
+        final Window w = (Window) Executions.createComponents(Constantes.Form.ROLE_CREATE_FORM.getForm(),
+                            null, dataArgs);
+        w.setPage(wEAAR.getPage());
+        //w.setParent(wEAT);
+        //w.doOverlapped();
+        w.doModal();
+        //w.doEmbedded();
+    }
+
+    @Listen("onClick = #btnDelete")
+    public void deleteRole(final MouseEvent event)
         throws UiException
     {
-        final ServiceInput input = new ServiceInput(perf.getId());
-        input.setAccion("delete");
-        final ServiceOutput output = roleService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "El role se elimino correctamente", null);
-            onLimpiar();
-            mostrarRoles();
-        } else {
-            alertaError("Error al eliminar el role", "Error al eliminar el role", null);
-        }
-    }
-
-    private void cargarAreas(final Combobox combo)
-    {
-        final DTO_Area ar = new DTO_Area();
-        ar.setCompanyId(company.getId());
-        final ServiceInput input = new ServiceInput(ar);
-        input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = areaService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Area> listado = output.getLista();
-            for (final DTO_Area area : listado) {
-                final Comboitem item = new Comboitem(area.getAreaName());
-                item.setAttribute("area", area);
-                combo.appendChild(item);
+        if (lstRole.getSelectedItem() != null) {
+            final DTO_Role role = (DTO_Role) lstRole.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_ROLE);
+            final ServiceInput<DTO_Role> input = new ServiceInput<DTO_Role>(role);
+            input.setAccion(Constantes.V_DELETE);
+            final ServiceOutput<DTO_Role> output = roleService.execute(input);
+            if (output.getErrorCode() == Constantes.OK) {
+                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRole.deleteRole.Info.Label"),
+                                "El rol se elimino correctamente", null);
+                getRoles();
+            } else {
+                alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRole.deleteRole.Error.Label"),
+                                "Error al eliminar el rol", null);
             }
         } else {
-            alertaError("Error en la carga de areas",
-                            "error al cargar los areas", null);
-        }
-    }
-
-    private DTO_Area getArea(final Integer codigo)
-    {
-        final DTO_Area area = new DTO_Area();
-        area.setId(codigo);
-        area.setCompanyId(company.getId());
-        final ServiceInput input = new ServiceInput(area);
-        input.setAccion(Constantes.V_GET);
-        final ServiceOutput output = areaService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            return (DTO_Area) output.getObject();
-        } else {
-            return null;
-        }
-    }
-
-    public void onLimpiar()
-    {
-        grdRole.getRows().getChildren().clear();
-        txtDescripcion.setValue("");
-        txtFuncion.setValue("");
-        cmbArea.setSelectedItem(null);
-    }
-
-    public void alertaInfo(final String txt,
-                           final String txt2,
-                           final Throwable t)
-    {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.INFORMATION);
-        }
-        if (t != null) {
-            logger.info(txt2, t);
-        } else {
-            logger.info(txt2);
-        }
-    }
-
-    public void alertaError(final String txt,
-                            final String txt2,
-                            final Throwable t)
-    {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.EXCLAMATION);
-        }
-        if (t != null) {
-            logger.error(txt2, t);
-        } else {
-            logger.error(txt2);
+            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRole.deleteRole.Info2.Label"),
+                            "No se selecciono un registro a eliminar", null);
         }
     }
 

@@ -8,35 +8,41 @@
 
     <!-- MANTENIMIENTO DE ROLES -->
 
-    <select id="getRoles" parameterType="DTO_Role" resultType="DTO_Role">
+    <select id="getRoles" parameterType="DTO_Role" resultMap="roleResultMap">
         SELECT
-            rol.id as id,
+            rol.id as roleId,
             rol.name as roleName,
             rol.description as roleDescription,
-            rol.areaid as areaId,
-            rol.companyid as companyId
+            rol.companyid as companyId,
+            area.id areaId,
+            area.name as areaName
         FROM
-            T_SEG_ROLE rol
+            T_SEG_ROLE rol LEFT JOIN
+            T_COM_AREA area ON rol.areaid = area.id
         WHERE
             rol.companyid = #{companyId}
     </select>
 
-    <select id="getRoleXId" parameterType="DTO_Role" resultType="DTO_Role">
+    <select id="getRole4Id" parameterType="DTO_Role" resultMap="roleResultMap">
         SELECT
-            rol.id as id,
+            rol.id as roleId,
             rol.name as roleName,
             rol.description as roleDescription,
-            rol.areaid as areaId,
-            rol.companyid as companyId
+            rol.areaid as roleAreaId,
+            rol.companyid as companyId,
+            area.id areaId,
+            area.name as areaName
         FROM
-            T_SEG_ROLE rol
-        WHERE
+            T_SEG_ROLE rol LEFT JOIN
+            T_COM_AREA area ON rol.areaid = area.id
+        <where>
             rol.companyid = #{companyId}
         AND
             rol.id = #{id, jdbcType=INTEGER}
+        </where>
     </select>
 
-    <select id="getModules4Role" parameterType="DTO_Role">
+    <select id="getModules4Role" parameterType="DTO_Role" resultMap="roleModuleResultMap">
         SELECT
             rol.id as roleId,
             rol.name as roleName,
@@ -51,10 +57,10 @@
             area.id areaId,
             area.name as areaName
         FROM
-            T_SEG_ROLE role LEFT JOIN
+            T_SEG_ROLE rol LEFT JOIN
             T_SEG_ROLE2MODULE rolMod ON rol.id = rolMod.roleid LEFT JOIN
             T_SEG_MODULE modu ON rolMod.moduleid = modu.id LEFT JOIN
-            T_EMP_AREA area ON rol.areaid = area.id
+            T_COM_AREA area ON rol.areaid = area.id
         <where>
             rol.companyid = #{companyId}
         AND
@@ -91,11 +97,20 @@
     </delete>
 
     <resultMap id="roleResultMap" type="DTO_Role">
+        <id property="id" column="roleId" />
+        <result property="companyId" column="companyId" />
+        <result property="areaId" column="areaId" />
+        <result property="roleName" column="roleName" />
+        <result property="roleDescription" column="roleDescription" />
+        <association property="area" column="areaId" javaType="DTO_Area" resultMap="areaResultMap">
+        </association>
+    </resultMap>
+    <resultMap id="roleModuleResultMap" type="DTO_Role">
         <id property="id" column="rolId" />
         <result property="companyId" column="companyId" />
         <result property="areaId" column="rolAreaId" />
-        <result property="name" column="roleName" />
-        <result property="description" column="roleDescription" />
+        <result property="roleName" column="roleName" />
+        <result property="roleDescription" column="roleDescription" />
         <association property="area" column="areaId" javaType="DTO_Area" resultMap="areaResultMap">
         </association>
         <collection property="modules" column="roleModuId"
@@ -104,7 +119,7 @@
     </resultMap>
     <resultMap id="areaResultMap" type="DTO_Area">
         <id property="id" column="areaId" />
-        <result property="company" column="companyId" />
+        <result property="companyId" column="companyId" />
         <result property="areaName" column="areaName" />
     </resultMap>
     <resultMap id="moduleResultMap" type="DTO_Module">

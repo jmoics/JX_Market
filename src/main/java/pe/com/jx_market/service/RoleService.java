@@ -13,38 +13,36 @@ import pe.com.jx_market.utilities.ServiceOutput;
 
 @Service
 public class RoleService
-    implements BusinessService
+    implements BusinessService<DTO_Role>
 {
     @Autowired
     private RoleMapper roleMapper;
 
     @Override
     @Transactional
-    public ServiceOutput execute(final ServiceInput input)
+    public ServiceOutput<DTO_Role> execute(final ServiceInput<DTO_Role> input)
     {
-        final ServiceOutput output = new ServiceOutput();
+        final ServiceOutput<DTO_Role> output = new ServiceOutput<DTO_Role>();
         if (Constantes.V_LIST.equals(input.getAccion())) {
-            output.setLista(roleMapper.getRoles((DTO_Role) input.getObject()));
+            output.setLista(roleMapper.getRoles(input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
-            final DTO_Role perfTmp = roleMapper.getRoleXId((DTO_Role) input.getObject());
-            if (perfTmp == null) {
-                final Integer cod = roleMapper.insertRole((DTO_Role) input.getObject());
-                output.setObject(cod);
+            final DTO_Role roleTmp = roleMapper.getRole4Id(input.getObject());
+            if (roleTmp == null) {
+                roleMapper.insertRole(input.getObject());
             } else {
-                roleMapper.updateRole((DTO_Role) input.getObject());
-                output.setObject(new Integer(-1));
+                roleMapper.updateRole(input.getObject());
             }
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_GET.equals(input.getAccion())) {
-            final DTO_Role art = roleMapper.getRoleXId((DTO_Role) input.getObject());
+            final DTO_Role art = roleMapper.getRole4Id(input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
         } else if (Constantes.V_DELETE.equals(input.getAccion())) {
-            roleMapper.deleteRole((DTO_Role) input.getObject());
+            roleMapper.deleteRole(input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
         } else {

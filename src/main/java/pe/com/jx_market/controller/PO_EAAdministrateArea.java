@@ -147,23 +147,6 @@ public class PO_EAAdministrateArea
         //w.doEmbedded();
     }
 
-
-    /*public void actualizaArea(final DTO_Area are)
-    {
-        final ServiceInput input = new ServiceInput(are);
-        input.setAccion(Constantes.V_REGISTER);
-
-        final ServiceOutput output = areaService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "El area se actualizo correctamente", null);
-        } else {
-            alertaError("Error al actualizar el area", "Error al actualizar el area", null);
-        }
-
-        // onLimpiar();
-        // mostrarTBloqueos();
-    }*/
-
     @Listen("onClick = #btnDelete")
     public void deleteArea(final MouseEvent event)
         throws UiException

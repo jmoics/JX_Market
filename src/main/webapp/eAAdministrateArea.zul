@@ -9,11 +9,12 @@
 <window width="700px" id="wEAAA" hflex="1" vflex="1"
         apply="pe.com.jx_market.controller.PO_EAAdministrateArea">
     <borderlayout id="bl" hflex="1" vflex="1">
-        <north size="10%" collapsible="false" sclass="s-north">
-            <div align="center">
+        <north size="7%" collapsible="false" sclass="s-north">
+            <div align="center" hflex="1" vflex="1">
                 <label zclass="z-south-header" sclass="s-header">
                     ${labels.pe.com.jx_market.eAAdministrateArea.Title}
                 </label>
+                <html:p />
             </div>
         </north>
         <center autoscroll="true" sclass="s-center2">

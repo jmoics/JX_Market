@@ -40,7 +40,7 @@
 .s-hbox-popup {
     -webkit-border-horizontal-spacing: 0px;
 }
-.s-box-popup {
+.s-vbox-popup {
 	padding: 5px;
 }
 .s-tree-content {

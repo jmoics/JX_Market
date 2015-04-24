@@ -44,7 +44,7 @@ public class PO_EAAdministrateAreaEdit
 
         area = (DTO_Area) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_AREA);
         if (area == null) {
-            alertaInfo(logger, "", "No se encontro producto, retornando a busqueda", null);
+            alertaInfo(logger, "", "No se encontro área, retornando a busqueda", null);
         } else {
             desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_AREA);
             // Obtenemos el controlador de la pantalla principal de marcas.
