@@ -11,8 +11,8 @@
     <select id="getModules" parameterType="DTO_Module" resultType="DTO_Module">
         SELECT
             modu.id as id,
-            modu.description as description,
-            modu.resource as resource,
+            modu.description as moduleDescription,
+            modu.resource as moduleResource,
             modu.companyid as companyId
         FROM
             T_SEG_MODULE modu
@@ -23,8 +23,8 @@
     <select id="getModuleXId" parameterType="DTO_Module" resultType="DTO_Module">
         SELECT
             modu.id as id,
-            modu.description as description,
-            modu.resource as resource,
+            modu.description as moduleDescription,
+            modu.resource as moduleResource,
             modu.companyid as companyId
         FROM
             T_SEG_MODULE modu
@@ -38,14 +38,14 @@
         INSERT INTO T_SEG_MODULE
             (description, resource, companyid)
         VALUES
-            (#{description}, #{resource}, #{companyId})
+            (#{moduleDescription}, #{moduleResource}, #{companyId})
     </insert>
 
     <update id="updateModule" parameterType="DTO_Module">
         UPDATE T_SEG_MODULE
         SET
-            description = #{description},
-            resource = #{resource}
+            description = #{moduleDescription},
+            resource = #{moduleResource}
         WHERE
             id = #{id}
         AND

@@ -1,74 +1,41 @@
 <?page title="Seguridad y Servicio al Client" contentType="text/html;charset=UTF-8"?>
-
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-    <div align="center">
-        <html:p />
-        <window width="700px" id="eaAM"
-            use="pe.com.jx_market.controller.PO_EAAdministrateModule">
-            <div align="center">
-                <vbox width="700px">
-                    <html:p />
-                    <div align="center">
-                        <label zclass="z-south-header"
-                            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                            Administración de Modules
-                        </label>
-                        <html:p />
-                        <groupbox mold="3d" width="620px">
-                            <caption label="Modules Registrados" />
-                            <div align="center">
-                                <html:p />
-                                <grid id="grdModule" mold="paging" pageSize="10"
-                                    fixedLayout="true" width="600px">
-                                    <columns>
-                                        <column label="Recurso"
-                                            width="200px" />
-                                        <column label="Descripción"
-                                            width="295px" />
-                                        <column label="Editar"
-                                            width="45px" />
-                                        <column label="Eliminar"
-                                            width="50px" />
-                                    </columns>
-                                    <rows></rows>
-                                </grid>
-                                <html:p />
-                                <html:p />
-
-                                <groupbox mold="3d" width="440px"
-                                    id="grpModule">
-                                    <caption label="Nuevo Module" />
-                                    <div width="420px" align="center">
-                                        <grid fixedLayout="false"
-                                            width="420px">
-                                            <columns>
-                                                <column width="120px" />
-                                                <column />
-                                            </columns>
-                                            <rows>
-                                                <row>
-                                                    <label style="font-size:small" value="Recurso" />
-                                                    <textbox constraint="/^[a-zA-Z0-9_]*$/: Recurso es inválido" maxlength="30"
-                                                        id="txtRecurso" width="250px" />
-                                                </row>
-                                                <row>
-                                                    <label style="font-size:small" value="Descripción" />
-                                                    <textbox id="txtDescripcion" width="300px" />
-                                                </row>
-                                            </rows>
-                                        </grid>
-                                        <html:p />
-                                        <div align="center">
-                                            <button label="Crear" onClick="eaAM.crearNuevoModule()"/>
-                                        </div>
-                                    </div>
-                                </groupbox>
-                            </div>
-                            <html:p />
-                        </groupbox>
-                    </div>
-                </vbox>
+<style src="s-style.css"/>
+<style>
+    .z-window-content {
+        padding: 1px;
+    }
+</style>
+<window id="wEAAM" hflex="1" vflex="1"
+    apply="pe.com.jx_market.controller.PO_EAAdministrateModule">
+    <borderlayout id="bl" hflex="1" vflex="1">
+        <north size="7%" collapsible="false" sclass="s-north">
+            <div align="center" hflex="1" vflex="1">
+                <label zclass="z-south-header" sclass="s-header">
+                    ${labels.pe.com.jx_market.eAAdministrateModule.Title}
+                </label>
+                <html:p />
             </div>
-        </window>
-    </div>
+        </north>
+        <center autoscroll="true" sclass="s-center2">
+            <listbox id="lstModule" mold="paging" pagingPosition="bottom" autopaging="true" sizedByContent="true"  hflex="1" vflex="1">
+                <listhead>
+                    <listheader label="Nº" id="headNumber" width="30px"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateModule.Resource.Label}" sort="auto" hflex="2"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateModule.Description.Label}" sort="auto" hflex="5"/>
+                </listhead>
+            </listbox>
+        </center>
+        <south size="5%" style="visibility:visible;" sclass="s-south2">
+            <hbox align="center" pack="end" hflex="1" vflex="1" sclass="s-hbox">
+                <button id="btnCreate" label="${labels.pe.com.jx_market.eAAdministrateModule.btnCreate.Label}"
+                    image="/media/filenew.png" />
+                <button id="btnEdit" label="${labels.pe.com.jx_market.eAAdministrateModule.btnEdit.Label}"
+                    image="/media/edit.png" />
+                <button id="btnDelete" label="${labels.pe.com.jx_market.eAAdministrateModule.btnDelete.Label}"
+                    image="/media/editdelete.png" />
+            </hbox>
+        </south>
+    </borderlayout>
+</window>
 </zk>

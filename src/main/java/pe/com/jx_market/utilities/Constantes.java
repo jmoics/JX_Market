@@ -148,7 +148,10 @@ public class Constantes {
         AREA_CREATE_FORM("eAAdministrateAreaCreate.zul"),
         ROLE_FORM("eAAdministrateRole.zul"),
         ROLE_EDIT_FORM("eAAdministrateRoleEdit.zul"),
-        ROLE_CREATE_FORM("eAAdministrateRoleCreate.zul");
+        ROLE_CREATE_FORM("eAAdministrateRoleCreate.zul"),
+        MODULE_FORM("eAAdministrateModule.zul"),
+        MODULE_EDIT_FORM("eAAdministrateModuleEdit.zul"),
+        MODULE_CREATE_FORM("eAAdministrateModuleCreate.zul");
 
         private final String form;
 
@@ -169,4 +172,28 @@ public class Constantes {
     public static final String ATTRIBUTE_TRADEMARK = "tradeMark";
     public static final String ATTRIBUTE_AREA = "area";
     public static final String ATTRIBUTE_ROLE = "role";
+    public static final String ATTRIBUTE_MODULE = "module";
+
+
+    /**
+     * To use in future to check access.
+     * @author jcuevas
+     *
+     */
+    public enum AccessType {
+        CREATE("create"),
+        EDIT("edit"),
+        VIEW("view"),
+        DELETE("delete");
+
+        private final String accessType;
+
+        private AccessType(final String _accessType) {
+            this.accessType = _accessType;
+        }
+
+        public String getAccessType() {
+            return this.accessType;
+        }
+    }
 }

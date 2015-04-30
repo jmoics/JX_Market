@@ -7,8 +7,8 @@ public class DTO_Module
 {
     private Integer id;
     private Integer companyId;
-    private String description;
-    private String resource;
+    private String moduleDescription;
+    private String moduleResource;
     private Boolean activeConnection;
 
     public Integer getId()
@@ -21,14 +21,14 @@ public class DTO_Module
         this.id = id;
     }
 
-    public String getResource()
+    public String getModuleResource()
     {
-        return resource;
+        return moduleResource;
     }
 
-    public void setResource(final String resource)
+    public void setModuleResource(final String moduleResource)
     {
-        this.resource = resource;
+        this.moduleResource = moduleResource;
     }
 
     public Integer getCompanyId()
@@ -41,14 +41,14 @@ public class DTO_Module
         this.companyId = companyId;
     }
 
-    public String getDescription()
+    public String getModuleDescription()
     {
-        return description;
+        return moduleDescription;
     }
 
-    public void setDescription(final String description)
+    public void setModuleDescription(final String moduleDescription)
     {
-        this.description = description;
+        this.moduleDescription = moduleDescription;
     }
 
     public Boolean getActiveConnection()

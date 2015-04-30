@@ -18,7 +18,7 @@
                     </div>
                     <html:p />
                     <menubar style="text-align:left" orient="vertical" autodrop="true">
-                        <menuitem src="/media/viewmag.png" id="id_option_prod_categ"
+                        <menuitem src="/media/viewmag.png" id="id_option_prod_categ" sclass="navpp"
                                   label="${labels.pe.com.jx_market.eAMainMenu.products.category.Label }" />
                         <menuitem src="/media/viewmag.png" id="id_option_prod_tradeMark"
                                   label="${labels.pe.com.jx_market.eAMainMenu.products.tradeMark.Label }" />

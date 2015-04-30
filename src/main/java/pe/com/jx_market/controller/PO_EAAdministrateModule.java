@@ -1,20 +1,27 @@
 package pe.com.jx_market.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.zkoss.zhtml.Messagebox;
+import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.Desktop;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Div;
-import org.zkoss.zul.Grid;
-import org.zkoss.zul.Groupbox;
-import org.zkoss.zul.Image;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
-import org.zkoss.zul.Textbox;
+import org.zkoss.zk.ui.event.MouseEvent;
+import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Module;
@@ -24,303 +31,129 @@ import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_EAAdministrateModule
-    extends SecuredWindow
+    extends SecuredComposerModal<Window>
 {
 
     static Log logger = LogFactory.getLog(PO_EAAdministrateModule.class);
-    private Textbox txtRecurso, txtDescripcion;
-    private Grid grdModule;
-    private Groupbox grpModule;
-    private BusinessService moduleService;
+    @Wire
+    private Listbox lstModule;
+    @Wire
+    private Window wEAAM;
+    @WireVariable
+    private BusinessService<DTO_Module> moduleService;
+    @WireVariable
+    private Desktop desktop;
     private DTO_Company company;
 
     @Override
-    public void realOnCreate()
+    public void doAfterCompose(final Window _comp)
+        throws Exception
     {
-        moduleService = ContextLoader.getService(this, "moduleService");
-        txtRecurso = (Textbox) getFellow("txtRecurso");
-        txtDescripcion = (Textbox) getFellow("txtDescripcion");
-        grdModule = (Grid) getFellow("grdModule");
-        grpModule = (Groupbox) getFellow("grpModule");
-        company = (DTO_Company) getDesktop().getSession().getAttribute("company");
-        mostrarModules();
+        super.doAfterCompose(_comp);
+
+        company = (DTO_Company) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
+        getModules();
     }
 
-    public void onLimpiar()
+    public void getModules()
     {
-        grdModule.getRows().getChildren().clear();
-        txtRecurso.setValue("");
-        txtDescripcion.setValue("");
-    }
-
-    public void crearNuevoModule()
-    {
-        // row1.setVisible(true);
-        final DTO_Module unew = new DTO_Module();
-        unew.setResource(txtRecurso.getValue());
-        unew.setDescription(txtDescripcion.getValue());
-        unew.setCompanyId(company.getId());
-
-        if (!txtRecurso.getValue().isEmpty() && !txtDescripcion.getValue().isEmpty()) {
-            final ServiceInput input = new ServiceInput(unew);
-            input.setAccion(Constantes.V_REGISTER);
-
-            final ServiceOutput output = moduleService.execute(input);
-            if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo("", "Module creado correctamente", null);
-                onLimpiar();
-                mostrarModules();
-            } else {
-                alertaError("Error al crear Module", "error al crear Module", null);
-            }
-        } else {
-            alertaInfo("Todos los campos deben ser llenados", "No se ingresaron datos para codigo y descripcion", null);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public void mostrarModules()
-    {
-        final DTO_Module mod = new DTO_Module();
-        mod.setCompanyId(company.getId());
-        final ServiceInput input = new ServiceInput(mod);
+        lstModule.getItems().clear();
+        final DTO_Module modSe = new DTO_Module();
+        modSe.setCompanyId(company.getId());
+        final ServiceInput<DTO_Module> input = new ServiceInput<DTO_Module>(modSe);
         input.setAccion(Constantes.V_LIST);
-        final ServiceOutput output = moduleService.execute(input);
+        final ServiceOutput<DTO_Module> output = moduleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Module> ulist = output.getLista();
-            for (final DTO_Module sOut : ulist) {
-                agregarFila(sOut);
+            final List<DTO_Module> modLst = output.getLista();
+            int columnNumber = 1;
+            for (final DTO_Module modu : modLst) {
+                final Listitem item = new Listitem();
+                Listcell cell = new Listcell("" + columnNumber);
+                item.appendChild(cell);
+                cell = new Listcell(modu.getModuleResource());
+                item.appendChild(cell);
+                cell = new Listcell(modu.getModuleDescription());
+                item.appendChild(cell);
+                item.setAttribute(Constantes.ATTRIBUTE_MODULE, modu);
+                item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>()
+                {
+                    @Override
+                    public void onEvent(final Event e)
+                        throws UiException
+                    {
+                        runWindowEdit((MouseEvent) e);
+                    }
+                });
+                lstModule.appendChild(item);
+                columnNumber++;
             }
         } else {
-            alertaInfo("Error al cargar los modules", "Error al cargar modules", null);
+            alertaInfo(logger, "Error al cargar los modulos", "Error al cargar modules", null);
         }
     }
 
-    public void agregarFila(final DTO_Module mod)
-    {
-        final Row fila = new Row();
-        fila.setAttribute("module", mod);
-
-        Textbox txt = new Textbox(mod.getResource());
-        txt.setWidth("190px");
-        txt.setReadonly(true);
-        txt.addEventListener(Events.ON_CANCEL,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                                .getChildren().get(2))).getChildren().get(0))
-                                                .setVisible(true);
-                                ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                                .getChildren().get(2))).getChildren().get(1))
-                                                .setVisible(false);
-                                ((Textbox) e.getTarget()).setReadonly(true);
-                                grpModule.setOpen(true);
-                                onLimpiar();
-                                mostrarModules();
-                            }
-                        });
-        fila.appendChild(txt);
-
-        txt = new Textbox(mod.getDescription());
-        txt.setWidth("285px");
-        txt.setReadonly(true);
-        txt.addEventListener(Events.ON_CANCEL,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                                .getChildren().get(2))).getChildren().get(0))
-                                                .setVisible(true);
-                                ((Image) ((Div) (((Row) e.getTarget().getParent())
-                                                .getChildren().get(2))).getChildren().get(1))
-                                                .setVisible(false);
-                                ((Textbox) e.getTarget()).setReadonly(true);
-                                grpModule.setOpen(true);
-                                onLimpiar();
-                                mostrarModules();
-                            }
-                        });
-        fila.appendChild(txt);
-
-        final Image imgEditar = new Image("media/edit.png");
-        imgEditar.setStyle("cursor: pointer");
-        imgEditar.addEventListener(Events.ON_CLICK,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                ((Image) e.getTarget()).setVisible(false);
-                                ((Image) ((Div) e.getTarget().getParent())
-                                                .getChildren().get(1)).setVisible(true);
-                                for (int i = 0; i < grdModule.getRows().getChildren().size(); i++) {
-                                    if (!grdModule.getRows().getChildren().get(i)
-                                                    .equals((e.getTarget().getParent().getParent()))) {
-                                        ((Image) ((Div) (((Row) (((Rows) e.getTarget().getParent().getParent().getParent())
-                                                        .getChildren().get(i))).getChildren().get(2))).getChildren().get(0))
-                                                        .setVisible(false);
-                                        ((Image) ((Div) (((Row) (((Rows) e.getTarget().getParent().getParent().getParent())
-                                                        .getChildren().get(i))).getChildren().get(2))).getChildren().get(2))
-                                                        .setVisible(true);
-                                        ((Image) ((Div) (((Row) (((Rows) e.getTarget().getParent().getParent().getParent())
-                                                        .getChildren().get(i))).getChildren().get(3))).getChildren().get(0))
-                                                        .setVisible(false);
-                                        ((Image) ((Div) (((Row) (((Rows) e.getTarget().getParent().getParent().getParent())
-                                                        .getChildren().get(i))).getChildren().get(3))).getChildren().get(1))
-                                                        .setVisible(true);
-                                    }
-                                }
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent()).getChildren().get(0)).setReadonly(false);
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent()).getChildren().get(0)).setFocus(true);
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent()).getChildren().get(1)).setReadonly(false);
-                                ((Image) (((Div) ((Row) e.getTarget().getParent().getParent()).getChildren().get(3)))
-                                                .getChildren().get(0)).setVisible(false);
-                                ((Image) (((Div) ((Row) e.getTarget().getParent().getParent()).getChildren().get(3)))
-                                                .getChildren().get(1)).setVisible(true);
-                                grpModule.setOpen(false);
-                            }
-                        });
-
-        final Image imgGuardar = new Image("media/filesave.png");
-        imgGuardar.setStyle("cursor:pointer");
-        imgGuardar.addEventListener(Events.ON_CLICK,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                ((Image) e.getTarget()).setVisible(false);
-                                ((Image) ((Div) e.getTarget().getParent()).getChildren().get(0)).setVisible(true);
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent()).getChildren().get(0)).setReadonly(true);
-                                ((Textbox) ((Row) e.getTarget().getParent().getParent()).getChildren().get(1)).setReadonly(true);
-                                ((Image) (((Div) ((Row) e.getTarget().getParent().getParent()).getChildren().get(3)))
-                                                .getChildren().get(0)).setVisible(true);
-                                ((Image) (((Div) ((Row) e.getTarget().getParent().getParent()).getChildren().get(3)))
-                                                .getChildren().get(1)).setVisible(false);
-                                grpModule.setOpen(true);
-                                for (int i = 0; i < grdModule.getRows().getChildren().size(); i++) {
-                                    if (!grdModule.getRows().getChildren().get(i)
-                                                    .equals((e.getTarget().getParent().getParent()))) {
-                                        ((Image) ((Div) (((Row) (((Rows) e.getTarget().getParent().getParent().getParent())
-                                                        .getChildren().get(i))).getChildren().get(2))).getChildren().get(0))
-                                                        .setVisible(true);
-                                        ((Image) ((Div) (((Row) (((Rows) e.getTarget().getParent().getParent().getParent())
-                                                        .getChildren().get(i))).getChildren().get(2))).getChildren().get(2))
-                                                        .setVisible(false);
-                                        ((Image) ((Div) (((Row) (((Rows) e.getTarget().getParent().getParent().getParent())
-                                                        .getChildren().get(i))).getChildren().get(3))).getChildren().get(0))
-                                                        .setVisible(true);
-                                        ((Image) ((Div) (((Row) (((Rows) e.getTarget().getParent().getParent().getParent())
-                                                        .getChildren().get(i))).getChildren().get(3))).getChildren().get(1))
-                                                        .setVisible(false);
-                                    }
-                                }
-                                mod.setResource(((Textbox) ((Row) e.getTarget().getParent().getParent()).getChildren().get(0)).getValue());
-                                mod.setDescription(((Textbox) ((Row) e.getTarget().getParent().getParent()).getChildren().get(1))
-                                                .getValue());
-                                actualizaModule(mod);
-                            }
-                        });
-
-        final Image imgEditarDisab = new Image("media/editdelete.png");
-        imgEditarDisab.setVisible(false);
-
-        imgGuardar.setVisible(false);
-        final Div divEditar = new Div();
-        divEditar.appendChild(imgEditar);
-        divEditar.appendChild(imgGuardar);
-        divEditar.appendChild(imgEditarDisab);
-        fila.appendChild(divEditar);
-
-        final Image imgEliminar = new Image("media/cancel.png");
-        imgEliminar.setStyle("cursor:pointer");
-        imgEliminar.addEventListener(Events.ON_CLICK,
-                        new org.zkoss.zk.ui.event.EventListener() {
-                            @Override
-                            public void onEvent(final Event e)
-                                throws UiException
-                            {
-                                final int msg = Messagebox.show("¿Está seguro de eliminar el Module?",
-                                                company.getBusinessName(), Messagebox.YES | Messagebox.NO, Messagebox.EXCLAMATION);
-                                if (msg == Messagebox.YES) {
-                                    eliminaFila(mod);
-                                }
-                            }
-                        });
-        final Image imgEliminarDisab = new Image("media/fileclose.png");
-        imgEliminarDisab.setVisible(false);
-
-        final Div divEliminar = new Div();
-        divEliminar.appendChild(imgEliminar);
-        divEliminar.appendChild(imgEliminarDisab);
-        fila.appendChild(divEliminar);
-
-        grdModule.getRows().appendChild(fila);
-    }
-
-    public void actualizaModule(final DTO_Module rec)
-    {
-        final ServiceInput input = new ServiceInput(rec);
-        input.setAccion(Constantes.V_REGISTER);
-
-        final ServiceOutput output = moduleService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "El Module se actualizo correctamente", null);
+    @Listen("onClick = #btnEdit")
+    public void runWindowEdit(final MouseEvent event) {
+        if (lstModule.getSelectedItem() != null) {
+            desktop.getSession().setAttribute(Constantes.ATTRIBUTE_MODULE,
+                            lstModule.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_MODULE));
+            final Map<String, Object> dataArgs = new HashMap<String, Object>();
+            dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
+            final Window w = (Window) Executions.createComponents(Constantes.Form.MODULE_EDIT_FORM.getForm(),
+                            null, dataArgs);
+            w.setPage(wEAAM.getPage());
+            //w.setParent(wEAT);
+            w.doOverlapped();
+            //w.doHighlighted();
+            //w.doEmbedded();
         } else {
-            alertaError("Error al actualizar el Module", "Error al actualizar el Module", null);
+            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateModule.runWindowEdit.Info.Label"),
+                                "No se selecciono un registro a editar", null);
         }
-
-        // onLimpiar();
-        // mostrarTCampos();
     }
 
-    public void eliminaFila(final DTO_Module rec)
+    @Listen("onClick = #btnCreate")
+    public void runWindowCreate(final MouseEvent event) {
+        final Map<String, Object> dataArgs = new HashMap<String, Object>();
+        dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
+        final Window w = (Window) Executions.createComponents(Constantes.Form.MODULE_CREATE_FORM.getForm(),
+                            null, dataArgs);
+        w.setPage(wEAAM.getPage());
+        //w.setParent(wEAT);
+        //w.doOverlapped();
+        w.doModal();
+        //w.doEmbedded();
+    }
+
+    @Listen("onClick = #btnDelete")
+    public void deleteModule(final MouseEvent event)
         throws UiException
     {
-        final ServiceInput input = new ServiceInput(rec);
-        input.setAccion(Constantes.V_DELETE);
-        final ServiceOutput output = moduleService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("", "El Module se elimino correctamente", null);
-            onLimpiar();
-            mostrarModules();
+        if (lstModule.getSelectedItem() != null) {
+            final int verifyDelete = Messagebox.show(
+                            Labels.getLabel("pe.com.jx_market.PO_EAAdministrateModule.deleteModule.Info3.Label"),
+                            company.getBusinessName(), Messagebox.OK | Messagebox.CANCEL, Messagebox.INFORMATION);
+            if (Messagebox.OK == verifyDelete) {
+                final DTO_Module module = (DTO_Module) lstModule.getSelectedItem().getAttribute(
+                                Constantes.ATTRIBUTE_MODULE);
+                final ServiceInput<DTO_Module> input = new ServiceInput<DTO_Module>(module);
+                input.setAccion(Constantes.V_DELETE);
+                final ServiceOutput<DTO_Module> output = moduleService.execute(input);
+                if (output.getErrorCode() == Constantes.OK) {
+                    alertaInfo(logger,
+                                    Labels.getLabel("pe.com.jx_market.PO_EAAdministrateModule.deleteModule.Info.Label"),
+                                    "El modulo se elimino correctamente", null);
+                    getModules();
+                } else {
+                    alertaError(logger,
+                                    Labels.getLabel("pe.com.jx_market.PO_EAAdministrateModule.deleteModule.Error.Label"),
+                                    "Error al eliminar el modulo", null);
+                }
+            }
         } else {
-            alertaError("Error al eliminar el Module", "Error al eliminar el Module", null);
+            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateModule.deleteModule.Info2.Label"),
+                            "No se selecciono un registro a eliminar", null);
         }
-    }
-
-    public void alertaInfo(final String txt,
-                           final String txt2,
-                           final Throwable t)
-    {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.EXCLAMATION);
-        }
-        if (t != null) {
-            logger.info(txt2, t);
-        } else {
-            logger.info(txt2);
-        }
-    }
-
-    public void alertaError(final String txt,
-                            final String txt2,
-                            final Throwable t)
-    {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.EXCLAMATION);
-        }
-        if (t != null) {
-            logger.error(txt2, t);
-        } else {
-            logger.error(txt2);
-        }
-
     }
 
     @Override

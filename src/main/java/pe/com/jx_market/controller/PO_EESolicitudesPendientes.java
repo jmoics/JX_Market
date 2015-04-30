@@ -209,9 +209,9 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
 
     private Integer insertModule(final String desc, final String recurso, final Integer company) {
         final DTO_Module mod = new DTO_Module();
-        mod.setDescription(desc);
+        mod.setModuleDescription(desc);
         mod.setCompanyId(company);
-        mod.setResource(recurso);
+        mod.setModuleResource(recurso);
 
         final ServiceInput input = new ServiceInput();
         input.setAccion(Constantes.V_REGISTER);

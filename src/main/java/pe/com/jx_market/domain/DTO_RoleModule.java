@@ -1,6 +1,7 @@
 package pe.com.jx_market.domain;
 
 import java.io.Serializable;
+import java.util.Set;
 
 public class DTO_RoleModule
     implements Serializable
@@ -8,6 +9,8 @@ public class DTO_RoleModule
     private Integer roleId;
     private Integer moduleId;
     private Boolean active;
+    private String accessTypesStr;
+    private Set<String> accessTypes;
 
     public Integer getRole()
     {
@@ -39,4 +42,23 @@ public class DTO_RoleModule
         this.active = active;
     }
 
+    public String getAccessTypesStr()
+    {
+        return accessTypesStr;
+    }
+
+    public void setAccessTypesStr(final String accessTypesStr)
+    {
+        this.accessTypesStr = accessTypesStr;
+    }
+
+    public Set<String> getAccessTypes()
+    {
+        return accessTypes;
+    }
+
+    public void setAccessTypes(final Set<String> accessTypes)
+    {
+        this.accessTypes = accessTypes;
+    }
 }

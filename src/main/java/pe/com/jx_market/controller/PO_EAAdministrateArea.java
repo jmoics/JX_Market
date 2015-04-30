@@ -23,6 +23,7 @@ import org.zkoss.zul.Image;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Popup;
 import org.zkoss.zul.Window;
 
@@ -152,17 +153,22 @@ public class PO_EAAdministrateArea
         throws UiException
     {
         if (lstArea.getSelectedItem() != null) {
-            final DTO_Area area = (DTO_Area) lstArea.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_AREA);
-            final ServiceInput<DTO_Area> input = new ServiceInput<DTO_Area>(area);
-            input.setAccion(Constantes.V_DELETE);
-            final ServiceOutput<DTO_Area> output = areaService.execute(input);
-            if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateArea.deleteArea.Info.Label"),
-                                "El area se elimino correctamente", null);
-                getAreas();
-            } else {
-                alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateArea.deleteArea.Error.Label"),
-                                "Error al eliminar el area", null);
+            final int verifyDelete = Messagebox.show(
+                            Labels.getLabel("pe.com.jx_market.PO_EAAdministrateArea.deleteArea.Info3.Label"),
+                            company.getBusinessName(), Messagebox.OK | Messagebox.CANCEL, Messagebox.INFORMATION);
+            if (Messagebox.OK == verifyDelete) {
+                final DTO_Area area = (DTO_Area) lstArea.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_AREA);
+                final ServiceInput<DTO_Area> input = new ServiceInput<DTO_Area>(area);
+                input.setAccion(Constantes.V_DELETE);
+                final ServiceOutput<DTO_Area> output = areaService.execute(input);
+                if (output.getErrorCode() == Constantes.OK) {
+                    alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateArea.deleteArea.Info.Label"),
+                                    "El area se elimino correctamente", null);
+                    getAreas();
+                } else {
+                    alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateArea.deleteArea.Error.Label"),
+                                    "Error al eliminar el area", null);
+                }
             }
         } else {
             alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateArea.deleteArea.Info2.Label"),

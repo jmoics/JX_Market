@@ -136,7 +136,7 @@ public class PO_EAAdministrateRoleModule
             for (final DTO_Module dto : listaMod) {
                 final Row fila = new Row();
                 fila.setAttribute("module", dto);
-                fila.appendChild(new Label(dto.getDescription()));
+                fila.appendChild(new Label(dto.getModuleDescription()));
                 gr_recursos.getRows().appendChild(fila);
                 /*
                  * columna = new Column(); columna.setAttribute("codigo",

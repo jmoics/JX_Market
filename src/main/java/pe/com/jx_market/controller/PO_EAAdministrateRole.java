@@ -22,6 +22,7 @@ import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Company;
@@ -134,17 +135,22 @@ public class PO_EAAdministrateRole
         throws UiException
     {
         if (lstRole.getSelectedItem() != null) {
-            final DTO_Role role = (DTO_Role) lstRole.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_ROLE);
-            final ServiceInput<DTO_Role> input = new ServiceInput<DTO_Role>(role);
-            input.setAccion(Constantes.V_DELETE);
-            final ServiceOutput<DTO_Role> output = roleService.execute(input);
-            if (output.getErrorCode() == Constantes.OK) {
-                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRole.deleteRole.Info.Label"),
-                                "El rol se elimino correctamente", null);
-                getRoles();
-            } else {
-                alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRole.deleteRole.Error.Label"),
-                                "Error al eliminar el rol", null);
+            final int verifyDelete = Messagebox.show(
+                            Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRole.deleteRole.Info3.Label"),
+                            company.getBusinessName(), Messagebox.OK | Messagebox.CANCEL, Messagebox.INFORMATION);
+            if (Messagebox.OK == verifyDelete) {
+                final DTO_Role role = (DTO_Role) lstRole.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_ROLE);
+                final ServiceInput<DTO_Role> input = new ServiceInput<DTO_Role>(role);
+                input.setAccion(Constantes.V_DELETE);
+                final ServiceOutput<DTO_Role> output = roleService.execute(input);
+                if (output.getErrorCode() == Constantes.OK) {
+                    alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRole.deleteRole.Info.Label"),
+                                    "El rol se elimino correctamente", null);
+                    getRoles();
+                } else {
+                    alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRole.deleteRole.Error.Label"),
+                                    "Error al eliminar el rol", null);
+                }
             }
         } else {
             alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRole.deleteRole.Info2.Label"),
