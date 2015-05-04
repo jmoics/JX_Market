@@ -33,11 +33,11 @@ public class CategoryService
     public ServiceOutput<DTO_Category> execute(final ServiceInput<DTO_Category> input)
     {
         final ServiceOutput<DTO_Category> output = new ServiceOutput<DTO_Category>();
-        if (Constantes.V_LIST.equals(input.getAccion())) {
+        if (Constantes.V_LIST.equals(input.getAction())) {
             output.setLista(categoryMapper.getCategories(input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
+        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
             final DTO_Category categTmp = categoryMapper.getCategory4Id(input.getObject());
             if (categTmp == null) {
                 categoryMapper.insertCategory(input.getObject());
@@ -46,12 +46,12 @@ public class CategoryService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getAccion())) {
+        } else if (Constantes.V_GET.equals(input.getAction())) {
             final DTO_Category art = categoryMapper.getCategory4Id(input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
-        }else if (Constantes.V_DELETE.equals(input.getAccion())) {
+        }else if (Constantes.V_DELETE.equals(input.getAction())) {
             categoryMapper.deleteCategory(input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;

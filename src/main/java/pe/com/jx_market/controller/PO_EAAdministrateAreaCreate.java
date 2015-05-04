@@ -60,7 +60,7 @@ public class PO_EAAdministrateAreaCreate
             newTrMk.setAreaName(txtAreaName.getValue());
             newTrMk.setCompanyId(company.getId());
             final ServiceInput<DTO_Area> input = new ServiceInput<DTO_Area>(newTrMk);
-            input.setAccion(Constantes.V_REGISTER);
+            input.setAction(Constantes.V_REGISTER);
             final ServiceOutput<DTO_Area> output = areaService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 final int resp = alertaInfo(logger,

@@ -44,7 +44,7 @@ public class PedidosService implements BusinessService
     public ServiceOutput execute(final ServiceInput input)
     {
         final ServiceOutput output = new ServiceOutput();
-        if (Constantes.V_LISTEMP.equals(input.getAccion())) {
+        if (Constantes.V_LISTEMP.equals(input.getAction())) {
             final List<DTO_Pedido> lst = pedidoMapper.getPedidos((DTO_Pedido) input.getObject());
             for (final DTO_Pedido ped : lst) {
 
@@ -52,7 +52,7 @@ public class PedidosService implements BusinessService
             //output.setLista(dao.getProducts((DTO_Product)input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_LIST.equals(input.getAccion())) {
+        } else if (Constantes.V_LIST.equals(input.getAction())) {
             final Map<DTO_Pedido, List<DTO_DetallePedido>> mapPed = new HashMap<DTO_Pedido, List<DTO_DetallePedido>>();
             //Pedidos de JX_Market para un client
             final List<DTO_Pedido> lstPedCli = pedidoMapper.getPedidos((DTO_Pedido) input.getObject());
@@ -75,7 +75,7 @@ public class PedidosService implements BusinessService
             output.setMapa(mapPed);
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
+        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
             Integer pedMainId = null;
             final BigDecimal total = (BigDecimal) input.getObject();
             final Map<Integer, Map<DTO_Pedido, List<DTO_DetallePedido>>> map = input.getMapa();
@@ -108,7 +108,7 @@ public class PedidosService implements BusinessService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getAccion())) {
+        } else if (Constantes.V_GET.equals(input.getAction())) {
             //final DTO_Product art = dao.getProductXCodigo((DTO_Product) input.getObject());
             //output.setObject(art);
             output.setErrorCode(Constantes.OK);

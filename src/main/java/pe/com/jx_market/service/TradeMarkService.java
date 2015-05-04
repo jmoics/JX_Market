@@ -33,11 +33,11 @@ public class TradeMarkService
     public ServiceOutput<DTO_TradeMark> execute(final ServiceInput<DTO_TradeMark> input)
     {
         final ServiceOutput<DTO_TradeMark> output = new ServiceOutput<DTO_TradeMark>();
-        if (Constantes.V_LIST.equals(input.getAccion())) {
+        if (Constantes.V_LIST.equals(input.getAction())) {
             output.setLista(tradeMarkMapper.getTradeMarks(input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
+        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
             final DTO_TradeMark categTmp = tradeMarkMapper.getTradeMark4Id(input.getObject());
             if (categTmp == null) {
                 tradeMarkMapper.insertTradeMark(input.getObject());
@@ -46,12 +46,12 @@ public class TradeMarkService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getAccion())) {
+        } else if (Constantes.V_GET.equals(input.getAction())) {
             final DTO_TradeMark art = tradeMarkMapper.getTradeMark4Id(input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
-        }else if (Constantes.V_DELETE.equals(input.getAccion())) {
+        }else if (Constantes.V_DELETE.equals(input.getAction())) {
             tradeMarkMapper.deleteTradeMark(input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;

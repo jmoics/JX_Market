@@ -23,11 +23,15 @@ public class RoleService
     public ServiceOutput<DTO_Role> execute(final ServiceInput<DTO_Role> input)
     {
         final ServiceOutput<DTO_Role> output = new ServiceOutput<DTO_Role>();
-        if (Constantes.V_LIST.equals(input.getAccion())) {
+        if (Constantes.V_LIST.equals(input.getAction())) {
             output.setLista(roleMapper.getRoles(input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
+        } else if (Constantes.V_LISTROLMOD.equals(input.getAction())) {
+            output.setLista(roleMapper.getModules4Role(input.getMapa()));
+            output.setErrorCode(Constantes.OK);
+            return output;
+        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
             final DTO_Role roleTmp = roleMapper.getRole4Id(input.getObject());
             if (roleTmp == null) {
                 roleMapper.insertRole(input.getObject());
@@ -36,12 +40,12 @@ public class RoleService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getAccion())) {
+        } else if (Constantes.V_GET.equals(input.getAction())) {
             final DTO_Role art = roleMapper.getRole4Id(input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_DELETE.equals(input.getAccion())) {
+        } else if (Constantes.V_DELETE.equals(input.getAction())) {
             roleMapper.deleteRole(input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;

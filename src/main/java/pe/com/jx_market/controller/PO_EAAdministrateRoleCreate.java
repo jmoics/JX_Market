@@ -75,7 +75,7 @@ public class PO_EAAdministrateRoleCreate
             rolNew.setCompanyId(company.getId());
 
             final ServiceInput<DTO_Role> input = new ServiceInput<DTO_Role>(rolNew);
-            input.setAccion(Constantes.V_REGISTER);
+            input.setAction(Constantes.V_REGISTER);
             final ServiceOutput<DTO_Role> output = roleService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 final int resp = alertaInfo(logger,
@@ -109,7 +109,7 @@ public class PO_EAAdministrateRoleCreate
         final DTO_Area areaSe = new DTO_Area();
         areaSe.setCompanyId(company.getId());
         final ServiceInput<DTO_Area> input = new ServiceInput<DTO_Area>(areaSe);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_Area> output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Area> listado = output.getLista();

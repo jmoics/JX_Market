@@ -1,0 +1,47 @@
+<?page title="Seguridad y Servicio al Client" contentType="text/html;charset=UTF-8"?>
+
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+    <div align="center">
+        <html:p />
+        <window width="700px" use="pe.com.jx_market.controller.PO_EAAdministrateRoleModule" id="w_role_recurso">
+            <div align="center">
+                <vbox width="700px">
+                    <html:p />
+                    <div align="center">
+                        <label zclass="z-south-header"
+                            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
+                            Administración de Modules por Role
+                        </label>
+                    </div>
+                    <html:p />
+                    <groupbox id="g_recursos" visible="true" mold="3d" width="695px">
+                        <html:p />
+                        <combobox id="cmbArea" onSelect="w_role_recurso.CargarTabla()"/>
+                        <html:p />
+                        <div align="center">
+                            <grid fixedLayout="true" id="gr_recursos" mold="paging" pageSize="10">
+                                <columns>
+                                    <column label="Recursos" />
+                                </columns>
+                                <rows>
+                                </rows>
+                                <foot id="f_buttons">
+                                    <footer label="" />
+                                </foot>
+                            </grid>
+                        </div>
+                        <html:p />
+                        <div align="center">
+                            <button label="Editar" id="b_edit" onClick="w_role_recurso.editar()" />
+                            <button label="Actualizar" visible="false" id="b_info"
+                                onClick="w_role_recurso.actualizar()" />
+                            <button label="Cancelar" visible="false" id="b_cancel"
+                                onClick="w_role_recurso.cancelar()" />
+                        </div>
+                        <html:p />
+                    </groupbox>
+                </vbox>
+            </div>
+        </window>
+    </div>
+</zk>

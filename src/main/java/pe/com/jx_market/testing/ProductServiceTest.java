@@ -43,7 +43,7 @@ public class ProductServiceTest
         //art.setStock(20);
 
         final ServiceInput input = new ServiceInput(art);
-        input.setAccion(Constantes.V_REGISTER);
+        input.setAction(Constantes.V_REGISTER);
         final ServiceOutput output = productService.execute(input);
         assertEquals(Constantes.OK, output.getErrorCode());
     }
@@ -54,7 +54,7 @@ public class ProductServiceTest
         art.setId(1);
         art.setCompanyId(2);
         final ServiceInput input = new ServiceInput(art);
-        input.setAccion(Constantes.V_GET);
+        input.setAction(Constantes.V_GET);
         final ServiceOutput output = productService.execute(input);
         assertEquals(Constantes.OK, output.getErrorCode());
 

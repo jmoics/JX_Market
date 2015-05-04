@@ -26,9 +26,9 @@ public class ValidationService
     {
         final ServiceOutput output = new ServiceOutput();
         Validador val = null;
-        if (input.getAccion().equals("registraClient")) {
+        if (input.getAction().equals("registraClient")) {
             val = getRegistraClient();
-        } else if (input.getAccion().equals("registraSolicitud")) {
+        } else if (input.getAction().equals("registraSolicitud")) {
             val = getRegistraSolicitud();
         }
 
@@ -37,14 +37,14 @@ public class ValidationService
             output.setErrorCode(Constantes.INVALID_PARAM);
             return output;
         }
-        logger.info("Validando: " + input.getAccion());
+        logger.info("Validando: " + input.getAction());
         final List<String> ans = val.valida(input.getObject());
         if (ans.size() == 0) {
-            logger.info("Validacion " + input.getAccion() + " exitosa");
+            logger.info("Validacion " + input.getAction() + " exitosa");
             output.setErrorCode(Constantes.OK);
             return output;
         }
-        logger.info("Error de validacion " + input.getAccion());
+        logger.info("Error de validacion " + input.getAction());
         output.setErrorCode(Constantes.VALIDATION_ERROR);
         output.setLista(ans);
         return output;

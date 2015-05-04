@@ -61,7 +61,7 @@ public class PO_EAAdministrateModule
         final DTO_Module modSe = new DTO_Module();
         modSe.setCompanyId(company.getId());
         final ServiceInput<DTO_Module> input = new ServiceInput<DTO_Module>(modSe);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_Module> output = moduleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Module> modLst = output.getLista();
@@ -137,7 +137,7 @@ public class PO_EAAdministrateModule
                 final DTO_Module module = (DTO_Module) lstModule.getSelectedItem().getAttribute(
                                 Constantes.ATTRIBUTE_MODULE);
                 final ServiceInput<DTO_Module> input = new ServiceInput<DTO_Module>(module);
-                input.setAccion(Constantes.V_DELETE);
+                input.setAction(Constantes.V_DELETE);
                 final ServiceOutput<DTO_Module> output = moduleService.execute(input);
                 if (output.getErrorCode() == Constantes.OK) {
                     alertaInfo(logger,

@@ -82,7 +82,7 @@ public class PO_EATradeMark
             trMarkSearch.setActive((Boolean) cmbActive.getSelectedItem().getValue());
         }
         input.setObject(trMarkSearch);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
         if (Constantes.OK == output.getErrorCode()) {
             final List<DTO_TradeMark> lstTr = output.getLista();

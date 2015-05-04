@@ -65,7 +65,7 @@ public class PO_EAAdministrateAreaEdit
         if (!txtAreaName.getValue().equals("")) {
             area.setAreaName(txtAreaName.getValue());
             final ServiceInput<DTO_Area> input = new ServiceInput<DTO_Area>(area);
-            input.setAccion(Constantes.V_REGISTER);
+            input.setAction(Constantes.V_REGISTER);
             final ServiceOutput<DTO_Area> output = areaService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 final int resp = alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateAreaEdit.editArea.Info.Label",

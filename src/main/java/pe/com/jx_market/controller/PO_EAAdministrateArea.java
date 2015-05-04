@@ -67,7 +67,7 @@ public class PO_EAAdministrateArea
         final DTO_Area areSe = new DTO_Area();
         areSe.setCompanyId(company.getId());
         final ServiceInput<DTO_Area> input = new ServiceInput<DTO_Area>(areSe);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_Area> output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Area> areaLst = output.getLista();
@@ -159,7 +159,7 @@ public class PO_EAAdministrateArea
             if (Messagebox.OK == verifyDelete) {
                 final DTO_Area area = (DTO_Area) lstArea.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_AREA);
                 final ServiceInput<DTO_Area> input = new ServiceInput<DTO_Area>(area);
-                input.setAccion(Constantes.V_DELETE);
+                input.setAction(Constantes.V_DELETE);
                 final ServiceOutput<DTO_Area> output = areaService.execute(input);
                 if (output.getErrorCode() == Constantes.OK) {
                     alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateArea.deleteArea.Info.Label"),

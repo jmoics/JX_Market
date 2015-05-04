@@ -59,7 +59,7 @@ public class PO_EACambiarContrasenia
                 user.setCompanyId(company.getId());
                 user.setPassword(txtPassNew1.getValue());
                 input.setObject(user);
-                input.setAccion("chgpass");
+                input.setAction("chgpass");
                 final ServiceOutput output = userService.execute(input);
                 if (output.getErrorCode() == Constantes.OK) {
                     alertaInfo("Contraseña cambiada satisfactoriamente", "se cambio la contraseña satisfactoriamente", null);

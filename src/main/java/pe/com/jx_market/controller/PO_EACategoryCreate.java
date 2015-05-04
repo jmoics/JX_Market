@@ -84,7 +84,7 @@ public class PO_EACategoryCreate
         final DTO_Category cat = new DTO_Category();
         cat.setCompanyId(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);
         CategoryTreeNode categoryTreeNode = null;
         if (output.getErrorCode() == Constantes.OK) {
@@ -238,7 +238,7 @@ public class PO_EACategoryCreate
     {
         final DTO_Category categ = _nodo.getData();
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>();
-        input.setAccion(Constantes.V_REGISTER);
+        input.setAction(Constantes.V_REGISTER);
         input.setObject(categ);
         ServiceOutput<DTO_Category> output = null;
         if (categ != null && categ.getId() != null && categ.getId() < 0) {

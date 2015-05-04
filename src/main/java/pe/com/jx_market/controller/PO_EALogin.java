@@ -61,7 +61,7 @@ public class PO_EALogin
         List<DTO_Company> companys;
         //companyService = (BusinessService<DTO_Company>) ContextLoader.getService(wEAL, "companyService");
         final ServiceInput<DTO_Company> input = new ServiceInput<DTO_Company>();
-        input.setAccion("list");
+        input.setAction("list");
 
         final ServiceOutput<DTO_Company> output = companyService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
@@ -137,7 +137,7 @@ public class PO_EALogin
         emp.setCompanyId(usu.getCompanyId());
         emp.setUserId(usu.getId());
         final ServiceInput<DTO_Employee> input = new ServiceInput<DTO_Employee>(emp);
-        input.setAccion(Constantes.V_GET);
+        input.setAction(Constantes.V_GET);
         final ServiceOutput<DTO_Employee> output = employeeService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             return output.getObject();

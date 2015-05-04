@@ -211,7 +211,7 @@ public class PO_CECarritoClient extends Window
         }
 
         final ServiceInput input = new ServiceInput();
-        input.setAccion(Constantes.V_REGISTER);
+        input.setAction(Constantes.V_REGISTER);
         input.setMapa(mapPed);
         input.setObject(((Map) getDesktop().getSession().getAttribute("totales")).get("total"));
         final ServiceOutput output = pedidosService.execute(input);

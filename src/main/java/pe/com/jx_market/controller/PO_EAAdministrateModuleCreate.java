@@ -60,7 +60,7 @@ public class PO_EAAdministrateModuleCreate
             modNew.setCompanyId(company.getId());
 
             final ServiceInput<DTO_Module> input = new ServiceInput<DTO_Module>(modNew);
-            input.setAccion(Constantes.V_REGISTER);
+            input.setAction(Constantes.V_REGISTER);
 
             final ServiceOutput<DTO_Module> output = moduleService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {

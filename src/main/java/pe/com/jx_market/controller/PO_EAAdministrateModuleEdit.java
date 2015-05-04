@@ -68,7 +68,7 @@ public class PO_EAAdministrateModuleEdit
             module.setModuleResource(txtResource.getValue());
 
             final ServiceInput<DTO_Module> input = new ServiceInput<DTO_Module>(module);
-            input.setAccion(Constantes.V_REGISTER);
+            input.setAction(Constantes.V_REGISTER);
             final ServiceOutput<DTO_Module> output = moduleService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 final int resp = alertaInfo(logger,

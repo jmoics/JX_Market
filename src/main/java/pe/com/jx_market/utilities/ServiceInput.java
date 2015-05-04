@@ -15,7 +15,7 @@ public class ServiceInput<E>
     private E object;
     private List<E> lista;
     private Map<Object, Object> mapa;
-    private String accion;
+    private String action;
 
     public ServiceInput()
     {
@@ -27,10 +27,10 @@ public class ServiceInput<E>
     }
 
     public ServiceInput(final E obj,
-                        final String accion)
+                        final String action)
     {
         this.object = obj;
-        this.accion = accion;
+        this.action = action;
     }
 
     public ServiceInput(final Map<Object, Object> m)
@@ -43,7 +43,7 @@ public class ServiceInput<E>
         this.lista = l;
     }
 
-    public void addMapPair(final Object k,
+    public void addMapPair(final String k,
                            final Object v)
     {
         if (this.mapa == null) {
@@ -91,13 +91,13 @@ public class ServiceInput<E>
         this.mapa = mapa;
     }
 
-    public String getAccion()
+    public String getAction()
     {
-        return this.accion;
+        return this.action;
     }
 
-    public void setAccion(final String _accion)
+    public void setAction(final String _action)
     {
-        this.accion = _accion;
+        this.action = _action;
     }
 }

@@ -78,7 +78,7 @@ extends SelectorComposer<Window>
         final DTO_Category cat = new DTO_Category();
         cat.setCompanyId(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             // alertaInfo("", "Exito al cargar categories", null);

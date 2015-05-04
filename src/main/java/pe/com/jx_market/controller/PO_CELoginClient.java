@@ -69,7 +69,7 @@ public class PO_CELoginClient extends Div
         cli.setCompanyId(usu.getCompanyId());
         cli.setUserId(usu.getId());
         final ServiceInput input = new ServiceInput(cli);
-        input.setAccion(Constantes.V_GET);
+        input.setAction(Constantes.V_GET);
         final ServiceOutput output = clientService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             return (DTO_Client) output.getObject();

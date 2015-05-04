@@ -58,7 +58,7 @@ public class PO_CEProductos extends Window
             //product.setCategory(cat.getCodigo());
         }
         final ServiceInput input = new ServiceInput(product);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput output = productService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Product> lst = output.getLista();
@@ -204,7 +204,7 @@ public class PO_CEProductos extends Window
     private void setGraficoFoto(final DTO_Product product, final Image imgFoto)
     {
         final ServiceInput input = new ServiceInput(product);
-        input.setAccion(Constantes.V_GETIMG);
+        input.setAction(Constantes.V_GETIMG);
         final ServiceOutput output = productService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
             alertaInfo("", "El product" + product.getProductName() + "no posee imagen", null);

@@ -6,11 +6,22 @@ import java.util.Set;
 public class DTO_RoleModule
     implements Serializable
 {
+    private Integer id;
     private Integer roleId;
     private Integer moduleId;
     private Boolean active;
     private String accessTypesStr;
     private Set<String> accessTypes;
+
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public void setId(final Integer id)
+    {
+        this.id = id;
+    }
 
     public Integer getRole()
     {

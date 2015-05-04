@@ -61,7 +61,7 @@ public class PO_CECuentaClient extends Window
         pedAux.setCompany(Constantes.INSTITUCION_JX_MARKET);
 
         final ServiceInput input = new ServiceInput();
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         input.setObject(pedAux);
 
         final ServiceOutput output = pedidosService.execute(input);
@@ -147,7 +147,7 @@ public class PO_CECuentaClient extends Window
         prod.setId(codArt);
 
         final ServiceInput input = new ServiceInput();
-        input.setAccion(Constantes.V_GET);
+        input.setAction(Constantes.V_GET);
         input.setMapa(new HashMap<String, String>());
         input.setObject(prod);
         final ServiceOutput output = productService.execute(input);

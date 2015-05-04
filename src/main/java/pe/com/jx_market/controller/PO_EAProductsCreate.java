@@ -127,7 +127,7 @@ public class PO_EAProductsCreate
         final DTO_TradeMark marFi = new DTO_TradeMark();
         marFi.setCompanyId(company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo(logger, "", "Exito al cargar categories", null);
@@ -158,7 +158,7 @@ public class PO_EAProductsCreate
             product.setProductName(txtNombre.getValue());
             //product.setPrecio(decPrec.getValue());
             final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
-            input.setAccion(Constantes.V_REGISTER);
+            input.setAction(Constantes.V_REGISTER);
             final ServiceOutput<DTO_Product> output = productService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 final int resp = alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"),
@@ -205,7 +205,7 @@ public class PO_EAProductsCreate
                 }
 
                 ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
-                input.setAccion(Constantes.V_REGISTERCAT4PROD);
+                input.setAction(Constantes.V_REGISTERCAT4PROD);
                 ServiceOutput<DTO_Product> output = productService.execute(input);
                 boolean correct = true;
                 if (output.getErrorCode() != Constantes.OK) {
@@ -213,7 +213,7 @@ public class PO_EAProductsCreate
                     correct = false;
                 }
                 input = new ServiceInput<DTO_Product>(prod4DelCat);
-                input.setAccion(Constantes.V_DELETECAT4PROD);
+                input.setAction(Constantes.V_DELETECAT4PROD);
                 output = productService.execute(input);
                 if (output.getErrorCode() != Constantes.OK) {
                     alertaError(logger, "", "Error al eliminar categories para el producto", null);
@@ -262,7 +262,7 @@ public class PO_EAProductsCreate
         final DTO_Category cat = new DTO_Category();
         cat.setCompanyId(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);
         CategoryTreeNode categoryTreeNode = null;
         if (output.getErrorCode() == Constantes.OK) {
@@ -495,7 +495,7 @@ public class PO_EAProductsCreate
                     }
                 }
                 final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
-                input.setAccion(Constantes.V_REGISTERIMG4PROD);
+                input.setAction(Constantes.V_REGISTERIMG4PROD);
                 final ServiceOutput<DTO_Product> output = productService.execute(input);
                 if (output.getErrorCode() == Constantes.OK) {
                     alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Info.Label"),

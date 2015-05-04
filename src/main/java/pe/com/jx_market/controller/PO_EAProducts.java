@@ -140,7 +140,7 @@ public class PO_EAProducts
         final DTO_TradeMark marFi = new DTO_TradeMark();
         marFi.setCompanyId(company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_TradeMark> lstMar = output.getLista();
@@ -160,7 +160,7 @@ public class PO_EAProducts
         final DTO_Category cat = new DTO_Category();
         cat.setCompanyId(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo(logger, "", "Exito al cargar categories", null);
@@ -261,7 +261,7 @@ public class PO_EAProducts
             input.addMapPair("activo", cmbEstad.getSelectedItem().getValue());
         }
         input.addMapPair("company", company.getId());
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_Product> output = productService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Product> lst = output.getLista();

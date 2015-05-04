@@ -76,7 +76,7 @@ public class PO_EAAdministrateRoleEdit
         final DTO_Area areaSe = new DTO_Area();
         areaSe.setCompanyId(company.getId());
         final ServiceInput<DTO_Area> input = new ServiceInput<DTO_Area>(areaSe);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_Area> output = areaService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Area> listado = output.getLista();
@@ -105,7 +105,7 @@ public class PO_EAAdministrateRoleEdit
             role.setAreaId(((DTO_Area) cmbArea.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_AREA)).getId());
 
             final ServiceInput<DTO_Role> input = new ServiceInput<DTO_Role>(role);
-            input.setAccion(Constantes.V_REGISTER);
+            input.setAction(Constantes.V_REGISTER);
             final ServiceOutput<DTO_Role> output = roleService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 final int resp = alertaInfo(logger,

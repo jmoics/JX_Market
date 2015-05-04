@@ -48,7 +48,7 @@ public class ProductService
     public ServiceOutput<DTO_Product> execute(final ServiceInput<DTO_Product> input)
     {
         final ServiceOutput<DTO_Product> output = new ServiceOutput<DTO_Product>();
-        if (Constantes.V_LIST.equals(input.getAccion())) {
+        if (Constantes.V_LIST.equals(input.getAction())) {
             final List<DTO_Product> lstProds = productMapper.getProducts(input.getMapa());
             for (final DTO_Product prod : lstProds) {
                 for (final DTO_ProductImage img : prod.getImages()) {
@@ -58,7 +58,7 @@ public class ProductService
             output.setLista(lstProds);
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
+        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
             final DTO_Product prod = input.getObject();
             final DTO_Product prodTmp = productMapper.getProduct4Id(prod);
             if (prodTmp == null) {
@@ -68,7 +68,7 @@ public class ProductService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getAccion())) {
+        } else if (Constantes.V_GET.equals(input.getAction())) {
             final Map<?, ?> map = input.getMapa();
             final DTO_Product prod = productMapper.getProduct4Id(input.getObject());
             if (map == null) {
@@ -79,17 +79,17 @@ public class ProductService
             output.setObject(prod);
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_USTOCK.equals(input.getAccion())) {
+        } else if (Constantes.V_USTOCK.equals(input.getAction())) {
             productMapper.updateStock(input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GETIMG.equals(input.getAccion())) {
+        } else if (Constantes.V_GETIMG.equals(input.getAction())) {
             final DTO_Product prod = input.getObject();
             // loadPhoto(art);
             output.setObject(prod);
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTERCAT4PROD.equals(input.getAccion())) {
+        } else if (Constantes.V_REGISTERCAT4PROD.equals(input.getAction())) {
             final DTO_Product prod = input.getObject();
             for (final DTO_Category categ : prod.getCategories()) {
                 final DTO_Category2Product cat2Prod = new DTO_Category2Product();
@@ -102,7 +102,7 @@ public class ProductService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_DELETECAT4PROD.equals(input.getAccion())) {
+        } else if (Constantes.V_DELETECAT4PROD.equals(input.getAction())) {
             final DTO_Product prod = input.getObject();
             for (final DTO_Category categ : prod.getCategories()) {
                 final DTO_Category2Product cat2Prod = new DTO_Category2Product();
@@ -115,7 +115,7 @@ public class ProductService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTERIMG4PROD.equals(input.getAccion())) {
+        } else if (Constantes.V_REGISTERIMG4PROD.equals(input.getAction())) {
             final DTO_Product prod = input.getObject();
             for (final DTO_ProductImage img : prod.getImages()) {
                 // if(img.getImageName() == null) {

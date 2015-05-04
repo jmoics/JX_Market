@@ -83,7 +83,7 @@ public class PO_Index
     {
         final DTO_Category cat = new DTO_Category();
         final ServiceInput input = new ServiceInput(cat);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput output = categoryService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo("", "Exito al cargar categories", null);

@@ -23,11 +23,11 @@ public class AreaService
     public ServiceOutput<DTO_Area> execute(final ServiceInput<DTO_Area> input)
     {
         final ServiceOutput<DTO_Area> output = new ServiceOutput<DTO_Area>();
-        if (Constantes.V_LIST.equals(input.getAccion())) {
+        if (Constantes.V_LIST.equals(input.getAction())) {
             output.setLista(areaMapper.getAreas(input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
+        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
             final DTO_Area area = input.getObject();
             final DTO_Area areaTmp = areaMapper.getAreaXCodigo(area);
             if (areaTmp == null) {
@@ -37,12 +37,12 @@ public class AreaService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getAccion())) {
+        } else if (Constantes.V_GET.equals(input.getAction())) {
             final DTO_Area art = areaMapper.getAreaXCodigo(input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_DELETE.equals(input.getAccion())) {
+        } else if (Constantes.V_DELETE.equals(input.getAction())) {
             areaMapper.deleteArea(input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;

@@ -108,7 +108,7 @@ public class PO_EAProductsEdit
 
         product = (DTO_Product) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_PRODUCT);
         /*final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
-        input.setAccion(Constantes.V_GETIMG);
+        input.setAction(Constantes.V_GETIMG);
         final ServiceOutput<DTO_Product> output = productService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
             alertaInfo(logger, "", "El product" + product.getProductName() + "no posee imagen", null);
@@ -134,7 +134,7 @@ public class PO_EAProductsEdit
         final DTO_TradeMark marFi = new DTO_TradeMark();
         marFi.setCompanyId(company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo(logger, "", "Exito al cargar categories", null);
@@ -169,7 +169,7 @@ public class PO_EAProductsEdit
                 product.setNomimg(null);
             }*/
             final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
-            input.setAccion(Constantes.V_REGISTER);
+            input.setAction(Constantes.V_REGISTER);
             final ServiceOutput<DTO_Product> output = productService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 final int resp = alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsEdit.editProduct.Info.Label",
@@ -207,7 +207,7 @@ public class PO_EAProductsEdit
             }
 
             ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
-            input.setAccion(Constantes.V_REGISTERCAT4PROD);
+            input.setAction(Constantes.V_REGISTERCAT4PROD);
             ServiceOutput<DTO_Product> output = productService.execute(input);
             boolean correct = true;
             if (output.getErrorCode() != Constantes.OK) {
@@ -215,7 +215,7 @@ public class PO_EAProductsEdit
                 correct = false;
             }
             input = new ServiceInput<DTO_Product>(prod4DelCat);
-            input.setAccion(Constantes.V_DELETECAT4PROD);
+            input.setAction(Constantes.V_DELETECAT4PROD);
             output = productService.execute(input);
             if (output.getErrorCode() != Constantes.OK) {
                 alertaError(logger, "", "Error al eliminar categories para el producto", null);
@@ -292,7 +292,7 @@ public class PO_EAProductsEdit
         final DTO_Category cat = new DTO_Category();
         cat.setCompanyId(company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_Category> output = categoryService.execute(input);
         CategoryTreeNode categoryTreeNode = null;
         if (output.getErrorCode() == Constantes.OK) {
@@ -634,7 +634,7 @@ public class PO_EAProductsEdit
                     }
                 }
                 final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
-                input.setAccion(Constantes.V_REGISTERIMG4PROD);
+                input.setAction(Constantes.V_REGISTERIMG4PROD);
                 final ServiceOutput<DTO_Product> output = productService.execute(input);
                 if (output.getErrorCode() == Constantes.OK) {
                     alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Info.Label"),

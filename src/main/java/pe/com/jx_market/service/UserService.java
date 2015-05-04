@@ -50,16 +50,16 @@ public class UserService
     {
 
         final ServiceOutput output = new ServiceOutput();
-        if (Constantes.V_LIST.equals(input.getAccion())) {
+        if (Constantes.V_LIST.equals(input.getAction())) {
             final DTO_User user = (DTO_User) input.getObject();
             output.setLista(userDAO.getUsers(user));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getAccion())) {
+        } else if (Constantes.V_GET.equals(input.getAction())) {
             output.setObject(userDAO.getUser4Username((DTO_User) input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
-        }else if (Constantes.V_REGISTER.equals(input.getAccion())) {
+        }else if (Constantes.V_REGISTER.equals(input.getAction())) {
             final DTO_User user = (DTO_User) input.getObject();
             user.setPassword(encriptaPass(user.getPassword()));
             final DTO_User nonused = userDAO.getUser4Username(user);
@@ -70,11 +70,11 @@ public class UserService
                 output.setErrorCode(Constantes.ERROR_RC);
             }
             return output;
-        } else if (Constantes.V_DELETE.equals(input.getAccion())) {
+        } else if (Constantes.V_DELETE.equals(input.getAction())) {
             userDAO.eliminaUser((DTO_User) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if ("consultaSiEstaDisponible".equals(input.getAccion())) {
+        } else if ("consultaSiEstaDisponible".equals(input.getAction())) {
             final DTO_User us = userDAO.getUser4Username((DTO_User) input.getObject());
             if (us == null) {
                 output.setErrorCode(Constantes.OK);
@@ -82,7 +82,7 @@ public class UserService
                 output.setErrorCode(Constantes.ALREADY_USED);
             }
             return output;
-        } else if ("chgpass".equals(input.getAccion())) {
+        } else if ("chgpass".equals(input.getAction())) {
             final DTO_User user = (DTO_User) input.getObject();
             final String nuevoPassword = user.getPassword();
             final Map map = input.getMapa();

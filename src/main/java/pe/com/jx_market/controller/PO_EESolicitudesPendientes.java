@@ -60,7 +60,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         solAux.setEstado(Constantes.ST_PENDIENTE);
 
         final ServiceInput input = new ServiceInput();
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         input.setObject(solAux);
         final ServiceOutput output = solicitudService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
@@ -100,7 +100,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         final DTO_Solicitud sol = (DTO_Solicitud) lstSolicitud.getSelectedItem().getAttribute("solicitud");
         sol.setEstado(Constantes.ST_ACTIVO);
         final ServiceInput input = new ServiceInput();
-        input.setAccion(Constantes.V_REGISTER);
+        input.setAction(Constantes.V_REGISTER);
         input.setObject(sol);
         final ServiceOutput output = solicitudService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
@@ -112,7 +112,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         final DTO_Solicitud sol = (DTO_Solicitud) lstSolicitud.getSelectedItem().getAttribute("solicitud");
         sol.setEstado(Constantes.ST_CANCELADO);
         final ServiceInput input = new ServiceInput();
-        input.setAccion(Constantes.V_REGISTER);
+        input.setAction(Constantes.V_REGISTER);
         input.setObject(sol);
         final ServiceOutput output = solicitudService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
@@ -130,7 +130,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         company.setDocNumber(sol.getRuc());
 
         ServiceInput input = new ServiceInput();
-        input.setAccion(Constantes.V_REGISTER);
+        input.setAction(Constantes.V_REGISTER);
         input.setObject(company);
         ServiceOutput output = companyService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
@@ -139,7 +139,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
             area.setCompanyId(codEmp);
             area.setAreaName("Administrator");
             input = new ServiceInput();
-            input.setAccion(Constantes.V_REGISTER);
+            input.setAction(Constantes.V_REGISTER);
             input.setObject(area);
             output = areaService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
@@ -150,7 +150,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
                 perf.setCompanyId(codEmp);
                 perf.setRoleName("Administrator");
                 input = new ServiceInput();
-                input.setAccion(Constantes.V_REGISTER);
+                input.setAction(Constantes.V_REGISTER);
                 input.setObject(perf);
                 output = roleService.execute(input);
                 if (output.getErrorCode() == Constantes.OK) {
@@ -196,7 +196,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
                     mapUser.put("user", user);
 
                     input = new ServiceInput();
-                    input.setAccion(Constantes.V_REGISTER);
+                    input.setAction(Constantes.V_REGISTER);
                     input.setMapa(mapUser);
                     output = employeeService.execute(input);
                     if (output.getErrorCode() == Constantes.OK) {
@@ -214,7 +214,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         mod.setModuleResource(recurso);
 
         final ServiceInput input = new ServiceInput();
-        input.setAccion(Constantes.V_REGISTER);
+        input.setAction(Constantes.V_REGISTER);
         input.setObject(mod);
         final ServiceOutput output = moduleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
@@ -231,7 +231,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         perfMod.setRole(perf);
 
         final ServiceInput input = new ServiceInput();
-        input.setAccion(Constantes.V_REGISTERPM);
+        input.setAction(Constantes.V_REGISTERPM);
         input.setObject(perfMod);
         final ServiceOutput output = roleModuleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {

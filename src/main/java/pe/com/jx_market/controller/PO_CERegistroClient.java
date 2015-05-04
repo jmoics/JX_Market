@@ -94,7 +94,7 @@ public class PO_CERegistroClient
                     map.put("client", client);
                     map.put("user", user);
                     final ServiceInput input = new ServiceInput();
-                    input.setAccion(Constantes.V_REGISTER);
+                    input.setAction(Constantes.V_REGISTER);
                     input.setMapa(map);
                     final ServiceOutput output = clientService.execute(input);
                     if (output.getErrorCode() == Constantes.OK) {
@@ -126,7 +126,7 @@ public class PO_CERegistroClient
                     alertaInfo(msg, msg, null);
                 } else {
                     final ServiceInput input = new ServiceInput();
-                    input.setAccion(Constantes.V_REGISTER);
+                    input.setAction(Constantes.V_REGISTER);
                     input.setObject(solicitud);
                     final ServiceOutput output = solicitudService.execute(input);
                     if (output.getErrorCode() == Constantes.OK) {
@@ -333,7 +333,7 @@ public class PO_CERegistroClient
     {
         boolean dis = true;
         final ServiceInput input = new ServiceInput(user);
-        input.setAccion("consultaSiEstaDisponible");
+        input.setAction("consultaSiEstaDisponible");
         final ServiceOutput output = userService.execute(input);
         if (Constantes.ALREADY_USED == output.getErrorCode()) {
             dis = false;

@@ -24,11 +24,11 @@ public class SolicitudService
     {
         final ServiceOutput output = new ServiceOutput();
 
-        if (Constantes.V_LIST.equals(input.getAccion())) {
+        if (Constantes.V_LIST.equals(input.getAction())) {
             output.setLista(solicitudMapper.getSolicitudes((DTO_Solicitud) input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
+        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
             DTO_Solicitud solTmp = solicitudMapper.getSolicitudxCodigo((DTO_Solicitud) input.getObject());
             if (solTmp == null) {
                 solicitudMapper.insertSolicitud((DTO_Solicitud) input.getObject());
@@ -37,12 +37,12 @@ public class SolicitudService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getAccion())) {
+        } else if (Constantes.V_GET.equals(input.getAction())) {
             final DTO_Solicitud art = solicitudMapper.getSolicitudxCodigo((DTO_Solicitud) input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_DELETE.equals(input.getAccion())) {
+        } else if (Constantes.V_DELETE.equals(input.getAction())) {
             solicitudMapper.deleteSolicitud((DTO_Solicitud) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;

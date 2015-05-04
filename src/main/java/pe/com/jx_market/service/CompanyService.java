@@ -34,7 +34,7 @@ public class CompanyService
     @Transactional
     public ServiceOutput execute (final ServiceInput input) {
         final ServiceOutput output = new ServiceOutput();
-        if ("list".equals(input.getAccion())) {
+        if ("list".equals(input.getAction())) {
             String nombre = null;
             String ruc = null;
             if (input.getMapa() != null) {
@@ -45,7 +45,7 @@ public class CompanyService
             output.setLista(companyMapper.getCompanies(nombre, ruc));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAccion())) {
+        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
             final DTO_Company company = (DTO_Company) input.getObject();
             DTO_Company empTmp = companyMapper.getCompany4DocNumber(company);
             if (empTmp == null) {
@@ -57,7 +57,7 @@ public class CompanyService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if ("delete".equals(input.getAccion())) {
+        } else if ("delete".equals(input.getAction())) {
             companyMapper.deleteCompany((String) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;

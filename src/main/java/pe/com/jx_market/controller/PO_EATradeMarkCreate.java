@@ -62,7 +62,7 @@ public class PO_EATradeMarkCreate
             newTrMk.setTradeMarkName(txtTradeMarkName.getValue());
             newTrMk.setCompanyId(company.getId());
             final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(newTrMk);
-            input.setAccion(Constantes.V_REGISTER);
+            input.setAction(Constantes.V_REGISTER);
             final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 final int resp = alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAPTradeMarkCreate.createTradeMark.Info.Label"),

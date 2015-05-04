@@ -54,12 +54,12 @@ public class ClientService
     public ServiceOutput execute (final ServiceInput input) {
 
         final ServiceOutput output = new ServiceOutput();
-        if (Constantes.V_LIST.equals(input.getAccion())) {
+        if (Constantes.V_LIST.equals(input.getAction())) {
             final DTO_Client client = (DTO_Client) input.getObject();
             output.setLista(clientMapper.getClients(client));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_GET.equals(input.getAccion())) {
+        } else if (Constantes.V_GET.equals(input.getAction())) {
             final DTO_Client client = (DTO_Client) input.getObject();
             final List<DTO_Client> cliLstTmp = clientMapper.getClients(client);
             if (cliLstTmp != null && !cliLstTmp.isEmpty()) {
@@ -67,14 +67,14 @@ public class ClientService
                 output.setErrorCode(Constantes.OK);
             }
             return output;
-        }else if (Constantes.V_REGISTER.equals(input.getAccion())) {
+        }else if (Constantes.V_REGISTER.equals(input.getAction())) {
             final Map map = input.getMapa();
             final DTO_Client client = (DTO_Client) map.get("client");
             DTO_User user = (DTO_User) map.get("user");
             final ServiceInput inp = new ServiceInput(user);
             if(user != null) {
                 if (user.getId() == null) {
-                    inp.setAccion(Constantes.V_REGISTER);
+                    inp.setAction(Constantes.V_REGISTER);
                     final ServiceOutput out = userService.execute(inp);
                     if (out.getErrorCode() == Constantes.OK) {
                         user = getUser(user);
@@ -86,7 +86,7 @@ public class ClientService
                     map2.put("nonPass", "nonPass");
                     map2.put("oldPass", null);
                     inp.setMapa(map2);
-                    inp.setAccion("chgpass");
+                    inp.setAction("chgpass");
                     final ServiceOutput out = userService.execute(inp);
                     if (out.getErrorCode() == Constantes.OK) {
                         logger.info("El password fue cambiado correctamente");
@@ -104,7 +104,7 @@ public class ClientService
             }
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_DELETE.equals(input.getAccion())) {
+        } else if (Constantes.V_DELETE.equals(input.getAction())) {
             clientMapper.eliminaClient((DTO_Client) input.getObject());
             output.setErrorCode(Constantes.OK);
             return output;
@@ -115,7 +115,7 @@ public class ClientService
 
     private DTO_User getUser(final DTO_User user) {
         final ServiceInput inp = new ServiceInput(user);
-        inp.setAccion(Constantes.V_GET);
+        inp.setAction(Constantes.V_GET);
         final ServiceOutput out = userService.execute(inp);
         if(out.getErrorCode() == Constantes.OK) {
             return (DTO_User) out.getObject();

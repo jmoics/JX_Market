@@ -97,7 +97,7 @@ public class PO_EAAdministrateEmployee
     {
 
         final ServiceInput input = new ServiceInput(employee);
-        input.setAccion("delete");
+        input.setAction("delete");
         final ServiceOutput output = employeeService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             logger.info("El contacto se elimino correctamente");
@@ -161,7 +161,7 @@ public class PO_EAAdministrateEmployee
         } else {
             employee.setId(emp.getId());
         }
-        input.setAccion(Constantes.V_REGISTER);
+        input.setAction(Constantes.V_REGISTER);
         input.setMapa(map);
         final ServiceOutput output = employeeService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
@@ -286,7 +286,7 @@ public class PO_EAAdministrateEmployee
         final DTO_Employee emp = new DTO_Employee();
         emp.setCompanyId(company.getId());
         final ServiceInput input = new ServiceInput(emp);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput output = employeeService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Employee> ulist = output.getLista();
@@ -416,7 +416,7 @@ public class PO_EAAdministrateEmployee
         user.setId(codigo);
         user.setCompanyId(company.getId());
         final ServiceInput input = new ServiceInput(user);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput output = userService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             return (DTO_User) output.getLista().get(0);
@@ -431,7 +431,7 @@ public class PO_EAAdministrateEmployee
         role.setId(codigo);
         role.setCompanyId(company.getId());
         final ServiceInput input = new ServiceInput(role);
-        input.setAccion(Constantes.V_GET);
+        input.setAction(Constantes.V_GET);
         final ServiceOutput output = roleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             return (DTO_Role) output.getObject();
@@ -445,7 +445,7 @@ public class PO_EAAdministrateEmployee
         final DTO_Role per = new DTO_Role();
         per.setCompanyId(company.getId());
         final ServiceInput input = new ServiceInput(per);
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput output = roleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Role> listado = output.getLista();

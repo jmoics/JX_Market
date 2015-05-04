@@ -82,7 +82,7 @@ public class PO_EATradeMarkEdit
             tradeMark.setActive((Boolean) cmbActive.getSelectedItem().getValue());
             tradeMark.setTradeMarkName(txtTradeMarkName.getValue());
             final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(tradeMark);
-            input.setAccion(Constantes.V_REGISTER);
+            input.setAction(Constantes.V_REGISTER);
             final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 final int resp = alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAPTradeMarkEdit.editTradeMark.Info.Label",

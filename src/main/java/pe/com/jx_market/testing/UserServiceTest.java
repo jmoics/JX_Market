@@ -40,13 +40,13 @@ public class UserServiceTest {
         unew.setCompanyId(3);
 
         final ServiceInput input = new ServiceInput(unew);
-        input.setAccion("register");
+        input.setAction("register");
         final ServiceOutput output = userService.execute(input);
         assertEquals(Constantes.OK, output.getErrorCode());
 
         // ahora debe aparecer en el listado
         final ServiceInput inputList = new ServiceInput(unew.getCompanyId());
-        inputList.setAccion("list");
+        inputList.setAction("list");
         final ServiceOutput outputList = userService.execute(inputList);
         assertEquals(Constantes.OK, outputList.getErrorCode());
 
@@ -88,7 +88,7 @@ public class UserServiceTest {
         user.setPassword("xyz");
         user.setCompanyId(1);
         final ServiceInput input = new ServiceInput(user);
-        input.setAccion("chgpass");
+        input.setAction("chgpass");
         final Map<String, String> mapa = new HashMap<String, String>();
         mapa.put("oldPass", "jmoics");
         input.setMapa(mapa);

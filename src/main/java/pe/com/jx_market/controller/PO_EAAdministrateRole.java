@@ -64,7 +64,7 @@ public class PO_EAAdministrateRole
         roleSe.setCompanyId(company.getId());
         final ServiceInput<DTO_Role> input = new ServiceInput<DTO_Role>(roleSe);
 
-        input.setAccion(Constantes.V_LIST);
+        input.setAction(Constantes.V_LIST);
         final ServiceOutput<DTO_Role> output = roleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Role> roleLst = output.getLista();
@@ -141,7 +141,7 @@ public class PO_EAAdministrateRole
             if (Messagebox.OK == verifyDelete) {
                 final DTO_Role role = (DTO_Role) lstRole.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_ROLE);
                 final ServiceInput<DTO_Role> input = new ServiceInput<DTO_Role>(role);
-                input.setAccion(Constantes.V_DELETE);
+                input.setAction(Constantes.V_DELETE);
                 final ServiceOutput<DTO_Role> output = roleService.execute(input);
                 if (output.getErrorCode() == Constantes.OK) {
                     alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRole.deleteRole.Info.Label"),
