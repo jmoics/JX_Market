@@ -44,8 +44,6 @@
         <center autoscroll="true" sclass="s-center2">
             <listbox id="lstRoleModule" mold="paging" pagingPosition="bottom" autopaging="true" sizedByContent="true"  hflex="1" vflex="1">
                 <listhead>
-                    <listheader label="Nº" id="headNumber" width="30px"/>
-                    <listheader label="${labels.pe.com.jx_market.eAAdministrateRoleModule.Resource.Label}" sort="auto" hflex="2"/>
                 </listhead>
             </listbox>
         </center>

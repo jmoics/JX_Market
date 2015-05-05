@@ -7,13 +7,19 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Desktop;
+import org.zkoss.zk.ui.UiException;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zkmax.zul.Chosenbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listheader;
@@ -36,6 +42,7 @@ import pe.com.jx_market.utilities.ServiceOutputConnection;
 public class PO_EAAdministrateRoleModule
     extends SecuredComposer<Window>
 {
+
     static Log logger = LogFactory.getLog(PO_EAAdministrateRoleModule.class);
     @Wire
     private Combobox cmbArea;
@@ -45,6 +52,8 @@ public class PO_EAAdministrateRoleModule
     private Chosenbox chbRole;
     @WireVariable
     private BusinessService<DTO_Area> areaService;
+    @WireVariable
+    private BusinessService<DTO_Role> roleService;
     @WireVariable
     private BusinessServiceConnection<DTO_RoleModule, DTO_Role, DTO_Module> roleModuleService;
     @WireVariable
@@ -57,15 +66,24 @@ public class PO_EAAdministrateRoleModule
     {
         super.doAfterCompose(_comp);
         company = (DTO_Company) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
-        cargarAreas(cmbArea);
-        //CargarTabla();
+        loadAreas(cmbArea);
+        // CargarTabla();
     }
 
     @Listen("onClick = #btnSearch")
     public void searchProducts()
     {
-        lstRoleModule.getHeads().clear();
+        lstRoleModule.getListhead().getChildren().clear();
         lstRoleModule.getItems().clear();
+        Listheader lstHeader = new Listheader();
+        lstHeader.setWidth("30px");
+        lstHeader.setLabel(Labels.getLabel("pe.com.jx_market.eAAdministrateRoleModule.Number.Label"));
+        lstRoleModule.getListhead().appendChild(lstHeader);
+        lstHeader = new Listheader();
+        lstHeader.setSort("auto");
+        lstHeader.setHflex("2");
+        lstHeader.setLabel(Labels.getLabel("pe.com.jx_market.eAAdministrateRoleModule.Resource.Label"));
+        lstRoleModule.getListhead().appendChild(lstHeader);
         if (cmbArea.getSelectedItem() != null) {
             final ServiceInputConnection<DTO_RoleModule, DTO_Role, DTO_Module> input =
                             new ServiceInputConnection<DTO_RoleModule, DTO_Role, DTO_Module>();
@@ -73,7 +91,8 @@ public class PO_EAAdministrateRoleModule
             final DTO_Module moduSe = new DTO_Module();
             moduSe.setCompanyId(company.getId());
             input.setObjectTo(moduSe);
-            final Integer areaId = ((DTO_Area) cmbArea.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_AREA)).getId();
+            final Integer areaId = ((DTO_Area) cmbArea.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_AREA))
+                            .getId();
             input.addMapPair("companyId", company.getId());
             input.addMapPair("areaId", areaId);
             final List<Integer> lstRolId = new ArrayList<Integer>();
@@ -85,13 +104,15 @@ public class PO_EAAdministrateRoleModule
                 input.addMapPair("lstRoles", lstRolId);
             }
 
-            final ServiceOutputConnection<DTO_RoleModule, DTO_Role, DTO_Module> output = roleModuleService.execute(input);
+            final ServiceOutputConnection<DTO_RoleModule, DTO_Role, DTO_Module> output = roleModuleService
+                            .execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 final List<DTO_Module> modules = output.getResultListTo();
                 final List<DTO_Role> roles = output.getResultListFrom();
-                for (int i=0; i<roles.size(); i++) {
-                    final Listheader lstHeader = new Listheader();
+                for (int i = 0; i < roles.size(); i++) {
+                    lstHeader = new Listheader();
                     lstHeader.setLabel(roles.get(i).getRoleName());
+                    lstHeader.setHflex("2");
                     lstRoleModule.getListhead().appendChild(lstHeader);
                 }
                 int columnNumber = 1;
@@ -102,11 +123,16 @@ public class PO_EAAdministrateRoleModule
                     cell = new Listcell(modu.getModuleResource());
                     item.appendChild(cell);
                     for (final DTO_Role role : roles) {
-                        final Set<DTO_Module> setModules = new HashSet<DTO_Module>(role.getModules());
-                        if (setModules.contains(modu)) {
-                            cell = new Listcell("Active");
+                        final Set<Integer> setModules = new HashSet<Integer>();
+                        for (final DTO_Module mo : role.getModules()) {
+                            setModules.add(mo.getId());
+                        }
+                        if (setModules.contains(modu.getId())) {
+                            cell = new Listcell(
+                                            Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRoleModule.searchProducts.Active"));
                         } else {
-                            cell = new Listcell("Inactive");
+                            cell = new Listcell(
+                                            Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRoleModule.searchProducts.Inactive"));
                         }
                         item.appendChild(cell);
                     }
@@ -115,10 +141,13 @@ public class PO_EAAdministrateRoleModule
                     columnNumber++;
                 }
             }
+        } else {
+            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRoleModule.searchProducts.Info.Label"),
+                        Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRoleModule.searchProducts.Info.Label"), null);
         }
     }
 
-    private void cargarAreas(final Combobox combo)
+    private void loadAreas(final Combobox combo)
     {
         final DTO_Area ar = new DTO_Area();
         ar.setCompanyId(company.getId());
@@ -132,15 +161,49 @@ public class PO_EAAdministrateRoleModule
                 item.setAttribute(Constantes.ATTRIBUTE_AREA, area);
                 combo.appendChild(item);
             }
+            combo.addEventListener(Events.ON_SELECT, new EventListener<Event>()
+            {
+                @Override
+                public void onEvent(final Event e)
+                    throws UiException
+                {
+                    final DTO_Area area = (DTO_Area) ((Combobox) e.getTarget()).getSelectedItem()
+                                        .getAttribute(Constantes.ATTRIBUTE_AREA);
+                    loadRoles(area.getId());
+                }
+            });
         } else {
             alertaError(logger, "Error en la carga de areas",
                             "error al cargar los areas", null);
         }
     }
 
+    private void loadRoles(final Integer _areaId)
+    {
+        final DTO_Role rolSe = new DTO_Role();
+        rolSe.setCompanyId(company.getId());
+        rolSe.setAreaId(_areaId);
+        final ServiceInput<DTO_Role> input = new ServiceInput<DTO_Role>(rolSe);
+        input.setAction(Constantes.V_LIST);
+        final ServiceOutput<DTO_Role> output = roleService.execute(input);
+        if (output.getErrorCode() == Constantes.OK) {
+            final List<DTO_Role> lstRoles = output.getLista();
+            final ListModelList<DTO_Role> modelRole = new ListModelList<DTO_Role>(lstRoles);
+            chbRole.setModel(modelRole);
+        }
+    }
+
+    @Listen("onClick = #btnClean")
+    public void cleanSearch()
+    {
+        chbRole.clearSelection();
+        cmbArea.setSelectedItem(null);
+        cmbArea.setValue(null);
+    }
+
     @Override
     String[] requiredResources()
     {
-        return new String[]{Constantes.MODULE_ADM_ROLEMODULE };
+        return new String[] { Constantes.MODULE_ADM_ROLEMODULE };
     }
 }

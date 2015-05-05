@@ -21,6 +21,9 @@
             T_COM_AREA area ON rol.areaid = area.id
         WHERE
             rol.companyid = #{companyId}
+            <if test="areaId != null">AND
+                rol.areaid = #{areaId}
+            </if>
     </select>
 
     <select id="getRole4Id" parameterType="DTO_Role" resultMap="roleResultMap">
@@ -73,9 +76,9 @@
                         #{id, jdbcType=INTEGER}
                 </foreach>
             </if>
-            <if test="id != null">AND
+            <!-- <if test="id != null">AND
                 rol.id = #{id, jdbcType=INTEGER}
-            </if>
+            </if>-->
         </where>
     </select>
 

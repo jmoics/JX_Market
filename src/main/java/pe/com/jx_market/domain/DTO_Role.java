@@ -83,4 +83,10 @@ public class DTO_Role
     {
         this.area = area;
     }
+
+    @Override
+    public String toString()
+    {
+        return this.roleName;
+    }
 }
