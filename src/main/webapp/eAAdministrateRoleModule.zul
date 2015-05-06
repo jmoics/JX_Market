@@ -8,7 +8,7 @@
 </style>
 <window apply="pe.com.jx_market.controller.PO_EAAdministrateRoleModule" id="wEARM" hflex="1" vflex="1">
     <borderlayout id="bl" hflex="1" vflex="1">
-        <north size="20%" collapsible="false" sclass="s-north">
+        <north size="21%" collapsible="false" sclass="s-north">
             <vbox hflex="1" vflex="1" align="center">
                 <label zclass="z-south-header" sclass="s-header">
                     ${labels.pe.com.jx_market.eAAdministrateRoleModule.Title}

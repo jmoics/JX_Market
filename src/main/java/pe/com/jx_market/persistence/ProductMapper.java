@@ -16,7 +16,7 @@ import pe.com.jx_market.domain.DTO_ProductImage;
  */
 public interface ProductMapper
 {
-    public List<DTO_Product> getProducts (Map<Object, Object> parameterMap);
+    public List<DTO_Product> getProducts (Map<? extends Object, ? extends Object> parameterMap);
     public DTO_Product getProduct4Id (DTO_Product art);
     public int insertProduct (DTO_Product art);
     public boolean updateProduct (DTO_Product art);

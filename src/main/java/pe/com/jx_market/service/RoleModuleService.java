@@ -1,5 +1,9 @@
 package pe.com.jx_market.service;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +50,7 @@ public class RoleModuleService
             output.setErrorCode(Constantes.OK);
             return output;
         } else if(Constantes.V_REGISTER.equals(input.getAction())) {
-            /*final Map<DTO_Role, Set<DTO_RoleModule>> mapa = input.getMapa();
+            final Map<DTO_Role, Set<DTO_RoleModule>> mapa = (Map<DTO_Role, Set<DTO_RoleModule>>) input.getMapa();
             final Iterator<DTO_Role> roleIterator = mapa.keySet().iterator();
             while(roleIterator.hasNext()) {
                 final DTO_Role role = roleIterator.next();
@@ -60,7 +64,7 @@ public class RoleModuleService
                     roleModuleMapper.insertModuleRole(perfMod);
                 }
             }
-            output.setErrorCode(Constantes.OK);*/
+            output.setErrorCode(Constantes.OK);
             return output;
         } else if(Constantes.V_REGISTERPM.equals(input.getAction())) {
             final DTO_RoleModule perfMod = input.getObject();

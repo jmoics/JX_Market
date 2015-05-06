@@ -1,18 +1,22 @@
 package pe.com.jx_market.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Desktop;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
@@ -50,6 +54,8 @@ public class PO_EAAdministrateRoleModule
     private Listbox lstRoleModule;
     @Wire
     private Chosenbox chbRole;
+    @Wire
+    private Window wEARM;
     @WireVariable
     private BusinessService<DTO_Area> areaService;
     @WireVariable
@@ -109,6 +115,8 @@ public class PO_EAAdministrateRoleModule
             if (output.getErrorCode() == Constantes.OK) {
                 final List<DTO_Module> modules = output.getResultListTo();
                 final List<DTO_Role> roles = output.getResultListFrom();
+                desktop.getSession().setAttribute(Constantes.ATTRIBUTE_ROLEMODULE, roles);
+                desktop.getSession().setAttribute(Constantes.ATTRIBUTE_MODULE, modules);
                 for (int i = 0; i < roles.size(); i++) {
                     lstHeader = new Listheader();
                     lstHeader.setLabel(roles.get(i).getRoleName());
@@ -120,7 +128,7 @@ public class PO_EAAdministrateRoleModule
                     final Listitem item = new Listitem();
                     Listcell cell = new Listcell("" + columnNumber);
                     item.appendChild(cell);
-                    cell = new Listcell(modu.getModuleResource());
+                    cell = new Listcell(modu.getModuleDescription());
                     item.appendChild(cell);
                     for (final DTO_Role role : roles) {
                         final Set<Integer> setModules = new HashSet<Integer>();
@@ -199,6 +207,25 @@ public class PO_EAAdministrateRoleModule
         chbRole.clearSelection();
         cmbArea.setSelectedItem(null);
         cmbArea.setValue(null);
+    }
+
+    @Listen("onClick = #btnEdit")
+    public void runWindowEdit(final MouseEvent event) {
+        if (desktop.getSession().getAttribute(Constantes.ATTRIBUTE_ROLEMODULE) != null
+                        && desktop.getSession().getAttribute(Constantes.ATTRIBUTE_MODULE) != null) {
+            final Map<String, Object> dataArgs = new HashMap<String, Object>();
+            dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
+            final Window w = (Window) Executions.createComponents(Constantes.Form.ROLEMODULE_EDIT_FORM.getForm(),
+                            null, dataArgs);
+            w.setPage(wEARM.getPage());
+            //w.setParent(wEAT);
+            w.doModal();
+            //w.doHighlighted();
+            //w.doEmbedded();
+        } else {
+            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRoleModule.runWindowEdit.Info.Label"),
+                                "No se selecciono un registro a editar", null);
+        }
     }
 
     @Override

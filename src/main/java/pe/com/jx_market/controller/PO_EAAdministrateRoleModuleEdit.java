@@ -9,19 +9,25 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Foot;
 import org.zkoss.zul.Footer;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
+import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Area;
 import pe.com.jx_market.domain.DTO_Company;
@@ -29,262 +35,207 @@ import pe.com.jx_market.domain.DTO_Module;
 import pe.com.jx_market.domain.DTO_Role;
 import pe.com.jx_market.domain.DTO_RoleModule;
 import pe.com.jx_market.utilities.BusinessService;
+import pe.com.jx_market.utilities.BusinessServiceConnection;
 import pe.com.jx_market.utilities.Constantes;
-import pe.com.jx_market.utilities.ServiceInput;
-import pe.com.jx_market.utilities.ServiceOutput;
+import pe.com.jx_market.utilities.ServiceInputConnection;
+import pe.com.jx_market.utilities.ServiceOutputConnection;
 
 public class PO_EAAdministrateRoleModuleEdit
-    extends SecuredWindow
+    extends SecuredComposer<Window>
 {
     static Log logger = LogFactory.getLog(PO_EAAdministrateRoleModuleEdit.class);
-    private Grid gr_recursos;
-    private Button b_info, b_cancel, b_edit;
+    @Wire
+    private Grid grdRoleModule;
+    @Wire
     private Foot f_buttons;
-    private Combobox cmbArea;
-
-    private BusinessService roleModuleService, areaService;
+    @Wire
+    private Window wEARME;
+    @WireVariable
+    private BusinessServiceConnection<DTO_RoleModule, DTO_Role, DTO_Module> roleModuleService;
+    @WireVariable
+    private BusinessService<DTO_Area> areaService;
+    @WireVariable
+    private Desktop desktop;
     private DTO_Company company;
+    List<DTO_Role> roles;
+    List<DTO_Module> modules;
+    PO_EAAdministrateRoleModule roleModuleParentUI;
 
+    @SuppressWarnings("unchecked")
     @Override
-    public void realOnCreate()
+    public void doAfterCompose(final Window _comp)
+        throws Exception
     {
-        gr_recursos = (Grid) getFellow("gr_recursos");
-        b_info = (Button) getFellow("b_info");
-        b_edit = (Button) getFellow("b_edit");
-        b_cancel = (Button) getFellow("b_cancel");
-        f_buttons = (Foot) getFellow("f_buttons");
-        cmbArea = (Combobox) getFellow("cmbArea");
-        roleModuleService = ContextLoader.getService(this, "roleModuleService");
-        areaService = ContextLoader.getService(this, "areaService");
-        company = (DTO_Company) getDesktop().getSession().getAttribute("company");
-        cargarAreas(cmbArea);
-        //CargarTabla();
-    }
+        super.doAfterCompose(_comp);
+        company = (DTO_Company) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
 
-    public void editar()
-    {
-        for (int i = 0; i < gr_recursos.getRows().getChildren().size(); i++) {
-            for (int j = 1; j < gr_recursos.getColumns().getChildren().size(); j++) {
-                ((Checkbox) gr_recursos.getCell(i, j)).setDisabled(false);
-                ((Button) ((Footer) gr_recursos.getFoot().getChildren().get(j)).getChildren().get(0)).setDisabled(false);
-            }
-        }
-        b_edit.setVisible(false);
-        b_info.setVisible(true);
-        b_cancel.setVisible(true);
+        roles = (List<DTO_Role>) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_ROLEMODULE);
+        modules = (List<DTO_Module>) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_MODULE);
 
-    }
-
-    public void cancelar()
-    {
-        b_edit.setVisible(true);
-        b_info.setVisible(false);
-        b_cancel.setVisible(false);
-        CargarTabla();
-    }
-
-    public void pintarColumna(final DTO_Role role)
-    {
-        for (int j = 1; j < gr_recursos.getColumns().getChildren().size(); j++) {
-            if (((String) ((Column) gr_recursos.getColumns().getChildren().get(j)).getAttribute("role"))
-                                                                                                    .equals(role)) {
-                for (int i = 0; i < gr_recursos.getRows().getChildren().size(); i++) {
-                    ((Checkbox) gr_recursos.getCell(i, j)).setChecked(true);
-                }
-            }
-        }
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void CargarTabla()
-    {
-        if(gr_recursos.getPageCount() > 1) {
-            gr_recursos.getPagingChild().getTotalSize();
-            gr_recursos.getPagingChild().getPageCount();
-            gr_recursos.getPagingChild().getPageIncrement();
-            gr_recursos.getPagingChild().getPageSize();
-            gr_recursos.getPagingChild().getActivePage();
-            gr_recursos.getPagingChild().getChildren().clear();
-        }
-        gr_recursos.setActivePage(0);
-        gr_recursos.getFoot().getChildren().clear();
-        gr_recursos.getRows().getChildren().clear();
-        gr_recursos.getColumns().getChildren().clear();
-
-        Column columna = new Column();
-        columna.appendChild(new Label("Modules"));
-
-        Footer F = new Footer();
-        F.appendChild(new Label(""));
-        f_buttons.appendChild(F);
-        gr_recursos.getColumns().appendChild(columna);
-
-        final DTO_Module modL = new DTO_Module();
-        modL.setCompanyId(company.getId());
-        final DTO_Role perL = new DTO_Role();
-        perL.setCompanyId(company.getId());
-        final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("role", perL);
-        map.put("module", modL);
-        final ServiceInput input = new ServiceInput();
-        input.setMapa(map);
-        input.setAction(Constantes.V_LIST);
-
-        final ServiceOutput output = roleModuleService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Module> listaMod = output.getLista();
-            for (final DTO_Module dto : listaMod) {
-                final Row fila = new Row();
-                fila.setAttribute("module", dto);
-                fila.appendChild(new Label(dto.getModuleDescription()));
-                gr_recursos.getRows().appendChild(fila);
-                /*
-                 * columna = new Column(); columna.setAttribute("codigo",
-                 * dto.getCodigo()); columna.appendChild(new
-                 * Label(dto.getDescripcion())); columna.setAlign("center");
-                 * gr_recursos.getColumns().appendChild(columna);
-                 */
-            }
-
-            final Map<DTO_Role, Set<Integer>> mapa = output.getMapa();
-            final Iterator roleIterator = mapa.keySet().iterator();
-
-            while (roleIterator.hasNext()) {
-                final DTO_Role role = (DTO_Role) roleIterator.next();
-                if(role.getAreaId().equals(((DTO_Area)cmbArea.getSelectedItem().getAttribute("area")).getId())) {
-                    columna = new Column();
-                    columna.setAttribute("role", role);
-                    columna.appendChild(new Label(role.getRoleName()));
-                    columna.setAlign("center");
-
-                    final Set perfMod = mapa.get(role);
-                    // verificar para todos los tipos de bloqueo:
-                    int i = 0;
-                    for (final DTO_Module dto : listaMod) {
-                        final Checkbox C = new Checkbox();
-                        C.setDisabled(true);
-                        C.setAttribute("role", role);
-                        if (perfMod.contains(dto.getId())) {
-                            C.setChecked(true);
-                        }
-                        ((Row) gr_recursos.getRows().getChildren().get(i)).appendChild(C);
-                        // columna.appendChild(C);
-                        i++;
-                    }
-                    F = new Footer();
-
-                    final Button todos = new Button("Todos");
-                    todos.addEventListener("onClick",
-                                    new org.zkoss.zk.ui.event.EventListener() {
-                                        @Override
-                                        public void onEvent(final Event e)
-                                            throws UiException
-                                        {
-                                            final DTO_Role codigo = (DTO_Role) e.getTarget().getAttribute("role");
-                                            pintarColumna(codigo);
-                                        }
-                                    });
-                    todos.setDisabled(true);
-                    todos.setAttribute("role", role);
-                    F.appendChild(todos);
-                    f_buttons.appendChild(F);
-                    gr_recursos.getColumns().appendChild(columna);
-                }
-            }
+        if (roles == null || modules == null) {
+            alertaInfo(logger, "", "No se encontro role, retornando a busqueda", null);
         } else {
-            alertaError("Error al cargar los modules por role", "Error al cargar los modules por role", null);
+            // Obtenemos el controlador de la pantalla principal de marcas.
+            final Map<?, ?> mapArg = desktop.getExecution().getArg();
+            roleModuleParentUI = (PO_EAAdministrateRoleModule) mapArg.get(Constantes.ATTRIBUTE_PARENTFORM);
+            loadData();
         }
     }
 
-    public void actualizar()
+    public void printColumn(final DTO_Role role)
+    {
+        for (int j = 1; j < grdRoleModule.getColumns().getChildren().size(); j++) {
+            if (((String) ((Column) grdRoleModule.getColumns().getChildren().get(j))
+                            .getAttribute(Constantes.ATTRIBUTE_ROLE)).equals(role)) {
+                for (int i = 0; i < grdRoleModule.getRows().getChildren().size(); i++) {
+                    ((Checkbox) grdRoleModule.getCell(i, j)).setChecked(true);
+                }
+            }
+        }
+    }
+
+    public void loadData()
+    {
+        if(grdRoleModule.getPageCount() > 1) {
+            grdRoleModule.getPagingChild().getTotalSize();
+            grdRoleModule.getPagingChild().getPageCount();
+            grdRoleModule.getPagingChild().getPageIncrement();
+            grdRoleModule.getPagingChild().getPageSize();
+            grdRoleModule.getPagingChild().getActivePage();
+            grdRoleModule.getPagingChild().getChildren().clear();
+        }
+        grdRoleModule.setActivePage(0);
+        grdRoleModule.getFoot().getChildren().clear();
+        grdRoleModule.getRows().getChildren().clear();
+        grdRoleModule.getColumns().getChildren().clear();
+
+        Column column = new Column();
+        column.setHflex("3");
+        column.appendChild(new Label(Labels
+                        .getLabel("pe.com.jx_market.PO_EAAdministrateRoleModuleEdit.loadData.Modules.Label")));
+
+        Footer footer = new Footer();
+        footer.appendChild(new Label(""));
+        f_buttons.appendChild(footer);
+        grdRoleModule.getColumns().appendChild(column);
+
+        final List<DTO_Module> listaMod = modules;
+        for (final DTO_Module dto : listaMod) {
+            final Row fila = new Row();
+            fila.setAttribute(Constantes.ATTRIBUTE_MODULE, dto);
+            fila.appendChild(new Label(dto.getModuleDescription()));
+            grdRoleModule.getRows().appendChild(fila);
+            /*
+             * columna = new Column(); columna.setAttribute("codigo",
+             * dto.getCodigo()); columna.appendChild(new
+             * Label(dto.getDescripcion())); columna.setAlign("center");
+             * grdRoleModule.getColumns().appendChild(columna);
+             */
+        }
+
+        final Iterator<DTO_Role> roleIterator = roles.iterator();
+
+        while (roleIterator.hasNext()) {
+            final DTO_Role role = roleIterator.next();
+
+            column = new Column();
+            column.setHflex("1");
+            column.setAttribute(Constantes.ATTRIBUTE_ROLE, role);
+            column.appendChild(new Label(role.getRoleName()));
+            column.setAlign("center");
+
+            final Set<Integer> setModules = new HashSet<Integer>();
+            for (final DTO_Module mo : role.getModules()) {
+                setModules.add(mo.getId());
+            }
+            // verificar para todos los tipos de bloqueo:
+            int i = 0;
+            for (final DTO_Module modu : listaMod) {
+                final Checkbox check = new Checkbox();
+                //check.setDisabled(true);
+                check.setAttribute(Constantes.ATTRIBUTE_ROLE, role);
+                if (setModules.contains(modu.getId())) {
+                    check.setChecked(true);
+                }
+                ((Row) grdRoleModule.getRows().getChildren().get(i)).appendChild(check);
+                // columna.appendChild(C);
+                i++;
+            }
+            footer = new Footer();
+
+            final Button selectAll = new Button(Labels
+                            .getLabel("pe.com.jx_market.PO_EAAdministrateRoleModuleEdit.loadData.All.Label"));
+            selectAll.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+                @Override
+                public void onEvent(final Event e)
+                    throws UiException
+                {
+                    final DTO_Role codigo = (DTO_Role) e.getTarget().getAttribute(Constantes.ATTRIBUTE_ROLE);
+                    printColumn(codigo);
+                }
+            });
+            selectAll.setAttribute(Constantes.ATTRIBUTE_ROLE, role);
+            footer.appendChild(selectAll);
+            f_buttons.appendChild(footer);
+            grdRoleModule.getColumns().appendChild(column);
+        }
+
+    }
+
+    @Listen("onClick = #btnSave")
+    public void editRoleModule()
     {
         final HashMap<DTO_Role, Set<DTO_RoleModule>> mapa = new HashMap<DTO_Role, Set<DTO_RoleModule>>();
 
-        for (int j = 1; j < gr_recursos.getColumns().getChildren().size(); j++) {
-            final DTO_Role role = ((DTO_Role) ((Column) gr_recursos.getColumns().getChildren().get(j))
-                                                                                            .getAttribute("role"));
+        for (int j = 1; j < grdRoleModule.getColumns().getChildren().size(); j++) {
+            final DTO_Role role = ((DTO_Role) ((Column) grdRoleModule.getColumns().getChildren().get(j))
+                                                                            .getAttribute(Constantes.ATTRIBUTE_ROLE));
             final Set<DTO_RoleModule> estados = new HashSet<DTO_RoleModule>();
-            for (int i = 0; i < gr_recursos.getRows().getChildren().size(); i++) {
-                if (((Checkbox) gr_recursos.getCell(i, j)).isChecked()) {
-                    final DTO_Module module = ((DTO_Module) ((Row) gr_recursos.getRows().getChildren().get(i))
-                                                                                            .getAttribute("module"));
+            for (int i = 0; i < grdRoleModule.getRows().getChildren().size(); i++) {
+                if (((Checkbox) grdRoleModule.getCell(i, j)).isChecked()) {
+                    final DTO_Module module = ((DTO_Module) ((Row) grdRoleModule.getRows().getChildren().get(i))
+                                                                            .getAttribute(Constantes.ATTRIBUTE_MODULE));
                     final DTO_RoleModule perfMod = new DTO_RoleModule();
                     perfMod.setModuleId(module.getId());
                     perfMod.setRole(role.getId());
                     estados.add(perfMod);
                 }
             }
-            System.out.println("ESTADOS:" + estados);
-            System.out.println("ROLE :" + role);
+            logger.debug("ESTADOS:" + estados);
+            logger.debug("ROLE :" + role);
             mapa.put(role, estados);
 
         }
 
-        final ServiceInput input = new ServiceInput();
+        final ServiceInputConnection<DTO_RoleModule, DTO_Role, DTO_Module> input =
+                        new ServiceInputConnection<DTO_RoleModule, DTO_Role, DTO_Module>();
         input.setAction(Constantes.V_REGISTER);
         input.setMapa(mapa);
-        final ServiceOutput output = roleModuleService.execute(input);
+        final ServiceOutputConnection<DTO_RoleModule, DTO_Role, DTO_Module> output = roleModuleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            CargarTabla();
-            b_edit.setVisible(true);
-            b_info.setVisible(false);
-            b_cancel.setVisible(false);
-            logger.info("Recursos registrados correctamente");
-            alertaInfo("", "Los cambios se guardaron correctamente", null);
-        } else {
-            logger.error("Error al registrar bloqueos");
-        }
-    }
-
-    private void cargarAreas(final Combobox combo)
-    {
-        final DTO_Area ar = new DTO_Area();
-        ar.setCompanyId(company.getId());
-        final ServiceInput input = new ServiceInput(ar);
-        input.setAction(Constantes.V_LIST);
-        final ServiceOutput output = areaService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Area> listado = output.getLista();
-            for (final DTO_Area area : listado) {
-                final Comboitem item = new Comboitem(area.getAreaName());
-                item.setAttribute("area", area);
-                combo.appendChild(item);
+            //loadData();
+            final int resp = alertaInfo(logger,
+                        Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRoleModuleEdit.editRoleModule.Info.Label"),
+                        Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRoleModuleEdit.editRoleModule.Info.Label"),
+                        null);
+            if (resp == Messagebox.OK) {
+                roleModuleParentUI.searchProducts();;
             }
+            alertaInfo(logger, "", "Los cambios se guardaron correctamente", null);
         } else {
-            alertaError("Error en la carga de areas",
-                            "error al cargar los areas", null);
+            alertaError(logger,
+                        Labels.getLabel("pe.com.jx_market.PO_EAAdministrateRoleModuleEdit.editRoleModule.Error.Label"),
+                        "Error al registrar modulos por roles", null);
         }
     }
 
-    public void alertaInfo(final String txt,
-                           final String txt2,
-                           final Throwable t)
+    @Listen("onClick = #btnClose")
+    public void close(final Event _event)
     {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.INFORMATION);
-        }
-        if (t != null) {
-            logger.info(txt2, t);
-        } else {
-            logger.info(txt2);
-        }
+        wEARME.detach();
     }
 
-    public void alertaError(final String txt,
-                            final String txt2,
-                            final Throwable t)
-    {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.EXCLAMATION);
-        }
-        if (t != null) {
-            logger.error(txt2, t);
-        } else {
-            logger.error(txt2);
-        }
-    }
-
-    @Override
+        @Override
     String[] requiredResources()
     {
         return new String[]{Constantes.MODULE_ADM_ROLEMODULE };

@@ -1,47 +1,38 @@
 <?page title="Seguridad y Servicio al Client" contentType="text/html;charset=UTF-8"?>
 
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-    <div align="center">
-        <html:p />
-        <window width="700px" use="pe.com.jx_market.controller.PO_EAAdministrateRoleModule" id="w_role_recurso">
-            <div align="center">
-                <vbox width="700px">
-                    <html:p />
-                    <div align="center">
-                        <label zclass="z-south-header"
-                            style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                            Administración de Modules por Role
-                        </label>
-                    </div>
-                    <html:p />
-                    <groupbox id="g_recursos" visible="true" mold="3d" width="695px">
-                        <html:p />
-                        <combobox id="cmbArea" onSelect="w_role_recurso.CargarTabla()"/>
-                        <html:p />
-                        <div align="center">
-                            <grid fixedLayout="true" id="gr_recursos" mold="paging" pageSize="10">
-                                <columns>
-                                    <column label="Recursos" />
-                                </columns>
-                                <rows>
-                                </rows>
-                                <foot id="f_buttons">
-                                    <footer label="" />
-                                </foot>
-                            </grid>
-                        </div>
-                        <html:p />
-                        <div align="center">
-                            <button label="Editar" id="b_edit" onClick="w_role_recurso.editar()" />
-                            <button label="Actualizar" visible="false" id="b_info"
-                                onClick="w_role_recurso.actualizar()" />
-                            <button label="Cancelar" visible="false" id="b_cancel"
-                                onClick="w_role_recurso.cancelar()" />
-                        </div>
-                        <html:p />
-                    </groupbox>
-                </vbox>
+<window id="wEARME" apply="pe.com.jx_market.controller.PO_EAAdministrateRoleModuleEdit" sizable="true"
+        width="600px" height="540px" position="center,center" closable="true"
+        action="show: slideDown;hide: slideUp" sclass="s-window-content-popup">
+    <style src="s-style.css"/>
+    <borderlayout hflex="1" vflex="1" sclass="s-borderlayout-popup">
+        <north height="6%" collapsible="false" sclass="s-north-popup">
+            <div hflex="1" vflex="1" align="center">
+                <label zclass="z-south-header" sclass="s-header">
+                    ${labels.pe.com.jx_market.eAAdministrateRoleEdit.Title}
+                </label>
             </div>
-        </window>
-    </div>
+        </north>
+        <center autoscroll="true" sclass="s-center-popup">
+            <grid id="grdRoleModule" width="100%" fixedLayout="true" sclass="s-grid-popup" mold="paging" pageSize="10">
+                <columns>
+                    <column label="Recursos" />
+                </columns>
+                <rows>
+                </rows>
+                <foot id="f_buttons">
+                    <footer label="" />
+                </foot>
+            </grid>
+        </center>
+        <south size="8%" sclass="s-south-popup">
+            <hbox align="end" pack="end" hflex="1" vflex="1" sclass="s-hbox-popup">
+                <button id="btnSave" label="${labels.pe.com.jx_market.eAAdministrateRoleEdit.btnSave.Label }"
+                    image="/media/filesave.png" />
+                <button id="btnClose" label="${labels.pe.com.jx_market.eAAdministrateRoleEdit.btnClose.Label }"
+                    image="/media/cancel.png" />
+            </hbox>
+        </south>
+    </borderlayout>
+</window>
 </zk>

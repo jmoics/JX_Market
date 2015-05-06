@@ -151,7 +151,9 @@ public class Constantes {
         ROLE_CREATE_FORM("eAAdministrateRoleCreate.zul"),
         MODULE_FORM("eAAdministrateModule.zul"),
         MODULE_EDIT_FORM("eAAdministrateModuleEdit.zul"),
-        MODULE_CREATE_FORM("eAAdministrateModuleCreate.zul");
+        MODULE_CREATE_FORM("eAAdministrateModuleCreate.zul"),
+        ROLEMODULE_FORM("eAAdministrateRoleModule.zul"),
+        ROLEMODULE_EDIT_FORM("eAAdministrateRoleModuleEdit.zul");
 
         private final String form;
 
@@ -173,6 +175,7 @@ public class Constantes {
     public static final String ATTRIBUTE_AREA = "area";
     public static final String ATTRIBUTE_ROLE = "role";
     public static final String ATTRIBUTE_MODULE = "module";
+    public static final String ATTRIBUTE_ROLEMODULE = "roleModule";
 
 
     /**

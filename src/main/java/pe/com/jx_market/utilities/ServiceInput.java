@@ -14,7 +14,7 @@ public class ServiceInput<E>
 
     private E object;
     private List<E> lista;
-    private Map<Object, Object> mapa;
+    private Map<? extends Object, ? extends Object> mapa;
     private String action;
 
     public ServiceInput()
@@ -43,13 +43,19 @@ public class ServiceInput<E>
         this.lista = l;
     }
 
+    @SuppressWarnings("unchecked")
     public void addMapPair(final String k,
                            final Object v)
     {
         if (this.mapa == null) {
-            this.mapa = new HashMap<Object, Object>();
+            final Map<String, Object> mapTmp = new HashMap<String, Object>();
+            mapTmp.put(k, v);
+            this.mapa = mapTmp;
+        } else {
+            final Map<String, Object> mapTmp = (Map<String, Object>) this.mapa;
+            mapTmp.put(k, v);
         }
-        this.mapa.put(k, v);
+
     }
 
     public void addListEntry(final E v)
@@ -81,12 +87,12 @@ public class ServiceInput<E>
         this.lista = lista;
     }
 
-    public Map<Object, Object> getMapa()
+    public Map<? extends Object, ? extends Object> getMapa()
     {
         return this.mapa;
     }
 
-    public void setMapa(final Map<Object, Object> mapa)
+    public void setMapa(final Map<? extends Object, ? extends Object> mapa)
     {
         this.mapa = mapa;
     }

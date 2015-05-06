@@ -126,7 +126,7 @@ public class PO_EATradeMark
                             null, dataArgs);
             w.setPage(wEAT.getPage());
             //w.setParent(wEAT);
-            w.doOverlapped();
+            w.doModal();
             //w.doHighlighted();
             //w.doEmbedded();
         } else {
