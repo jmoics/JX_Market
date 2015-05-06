@@ -27,10 +27,6 @@ public class RoleService
             output.setLista(roleMapper.getRoles(input.getObject()));
             output.setErrorCode(Constantes.OK);
             return output;
-        } else if (Constantes.V_LISTROLMOD.equals(input.getAction())) {
-            output.setLista(roleMapper.getModules4Role(input.getMapa()));
-            output.setErrorCode(Constantes.OK);
-            return output;
         } else if (Constantes.V_REGISTER.equals(input.getAction())) {
             final DTO_Role roleTmp = roleMapper.getRole4Id(input.getObject());
             if (roleTmp == null) {

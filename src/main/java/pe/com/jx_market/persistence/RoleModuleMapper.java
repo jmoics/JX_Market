@@ -1,5 +1,7 @@
 package pe.com.jx_market.persistence;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import pe.com.jx_market.domain.DTO_Role;
@@ -8,7 +10,7 @@ import pe.com.jx_market.domain.DTO_RoleModule;
 public interface RoleModuleMapper {
 
     // obtiene los id de los modules asociados a un role
-    public Set<Integer> getModules4Role(DTO_Role role);
+    public List<DTO_Role> getModules4Role (Map<Object, Object> parameterMap);
 
     // obtiene el bean module asociados a un role
     public Set<String> getModuleString4Role(DTO_Role role);

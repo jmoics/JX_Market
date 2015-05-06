@@ -8,7 +8,6 @@ import pe.com.jx_market.domain.DTO_Module;
 import pe.com.jx_market.domain.DTO_Role;
 import pe.com.jx_market.domain.DTO_RoleModule;
 import pe.com.jx_market.persistence.ModuleMapper;
-import pe.com.jx_market.persistence.RoleMapper;
 import pe.com.jx_market.persistence.RoleModuleMapper;
 import pe.com.jx_market.utilities.BusinessServiceConnection;
 import pe.com.jx_market.utilities.Constantes;
@@ -29,8 +28,6 @@ public class RoleModuleService
     @Autowired
     private RoleModuleMapper roleModuleMapper;
     @Autowired
-    private RoleMapper roleMapper;
-    @Autowired
     private ModuleMapper moduleMapper;
 
     /**El ServiceInput debe contener un Verbo, el cual es un String en el cual se específica la acción a realizar
@@ -45,7 +42,7 @@ public class RoleModuleService
                         new ServiceOutputConnection<DTO_RoleModule, DTO_Role, DTO_Module>();
         if(Constantes.V_LIST.equals(input.getAction())) {
             output.setResultListTo(moduleMapper.getModules(input.getObjectTo()));
-            output.setResultListFrom(roleMapper.getModules4Role(input.getMapa()));
+            output.setResultListFrom(roleModuleMapper.getModules4Role(input.getMapa()));
             output.setErrorCode(Constantes.OK);
             return output;
         } else if(Constantes.V_REGISTER.equals(input.getAction())) {
@@ -92,14 +89,6 @@ public class RoleModuleService
     public void setDao(final RoleModuleMapper roleModuleMapper)
     {
         this.roleModuleMapper = roleModuleMapper;
-    }
-
-    public RoleMapper getRoleDAO() {
-        return roleMapper;
-    }
-
-    public void setRoleDAO(final RoleMapper roleMapper) {
-        this.roleMapper = roleMapper;
     }
 
     @Override

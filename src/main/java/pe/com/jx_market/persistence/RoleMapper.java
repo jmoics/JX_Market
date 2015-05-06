@@ -1,7 +1,6 @@
 package pe.com.jx_market.persistence;
 
 import java.util.List;
-import java.util.Map;
 
 import pe.com.jx_market.domain.DTO_Role;
 
@@ -12,8 +11,6 @@ public interface RoleMapper
      * @return
      */
     public List<DTO_Role> getRoles(DTO_Role role);
-
-    public List<DTO_Role> getModules4Role (Map<Object, Object> parameterMap);
 
     /**
      * @param role

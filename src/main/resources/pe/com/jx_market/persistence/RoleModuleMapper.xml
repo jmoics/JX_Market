@@ -8,15 +8,6 @@
 
     <!-- MANTENIMIENTOD DE MODULES POR ROLE -->
 
-    <select id="getModules4Role" parameterType="DTO_Role" resultType="Integer">
-        SELECT
-            moduleid
-        FROM
-            T_SEG_ROLE2MODULE
-        WHERE
-            roleid = #{id}
-    </select>
-
     <select id="getModuleString4Role" parameterType="DTO_Role" resultType="String">
         SELECT
             modu.resource
@@ -27,6 +18,43 @@
             modDet.moduleid = modu.id
         AND
             modDet.roleid = #{id}
+    </select>
+
+    <select id="getModules4Role" parameterType="java.util.Map" resultMap="roleModuleResultMap">
+        SELECT
+            rol.id as roleId,
+            rol.name as roleName,
+            rol.description as roleDescription,
+            rol.companyid as companyId,
+            rolMod.id roleModuId,
+            rolMod.active roleModuActive,
+            modu.id as moduId,
+            modu.description as moduDescription,
+            modu.resource as moduResource,
+            area.id areaId,
+            area.name as areaName
+        FROM
+            T_SEG_ROLE rol LEFT JOIN
+            T_COM_AREA area ON rol.areaid = area.id LEFT JOIN
+            T_SEG_ROLE2MODULE rolMod ON rol.id = rolMod.roleid LEFT JOIN
+            T_SEG_MODULE modu ON rolMod.moduleid = modu.id
+
+        <where>
+            rol.companyid = #{companyId}
+            <if test="areaId != null">AND
+                rol.areaid = #{areaId}
+            </if>
+            <if test="lstRoles != null">AND
+                rol.id in
+                <foreach item="id" index="index" collection="lstRoles"
+                         open="(" separator="," close=")">
+                        #{id, jdbcType=INTEGER}
+                </foreach>
+            </if>
+            <!-- <if test="id != null">AND
+                rol.id = #{id, jdbcType=INTEGER}
+            </if>-->
+        </where>
     </select>
 
     <insert id="insertModuleRole" parameterType="DTO_RoleModule">
@@ -45,4 +73,28 @@
             roleid = #{id}
     </delete>
 
+    <resultMap id="roleModuleResultMap" type="DTO_Role">
+        <id property="id" column="roleId" />
+        <result property="companyId" column="companyId" />
+        <result property="areaId" column="areaId" />
+        <result property="roleName" column="roleName" />
+        <result property="roleDescription" column="roleDescription" />
+        <association property="area" column="areaId" javaType="DTO_Area" resultMap="areaResultMap">
+        </association>
+        <collection property="modules" column="roleModuId"
+                    ofType="DTO_Module" javaType="ArrayList" resultMap="moduleResultMap">
+        </collection>
+    </resultMap>
+    <resultMap id="areaResultMap" type="DTO_Area">
+        <id property="id" column="areaId" />
+        <result property="companyId" column="companyId" />
+        <result property="areaName" column="areaName" />
+    </resultMap>
+    <resultMap id="moduleResultMap" type="DTO_Module">
+        <id property="id" column="moduId" />
+        <result property="companyId" column="companyId" />
+        <result property="moduleDescription" column="moduDescription" />
+        <result property="moduleResource" column="moduResource" />
+        <result property="activeConnection" column="roleModuActive" />
+    </resultMap>
 </mapper>
