@@ -52,16 +52,16 @@ public class PO_EALogin
         throws Exception
     {
         super.doAfterCompose(comp);
-        obtenerCompanys();
+        getCompanies();
         txtUser.setFocus(true);
     }
 
-    public void obtenerCompanys()
+    public void getCompanies()
     {
         List<DTO_Company> companys;
         //companyService = (BusinessService<DTO_Company>) ContextLoader.getService(wEAL, "companyService");
         final ServiceInput<DTO_Company> input = new ServiceInput<DTO_Company>();
-        input.setAction("list");
+        input.setAction(Constantes.V_LIST);
 
         final ServiceOutput<DTO_Company> output = companyService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
@@ -69,7 +69,7 @@ public class PO_EALogin
             for (final DTO_Company emp : companys) {
                 final Comboitem item = new Comboitem();
                 item.setLabel(emp.getBusinessName());
-                item.setAttribute("company", emp);
+                item.setAttribute(Constantes.ATTRIBUTE_COMPANY, emp);
                 cmbEmp.appendChild(item);
             }
         } else {
@@ -77,7 +77,7 @@ public class PO_EALogin
         }
     }
 
-    @Listen("onClick = #btnIngresar; onOK = #txtPass")
+    @Listen("onClick = #btnIngresar; onOK = #txtPass; onOK = #txtUser")
     public void authenticate()
         throws InterruptedException
     {
@@ -85,16 +85,16 @@ public class PO_EALogin
         user.setUsername(txtUser.getValue());
         user.setPassword(txtPass.getValue());
         if (cmbEmp.getSelectedItem() != null) {
-            final DTO_Company company = (DTO_Company) cmbEmp.getSelectedItem().getAttribute("company");
+            final DTO_Company company = (DTO_Company) cmbEmp.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_COMPANY);
             if (company != null) {
                 user.setCompanyId(company.getId());
 
                 final DTO_User validado = getUser(user);
                 if (validado != null) {
                     final DTO_Employee employee = getEmployee(validado);
-                    desktop.getSession().setAttribute("employee", employee);
-                    desktop.getSession().setAttribute("login", validado);
-                    desktop.getSession().setAttribute("company", company);
+                    desktop.getSession().setAttribute(Constantes.ATTRIBUTE_EMPLOYEE, employee);
+                    desktop.getSession().setAttribute(Constantes.ATTRIBUTE_USER, validado);
+                    desktop.getSession().setAttribute(Constantes.ATTRIBUTE_COMPANY, company);
                     if (company.getId().equals(Constantes.INSTITUCION_JX_MARKET)) {
                         Executions.sendRedirect("eESolicitudesPendientes.zul");
                     } else {

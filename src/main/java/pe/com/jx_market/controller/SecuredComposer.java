@@ -14,6 +14,7 @@ import org.zkoss.zul.Messagebox;
 
 import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Employee;
+import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -36,28 +37,49 @@ public abstract class SecuredComposer<T extends Component>
         throws Exception
     {
         super.doAfterCompose(_comp);
-        final DTO_Employee employee = (DTO_Employee) desktop.getSession().getAttribute("employee");
-        if (employee == null) {
+        final DTO_User user = (DTO_User) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_USER);
+        if (user == null) {
             throw new RuntimeException("La sesión se perdió. Vuelva a ingresar por favor.");
         }
-        if (!employee.getCompanyId().equals(Constantes.INSTITUCION_JX_MARKET)) {
-            checkResources(employee);
+        if (!user.getCompanyId().equals(Constantes.INSTITUCION_JX_MARKET)) {
+            checkResources(user);
         }
-        company = (DTO_Company) _comp.getDesktop().getSession().getAttribute("company");
+        company = (DTO_Company) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
     }
 
-    private void checkResources(final DTO_Employee employee)
+    private void checkResources(final DTO_User user)
     {
         final String[] resources = requiredResources();
         if (resources == null || resources.length == 0) {
             return;
         }
         final ServiceInput<DTO_Employee> input = new ServiceInput<DTO_Employee>();
-        input.addMapPair("employee", employee);
-        input.addMapPair("module-array", resources);
+        input.addMapPair(Constantes.ATTRIBUTE_USER, user);
+        input.addMapPair(Constantes.ATTRIBUTE_MODULES, resources);
         final ServiceOutput<DTO_Employee> output = autorizacionService.execute(input);
         if (output.getErrorCode() == Constantes.AUTH_ERROR) {
             throw new RuntimeException("Acceso no autorizado!");
+        }
+    }
+
+    /**
+     * Method to check if the employee have access to system.
+     * @param comp
+     * @param widget
+     * @param module
+     * @param employee
+     */
+    public void setVisibilityByResource(final Component comp,
+                                        final String widget,
+                                        final String module,
+                                        final DTO_User user)
+    {
+        final ServiceInput<DTO_Employee> input = new ServiceInput<DTO_Employee>();
+        input.addMapPair(Constantes.ATTRIBUTE_USER, user);
+        input.addMapPair(Constantes.ATTRIBUTE_MODULE, module);
+        final ServiceOutput<DTO_Employee> output = autorizacionService.execute(input);
+        if (output.getErrorCode() != Constantes.OK) {
+            comp.getFellow(widget).setVisible(false);
         }
     }
 

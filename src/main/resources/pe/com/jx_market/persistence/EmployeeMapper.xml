@@ -13,7 +13,6 @@
             emp.id as id,
             emp.userid as userId,
             emp.companyid as companyId,
-            emp.roleid as roleId,
             emp.name as employeeName,
             emp.birthday as birthday,
             emp.lastname as employeeLastName,
@@ -42,13 +41,13 @@
     <insert id="insertEmployee" parameterType="DTO_Employee">
         INSERT INTO
         T_BUS_EMPLOYEE
-            (userid, companyid, roleid,
+            (userid, companyid,
             name, birthday, lastname, lastname2,
             doctypeid, docnumber, address, phone,
             cellphone, email, city,
             ubigeo, active)
         VALUES
-            (#{userId}, #{companyId}, #{roleId},
+            (#{userId}, #{companyId},
             #{employeeName}, #{birthday}, #{employeeLastName}, #{employeeLastName2},
             #{documentTypeId}, #{documentNumber}, #{address}, #{phone},
             #{cellPhone}, #{email}, #{city},
@@ -58,7 +57,6 @@
     <update id="updateEmployee" parameterType="DTO_Employee">
         UPDATE T_BUS_EMPLOYEE
         SET
-            roleid = #{roleId},
             name = #{employeeName},
             birthday = #{birthday},
             lastname = #{employeeLastName},

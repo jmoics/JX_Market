@@ -8,7 +8,6 @@ public class DTO_Employee
 {
 
     private String id;
-    private Integer roleId;
     private Integer userId;
     private Integer companyId;
     private String employeeName;
@@ -33,16 +32,6 @@ public class DTO_Employee
     public void setId(final String id)
     {
         this.id = id;
-    }
-
-    public Integer getRoleId()
-    {
-        return roleId;
-    }
-
-    public void setRoleId(final Integer roleId)
-    {
-        this.roleId = roleId;
     }
 
     public Integer getUserId()

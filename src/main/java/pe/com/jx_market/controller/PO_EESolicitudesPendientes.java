@@ -190,7 +190,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
                     employee.setEmployeeLastName("Administrator");
                     employee.setCompanyId(codEmp);
                     employee.setActive(Constantes.STB_ACTIVO);
-                    employee.setRoleId(codPerf);
+                    //employee.setRoleId(codPerf);
 
                     mapUser.put("employee", employee);
                     mapUser.put("user", user);

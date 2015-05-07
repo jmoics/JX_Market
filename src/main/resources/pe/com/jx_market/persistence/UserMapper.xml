@@ -8,47 +8,65 @@
 
     <!-- MANTENIMIENTO DE USUARIOS -->
 
-    <select id="getUser4Username" parameterType="DTO_User" resultType="DTO_User">
+    <select id="getUser4Username" parameterType="DTO_User" resultMap="userResultMap">
         SELECT
-            us.id as id,
+            us.id as userId,
             us.username as username,
+            us.companyid as companyId,
             us.password as password,
-            us.companyid as companyId
+            rol.id as roleId,
+            rol.name as roleName,
+            rol.description as roleDescription,
+            rol.areaid as roleAreaId,
+            area.id areaId,
+            area.name as areaName
         FROM
-            T_SEG_USER us
+            T_SEG_USER us LEFT JOIN
+            T_SEG_ROLE rol ON us.roleid = rol.id LEFT JOIN
+            T_COM_AREA area ON rol.areaid = area.id
         WHERE
             us.username = #{username}
         AND
             us.companyid = #{companyId}
     </select>
 
-    <select id="getUsers" parameterType="DTO_User" resultType="DTO_User">
+    <select id="getUsers" parameterType="DTO_User" resultMap="userResultMap">
         SELECT
-            us.id as id,
+            us.id as userId,
             us.username as username,
-            us.companyid as companyId
+            us.companyid as companyId,
+            rol.id as roleId,
+            rol.name as roleName,
+            rol.description as roleDescription,
+            rol.areaid as roleAreaId,
+            area.id areaId,
+            area.name as areaName
         FROM
-            T_SEG_USER us
-        WHERE
+            T_SEG_USER us LEFT JOIN
+            T_SEG_ROLE rol ON us.roleid = rol.id LEFT JOIN
+            T_COM_AREA area ON rol.areaid = area.id
+        <where>
             us.companyid = #{companyId}
-        <if test="id != null">AND
-            us.id = #{id}
-        </if>
+            <if test="id != null">AND
+                us.id = #{id}
+            </if>
+        </where>
         ORDER BY
             us.id
     </select>
 
     <insert id="insertUser" parameterType="DTO_User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO T_SEG_USER
-            (username,password,companyid)
+            (username, password, companyid, roleid)
         VALUES
-            (#{username}, #{password}, #{companyId})
+            (#{username}, #{password}, #{companyId}, #{roleId})
     </insert>
 
     <update id="updateUser" parameterType="DTO_User">
         UPDATE T_SEG_USER
         SET
-            username = #{username}
+            username = #{username},
+            roleid = #{roleId}
         WHERE
             id = #{id}
         AND
@@ -65,4 +83,27 @@
             companyid = #{companyId}
     </update>
 
+    <resultMap id="userResultMap" type="DTO_User">
+        <id property="id" column="userId" />
+        <result property="companyId" column="companyId" />
+        <result property="username" column="username" />
+        <result property="password" column="password" />
+        <result property="roleId" column="roleId" />
+        <association property="role" column="roleId" javaType="DTO_Role" resultMap="roleResultMap">
+        </association>
+    </resultMap>
+    <resultMap id="roleResultMap" type="DTO_Role">
+        <id property="id" column="roleId" />
+        <result property="companyId" column="companyId" />
+        <result property="areaId" column="areaId" />
+        <result property="roleName" column="roleName" />
+        <result property="roleDescription" column="roleDescription" />
+        <association property="area" column="areaId" javaType="DTO_Area" resultMap="areaResultMap">
+        </association>
+    </resultMap>
+    <resultMap id="areaResultMap" type="DTO_Area">
+        <id property="id" column="areaId" />
+        <result property="companyId" column="companyId" />
+        <result property="areaName" column="areaName" />
+    </resultMap>
 </mapper>

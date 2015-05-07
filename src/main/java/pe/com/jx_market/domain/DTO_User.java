@@ -8,6 +8,8 @@ public class DTO_User
     private String username;
     private Integer companyId;
     private String password;
+    private Integer roleId;
+    private DTO_Role role;
 
     public Integer getId()
     {
@@ -17,6 +19,26 @@ public class DTO_User
     public void setId(final Integer id)
     {
         this.id = id;
+    }
+
+    public Integer getRoleId()
+    {
+        return roleId;
+    }
+
+    public DTO_Role getRole()
+    {
+        return role;
+    }
+
+    public void setRole(final DTO_Role role)
+    {
+        this.role = role;
+    }
+
+    public void setRoleId(final Integer roleId)
+    {
+        this.roleId = roleId;
     }
 
     public String getUsername()

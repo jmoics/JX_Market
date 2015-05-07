@@ -47,7 +47,7 @@ public class Constantes {
     public static final int INSTITUCION_JX_MARKET = 1;
 
     /*
-     * Constantes para verbos
+     * Constantes para acciones
      */
     public static final String V_REGISTER = "register";
     public static final String V_REGISTERCAT4PROD = "registerCat4Prod";
@@ -107,17 +107,30 @@ public class Constantes {
      */
     public static final String MODULE_PRODUCTS = "MODULE_PRODUCTS";
     public static final String MODULE_PROD_CATEGORY = "MODULE_PROD_CATEGORY";
+    public static final String MODULE_PROD_CATEGORY_EDIT = "MODULE_PROD_CATEGORY_EDIT";
+    public static final String MODULE_PROD_CATEGORY_CREATE = "MODULE_PROD_CATEGORY_CREATE";
     public static final String MODULE_PROD_TRADEMARK = "MODULE_PROD_TRADEMARK";
+    public static final String MODULE_PROD_TRADEMARK_EDIT = "MODULE_PROD_TRADEMARK_EDIT";
+    public static final String MODULE_PROD_TRADEMARK_CREATE = "MODULE_PROD_TRADEMARK_CREATE";
     public static final String MODULE_PROD_PRODUCT = "MODULE_PROD_PRODUCT";
+    public static final String MODULE_PROD_PRODUCT_EDIT = "MODULE_PROD_PRODUCT_EDIT";
+    public static final String MODULE_PROD_PRODUCT_CREATE = "MODULE_PROD_PRODUCT_CREATE";
     public static final String MODULE_PROD_AMOUNT = "MODULE_PROD_AMOUNUT";
     public static final String MODULE_PROD_INVENTORY = "MODULE_PROD_INVENTORY";
 
     public static final String MODULE_ADMINISTRACION = "MODULE_ADMINISTRACION";
     public static final String MODULE_ADM_ROLE = "MODULE_ADM_ROLE";
+    public static final String MODULE_ADM_ROLE_EDIT = "MODULE_ADM_ROLE_EDIT";
+    public static final String MODULE_ADM_ROLE_CREATE = "MODULE_ADM_ROLE_CREATE";
     public static final String MODULE_ADM_AREA = "MODULE_ADM_AREA";
+    public static final String MODULE_ADM_AREA_EDIT = "MODULE_ADM_AREA_EDIT";
+    public static final String MODULE_ADM_AREA_CREATE = "MODULE_ADM_AREA_CREATE";
     public static final String MODULE_ADM_EMPLOYEE = "MODULE_ADM_EMPLOYEE";
     public static final String MODULE_ADM_MODULE = "MODULE_ADM_MODULE";
+    public static final String MODULE_ADM_MODULE_EDIT = "MODULE_ADM_MODULE_EDIT";
+    public static final String MODULE_ADM_MODULE_CREATE = "MODULE_ADM_MODULE_CREATE";
     public static final String MODULE_ADM_ROLEMODULE = "MODULE_ADM_ROLEMODULE";
+    public static final String MODULE_ADM_ROLEMODULE_EDIT = "MODULE_ADM_ROLEMODULE_EDIT";
     public static final String MODULE_CHANGE_PASS = "MODULE_CHANGE_PASS";
 
     /*VALIDACION DE CARACTERES*/
@@ -175,7 +188,10 @@ public class Constantes {
     public static final String ATTRIBUTE_AREA = "area";
     public static final String ATTRIBUTE_ROLE = "role";
     public static final String ATTRIBUTE_MODULE = "module";
+    public static final String ATTRIBUTE_MODULES = "module-array";
     public static final String ATTRIBUTE_ROLEMODULE = "roleModule";
+    public static final String ATTRIBUTE_EMPLOYEE = "employee";
+    public static final String ATTRIBUTE_USER = "login";
 
 
     /**

@@ -57,11 +57,11 @@ public class PO_EAHeader
         throws Exception
     {
         super.doAfterCompose(comp);
-        company = (DTO_Company) comp.getDesktop().getSession().getAttribute("company");
+        company = (DTO_Company) comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
         loadPhoto(company.getDomain());
         setGraficoFoto();
 
-        final DTO_Employee employee = (DTO_Employee) desktop.getSession().getAttribute("employee");
+        final DTO_Employee employee = (DTO_Employee) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_EMPLOYEE);
         if (employee == null) {
             throw new RuntimeException("La sesion se perdio, vuelva a ingresar por favor");
         }

@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.jx_market.domain.DTO_Employee;
 import pe.com.jx_market.domain.DTO_Role;
+import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.persistence.RoleModuleMapper;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -40,16 +40,16 @@ public class AutorizacionService<T>
     public ServiceOutput<T> execute(final ServiceInput<T> input)
     {
         final ServiceOutput<T> output = new ServiceOutput<T>();
-        final DTO_Employee employee = (DTO_Employee) input.getMapa().get("employee");
+        final DTO_User user = (DTO_User) input.getMapa().get(Constantes.ATTRIBUTE_USER);
         final DTO_Role role = new DTO_Role();
-        role.setId(employee.getRoleId());
+        role.setId(user.getRoleId());
         String[] modules;
-        if (input.getMapa().containsKey("module")) {
-            final String module = (String) input.getMapa().get("module");
+        if (input.getMapa().containsKey(Constantes.ATTRIBUTE_MODULE)) {
+            final String module = (String) input.getMapa().get(Constantes.ATTRIBUTE_MODULE);
             modules = new String[1];
             modules[0] = module;
         } else {
-            modules = (String[]) input.getMapa().get("module-array");
+            modules = (String[]) input.getMapa().get(Constantes.ATTRIBUTE_MODULES);
         }
         final Set<String> modulesDelRole = roleModuleMapper.getModuleString4Role(role);
         // debemos validar que todos los recursos solicitados estan en el array

@@ -111,31 +111,46 @@ INSERT INTO T_SEG_ROLE (COMPANYID, AREAID, NAME, DESCRIPTION) VALUES (2,1,'Geren
                 (2,4,'Gerente','Encargado del area'),
                 (2,1,'Subgerente','Subgerencia general');
 
-INSERT INTO T_SEG_USER (COMPANYID, PASSWORD, USERNAME)
-          VALUES (1,'62a90ccff3fd73694bf6281bb234b09a',NULL),
-                 (2,'e10adc3949ba59abbe56e057f20f883e','jmoics'),
-                 (3,'e10adc3949ba59abbe56e057f20f883e','jcueva'),
-                 (2,'e10adc3949ba59abbe56e057f20f883e','jcueva'),
-                 (2,'e10adc3949ba59abbe56e057f20f883e','aencalada'),
-                 (1,'e10adc3949ba59abbe56e057f20f883e','jmoics@gmail.com'),
-                 (1,'e10adc3949ba59abbe56e057f20f883e','jacky@gmail.com');
+INSERT INTO T_SEG_USER (COMPANYID, PASSWORD, USERNAME, ROLEID)
+          VALUES (1,'62a90ccff3fd73694bf6281bb234b09a','Administrator',1),
+                 (2,'e10adc3949ba59abbe56e057f20f883e','jmoics',3),
+                 (3,'e10adc3949ba59abbe56e057f20f883e','jcueva',1),
+                 (2,'e10adc3949ba59abbe56e057f20f883e','jcueva',1),
+                 (2,'e10adc3949ba59abbe56e057f20f883e','aencalada',2),
+                 (1,'e10adc3949ba59abbe56e057f20f883e','jmoics@gmail.com',2),
+                 (1,'e10adc3949ba59abbe56e057f20f883e','jacky@gmail.com',2);
 
-INSERT INTO T_SEG_MODULE (COMPANYID, DESCRIPTION, RESOURCE) VALUES (2,'Module para administracion de employees','MODULE_ADM_EMPLOYEE'),
+INSERT INTO T_SEG_MODULE (COMPANYID, DESCRIPTION, RESOURCE) VALUES (2,'Module para administracion de empleados','MODULE_ADM_EMPLOYEE'),
                 (2,'Modulo para productos','MODULE_PRODUCTS'),
                 (2,'Modulo para gestion de productos','MODULE_PROD_PRODUCT'),
+                (2,'Modulo para edición de productos','MODULE_PROD_PRODUCT_EDIT'),
+                (2,'Modulo para creación de productos','MODULE_PROD_PRODUCT_CREATE'),
                 (2,'Modulo para gestion de categories','MODULE_PROD_CATEGORY'),
+                (2,'Modulo para edición de categories','MODULE_PROD_CATEGORY_EDIT'),
+                (2,'Modulo para creación de categories','MODULE_PROD_CATEGORY_CREATE'),
                 (2,'Modulo para gestion de inventario','MODULE_PROD_INVENTORY'),
                 (2,'Modulo para gestion de marcas','MODULE_PROD_TRADEMARK'),
+                (2,'Modulo para edición de marcas','MODULE_PROD_TRADEMARK_EDIT'),
+                (2,'Modulo para creación de marcas','MODULE_PROD_TRADEMARK_CREATE'),
                 (2,'Modulo para gestion de montos','MODULE_PROD_AMOUNT'),
                 (2,'Modulo para administracion','MODULE_ADMINISTRACION'),
                 (2,'Modulo para administracion de roles','MODULE_ADM_ROLE'),
+                (2,'Modulo para edición de roles','MODULE_ADM_ROLE_EDIT'),
+                (2,'Modulo para creación de roles','MODULE_ADM_ROLE_CREATE'),
                 (2,'Modulo para administracion de areas','MODULE_ADM_AREA'),
+                (2,'Modulo para edición de areas','MODULE_ADM_AREA_EDIT'),
+                (2,'Modulo para creación de areas','MODULE_ADM_AREA_CREATE'),
                 (2,'Modulo para administracion de modules','MODULE_ADM_MODULE'),
-                (2,'Modulo para asignacion de modules a roles','MODULE_ADM_ROLEMODULE'),
+                (2,'Modulo para edición de recursos','MODULE_ADM_MODULE_EDIT'),
+                (2,'Modulo para creación de recursos','MODULE_ADM_MODULE_CREATE'),
+                (2,'Modulo para asignacion de recursos a roles','MODULE_ADM_ROLEMODULE'),
+                (2,'Modulo para editar asignaciones de recursos a roles','MODULE_ADM_ROLEMODULE_EDIT'),
                 (2,'Modulo para administrar la contrasena','MODULE_CHANGE_PASS');
+
 
 INSERT INTO T_SEG_ROLE2MODULE (ROLEID, MODULEID, ACTIVE)
            VALUES (1,1,true),(1,2,true),(1,3,true),(1,4,true),(1,5,true),(1,6,true),(1,7,true),(1,8,true),(1,9,true),(1,10,true),(1,11,true),(1,12,true),
+                  (1,13,true),(1,14,true),(1,15,true),(1,16,true),(1,17,true),(1,18,true),(1,19,true),(1,20,true),(1,21,true),(1,22,true),(1,23,true),(1,24,true),(1,25,true),(1,26,true),
                   (2,2,true),(2,4,true),(3,2,true),(3,3,true),(3,4,true),(3,5,true),(3,11,true),(4,1,true),(4,6,true),(4,7,true),(4,11,true),
                   (5,2,true),(5,4,true),(5,5,true),(5,6,true),(5,7,true),(5,10,true),(5,11,true);
 
@@ -145,10 +160,9 @@ INSERT INTO T_BUS_PARAMTYPE (COMPANYID,NAME,DESCRIPTION)
 INSERT INTO T_BUS_PARAMETER (COMPANYID,PARAMTYPEID,NAME,DESCRIPTION)
             VALUES (2,1,'DNI','DNI'),(2,1,'CE','Carnet de Extranjería');
 
-INSERT INTO T_BUS_EMPLOYEE (ROLEID, USERID, COMPANYID, NAME, LASTNAME,  DOCNUMBER, ADDRESS, PHONE, CELLPHONE, EMAIL, CITY, UBIGEO, BIRTHDAY, ACTIVE)
-           VALUES (1,1,2,'Jorge','Cueva','44128463','Mi casa','4823262','945190242','jmoics@gmail.com','Lima','150135','1987-12-01',true),
-                  (3,2,2,'George','Cave','44128463','mi house','4563423','987755443','','lima','lima','1987-04-03',true);
-
+INSERT INTO T_BUS_EMPLOYEE (USERID, COMPANYID, NAME, LASTNAME, LASTNAME2, DOCTYPEID, DOCNUMBER, ADDRESS, PHONE, CELLPHONE, EMAIL, CITY, UBIGEO, BIRTHDAY, ACTIVE)
+            VALUES (4,2,'Jorge','Cueva','Samames',1,'44128463','Mi casa','4823262','945190242','jmoics@gmail.com','Lima','150135','1987-12-01',true),
+                  (2,2,'George','Cave',null,1,'44128463','mi house','4563423','987755443','','lima','lima','1987-04-03',true);
 INSERT INTO T_BUS_CATEGORY (COMPANYID, NAME, ACTIVE, PARENTID)
            VALUES (2, 'Cómputo y Videojuegos', true, null),
                   (2, 'Cómputo', true, 1),
