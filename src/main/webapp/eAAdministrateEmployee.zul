@@ -1,232 +1,140 @@
 <?page title="Seguridad y Servicio al Client" contentType="text/html;charset=UTF-8"?>
 
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
-   <div align="center">
-      <html:p />
-      <window width="700px"
-         use="pe.com.jx_market.controller.PO_EAAdministrateEmployee"
-         id="winEAAE">
-
-         <div align="center">
-            <vbox width="700px">
-               <html:p />
-               <div align="center">
-                  <label zclass="z-south-header"
-                     style=" background:transparent;font-family: sans-serif; border-bottom:0; font-size:large; font-weight:bold">
-                     Administración de Empleados
-                  </label>
-               </div>
-               <html:p />
-               <groupbox id="grpEmployees" visible="true" mold="3d"
-                  width="695px">
-                  <caption label="" id="capNombre" />
-                  <html:p />
-                  <grid fixedLayout="true" id="grdEmp"
-                     width="680px">
-                     <columns>
-                        <column label="Nombres" />
-                        <column label="Apellidos" />
-                        <column label="User" />
-                        <column label="Role" />
-                        <column label="Ver Detalles" width="80px" />
-                        <column label="Editar" width="60px" />
-                        <column label="Eliminar" width="60px" />
-                     </columns>
-                     <rows></rows>
-                  </grid>
-                  <popup id="popDetails" width="400px">
-                     <div align="center">
-                        <label
-                           style="font-family: sans-serif; font-weight:normal; color:#473C8B;font-size:14px">
-                           Detalle de Employee
-                        </label>
-                     </div>
-                     <html:p />
-                     <grid>
-                        <columns>
-                           <column label="Campo" width="100px" />
-                           <column label="Contenido" width="250px" />
-                        </columns>
-                        <rows>
-                           <row>
-                              <label value="User" />
-                              <label id="lblUser" value="" />
-                           </row>
-                           <row>
-                              <label value="Nombre" />
-                              <label id="lblNombre" value="" />
-                           </row>
-                           <row>
-                              <label value="Apellidos" />
-                              <label id="lblApellidos" value="" />
-                           </row>
-                           <row>
-                              <label value="DNI" />
-                              <label id="lblDNI" value="" />
-                           </row>
-                           <row>
-                              <label value="Role" />
-                              <label id="lblRole" value="" />
-                           </row>
-                           <row>
-                              <label value="Teléfonos" />
-                              <label id="lblTelefono" value="" />
-                           </row>
-                           <row>
-                              <label value="E-mail" />
-                              <label id="lblMail" value="" />
-                           </row>
-                           <row>
-                              <label value="Ciudad" />
-                              <label id="lblCiudad" value="" />
-                           </row>
-                           <row>
-                              <label value="Estado" />
-                              <label id="lblEstado" />
-                           </row>
-                        </rows>
-                     </grid>
-                     <div align="center">
-                        <toolbarbutton label="Cerrar"
-                           onClick="popDetails.close()">
-                        </toolbarbutton>
-                     </div>
-                  </popup>
-                  <html:p />
-                  <groupbox mold="3d" width="420px">
-                     <caption label="Nuevo Employee" id="capInfo" />
-                     <div width="400px" align="center">
-                        <grid fixedLayout="true" width="380px">
-                           <rows>
-                              <row>
-                                 <label style="font-size:small">
-                                    (*) User:
-                                 </label>
-                                 <textbox id="txtUser" value=""
-                                    constraint="/^[a-zA-Z0-9_]*$/: Username es inválido"
-                                    maxlength="20">
-                                 </textbox>
-                              </row>
-                              <row id="row_pass">
-                                 <label style="font-size:small">
-                                    (*) Contraseña:
-                                 </label>
-                                 <textbox type="password" id="txtPass"
-                                    value="" maxlength="32">
-                                 </textbox>
-                              </row>
-                              <row>
-                                 <label style="font-size:small">
-                                    (*) Nombre:
-                                 </label>
-                                 <textbox id="txtNombre" value="">
-                                 </textbox>
-                              </row>
-                              <row>
-                                 <label style="font-size:small">
-                                    (*) Apellidos:
-                                 </label>
-                                 <textbox id="txtApellidos" value="">
-                                 </textbox>
-                              </row>
-                              <row>
-                                 <label style="font-size:small">
-                                    (*) DNI:
-                                 </label>
-                                 <textbox id="txtDNI" value="">
-                                 </textbox>
-                              </row>
-                              <row>
-                                 <label style="font-size:small">
-                                    (*) Role:
-                                 </label>
-                                 <combobox id="cmbRole" readonly="true"
-                                    width="150px">
-                                 </combobox>
-                              </row>
-                              <row>
-                                 <label style="font-size:small">
-                                    Teléfonos:
-                                 </label>
-                                 <textbox id="txtTelefono" value="">
-                                 </textbox>
-                              </row>
-                              <row>
-                                 <label style="font-size:small">
-                                    Celular:
-                                 </label>
-                                 <textbox id="txtCelular" value="">
-                                 </textbox>
-                              </row>
-                              <row>
-                                 <label style="font-size:small">
-                                    E-mail:
-                                 </label>
-                                 <textbox id="txtMail" value="">
-                                 </textbox>
-                              </row>
-                              <row>
-                                 <label style="font-size:small">
-                                    Direccion:
-                                 </label>
-                                 <textbox id="txtDireccion" value="">
-                                 </textbox>
-                              </row>
-                              <row>
-                                 <label style="font-size:small">
-                                    Ciudad:
-                                 </label>
-                                 <textbox id="txtCiudad" value="">
-                                 </textbox>
-                              </row>
-                              <row>
-                                 <label style="font-size:small">
-                                    Region:
-                                 </label>
-                                 <textbox id="txtRegion" value="">
-                                 </textbox>
-                              </row>
-                              <row>
-                                 <label style="font-size:small">
-                                    Fecha de Nacimiento:
-                                 </label>
-                                 <datebox id="datNac" >
-                                 </datebox>
-                              </row>
-                              <row>
-                                 <label style="font-size:small">
-                                    (*) Estado:
-                                 </label>
-                                 <combobox id="cmbEstado" width="100px"
-                                    readonly="true">
-                                    <comboitem label="Activo" value="1"/>
-                                    <comboitem label="Inactivo" value="2"/>
-                                 </combobox>
-                              </row>
-                           </rows>
-                        </grid>
-                        <html:p />
-                        <div align="center">
-                           <button label="Crear" id="btnCrear"
-                              onClick="winEAAE.crear()">
-                           </button>
-                           <button label="Actualizar" id="btnInfo"
-                              visible="false"
-                              onClick="winEAAE.actualizar()">
-                           </button>
-                           <button label="Cancelar" visible="false"
-                              id="btnCancel"
-                              onClick='winEAAE.cancelar();winEAAE.limpiarCrear();btnInfo.setVisible(false);
-                                       capInfo.setLabel("Nuevo Contacto");btnCrear.setVisible(true);
-                                       btnCancel.setVisible(false)'>
-                           </button>
-                        </div>
-                     </div>
-                  </groupbox>
-                  <html:p />
-               </groupbox>
-            </vbox>
-         </div>
-      </window>
-   </div>
+<window id="wEAAE" hflex="1" vflex="1"
+        apply="pe.com.jx_market.controller.PO_EAAdministrateEmployee">
+    <borderlayout id="bl" hflex="1" vflex="1">
+        <north size="25%" collapsible="false" sclass="s-north">
+            <div align="center" hflex="1" vflex="1">
+                <label zclass="z-south-header" sclass="s-header">
+                    ${labels.pe.com.jx_market.eAAdministrateEmployee.Title}
+                </label>
+                <html:p />
+                <grid fixedLayout="true" width="100%" visible="true" hflex="1" sclass="s-grid">
+                    <auxhead>
+                        <auxheader label="${labels.pe.com.jx_market.eAAdministrateEmployee.SubTitle}" colspan="4" />
+                    </auxhead>
+                    <columns sizable="true">
+                        <column hflex="1" />
+                        <column hflex="3" />
+                        <column hflex="1" />
+                        <column hflex="3" />
+                    </columns>
+                    <rows>
+                        <row>
+                            <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.cmbDocType.Label}" />
+                            <combobox id="cmbDocType" hflex="1" />
+                            <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.txtDocument.Label}" />
+                            <textbox id="txtDocument" hflex="1" />
+                        </row>
+                        <row>
+                            <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.txtLastName.Label}" />
+                            <textbox id="txtLastName" hflex="1" />
+                            <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.txtSecLastName.Label}" />
+                            <textbox id="txtSecLastName" hflex="1" />
+                        </row>
+                        <row>
+                            <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.txtLastName.Label}" />
+                            <textbox id="txtName" hflex="1" />
+                        </row>
+                    </rows>
+                </grid>
+                <hbox align="end" pack="end" hflex="1" vflex="1" sclass="s-hbox">
+                    <button id="btnSearch" label="${labels.pe.com.jx_market.eAAdministrateEmployee.btnSearch.Label}"
+                            image="/media/search4.png" />
+                    <button id="btnClean" label="${labels.pe.com.jx_market.eAAdministrateEmployee.btnClean.Label}"
+                            image="/media/filenew.png" />
+                </hbox>
+            </div>
+        </north>
+        <center autoscroll="true" sclass="s-center2">
+            <listbox id="lstRole" mold="paging" pagingPosition="bottom" autopaging="true" sizedByContent="true"  hflex="1" vflex="1">
+                <listhead>
+                    <listheader label="Nº" id="headNumber" width="30px"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateEmployee.DocType.Label}" sort="auto" hflex="1"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateEmployee.Document.Label}" sort="auto" hflex="1"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateEmployee.LastName.Label}" sort="auto" hflex="1"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateEmployee.SecLastName.Label}" sort="auto" hflex="1"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateEmployee.Names.Label}" sort="auto" hflex="1"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateEmployee.User.Label}" sort="auto" hflex="1"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateEmployee.Role.Label}" sort="auto" hflex="1"/>
+                    <listheader label="${labels.pe.com.jx_market.eAAdministrateEmployee.Details.Label}" sort="auto" hflex="1"/>
+                </listhead>
+            </listbox>
+        </center>
+        <south size="5%" style="visibility:visible;" sclass="s-south2">
+            <hbox align="center" pack="end" hflex="1" vflex="1" sclass="s-hbox">
+                <button id="btnCreate" label="${labels.pe.com.jx_market.eAAdministrateEmployee.btnCreate.Label}"
+                    image="/media/filenew.png" />
+                <button id="btnEdit" label="${labels.pe.com.jx_market.eAAdministrateEmployee.btnEdit.Label}"
+                    image="/media/edit.png" />
+                <button id="btnDelete" label="${labels.pe.com.jx_market.eAAdministrateEmployee.btnDelete.Label}"
+                    image="/media/editdelete.png" />
+            </hbox>
+        </south>
+    </borderlayout>
+    <popup id="popDetails" width="400px">
+        <div align="center">
+            <label style="font-family: sans-serif; font-weight:normal; color:#473C8B;font-size:14px">
+                Detalle de Employee
+            </label>
+        </div>
+        <html:p />
+        <grid>
+            <columns>
+                <column label="${labels.pe.com.jx_market.eAAdministrateEmployee.Field.Label}" width="100px" />
+                <column label="${labels.pe.com.jx_market.eAAdministrateEmployee.Content.Label}" width="250px" />
+            </columns>
+            <rows>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.User.Label}" />
+                    <label id="lblUser" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Name.Label}" />
+                    <label id="lblName" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.LastName.Label}" />
+                    <label id="lblLastName" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.SecLastName.Label}" />
+                    <label id="lblSecLastName" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.DocType.Label}" />
+                    <label id="lblDocType" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Document.Label}" />
+                    <label id="lblDocument" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Role.Label}" />
+                    <label id="lblRole" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Phone.Label}" />
+                    <label id="lblPhone" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.EMail.Label}" />
+                    <label id="lblMail" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.City.Label}" />
+                    <label id="lblCity" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Status.Label}" />
+                    <label id="lblStatus" />
+                </row>
+            </rows>
+        </grid>
+        <div align="center">
+            <toolbarbutton label="${labels.pe.com.jx_market.eAAdministrateEmployee.ClosePop.Label}" onClick="popDetails.close()"></toolbarbutton>
+        </div>
+    </popup>
+</window>
 </zk>
