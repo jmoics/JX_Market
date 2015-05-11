@@ -12,11 +12,29 @@ import org.springframework.web.context.WebApplicationContext;
 public class ServiceProvider
 {
 
-    static Log logger = LogFactory.getLog(ServiceProvider.class);
+    /**
+     *
+     */
+    private final Log logger = LogFactory.getLog(ServiceProvider.class);
+    /**
+     *
+     */
     private static ServiceProvider provider;
+    /**
+     *
+     */
     private static int configurationMode = 0;
+    /**
+     *
+     */
     private static Properties properties = null;
+    /**
+     *
+     */
     private final HashMap<String, BusinessService> serviceMap;
+    /**
+     *
+     */
     private final ApplicationContext context;
 
     /**
@@ -63,23 +81,24 @@ public class ServiceProvider
      * @param name id del bean en los beans de servicios.
      * @return frontEnd el objeto que contiene el servicio.
      */
-    public BusinessService getService(final String name)
+    public BusinessService getService(final String _name)
     {
-        logger.debug("Retrieving service " + name + " via Spring");
-        BusinessService srv = this.serviceMap.get(name);
+        logger.debug("Retrieving service " + _name + " via Spring");
+        BusinessService srv = this.serviceMap.get(_name);
+        BusinessService ret = srv;
         if (srv == null) {
-            srv = (BusinessService) this.context.getBean(name);
+            srv = (BusinessService) this.context.getBean(_name);
             if (srv == null) {
-                throw new NullPointerException("No existe bean " + name);
+                throw new NullPointerException("No existe bean " + _name);
             }
             final BusinessFE frontEnd = new BusinessFE();
             frontEnd.setService(srv);
-            frontEnd.setName(name);
+            frontEnd.setName(_name);
             frontEnd.setReportExceptions(false);
-            this.serviceMap.put(name, frontEnd);
-            return frontEnd;
+            this.serviceMap.put(_name, frontEnd);
+            ret = frontEnd;
         }
-        return srv;
+        return ret;
     }
 
     /**

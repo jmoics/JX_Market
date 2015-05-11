@@ -3,26 +3,49 @@ package pe.com.jx_market.utilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class BusinessFE<T> implements BusinessService<T> {
-    private BusinessService<T> service;
-    private String name;
-    private boolean reportExceptions;
-    static Log logger = LogFactory.getLog(BusinessFE.class);
+/**
+ * @author jcuevas
+ *
+ * @param <T>
+ */
+public class BusinessFE<T>
+    implements BusinessService<T>
+{
 
+    /**
+     *
+     */
+    private BusinessService<T> service;
+    /**
+     *
+     */
+    private String name;
+    /**
+     *
+     */
+    private boolean reportExceptions;
+    /**
+     *
+     */
+    private final Log logger = LogFactory.getLog(BusinessFE.class);
+
+    /* (non-Javadoc)
+     * @see pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities.ServiceInput)
+     */
     @Override
-    public ServiceOutput<T> execute (final ServiceInput<T> e) {
+    public ServiceOutput<T> execute(final ServiceInput<T> _e)
+    {
         ServiceOutput<T> output;
         try {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Inicio ejecucion bean " + this.name);
+            if (this.logger.isDebugEnabled()) {
+                this.logger.debug("Inicio ejecucion bean " + this.name);
             }
-            output = this.service.execute(e);
-            if (logger.isDebugEnabled()) {
-                logger.debug("Fin de ejecucion bean " + this.name);
+            output = this.service.execute(_e);
+            if (this.logger.isDebugEnabled()) {
+                this.logger.debug("Fin de ejecucion bean " + this.name);
             }
-            return output;
         } catch (final RuntimeException ex) {
-            logger.warn("Excepcion generada por bean " + this.name, ex);
+            this.logger.warn("Excepcion generada por bean " + this.name, ex);
             output = new ServiceOutput<T>();
             if (this.reportExceptions) {
                 output.setError(-1, ex.getMessage());
@@ -33,27 +56,51 @@ public class BusinessFE<T> implements BusinessService<T> {
         return output;
     }
 
-    public BusinessService<T> getService () {
+    /**
+     * @return service.
+     */
+    public BusinessService<T> getService()
+    {
         return this.service;
     }
 
-    public void setService (final BusinessService<T> service) {
-        this.service = service;
+    /**
+     * @param _service set Service
+     */
+    public void setService(final BusinessService<T> _service)
+    {
+        this.service = _service;
     }
 
-    public String getName () {
+    /**
+     * @return name.
+     */
+    public String getName()
+    {
         return this.name;
     }
 
-    public void setName (final String name) {
-        this.name = name;
+    /**
+     * @param _name Name.
+     */
+    public void setName(final String _name)
+    {
+        this.name = _name;
     }
 
-    public boolean isReportExceptions () {
+    /**
+     * @return reportExceptions.
+     */
+    public boolean isReportExceptions()
+    {
         return this.reportExceptions;
     }
 
-    public void setReportExceptions (final boolean reportExceptions) {
-        this.reportExceptions = reportExceptions;
+    /**
+     * @param _reportExceptions reportExceptions
+     */
+    public void setReportExceptions(final boolean _reportExceptions)
+    {
+        this.reportExceptions = _reportExceptions;
     }
 }
