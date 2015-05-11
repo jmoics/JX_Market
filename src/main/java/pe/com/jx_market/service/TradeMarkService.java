@@ -22,6 +22,9 @@ import pe.com.jx_market.utilities.ServiceOutput;
 public class TradeMarkService
     implements BusinessService<DTO_TradeMark>
 {
+    /**
+     *
+     */
     @Autowired
     private TradeMarkMapper tradeMarkMapper;
 
@@ -30,43 +33,30 @@ public class TradeMarkService
      */
     @Override
     @Transactional
-    public ServiceOutput<DTO_TradeMark> execute(final ServiceInput<DTO_TradeMark> input)
+    public ServiceOutput<DTO_TradeMark> execute(final ServiceInput<DTO_TradeMark> _input)
     {
         final ServiceOutput<DTO_TradeMark> output = new ServiceOutput<DTO_TradeMark>();
-        if (Constantes.V_LIST.equals(input.getAction())) {
-            output.setLista(tradeMarkMapper.getTradeMarks(input.getObject()));
+        if (Constantes.V_LIST.equals(_input.getAction())) {
+            output.setLista(this.tradeMarkMapper.getTradeMarks(_input.getObject()));
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
-            final DTO_TradeMark categTmp = tradeMarkMapper.getTradeMark4Id(input.getObject());
+        } else if (Constantes.V_REGISTER.equals(_input.getAction())) {
+            final DTO_TradeMark categTmp = this.tradeMarkMapper.getTradeMark4Id(_input.getObject());
             if (categTmp == null) {
-                tradeMarkMapper.insertTradeMark(input.getObject());
+                this.tradeMarkMapper.insertTradeMark(_input.getObject());
             } else {
-                tradeMarkMapper.updateTradeMark(input.getObject());
+                this.tradeMarkMapper.updateTradeMark(_input.getObject());
             }
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_GET.equals(input.getAction())) {
-            final DTO_TradeMark art = tradeMarkMapper.getTradeMark4Id(input.getObject());
+        } else if (Constantes.V_GET.equals(_input.getAction())) {
+            final DTO_TradeMark art = this.tradeMarkMapper.getTradeMark4Id(_input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
-            return output;
-        }else if (Constantes.V_DELETE.equals(input.getAction())) {
-            tradeMarkMapper.deleteTradeMark(input.getObject());
+        } else if (Constantes.V_DELETE.equals(_input.getAction())) {
+            this.tradeMarkMapper.deleteTradeMark(_input.getObject());
             output.setErrorCode(Constantes.OK);
-            return output;
         } else {
             throw new RuntimeException("No se especifico verbo adecuado");
         }
-    }
-
-    public TradeMarkMapper getDao()
-    {
-        return tradeMarkMapper;
-    }
-
-    public void setDao(final TradeMarkMapper tradeMarkMapper)
-    {
-        this.tradeMarkMapper = tradeMarkMapper;
+        return output;
     }
 }

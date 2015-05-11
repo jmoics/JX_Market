@@ -11,53 +11,46 @@ import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
+/**
+ * @author jcuevas
+ *
+ */
 @Service
 public class ModuleService
     implements BusinessService<DTO_Module>
 {
+    /**
+     *
+     */
     @Autowired
     private ModuleMapper moduleMapper;
 
     @Override
     @Transactional
-    public ServiceOutput<DTO_Module> execute(final ServiceInput<DTO_Module> input)
+    public ServiceOutput<DTO_Module> execute(final ServiceInput<DTO_Module> _input)
     {
         final ServiceOutput<DTO_Module> output = new ServiceOutput<DTO_Module>();
-        if (Constantes.V_LIST.equals(input.getAction())) {
-            output.setLista(moduleMapper.getModules(input.getObject()));
+        if (Constantes.V_LIST.equals(_input.getAction())) {
+            output.setLista(this.moduleMapper.getModules(_input.getObject()));
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
-            final DTO_Module modTmp = moduleMapper.getModuleXId(input.getObject());
+        } else if (Constantes.V_REGISTER.equals(_input.getAction())) {
+            final DTO_Module modTmp = this.moduleMapper.getModuleXId(_input.getObject());
             if (modTmp == null) {
-                moduleMapper.insertModule(input.getObject());
+                this.moduleMapper.insertModule(_input.getObject());
             } else {
-                moduleMapper.updateModule(input.getObject());
+                this.moduleMapper.updateModule(_input.getObject());
             }
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_GET.equals(input.getAction())) {
-            final DTO_Module mod = moduleMapper.getModuleXId(input.getObject());
+        } else if (Constantes.V_GET.equals(_input.getAction())) {
+            final DTO_Module mod = this.moduleMapper.getModuleXId(_input.getObject());
             output.setObject(mod);
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_DELETE.equals(input.getAction())) {
-            moduleMapper.deleteModule(input.getObject());
+        } else if (Constantes.V_DELETE.equals(_input.getAction())) {
+            this.moduleMapper.deleteModule(_input.getObject());
             output.setErrorCode(Constantes.OK);
-            return output;
         } else {
             throw new RuntimeException("No se especifico verbo adecuado");
         }
+        return output;
     }
-
-    public ModuleMapper getDao()
-    {
-        return moduleMapper;
-    }
-
-    public void setDao(final ModuleMapper moduleMapper)
-    {
-        this.moduleMapper = moduleMapper;
-    }
-
 }

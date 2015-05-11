@@ -24,6 +24,9 @@ import pe.com.jx_market.utilities.ServiceOutput;
 public class AutorizacionService<T>
     implements BusinessService<T>
 {
+    /**
+     *
+     */
     @Autowired
     private RoleModuleMapper roleModuleMapper;
 
@@ -37,40 +40,31 @@ public class AutorizacionService<T>
      */
     @Override
     @Transactional
-    public ServiceOutput<T> execute(final ServiceInput<T> input)
+    public ServiceOutput<T> execute(final ServiceInput<T> _input)
     {
         final ServiceOutput<T> output = new ServiceOutput<T>();
-        final DTO_User user = (DTO_User) input.getMapa().get(Constantes.ATTRIBUTE_USER);
+        final DTO_User user = (DTO_User) _input.getMapa().get(Constantes.ATTRIBUTE_USER);
         final DTO_Role role = new DTO_Role();
         role.setId(user.getRoleId());
         String[] modules;
-        if (input.getMapa().containsKey(Constantes.ATTRIBUTE_MODULE)) {
-            final String module = (String) input.getMapa().get(Constantes.ATTRIBUTE_MODULE);
+        if (_input.getMapa().containsKey(Constantes.ATTRIBUTE_MODULE)) {
+            final String module = (String) _input.getMapa().get(Constantes.ATTRIBUTE_MODULE);
             modules = new String[1];
             modules[0] = module;
         } else {
-            modules = (String[]) input.getMapa().get(Constantes.ATTRIBUTE_MODULES);
+            modules = (String[]) _input.getMapa().get(Constantes.ATTRIBUTE_MODULES);
         }
-        final Set<String> modulesDelRole = roleModuleMapper.getModuleString4Role(role);
+        final Set<String> modulesDelRole = this.roleModuleMapper.getModuleString4Role(role);
         // debemos validar que todos los recursos solicitados estan en el array
         for (int z = 0; z < modules.length; z++) {
             if (!modulesDelRole.contains(modules[z])) {
                 output.setErrorCode(Constantes.AUTH_ERROR);
-                return output;
+                break;
+            } else {
+                output.setErrorCode(Constantes.OK);
             }
         }
-        output.setErrorCode(Constantes.OK);
+
         return output;
     }
-
-    public RoleModuleMapper getDao()
-    {
-        return roleModuleMapper;
-    }
-
-    public void setDao(final RoleModuleMapper roleModuleMapper)
-    {
-        this.roleModuleMapper = roleModuleMapper;
-    }
-
 }

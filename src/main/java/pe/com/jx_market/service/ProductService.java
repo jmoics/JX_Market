@@ -39,17 +39,26 @@ public class ProductService
     implements BusinessService<DTO_Product>
 {
 
-    static Log logger = LogFactory.getLog(ProductService.class);
+    /**
+     *
+     */
+    private final Log logger = LogFactory.getLog(ProductService.class);
+    /**
+     *
+     */
     @Autowired
     private ProductMapper productMapper;
 
+    /* (non-Javadoc)
+     * @see pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities.ServiceInput)
+     */
     @Override
     @Transactional
-    public ServiceOutput<DTO_Product> execute(final ServiceInput<DTO_Product> input)
+    public ServiceOutput<DTO_Product> execute(final ServiceInput<DTO_Product> _input)
     {
         final ServiceOutput<DTO_Product> output = new ServiceOutput<DTO_Product>();
-        if (Constantes.V_LIST.equals(input.getAction())) {
-            final List<DTO_Product> lstProds = productMapper.getProducts(input.getMapa());
+        if (Constantes.V_LIST.equals(_input.getAction())) {
+            final List<DTO_Product> lstProds = this.productMapper.getProducts(_input.getMapa());
             for (final DTO_Product prod : lstProds) {
                 for (final DTO_ProductImage img : prod.getImages()) {
                     loadPhoto(img);
@@ -57,20 +66,18 @@ public class ProductService
             }
             output.setLista(lstProds);
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
-            final DTO_Product prod = input.getObject();
-            final DTO_Product prodTmp = productMapper.getProduct4Id(prod);
+        } else if (Constantes.V_REGISTER.equals(_input.getAction())) {
+            final DTO_Product prod = _input.getObject();
+            final DTO_Product prodTmp = this.productMapper.getProduct4Id(prod);
             if (prodTmp == null) {
-                productMapper.insertProduct(prod);
+                this.productMapper.insertProduct(prod);
             } else {
-                productMapper.updateProduct(prod);
+                this.productMapper.updateProduct(prod);
             }
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_GET.equals(input.getAction())) {
-            final Map<?, ?> map = input.getMapa();
-            final DTO_Product prod = productMapper.getProduct4Id(input.getObject());
+        } else if (Constantes.V_GET.equals(_input.getAction())) {
+            final Map<?, ?> map = _input.getMapa();
+            final DTO_Product prod = this.productMapper.getProduct4Id(_input.getObject());
             if (map == null) {
                 for (final DTO_ProductImage img : prod.getImages()) {
                     loadPhoto(img);
@@ -78,70 +85,72 @@ public class ProductService
             }
             output.setObject(prod);
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_USTOCK.equals(input.getAction())) {
-            productMapper.updateStock(input.getObject());
+        } else if (Constantes.V_USTOCK.equals(_input.getAction())) {
+            this.productMapper.updateStock(_input.getObject());
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_GETIMG.equals(input.getAction())) {
-            final DTO_Product prod = input.getObject();
+        } else if (Constantes.V_GETIMG.equals(_input.getAction())) {
+            final DTO_Product prod = _input.getObject();
             // loadPhoto(art);
             output.setObject(prod);
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_REGISTERCAT4PROD.equals(input.getAction())) {
-            final DTO_Product prod = input.getObject();
+        } else if (Constantes.V_REGISTERCAT4PROD.equals(_input.getAction())) {
+            final DTO_Product prod = _input.getObject();
             for (final DTO_Category categ : prod.getCategories()) {
                 final DTO_Category2Product cat2Prod = new DTO_Category2Product();
                 cat2Prod.setProductId(prod.getId());
                 cat2Prod.setCategoryId(categ.getId());
-                final int count = productMapper.getCategories4Product(cat2Prod);
+                final int count = this.productMapper.getCategories4Product(cat2Prod);
                 if (count == 0) {
-                    productMapper.insertCategory4Product(cat2Prod);
+                    this.productMapper.insertCategory4Product(cat2Prod);
                 }
             }
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_DELETECAT4PROD.equals(input.getAction())) {
-            final DTO_Product prod = input.getObject();
+        } else if (Constantes.V_DELETECAT4PROD.equals(_input.getAction())) {
+            final DTO_Product prod = _input.getObject();
             for (final DTO_Category categ : prod.getCategories()) {
                 final DTO_Category2Product cat2Prod = new DTO_Category2Product();
                 cat2Prod.setProductId(prod.getId());
                 cat2Prod.setCategoryId(categ.getId());
-                final int count = productMapper.getCategories4Product(cat2Prod);
+                final int count = this.productMapper.getCategories4Product(cat2Prod);
                 if (count > 0) {
-                    productMapper.deleteCategory4Product(cat2Prod);
+                    this.productMapper.deleteCategory4Product(cat2Prod);
                 }
             }
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_REGISTERIMG4PROD.equals(input.getAction())) {
-            final DTO_Product prod = input.getObject();
+        } else if (Constantes.V_REGISTERIMG4PROD.equals(_input.getAction())) {
+            final DTO_Product prod = _input.getObject();
             for (final DTO_ProductImage img : prod.getImages()) {
                 // if(img.getImageName() == null) {
                 img.setImageName(prod.getCompanyId() + "." + prod.getId() + "." + generarNombreAleatorio());
                 savePhoto(img);
                 // }
                 if (img.getId() == null) {
-                    productMapper.insertImage4Product(img);
+                    this.productMapper.insertImage4Product(img);
                 } else {
-                    productMapper.updateImage4Product(img);
+                    this.productMapper.updateImage4Product(img);
                 }
             }
             output.setErrorCode(Constantes.OK);
-            return output;
         } else {
             throw new RuntimeException("No se especifico verbo adecuado");
         }
+        return output;
     }
 
+    /**
+     * @return random name.
+     */
     private String generarNombreAleatorio()
     {
         final Random rnd = new Random();
-        final Integer nomImg = ((int) (rnd.nextDouble() * 1000000.0));
+        final Integer nomImg = (int) (rnd.nextDouble() * 1000000.0);
         return nomImg.toString();
     }
 
+    /**
+     * @param _image entity for images.
+     * @return File with path.
+     */
     private File getPhotoFile(final DTO_ProductImage _image)
     {
         String ruta;
@@ -153,6 +162,9 @@ public class ProductService
         return new File(ruta);
     }
 
+    /**
+     * @param _image entity for images.
+     */
     private void savePhoto(final DTO_ProductImage _image)
     {
         final File photo = getPhotoFile(_image);
@@ -171,18 +183,21 @@ public class ProductService
         }
     }
 
+    /**
+     * @param _image entity for images.
+     */
     private void loadPhoto(final DTO_ProductImage _image)
     {
         final File photo = getPhotoFile(_image);
         if (!photo.exists()) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("No existe archivo de foto " + photo.getName());
+            if (this.logger.isDebugEnabled()) {
+                this.logger.debug("No existe archivo de foto " + photo.getName());
             }
             _image.setImage(null);
             return;
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Existe archivo de foto " + photo.getName());
+        if (this.logger.isDebugEnabled()) {
+            this.logger.debug("Existe archivo de foto " + photo.getName());
         }
         try {
             final BufferedInputStream bis = new BufferedInputStream(new FileInputStream(photo));
@@ -194,22 +209,11 @@ public class ProductService
             bis.close();
             baos.close();
             _image.setImage(baos.toByteArray());
-            if (logger.isDebugEnabled()) {
-                logger.debug("Cargamos bytes en foto " + _image.getImage().length);
+            if (this.logger.isDebugEnabled()) {
+                this.logger.debug("Cargamos bytes en foto " + _image.getImage().length);
             }
         } catch (final IOException ex) {
             throw new RuntimeException(ex);
         }
     }
-
-    public ProductMapper getDao()
-    {
-        return productMapper;
-    }
-
-    public void setDao(final ProductMapper _productMapper)
-    {
-        this.productMapper = _productMapper;
-    }
-
 }

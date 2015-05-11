@@ -21,82 +21,80 @@ import pe.com.jx_market.utilities.ServiceOutput;
 import pe.com.jx_market.utilities.ServiceOutputConnection;
 
 /**
- * Servicio de Administración de Recursos por Role
- * @author diego
+ * Servicio de Administración de Recursos por Role.
+ *
+ * @author George
  *
  */
 @Service
 public class RoleModuleService
     implements BusinessServiceConnection<DTO_RoleModule, DTO_Role, DTO_Module>
 {
+
+    /**
+     *
+     */
     @Autowired
     private RoleModuleMapper roleModuleMapper;
+    /**
+     *
+     */
     @Autowired
     private ModuleMapper moduleMapper;
 
-    /**El ServiceInput debe contener un Verbo, el cual es un String en el cual se específica la acción a realizar
-     * ya sea consulta, registro o eliminación ("list", "register" o "delete" respectivamente)
+    /**
+     * El ServiceInput debe contener un Verbo, el cual es un String en el cual
+     * se específica la acción a realizar ya sea consulta, registro o
+     * eliminación ("list", "register" o "delete" respectivamente).
      */
+    @SuppressWarnings("unchecked")
     @Override
     @Transactional
     public ServiceOutputConnection<DTO_RoleModule, DTO_Role, DTO_Module> execute(
-                    final ServiceInputConnection<DTO_RoleModule, DTO_Role, DTO_Module> input) {
+                                             final ServiceInputConnection<DTO_RoleModule, DTO_Role, DTO_Module> _input)
+    {
 
         final ServiceOutputConnection<DTO_RoleModule, DTO_Role, DTO_Module> output =
                         new ServiceOutputConnection<DTO_RoleModule, DTO_Role, DTO_Module>();
-        if(Constantes.V_LIST.equals(input.getAction())) {
-            output.setResultListTo(moduleMapper.getModules(input.getObjectTo()));
-            output.setResultListFrom(roleModuleMapper.getModules4Role(input.getMapa()));
+        if (Constantes.V_LIST.equals(_input.getAction())) {
+            output.setResultListTo(this.moduleMapper.getModules(_input.getObjectTo()));
+            output.setResultListFrom(this.roleModuleMapper.getModules4Role(_input.getMapa()));
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if(Constantes.V_REGISTER.equals(input.getAction())) {
-            final Map<DTO_Role, Set<DTO_RoleModule>> mapa = (Map<DTO_Role, Set<DTO_RoleModule>>) input.getMapa();
+        } else if (Constantes.V_REGISTER.equals(_input.getAction())) {
+            final Map<DTO_Role, Set<DTO_RoleModule>> mapa = (Map<DTO_Role, Set<DTO_RoleModule>>) _input.getMapa();
             final Iterator<DTO_Role> roleIterator = mapa.keySet().iterator();
-            while(roleIterator.hasNext()) {
+            while (roleIterator.hasNext()) {
                 final DTO_Role role = roleIterator.next();
-                roleModuleMapper.deleteModuleRole(role);
-                final Set <DTO_RoleModule> recursos =  mapa.get(role);
-                final Iterator <DTO_RoleModule> itBlock = recursos.iterator();
-                while(itBlock.hasNext()) {
+                this.roleModuleMapper.deleteModuleRole(role);
+                final Set<DTO_RoleModule> recursos = mapa.get(role);
+                final Iterator<DTO_RoleModule> itBlock = recursos.iterator();
+                while (itBlock.hasNext()) {
                     final DTO_RoleModule perfMod = itBlock.next();
                     perfMod.setActive(true);
-                    System.out.println("Agrego: " + perfMod.getRole() + " cod: " + perfMod.getModuleId());
-                    roleModuleMapper.insertModuleRole(perfMod);
+                    // System.out.println("Agrego: " + perfMod.getRole() +
+                    // " cod: " + perfMod.getModuleId());
+                    this.roleModuleMapper.insertModuleRole(perfMod);
                 }
             }
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if(Constantes.V_REGISTERPM.equals(input.getAction())) {
-            final DTO_RoleModule perfMod = input.getObject();
-            roleModuleMapper.insertModuleRole(perfMod);
+        } else if (Constantes.V_REGISTERPM.equals(_input.getAction())) {
+            final DTO_RoleModule perfMod = _input.getObject();
+            this.roleModuleMapper.insertModuleRole(perfMod);
             output.setErrorCode(Constantes.OK);
-            return output;
+        } else {
+            throw new RuntimeException("Verbo incorrecto");
         }
-
-        throw new RuntimeException("Verbo incorrecto");
+        return output;
     }
 
-    public ModuleMapper getModuleDAO() {
-        return moduleMapper;
-    }
-
-    public void setModuleDAO(final ModuleMapper moduleMapper)
-    {
-        this.moduleMapper = moduleMapper;
-    }
-
-    public RoleModuleMapper getDao()
-    {
-        return roleModuleMapper;
-    }
-
-    public void setDao(final RoleModuleMapper roleModuleMapper)
-    {
-        this.roleModuleMapper = roleModuleMapper;
-    }
-
+    /*
+     * (non-Javadoc)
+     * @see
+     * pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities
+     * .ServiceInput)
+     */
     @Override
-    public ServiceOutput<DTO_RoleModule> execute(final ServiceInput<DTO_RoleModule> paramDTO_Input)
+    public ServiceOutput<DTO_RoleModule> execute(final ServiceInput<DTO_RoleModule> _input)
     {
         // TODO Auto-generated method stub
         return null;

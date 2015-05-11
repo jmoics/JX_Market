@@ -22,6 +22,9 @@ import pe.com.jx_market.utilities.ServiceOutput;
 public class CategoryService
     implements BusinessService<DTO_Category>
 {
+    /**
+     *
+     */
     @Autowired
     private CategoryMapper categoryMapper;
 
@@ -30,43 +33,30 @@ public class CategoryService
      */
     @Override
     @Transactional
-    public ServiceOutput<DTO_Category> execute(final ServiceInput<DTO_Category> input)
+    public ServiceOutput<DTO_Category> execute(final ServiceInput<DTO_Category> _input)
     {
         final ServiceOutput<DTO_Category> output = new ServiceOutput<DTO_Category>();
-        if (Constantes.V_LIST.equals(input.getAction())) {
-            output.setLista(categoryMapper.getCategories(input.getObject()));
+        if (Constantes.V_LIST.equals(_input.getAction())) {
+            output.setLista(this.categoryMapper.getCategories(_input.getObject()));
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
-            final DTO_Category categTmp = categoryMapper.getCategory4Id(input.getObject());
+        } else if (Constantes.V_REGISTER.equals(_input.getAction())) {
+            final DTO_Category categTmp = this.categoryMapper.getCategory4Id(_input.getObject());
             if (categTmp == null) {
-                categoryMapper.insertCategory(input.getObject());
+                this.categoryMapper.insertCategory(_input.getObject());
             } else {
-                categoryMapper.updateCategory(input.getObject());
+                this.categoryMapper.updateCategory(_input.getObject());
             }
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_GET.equals(input.getAction())) {
-            final DTO_Category art = categoryMapper.getCategory4Id(input.getObject());
+        } else if (Constantes.V_GET.equals(_input.getAction())) {
+            final DTO_Category art = this.categoryMapper.getCategory4Id(_input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
-            return output;
-        }else if (Constantes.V_DELETE.equals(input.getAction())) {
-            categoryMapper.deleteCategory(input.getObject());
+        } else if (Constantes.V_DELETE.equals(_input.getAction())) {
+            this.categoryMapper.deleteCategory(_input.getObject());
             output.setErrorCode(Constantes.OK);
-            return output;
         } else {
             throw new RuntimeException("No se especifico verbo adecuado");
         }
-    }
-
-    public CategoryMapper getDao()
-    {
-        return categoryMapper;
-    }
-
-    public void setDao(final CategoryMapper categoryMapper)
-    {
-        this.categoryMapper = categoryMapper;
+        return output;
     }
 }

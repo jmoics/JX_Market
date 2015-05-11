@@ -11,53 +11,46 @@ import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
+/**
+ * @author jcuevas
+ *
+ */
 @Service
 public class RoleService
     implements BusinessService<DTO_Role>
 {
+    /**
+     *
+     */
     @Autowired
     private RoleMapper roleMapper;
 
     @Override
     @Transactional
-    public ServiceOutput<DTO_Role> execute(final ServiceInput<DTO_Role> input)
+    public ServiceOutput<DTO_Role> execute(final ServiceInput<DTO_Role> _input)
     {
         final ServiceOutput<DTO_Role> output = new ServiceOutput<DTO_Role>();
-        if (Constantes.V_LIST.equals(input.getAction())) {
-            output.setLista(roleMapper.getRoles(input.getObject()));
+        if (Constantes.V_LIST.equals(_input.getAction())) {
+            output.setLista(this.roleMapper.getRoles(_input.getObject()));
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
-            final DTO_Role roleTmp = roleMapper.getRole4Id(input.getObject());
+        } else if (Constantes.V_REGISTER.equals(_input.getAction())) {
+            final DTO_Role roleTmp = this.roleMapper.getRole4Id(_input.getObject());
             if (roleTmp == null) {
-                roleMapper.insertRole(input.getObject());
+                this.roleMapper.insertRole(_input.getObject());
             } else {
-                roleMapper.updateRole(input.getObject());
+                this.roleMapper.updateRole(_input.getObject());
             }
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_GET.equals(input.getAction())) {
-            final DTO_Role art = roleMapper.getRole4Id(input.getObject());
+        } else if (Constantes.V_GET.equals(_input.getAction())) {
+            final DTO_Role art = this.roleMapper.getRole4Id(_input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_DELETE.equals(input.getAction())) {
-            roleMapper.deleteRole(input.getObject());
+        } else if (Constantes.V_DELETE.equals(_input.getAction())) {
+            this.roleMapper.deleteRole(_input.getObject());
             output.setErrorCode(Constantes.OK);
-            return output;
         } else {
             throw new RuntimeException("No se especifico verbo adecuado");
         }
+        return output;
     }
-
-    public RoleMapper getDao()
-    {
-        return roleMapper;
-    }
-
-    public void setDao(final RoleMapper roleMapper)
-    {
-        this.roleMapper = roleMapper;
-    }
-
 }

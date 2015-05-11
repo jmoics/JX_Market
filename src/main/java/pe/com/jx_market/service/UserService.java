@@ -24,8 +24,14 @@ import pe.com.jx_market.utilities.ServiceOutput;
 public class UserService
     implements BusinessService
 {
+    /**
+     *
+     */
     @Autowired
     private UserMapper userDAO;
+    /**
+     *
+     */
     @Autowired
     private BusinessService passwordHashService;
 
@@ -46,60 +52,53 @@ public class UserService
     @SuppressWarnings("rawtypes")
     @Override
     @Transactional
-    public ServiceOutput execute(final ServiceInput input)
+    public ServiceOutput execute(final ServiceInput _input)
     {
 
         final ServiceOutput output = new ServiceOutput();
-        if (Constantes.V_LIST.equals(input.getAction())) {
-            final DTO_User user = (DTO_User) input.getObject();
-            output.setLista(userDAO.getUsers(user));
+        if (Constantes.V_LIST.equals(_input.getAction())) {
+            final DTO_User user = (DTO_User) _input.getObject();
+            output.setLista(this.userDAO.getUsers(user));
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_GET.equals(input.getAction())) {
-            output.setObject(userDAO.getUser4Username((DTO_User) input.getObject()));
+        } else if (Constantes.V_GET.equals(_input.getAction())) {
+            output.setObject(this.userDAO.getUser4Username((DTO_User) _input.getObject()));
             output.setErrorCode(Constantes.OK);
-            return output;
-        }else if (Constantes.V_REGISTER.equals(input.getAction())) {
-            final DTO_User user = (DTO_User) input.getObject();
+        } else if (Constantes.V_REGISTER.equals(_input.getAction())) {
+            final DTO_User user = (DTO_User) _input.getObject();
             user.setPassword(encriptaPass(user.getPassword()));
-            final DTO_User nonused = userDAO.getUser4Username(user);
+            final DTO_User nonused = this.userDAO.getUser4Username(user);
             if (nonused == null) {
-                final Integer idUser = userDAO.insertUser(user);
+                final Integer idUser = this.userDAO.insertUser(user);
                 output.setErrorCode(Constantes.OK);
             } else {
                 output.setErrorCode(Constantes.ERROR_RC);
             }
-            return output;
-        } else if (Constantes.V_DELETE.equals(input.getAction())) {
-            userDAO.eliminaUser((DTO_User) input.getObject());
+        } else if (Constantes.V_DELETE.equals(_input.getAction())) {
+            this.userDAO.eliminaUser((DTO_User) _input.getObject());
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if ("consultaSiEstaDisponible".equals(input.getAction())) {
-            final DTO_User us = userDAO.getUser4Username((DTO_User) input.getObject());
+        } else if ("consultaSiEstaDisponible".equals(_input.getAction())) {
+            final DTO_User us = this.userDAO.getUser4Username((DTO_User) _input.getObject());
             if (us == null) {
                 output.setErrorCode(Constantes.OK);
             } else {
                 output.setErrorCode(Constantes.ALREADY_USED);
             }
-            return output;
-        } else if ("chgpass".equals(input.getAction())) {
-            final DTO_User user = (DTO_User) input.getObject();
+        } else if ("chgpass".equals(_input.getAction())) {
+            final DTO_User user = (DTO_User) _input.getObject();
             final String nuevoPassword = user.getPassword();
-            final Map map = input.getMapa();
+            final Map map = _input.getMapa();
             //final String oldPass = (String) map.get("oldPass");
             String nonPass = null;
-            if(map != null && map.containsKey("nonPass")){
+            if (map != null && map.containsKey("nonPass")) {
                 nonPass = (String) map.get("nonPass");
             }
 
             // aqui se puede aprovechar para hacer algunas validaciones
             if (nuevoPassword.length() < 6) {
                 output.setErrorCode(Constantes.BAD_PASS);
-                return output;
             }
             if (!checkRepeticiones(nuevoPassword)) {
                 output.setErrorCode(Constantes.BAD_PASS);
-                return output;
             }
             /*if (nonPass == null && !checkPasswordAnterior(user, oldPass)) {
                 output.setErrorCode(Constantes.BAD_PASS);
@@ -108,73 +107,69 @@ public class UserService
             // encriptar el password..
             user.setPassword(encriptaPass(nuevoPassword));
 
-            final DTO_User usrTmp = userDAO.getUser4Username(user);
+            final DTO_User usrTmp = this.userDAO.getUser4Username(user);
             if (usrTmp != null) {
-                userDAO.cambiaPassword(user);
+                this.userDAO.cambiaPassword(user);
                 output.setErrorCode(Constantes.OK);
-                return output;
             } else {
                 throw new RuntimeException("Ocurrio un error al intentar guardar el nuevo tema");
             }
         } else {
             throw new RuntimeException("No se especifico verbo adecuado");
         }
+        return output;
     }
 
-    private boolean checkRepeticiones(final String pass)
+    /**
+     * @param pass Password.
+     * @return Boolean with compare answer.
+     */
+    private boolean checkRepeticiones(final String _pass)
     {
         final HashSet<Character> letras = new HashSet<Character>();
-        for (int z = 0; z < pass.length(); z++) {
-            letras.add(pass.charAt(z));
+        boolean ret = true;
+        for (int z = 0; z < _pass.length(); z++) {
+            letras.add(_pass.charAt(z));
         }
         if (letras.size() < 4) {
-            return false;
+            ret = false;
         }
-        return true;
+        return ret;
     }
 
-    private boolean checkPasswordAnterior(final DTO_User us,
-                                          final String pass)
+    /**
+     * @param _us User.
+     * @param _pass Previous password
+     * @return Boolean with compare answer.
+     */
+    private boolean checkPasswordAnterior(final DTO_User _us,
+                                          final String _pass)
     {
-        final DTO_User user = userDAO.getUser4Username(us);
+        final DTO_User user = this.userDAO.getUser4Username(_us);
+        boolean ret = false;
         String passEncriptado;
         // encriptar password enviado
-        final ServiceOutput output = passwordHashService.execute(new ServiceInput(pass));
+        final ServiceOutput output = this.passwordHashService.execute(new ServiceInput(_pass));
         if (output.getErrorCode() == Constantes.OK) {
             passEncriptado = (String) output.getObject();
             if (passEncriptado.equals(user.getPassword())) {
-                return true;
+                ret = true;
             }
         }
-        return false;
+        return ret;
     }
 
-    private String encriptaPass(final String pass)
+    /**
+     * @param _pass password.
+     * @return String with encrypted password.
+     */
+    private String encriptaPass(final String _pass)
     {
-        final ServiceOutput output = passwordHashService.execute(new ServiceInput(pass));
+        String ret = null;
+        final ServiceOutput output = this.passwordHashService.execute(new ServiceInput(_pass));
         if (output.getErrorCode() == Constantes.OK) {
-            return (String) output.getObject();
+            ret = (String) output.getObject();
         }
-        return null;
-    }
-
-    public UserMapper getDao()
-    {
-        return userDAO;
-    }
-
-    public void setDao(final UserMapper userDAO)
-    {
-        this.userDAO = userDAO;
-    }
-
-    public BusinessService getPasswordHashService()
-    {
-        return passwordHashService;
-    }
-
-    public void setPasswordHashService(final BusinessService passwordHashService)
-    {
-        this.passwordHashService = passwordHashService;
+        return ret;
     }
 }

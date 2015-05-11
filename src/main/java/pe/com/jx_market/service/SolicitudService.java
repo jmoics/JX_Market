@@ -11,54 +11,47 @@ import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
+/**
+ * @author jcuevas
+ *
+ */
 @Service
 public class SolicitudService
     implements BusinessService
 {
+    /**
+     *
+     */
     @Autowired
     private SolicitudMapper solicitudMapper;
 
     @Override
     @Transactional
-    public ServiceOutput execute(final ServiceInput input)
+    public ServiceOutput execute(final ServiceInput _input)
     {
         final ServiceOutput output = new ServiceOutput();
 
-        if (Constantes.V_LIST.equals(input.getAction())) {
-            output.setLista(solicitudMapper.getSolicitudes((DTO_Solicitud) input.getObject()));
+        if (Constantes.V_LIST.equals(_input.getAction())) {
+            output.setLista(this.solicitudMapper.getSolicitudes((DTO_Solicitud) _input.getObject()));
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
-            DTO_Solicitud solTmp = solicitudMapper.getSolicitudxCodigo((DTO_Solicitud) input.getObject());
+        } else if (Constantes.V_REGISTER.equals(_input.getAction())) {
+            final DTO_Solicitud solTmp = this.solicitudMapper.getSolicitudxCodigo((DTO_Solicitud) _input.getObject());
             if (solTmp == null) {
-                solicitudMapper.insertSolicitud((DTO_Solicitud) input.getObject());
+                this.solicitudMapper.insertSolicitud((DTO_Solicitud) _input.getObject());
             } else {
-                solicitudMapper.updateSolicitud((DTO_Solicitud) input.getObject());
+                this.solicitudMapper.updateSolicitud((DTO_Solicitud) _input.getObject());
             }
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_GET.equals(input.getAction())) {
-            final DTO_Solicitud art = solicitudMapper.getSolicitudxCodigo((DTO_Solicitud) input.getObject());
+        } else if (Constantes.V_GET.equals(_input.getAction())) {
+            final DTO_Solicitud art = this.solicitudMapper.getSolicitudxCodigo((DTO_Solicitud) _input.getObject());
             output.setObject(art);
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_DELETE.equals(input.getAction())) {
-            solicitudMapper.deleteSolicitud((DTO_Solicitud) input.getObject());
+        } else if (Constantes.V_DELETE.equals(_input.getAction())) {
+            this.solicitudMapper.deleteSolicitud((DTO_Solicitud) _input.getObject());
             output.setErrorCode(Constantes.OK);
-            return output;
         } else {
             throw new RuntimeException("SolicitudService: No se especifico verbo adecuado");
         }
+        return output;
     }
-
-    public SolicitudMapper getDao()
-    {
-        return solicitudMapper;
-    }
-
-    public void setDao(final SolicitudMapper solicitudMapper)
-    {
-        this.solicitudMapper = solicitudMapper;
-    }
-
 }

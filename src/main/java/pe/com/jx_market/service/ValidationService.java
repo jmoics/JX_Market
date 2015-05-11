@@ -13,61 +13,90 @@ import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 import pe.com.jx_market.validacion.Validador;
 
+/**
+ * @author jcuevas
+ *
+ */
 @Service
 public class ValidationService
     implements BusinessService
 {
-    static Log logger = LogFactory.getLog(ValidationService.class);
-    private Validador registraClient, registraSolicitud;
+    /**
+     *
+     */
+    private final Log logger = LogFactory.getLog(ValidationService.class);
+    /**
+     *
+     */
+    private Validador registraClient;
+    /**
+     *
+     */
+    private Validador registraSolicitud;
 
+    /* (non-Javadoc)
+     * @see pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities.ServiceInput)
+     */
     @Override
     @Transactional
-    public ServiceOutput execute(final ServiceInput input)
+    public ServiceOutput execute(final ServiceInput _input)
     {
         final ServiceOutput output = new ServiceOutput();
         Validador val = null;
-        if (input.getAction().equals("registraClient")) {
+        if (_input.getAction().equals("registraClient")) {
             val = getRegistraClient();
-        } else if (input.getAction().equals("registraSolicitud")) {
+        } else if (_input.getAction().equals("registraSolicitud")) {
             val = getRegistraSolicitud();
         }
 
         // procesar...
-        if (val == null || input.getObject() == null) {
+        if (val == null || _input.getObject() == null) {
             output.setErrorCode(Constantes.INVALID_PARAM);
-            return output;
+        } else {
+            this.logger.info("Validando: " + _input.getAction());
+            final List<String> ans = val.valida(_input.getObject());
+            if (ans.size() == 0) {
+                this.logger.info("Validacion " + _input.getAction() + " exitosa");
+                output.setErrorCode(Constantes.OK);
+            } else {
+                this.logger.info("Error de validacion " + _input.getAction());
+                output.setErrorCode(Constantes.VALIDATION_ERROR);
+                output.setLista(ans);
+            }
         }
-        logger.info("Validando: " + input.getAction());
-        final List<String> ans = val.valida(input.getObject());
-        if (ans.size() == 0) {
-            logger.info("Validacion " + input.getAction() + " exitosa");
-            output.setErrorCode(Constantes.OK);
-            return output;
-        }
-        logger.info("Error de validacion " + input.getAction());
-        output.setErrorCode(Constantes.VALIDATION_ERROR);
-        output.setLista(ans);
         return output;
     }
 
+    /**
+     * @return registraClient
+     */
     public Validador getRegistraClient()
     {
-        return registraClient;
+        return this.registraClient;
     }
 
-    public void setRegistraClient(final Validador registraClient)
+    /**
+     * @param _registraClient client.
+     */
+    public void setRegistraClient(final Validador _registraClient)
     {
-        this.registraClient = registraClient;
+        this.registraClient = _registraClient;
     }
 
+    /**
+     * @return registraClient
+     */
     public Validador getRegistraSolicitud()
     {
-        return registraSolicitud;
+        return this.registraSolicitud;
     }
 
-    public void setRegistraSolicitud(final Validador registraSolicitud)
+    /**
+     * @param _registraSolicitud client.
+     */
+    public void setRegistraSolicitud(final Validador _registraSolicitud)
     {
-        this.registraSolicitud = registraSolicitud;
+        this.registraSolicitud = _registraSolicitud;
     }
 
 }

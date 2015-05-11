@@ -21,58 +21,52 @@ import pe.com.jx_market.utilities.ServiceOutput;
  *
  */
 @Service
-public class CompanyService 
-    implements BusinessService 
+public class CompanyService
+    implements BusinessService<DTO_Company>
 {
+
+    /**
+     *
+     */
     @Autowired
     private CompanyMapper companyMapper;
 
-    /* (non-Javadoc)
-     * @see pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities.ServiceInput)
+    /*
+     * (non-Javadoc)
+     * @see
+     * pe.com.jx_market.utilities.BusinessService#execute(pe.com.jx_market.utilities
+     * .ServiceInput)
      */
     @Override
     @Transactional
-    public ServiceOutput execute (final ServiceInput input) {
-        final ServiceOutput output = new ServiceOutput();
-        if ("list".equals(input.getAction())) {
+    public ServiceOutput<DTO_Company> execute(final ServiceInput<DTO_Company> _input)
+    {
+        final ServiceOutput<DTO_Company> output = new ServiceOutput<DTO_Company>();
+        if ("list".equals(_input.getAction())) {
             String nombre = null;
             String ruc = null;
-            if (input.getMapa() != null) {
-                final Map mapa = input.getMapa();
-                nombre = mapa.containsKey("nombre") ? (String)mapa.get("nombre") : null;
-                ruc = mapa.containsKey("ruc") ? (String)mapa.get("ruc") : null;
+            if (_input.getMapa() != null) {
+                final Map mapa = _input.getMapa();
+                nombre = mapa.containsKey("nombre") ? (String) mapa.get("nombre") : null;
+                ruc = mapa.containsKey("ruc") ? (String) mapa.get("ruc") : null;
             }
-            output.setLista(companyMapper.getCompanies(nombre, ruc));
+            output.setLista(this.companyMapper.getCompanies(nombre, ruc));
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if (Constantes.V_REGISTER.equals(input.getAction())) {
-            final DTO_Company company = (DTO_Company) input.getObject();
-            DTO_Company empTmp = companyMapper.getCompany4DocNumber(company);
+        } else if (Constantes.V_REGISTER.equals(_input.getAction())) {
+            final DTO_Company company = _input.getObject();
+            final DTO_Company empTmp = this.companyMapper.getCompany4DocNumber(company);
             if (empTmp == null) {
-                final Integer cod = companyMapper.insertCompany(company);
-                output.setObject(cod);
+                this.companyMapper.insertCompany(company);
             } else {
-                companyMapper.updateCompany(company);
-                output.setObject(new Integer(-1));
+                this.companyMapper.updateCompany(company);
             }
             output.setErrorCode(Constantes.OK);
-            return output;
-        } else if ("delete".equals(input.getAction())) {
-            companyMapper.deleteCompany((String) input.getObject());
+        } else if ("delete".equals(_input.getAction())) {
+            this.companyMapper.deleteCompany(_input.getObject());
             output.setErrorCode(Constantes.OK);
-            return output;
         } else {
             throw new RuntimeException("No se especifico verbo adecuado");
         }
+        return output;
     }
-
-    public CompanyMapper getDao () {
-        return companyMapper;
-    }
-
-    public void setDao (final CompanyMapper companyMapper) {
-        this.companyMapper = companyMapper;
-    }
-
-
 }
