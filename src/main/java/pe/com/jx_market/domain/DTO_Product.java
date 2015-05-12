@@ -177,7 +177,7 @@ public class DTO_Product
      *
      * @return value of variable {@link #active}
      */
-    public final Boolean getActive()
+    public final Boolean isActive()
     {
         return this.active;
     }

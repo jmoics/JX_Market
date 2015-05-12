@@ -197,7 +197,7 @@ public class PO_EAAdministrateRoleModuleEdit
                                                                             .getAttribute(Constantes.ATTRIBUTE_MODULE));
                     final DTO_RoleModule perfMod = new DTO_RoleModule();
                     perfMod.setModuleId(module.getId());
-                    perfMod.setRole(role.getId());
+                    perfMod.setRoleId(role.getId());
                     estados.add(perfMod);
                 }
             }

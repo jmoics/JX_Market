@@ -37,6 +37,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
 public class PO_EATradeMark
     extends SecuredComposer<Window>
 {
+
     private static final long serialVersionUID = -5977666142043703079L;
 
     static Log logger = LogFactory.getLog(PO_EATradeMark.class);
@@ -60,30 +61,31 @@ public class PO_EATradeMark
     {
         super.doAfterCompose(_comp);
 
-        company = (DTO_Company) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
-        buildActiveCombo(cmbActive);
-        if (desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD) != null
-                        && (Boolean) desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD)) {
-            desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, false);
+        this.company = (DTO_Company) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
+        buildActiveCombo(this.cmbActive);
+        if (this.desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD) != null
+                        && (Boolean) this.desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD)) {
+            this.desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, false);
             searchTradeMarks();
         }
     }
 
     @Listen("onClick = #btnSearch")
-    public void searchTradeMarks() {
-        lstTradeMarks.getItems().clear();
+    public void searchTradeMarks()
+    {
+        this.lstTradeMarks.getItems().clear();
         final DTO_TradeMark trMarkSearch = new DTO_TradeMark();
-        trMarkSearch.setCompanyId(company.getId());
+        trMarkSearch.setCompanyId(this.company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>();
-        if (txtTradeMarkName.getValue().length() > 0) {
-            trMarkSearch.setTradeMarkName(txtTradeMarkName.getValue());
+        if (this.txtTradeMarkName.getValue().length() > 0) {
+            trMarkSearch.setTradeMarkName(this.txtTradeMarkName.getValue());
         }
-        if (cmbActive.getSelectedItem() != null) {
-            trMarkSearch.setActive((Boolean) cmbActive.getSelectedItem().getValue());
+        if (this.cmbActive.getSelectedItem() != null) {
+            trMarkSearch.setActive((Boolean) this.cmbActive.getSelectedItem().getValue());
         }
         input.setObject(trMarkSearch);
         input.setAction(Constantes.V_LIST);
-        final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
+        final ServiceOutput<DTO_TradeMark> output = this.tradeMarkService.execute(input);
         if (Constantes.OK == output.getErrorCode()) {
             final List<DTO_TradeMark> lstTr = output.getLista();
             int columnNumber = 1;
@@ -102,11 +104,12 @@ public class PO_EATradeMark
                 item.setAttribute(Constantes.ATTRIBUTE_TRADEMARK, trade);
                 item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>()
                 {
+
                     @Override
-                    public void onEvent(final Event e)
+                    public void onEvent(final Event _e)
                         throws UiException
                     {
-                        runWindowEdit((MouseEvent) e);
+                        runWindowEdit((MouseEvent) _e);
                     }
                 });
                 lstTradeMarks.appendChild(item);
@@ -116,36 +119,38 @@ public class PO_EATradeMark
     }
 
     @Listen("onClick = #btnEdit")
-    public void runWindowEdit(final MouseEvent event) {
-        if (lstTradeMarks.getSelectedItem() != null) {
-            desktop.getSession().setAttribute(Constantes.ATTRIBUTE_TRADEMARK,
-                            lstTradeMarks.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_TRADEMARK));
+    public void runWindowEdit(final MouseEvent _event)
+    {
+        if (this.lstTradeMarks.getSelectedItem() != null) {
+            this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_TRADEMARK,
+                            this.lstTradeMarks.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_TRADEMARK));
             final Map<String, Object> dataArgs = new HashMap<String, Object>();
             dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
             final Window w = (Window) Executions.createComponents(Constantes.Form.TRADEMARK_EDIT_FORM.getForm(),
                             null, dataArgs);
-            w.setPage(wEAT.getPage());
-            //w.setParent(wEAT);
+            w.setPage(this.wEAT.getPage());
+            // w.setParent(wEAT);
             w.doModal();
-            //w.doHighlighted();
-            //w.doEmbedded();
+            // w.doHighlighted();
+            // w.doEmbedded();
         } else {
             alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAPTradeMark.runWindowEdit.Info.Label"),
-                                "No se selecciono un registro a editar", null);
+                            "No se selecciono un registro a editar", null);
         }
     }
 
     @Listen("onClick = #btnCreate")
-    public void runWindowCreate(final MouseEvent event) {
+    public void runWindowCreate(final MouseEvent _event)
+    {
         final Map<String, Object> dataArgs = new HashMap<String, Object>();
         dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
         final Window w = (Window) Executions.createComponents(Constantes.Form.TRADEMARK_CREATE_FORM.getForm(),
-                            null, dataArgs);
-        w.setPage(wEAT.getPage());
-        //w.setParent(wEAT);
-        //w.doOverlapped();
+                        null, dataArgs);
+        w.setPage(this.wEAT.getPage());
+        // w.setParent(wEAT);
+        // w.doOverlapped();
         w.doModal();
-        //w.doEmbedded();
+        // w.doEmbedded();
     }
 
     @Override

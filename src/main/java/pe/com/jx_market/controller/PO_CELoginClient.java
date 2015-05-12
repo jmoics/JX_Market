@@ -19,13 +19,16 @@ import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
-public class PO_CELoginClient extends Div
+public class PO_CELoginClient
+    extends Div
 {
+
     static Log logger = LogFactory.getLog(PO_CELoginClient.class);
     private Textbox txtUser, txtPass;
     private BusinessService validationService, userService, clientService;
 
-    public void onCreate() {
+    public void onCreate()
+    {
         txtUser = (Textbox) getFellow("txtUser");
         txtPass = (Textbox) getFellow("txtPass");
         validationService = ContextLoader.getService(this, "validationService");
@@ -33,7 +36,8 @@ public class PO_CELoginClient extends Div
         clientService = ContextLoader.getService(this, "clientService");
     }
 
-    public void iniciarSesion() {
+    public void iniciarSesion()
+    {
         final DTO_User user = new DTO_User();
         user.setUsername(txtUser.getValue());
         user.setPassword(txtPass.getValue());
@@ -63,8 +67,13 @@ public class PO_CELoginClient extends Div
         }
     }
 
+    /**
+     * @param usu
+     * @return
+     */
     public DTO_Client getClient(final DTO_User usu)
     {
+        DTO_Client ret = null;
         final DTO_Client cli = new DTO_Client();
         cli.setCompanyId(usu.getCompanyId());
         cli.setUserId(usu.getId());
@@ -72,10 +81,9 @@ public class PO_CELoginClient extends Div
         input.setAction(Constantes.V_GET);
         final ServiceOutput output = clientService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            return (DTO_Client) output.getObject();
-        } else {
-            return null;
+            ret = (DTO_Client) output.getObject();
         }
+        return ret;
     }
 
     public DTO_User getUser(final DTO_User C)
@@ -94,7 +102,9 @@ public class PO_CELoginClient extends Div
         return user;
     }
 
-    public void saltarPagina(final String txt, final boolean anotherPage) {
+    public void saltarPagina(final String txt,
+                             final boolean anotherPage)
+    {
         if (getDesktop().getBookmark().contains(txt)) {
             Executions.sendRedirect(null);
         } else if (anotherPage) {

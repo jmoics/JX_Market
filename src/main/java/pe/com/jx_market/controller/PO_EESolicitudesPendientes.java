@@ -208,6 +208,7 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
     }
 
     private Integer insertModule(final String desc, final String recurso, final Integer company) {
+        Integer ret = null;
         final DTO_Module mod = new DTO_Module();
         mod.setModuleDescription(desc);
         mod.setCompanyId(company);
@@ -219,26 +220,25 @@ public class PO_EESolicitudesPendientes extends SecuredWindow
         final ServiceOutput output = moduleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final Integer cod = (Integer) output.getObject();
-            return cod;
-        } else {
-            return null;
+            ret = cod;
         }
+        return ret;
     }
 
     private Boolean connectRoleModule(final Integer perf, final Integer mod) {
+        boolean ret = false;
         final DTO_RoleModule perfMod = new DTO_RoleModule();
         perfMod.setModuleId(mod);
-        perfMod.setRole(perf);
+        perfMod.setRoleId(perf);
 
         final ServiceInput input = new ServiceInput();
         input.setAction(Constantes.V_REGISTERPM);
         input.setObject(perfMod);
-        final ServiceOutput output = roleModuleService.execute(input);
+        final ServiceOutput output = this.roleModuleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            return true;
-        } else {
-            return false;
+            ret = true;
         }
+        return ret;
     }
 
     public void salir()

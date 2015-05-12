@@ -101,7 +101,7 @@ public class DTO_TradeMark
      *
      * @return value of variable {@link #active}
      */
-    public final Boolean getActive()
+    public final Boolean isActive()
     {
         return this.active;
     }

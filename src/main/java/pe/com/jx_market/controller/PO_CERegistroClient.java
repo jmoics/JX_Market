@@ -176,66 +176,67 @@ public class PO_CERegistroClient
 
         client.setEmail(txtMail.getValue());
 
+        List<String> lst = validacionDTO(client);
         if (!verificaDisponibilidad(user)) {
             final List<String> ans = new ArrayList<String>();
             ans.add("Ya existe un user con el e-mail ingresado");
-            return ans;
-        }
+            lst = ans;
+        } else {
+            lst = validacionDTO(client);
+            if (lst == null) {
+                lst = new ArrayList<String>();
+            }
 
-        List<String> lst = validacionDTO(client);
-        if (lst == null) {
-            lst = new ArrayList<String>();
-        }
+            if (datFecNacim != null) {
+                final int edad = edadEx(datFecNacim.getValue(), new Date());
 
-        if (datFecNacim != null) {
-            final int edad = edadEx(datFecNacim.getValue(), new Date());
+                if (edad < 18) {
+                    lst.add("Usted debe ser mayor de edad (18 años) para poder registrarse");
+                } else {
+                    client.setBirthday(datFecNacim.getValue());
+                }
+            }
 
-            if (edad < 18) {
-                lst.add("Usted debe ser mayor de edad (18 años) para poder registrarse");
+            if (validaCaracteres(txtTelef.getValue(), Constantes.VALID_TELEFONO)) {
+                client.setPhone(txtTelef.getValue());
             } else {
-                client.setBirthday(datFecNacim.getValue());
+                if (!txtTelef.getValue().isEmpty()) {
+                    lst.add("El número de teléfono de domicilio solo debe contener números");
+                }
             }
-        }
 
-        if (validaCaracteres(txtTelef.getValue(), Constantes.VALID_TELEFONO)) {
-            client.setPhone(txtTelef.getValue());
-        } else {
-            if (!txtTelef.getValue().isEmpty()) {
-                lst.add("El número de teléfono de domicilio solo debe contener números");
+            if (validaCaracteres(txtCelu.getValue(), Constantes.VALID_TELEFONO)) {
+                client.setCellPhone(txtCelu.getValue());
+            } else {
+                if (!txtCelu.getValue().isEmpty()) {
+                    lst.add("El número de teléfono celular solo debe contener números");
+                }
             }
-        }
 
-        if (validaCaracteres(txtCelu.getValue(), Constantes.VALID_TELEFONO)) {
-            client.setCellPhone(txtCelu.getValue());
-        } else {
-            if (!txtCelu.getValue().isEmpty()) {
-                lst.add("El número de teléfono celular solo debe contener números");
-            }
-        }
+            user.setCompanyId(Constantes.INSTITUCION_JX_MARKET);
+            user.setUsername(txtMail.getValue());
 
-        user.setCompanyId(Constantes.INSTITUCION_JX_MARKET);
-        user.setUsername(txtMail.getValue());
-
-        if (!txtPass.getValue().isEmpty() || !txtRepPass.getValue().isEmpty()) {
-            if (txtPass.getValue().equals(txtRepPass.getValue())) {
-                if (txtPass.getValue().length() >= 4) {
-                    if (!txtPass.getValue().equals("1234")) {
-                        user.setPassword(txtPass.getValue());
+            if (!txtPass.getValue().isEmpty() || !txtRepPass.getValue().isEmpty()) {
+                if (txtPass.getValue().equals(txtRepPass.getValue())) {
+                    if (txtPass.getValue().length() >= 4) {
+                        if (!txtPass.getValue().equals("1234")) {
+                            user.setPassword(txtPass.getValue());
+                        } else {
+                            lst.add("Debe ingresar una contraseña más compleja");
+                        }
                     } else {
-                        lst.add("Debe ingresar una contraseña más compleja");
+                        lst.add("Su contraseña debe tener al menos 4 caracteres");
                     }
                 } else {
-                    lst.add("Su contraseña debe tener al menos 4 caracteres");
+                    lst.add("Debe ingresar la misma contraseña en ambos campos");
                 }
             } else {
-                lst.add("Debe ingresar la misma contraseña en ambos campos");
+                lst.add("Debe ingresar su contraseña (min. 4 caracteres)");
             }
-        } else {
-            lst.add("Debe ingresar su contraseña (min. 4 caracteres)");
-        }
 
-        if (lst.isEmpty()) {
-            lst = null;
+            if (lst.isEmpty()) {
+                lst = null;
+            }
         }
         return lst;
     }
@@ -269,48 +270,51 @@ public class PO_CERegistroClient
     @SuppressWarnings("unchecked")
     private List<String> validacionDTO(final DTO_Client client)
     {
+        List<String> ret;
         final ServiceInput input = new ServiceInput(client, "registraClient");
         final ServiceOutput output = validationService.execute(input);
         if (output.getErrorCode() == Constantes.VALIDATION_ERROR) {
             final List<String> errores = output.getLista();
-            return errores;
+            ret = errores;
             // alertaInfo(errores, "", null);
         } else if (output.getErrorCode() == Constantes.OK) {
-            return null;
+            ret = null;
             // alertaError("Error en la invocación del Servicio, consultar a Soporte",
             // "Error al invocar el servicio de validacion", null);
         } else {
             throw new RuntimeException();
         }
+        return ret;
     }
 
     @SuppressWarnings("unchecked")
     private List<String> validacionSolicitud(final DTO_Solicitud solicitud)
     {
+        final List<String> errores;
         final ServiceInput input = new ServiceInput(solicitud, "registraSolicitud");
         final ServiceOutput output = validationService.execute(input);
         if (output.getErrorCode() == Constantes.VALIDATION_ERROR) {
-            final List<String> errores = output.getLista();
-            return errores;
+            errores = output.getLista();
             // alertaInfo(errores, "", null);
         } else if (output.getErrorCode() == Constantes.OK) {
-            return null;
+            errores = null;
             // alertaError("Error en la invocación del Servicio, consultar a Soporte",
             // "Error al invocar el servicio de validacion", null);
         } else {
             throw new RuntimeException();
         }
+        return errores;
     }
 
     private int edadEx(final Date fechaInicial,
                        final Date fechaFinal)
     {
-        final int annos = fechaFinal.getYear() - fechaInicial.getYear();
+        int annos = fechaFinal.getYear() - fechaInicial.getYear();
         if (fechaFinal.getMonth() < fechaInicial.getMonth()) {
-            return annos - 1;
+            annos = annos - 1;
         } else if (fechaFinal.getMonth() == fechaInicial.getMonth()) {
             if (fechaFinal.getDay() <= fechaInicial.getDay()) {
-                return annos - 1;
+                annos = annos - 1;
             }
         }
         return annos;
@@ -319,14 +323,15 @@ public class PO_CERegistroClient
     private boolean validaCaracteres(final String codigo,
                                      final String tipo)
     {
+        boolean ret = false;
         if (codigo != null && !codigo.isEmpty()) {
             if (!codigo.matches(tipo)) {
-                return false;
+                ret = false;
             } else {
-                return true;
+                ret = true;
             }
         }
-        return false;
+        return ret;
     }
 
     private boolean verificaDisponibilidad(final DTO_User user)

@@ -25,6 +25,12 @@ import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
 /* Permite tener acceso a los servicios*/
+/**
+ * TODO comment!
+ *
+ * @author jcuevas
+ * @version $Id$
+ */
 @VariableResolver(DelegatingVariableResolver.class)
 public class PO_EALogin
     extends SelectorComposer<Window>
@@ -48,14 +54,17 @@ public class PO_EALogin
     private BusinessService<DTO_Employee> employeeService;
 
     @Override
-    public void doAfterCompose(final Window comp)
+    public void doAfterCompose(final Window _comp)
         throws Exception
     {
-        super.doAfterCompose(comp);
+        super.doAfterCompose(_comp);
         getCompanies();
-        txtUser.setFocus(true);
+        this.txtUser.setFocus(true);
     }
 
+    /**
+     *
+     */
     public void getCompanies()
     {
         List<DTO_Company> companys;
@@ -63,48 +72,52 @@ public class PO_EALogin
         final ServiceInput<DTO_Company> input = new ServiceInput<DTO_Company>();
         input.setAction(Constantes.V_LIST);
 
-        final ServiceOutput<DTO_Company> output = companyService.execute(input);
+        final ServiceOutput<DTO_Company> output = this.companyService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             companys = output.getLista();
             for (final DTO_Company emp : companys) {
                 final Comboitem item = new Comboitem();
                 item.setLabel(emp.getBusinessName());
                 item.setAttribute(Constantes.ATTRIBUTE_COMPANY, emp);
-                cmbEmp.appendChild(item);
+                this.cmbEmp.appendChild(item);
             }
         } else {
             companys = null;
         }
     }
 
+    /**
+     * @throws InterruptedException on error.
+     */
     @Listen("onClick = #btnIngresar; onOK = #txtPass; onOK = #txtUser")
     public void authenticate()
         throws InterruptedException
     {
         final DTO_User user = new DTO_User();
-        user.setUsername(txtUser.getValue());
-        user.setPassword(txtPass.getValue());
-        if (cmbEmp.getSelectedItem() != null) {
-            final DTO_Company company = (DTO_Company) cmbEmp.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_COMPANY);
+        user.setUsername(this.txtUser.getValue());
+        user.setPassword(this.txtPass.getValue());
+        if (this.cmbEmp.getSelectedItem() != null) {
+            final DTO_Company company = (DTO_Company) this.cmbEmp.getSelectedItem()
+                            .getAttribute(Constantes.ATTRIBUTE_COMPANY);
             if (company != null) {
                 user.setCompanyId(company.getId());
 
                 final DTO_User validado = getUser(user);
                 if (validado != null) {
                     final DTO_Employee employee = getEmployee(validado);
-                    desktop.getSession().setAttribute(Constantes.ATTRIBUTE_EMPLOYEE, employee);
-                    desktop.getSession().setAttribute(Constantes.ATTRIBUTE_USER, validado);
-                    desktop.getSession().setAttribute(Constantes.ATTRIBUTE_COMPANY, company);
+                    this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_EMPLOYEE, employee);
+                    this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_USER, validado);
+                    this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_COMPANY, company);
                     if (company.getId().equals(Constantes.INSTITUCION_JX_MARKET)) {
                         Executions.sendRedirect("eESolicitudesPendientes.zul");
                     } else {
                         Executions.sendRedirect("eAMainMenu.zul");
                     }
                 } else {
-                    txtUser.setText("");
-                    txtUser.setFocus(true);
-                    txtPass.setText("");
-                    wEAL.getFellow("badauth").setVisible(true);
+                    this.txtUser.setText("");
+                    this.txtUser.setFocus(true);
+                    this.txtPass.setText("");
+                    this.wEAL.getFellow("badauth").setVisible(true);
                 }
             } else {
                 Messagebox.show("No se cargo la company", "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
@@ -114,13 +127,17 @@ public class PO_EALogin
         }
     }
 
-    public DTO_User getUser(final DTO_User C)
+    /**
+     * @param _user User.
+     * @return User existent.
+     */
+    public DTO_User getUser(final DTO_User _user)
     {
         DTO_User user;
         //authService = (BusinessService<DTO_User>) ContextLoader.getService(wEAL, "authService");
-        final ServiceInput<DTO_User> input = new ServiceInput<DTO_User>(C);
+        final ServiceInput<DTO_User> input = new ServiceInput<DTO_User>(_user);
 
-        final ServiceOutput<DTO_User> output = authService.execute(input);
+        final ServiceOutput<DTO_User> output = this.authService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             user = output.getObject();
         } else {
@@ -130,19 +147,23 @@ public class PO_EALogin
         return user;
     }
 
-    public DTO_Employee getEmployee(final DTO_User usu)
+    /**
+     * @param _usu User.
+     * @return Employee.
+     */
+    public DTO_Employee getEmployee(final DTO_User _usu)
     {
+        DTO_Employee ret = null;
         //employeeService = (BusinessService<DTO_Employee>) ContextLoader.getService(wEAL, "employeeService");
         final DTO_Employee emp = new DTO_Employee();
-        emp.setCompanyId(usu.getCompanyId());
-        emp.setUserId(usu.getId());
+        emp.setCompanyId(_usu.getCompanyId());
+        emp.setUserId(_usu.getId());
         final ServiceInput<DTO_Employee> input = new ServiceInput<DTO_Employee>(emp);
         input.setAction(Constantes.V_GET);
-        final ServiceOutput<DTO_Employee> output = employeeService.execute(input);
+        final ServiceOutput<DTO_Employee> output = this.employeeService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            return output.getObject();
-        } else {
-            return null;
+            ret = output.getObject();
         }
+        return ret;
     }
 }

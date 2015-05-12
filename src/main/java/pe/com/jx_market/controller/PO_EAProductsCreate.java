@@ -67,7 +67,7 @@ public class PO_EAProductsCreate
 {
     private static final long serialVersionUID = -5294436527686469836L;
 
-    static Log logger = LogFactory.getLog(PO_EAProductsCreate.class);
+    private final Log logger = LogFactory.getLog(PO_EAProductsCreate.class);
     @Wire
     private Combobox cmbStatus, cmbTradeMark;
     @Wire
@@ -102,137 +102,161 @@ public class PO_EAProductsCreate
     {
         super.doAfterCompose(_comp);
 
-        company = (DTO_Company) desktop.getSession().getAttribute("company");
-        buildActiveCombo(cmbStatus);
-        product = null;
+        this.company = (DTO_Company) this.desktop.getSession().getAttribute("company");
+        buildActiveCombo(this.cmbStatus);
+        this.product = null;
 
-        desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_PRODUCT);
-        tree.setCheckmark(true);
-        tree.setMultiple(true);
-        categoryTreeNode = getCategories();
-        categoryTreeModel = new AdvancedTreeModel(categoryTreeNode);
-        categoryTreeModel.setMultiple(true);
-        tree.setItemRenderer(new CategoryTreeRenderer());
-        tree.setModel(categoryTreeModel);
+        this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_PRODUCT);
+        this.tree.setCheckmark(true);
+        this.tree.setMultiple(true);
+        this.categoryTreeNode = getCategories();
+        this.categoryTreeModel = new AdvancedTreeModel(this.categoryTreeNode);
+        this.categoryTreeModel.setMultiple(true);
+        this.tree.setItemRenderer(new CategoryTreeRenderer());
+        this.tree.setModel(this.categoryTreeModel);
 
         buildTradeMarkCombo();
 
         // Obtenemos el controlador de la pantalla principal de marcas.
-        final Map<?, ?> mapArg = desktop.getExecution().getArg();
-        productParentUI = (PO_EAProducts) mapArg.get("parent");
+        final Map<?, ?> mapArg = this.desktop.getExecution().getArg();
+        this.productParentUI = (PO_EAProducts) mapArg.get("parent");
     }
 
+    /**
+     * Build combo of trademarks.
+     */
     private void buildTradeMarkCombo()
     {
         final DTO_TradeMark marFi = new DTO_TradeMark();
-        marFi.setCompanyId(company.getId());
+        marFi.setCompanyId(this.company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
         input.setAction(Constantes.V_LIST);
-        final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
+        final ServiceOutput<DTO_TradeMark> output = this.tradeMarkService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo(logger, "", "Exito al cargar categories", null);
+            alertaInfo(this.logger, "", "Exito al cargar categories", null);
             final List<DTO_TradeMark> lstMar = output.getLista();
             for (final DTO_TradeMark marIt : lstMar) {
                 final Comboitem item = new Comboitem();
                 item.setLabel(marIt.getTradeMarkName());
                 item.setValue(marIt);
-                cmbTradeMark.appendChild(item);
+                this.cmbTradeMark.appendChild(item);
             }
         } else {
-            alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"), "Error cargando marcas", null);
+            alertaError(this.logger, Labels.getLabel("pe.com.jx_market.Error.Label"), "Error cargando marcas", null);
         }
     }
 
+    /**
+     * Method to create the product.
+     */
     @Listen("onClick = #btnSave")
     public void createProduct()
     {
-        if (!txtNombre.getValue().equals("") && !txtDesc.getValue().equals("")
-                        && cmbTradeMark.getSelectedItem() != null && cmbStatus.getSelectedItem() != null) {
+        if (!this.txtNombre.getValue().equals("") && !this.txtDesc.getValue().equals("")
+                        && this.cmbTradeMark.getSelectedItem() != null && this.cmbStatus.getSelectedItem() != null) {
             final DTO_Product product = new DTO_Product();
-            //product.setCategory(((DTO_Category) cmbCateg.getSelectedItem().getAttribute("category")).getCodigo());
-            product.setActive((Boolean) cmbStatus.getSelectedItem().getValue());
-            product.setTradeMark((DTO_TradeMark) cmbTradeMark.getSelectedItem().getValue());
-            product.setProductDescription(txtDesc.getValue());
-            product.setCompanyId(company.getId());
-            //product.setTradeMark(txtTradeMark.getValue());
-            product.setProductName(txtNombre.getValue());
-            //product.setPrecio(decPrec.getValue());
+            // product.setCategory(((DTO_Category)
+            // cmbCateg.getSelectedItem().getAttribute("category")).getCodigo());
+            product.setActive((Boolean) this.cmbStatus.getSelectedItem().getValue());
+            product.setTradeMark((DTO_TradeMark) this.cmbTradeMark.getSelectedItem().getValue());
+            product.setProductDescription(this.txtDesc.getValue());
+            product.setCompanyId(this.company.getId());
+            // product.setTradeMark(txtTradeMark.getValue());
+            product.setProductName(this.txtNombre.getValue());
+            // product.setPrecio(decPrec.getValue());
             final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
             input.setAction(Constantes.V_REGISTER);
-            final ServiceOutput<DTO_Product> output = productService.execute(input);
+            final ServiceOutput<DTO_Product> output = this.productService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
-                final int resp = alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"),
+                final int resp = alertaInfo(this.logger,
+                                Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"),
                                 Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info.Label"), null);
                 this.product = product;
                 this.product.setCategories(new ArrayList<DTO_Category>());
                 this.product.setImages(new ArrayList<DTO_ProductImage>());
                 if (resp == Messagebox.OK) {
-                    productParentUI.searchProducts();
-                    //desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
-                    //ContextLoader.recargar(desktop, Constantes.Form.PRODUCTS_FORM.getForm());
-                    //wEAEP.detach();
+                    this.productParentUI.searchProducts();
+                    // desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
+                    // ContextLoader.recargar(desktop,
+                    // Constantes.Form.PRODUCTS_FORM.getForm());
+                    // wEAEP.detach();
                 }
             } else {
-                alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Error.Label"),
-                                Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Error.Label"), null);
+                alertaError(this.logger,
+                            Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Error.Label"),
+                            Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Error.Label"), null);
             }
         } else {
-            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info2.Label"),
+            alertaInfo(this.logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info2.Label"),
                             Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.createProduct.Info2.Label"), null);
         }
     }
 
+    /**
+     * @param _event Event parameter.
+     */
     @Listen("onClick = #btnClose, #btnClose2, #btnClose3")
-    public void accionCerrar(final Event _event) {
-        wEAPC.detach();
+    public void accionCerrar(final Event _event)
+    {
+        this.wEAPC.detach();
     }
 
+    /**
+     * @param _event Event parameter.
+     */
     @Listen("onClick = #btnSave2")
     public void saveCategories(final Event _event)
     {
-        if (product != null) {
+        if (this.product != null) {
             final Map<Integer, DTO_Category> mapCat4Prod = new HashMap<Integer, DTO_Category>();
-            for (final DTO_Category cat : product.getCategories()) {
+            for (final DTO_Category cat : this.product.getCategories()) {
                 mapCat4Prod.put(cat.getId(), cat);
             }
-            if (tree.getItems() != null && !tree.getItems().isEmpty()) {
+            if (this.tree.getItems() != null && !this.tree.getItems().isEmpty()) {
                 final DTO_Product prod4DelCat = new DTO_Product();
-                prod4DelCat.setId(product.getId());
-                prod4DelCat.setCompanyId(product.getCompanyId());
+                prod4DelCat.setId(this.product.getId());
+                prod4DelCat.setCompanyId(this.product.getCompanyId());
                 prod4DelCat.setCategories(new ArrayList<DTO_Category>());
-                for (final Treeitem item : tree.getItems()) {
+                for (final Treeitem item : this.tree.getItems()) {
                     saveCategories(item, mapCat4Prod, prod4DelCat);
                 }
 
-                ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
+                ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(this.product);
                 input.setAction(Constantes.V_REGISTERCAT4PROD);
-                ServiceOutput<DTO_Product> output = productService.execute(input);
+                ServiceOutput<DTO_Product> output = this.productService.execute(input);
                 boolean correct = true;
                 if (output.getErrorCode() != Constantes.OK) {
-                    alertaError(logger, "", "Error al guardar nuevas categories para el producto", null);
+                    alertaError(this.logger, "", "Error al guardar nuevas categories para el producto", null);
                     correct = false;
                 }
                 input = new ServiceInput<DTO_Product>(prod4DelCat);
                 input.setAction(Constantes.V_DELETECAT4PROD);
-                output = productService.execute(input);
+                output = this.productService.execute(input);
                 if (output.getErrorCode() != Constantes.OK) {
-                    alertaError(logger, "", "Error al eliminar categories para el producto", null);
+                    alertaError(this.logger, "", "Error al eliminar categories para el producto", null);
                     correct = false;
                 }
                 if (correct) {
-                    alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveCategories.Info.Label"),
+                    alertaInfo(this.logger,
+                                    Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveCategories.Info.Label"),
                                     "", null);
                 } else {
-                    alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveCategories.Error.Label"),
+                    alertaError(this.logger,
+                                    Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveCategories.Error.Label"),
                                     "Error al guardar o eliminar categories para el producto", null);
                 }
             }
         } else {
-            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveCategories.Info2.Label"),
+            alertaInfo(this.logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveCategories.Info2.Label"),
                             "Ningun producto a sido creado previamente", null);
         }
     }
 
+    /**
+     * @param _item Item of tree.
+     * @param _mapCat4Prod Map of products for categories.
+     * @param _prod4DelCat to delete.
+     */
     private void saveCategories(final Treeitem _item,
                                 final Map<Integer, DTO_Category> _mapCat4Prod,
                                 final DTO_Product _prod4DelCat)
@@ -241,12 +265,12 @@ public class PO_EAProductsCreate
         final DTO_Category categ = ctn.getData();
 
         if (_item.isSelected() && !_mapCat4Prod.containsKey(categ.getId())) {
-            product.getCategories().add(categ);
+            this.product.getCategories().add(categ);
         } else if (!_item.isSelected() && _mapCat4Prod.containsKey(categ.getId())) {
-            for (int cnt = 0; cnt < product.getCategories().size(); cnt++) {
-                if (product.getCategories().get(cnt).getId().equals(categ.getId())) {
-                    _prod4DelCat.getCategories().add(product.getCategories().get(cnt));
-                    product.getCategories().remove(cnt);
+            for (int cnt = 0; cnt < this.product.getCategories().size(); cnt++) {
+                if (this.product.getCategories().get(cnt).getId().equals(categ.getId())) {
+                    _prod4DelCat.getCategories().add(this.product.getCategories().get(cnt));
+                    this.product.getCategories().remove(cnt);
                 }
             }
         }
@@ -257,24 +281,31 @@ public class PO_EAProductsCreate
         }
     }
 
+    /**
+     * @return Structure of categories.
+     */
     public CategoryTreeNode getCategories()
     {
         final DTO_Category cat = new DTO_Category();
-        cat.setCompanyId(company.getId());
+        cat.setCompanyId(this.company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAction(Constantes.V_LIST);
-        final ServiceOutput<DTO_Category> output = categoryService.execute(input);
+        final ServiceOutput<DTO_Category> output = this.categoryService.execute(input);
         CategoryTreeNode categoryTreeNode = null;
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Category> lstCat = output.getLista();
             categoryTreeNode = buildCategoriesTree(lstCat);
         } else {
-            alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"),
+            alertaError(this.logger, Labels.getLabel("pe.com.jx_market.Error.Label"),
                             "Error cargando categories", null);
         }
         return categoryTreeNode;
     }
 
+    /**
+     * @param _categories list of categories.
+     * @return tree node with the structure.
+     */
     private CategoryTreeNode buildCategoriesTree(final List<DTO_Category> _categories)
     {
         final Map<Integer, DTO_Category> mapCateg = new TreeMap<Integer, DTO_Category>();
@@ -292,34 +323,43 @@ public class PO_EAProductsCreate
         }
 
         final CategoryTreeNode categoryTreeNode = new CategoryTreeNode(null,
-                        new CategoryTreeNodeCollection()
-        {
-
-            private static final long serialVersionUID = -8249078122595873454L;
+            new CategoryTreeNodeCollection()
             {
-                for (final DTO_Category root : roots.values()) {
-                    if (!setPadres.contains(root.getId())) {
-                        add(new CategoryTreeNode(root));
-                    } else {
-                        add(new CategoryTreeNode(root,
-                                        new CategoryTreeNodeCollection()
-                        {
-                            private static final long serialVersionUID = -5643408533240445491L;
-                            {
-                                construirJerarquia(childs.values(), root, setPadres, false);
-                            }
-                        }, true));
+
+                private static final long serialVersionUID = -8249078122595873454L;
+                {
+                    for (final DTO_Category root : roots.values()) {
+                        if (!setPadres.contains(root.getId())) {
+                            add(new CategoryTreeNode(root));
+                        } else {
+                            add(new CategoryTreeNode(root,
+                                new CategoryTreeNodeCollection()
+                                {
+
+                                    private static final long serialVersionUID = -5643408533240445491L;
+                                    {
+                                        construirJerarquia(childs.values(), root, setPadres,
+                                                        false);
+                                    }
+                                }, true));
+                        }
                     }
                 }
-            }
-        },
-        true);
+            },
+            true);
         return categoryTreeNode;
     }
 
+    /**
+     * Class to render the tree.
+     *
+     * @author jcuevas
+     * @version $Id$
+     */
     private final class CategoryTreeRenderer
         implements TreeitemRenderer<CategoryTreeNode>
     {
+
         @Override
         public void render(final Treeitem _treeItem,
                            final CategoryTreeNode _treeNode,
@@ -357,13 +397,14 @@ public class PO_EAProductsCreate
 
             _treeItem.addEventListener(Events.ON_CLICK, new EventListener<Event>()
             {
+
                 @Override
-                public void onEvent(final Event event)
+                public void onEvent(final Event _event)
                     throws Exception
                 {
-                    final Treeitem item = (Treeitem) event.getTarget();
+                    final Treeitem item = (Treeitem) _event.getTarget();
                     if (item.isSelected() && item.getParentItem() != null
-                                            && item.getParentItem().getValue() != null) {
+                                    && item.getParentItem().getValue() != null) {
                         modificarPadres(item.getParentItem(), item.isSelected());
                     }
                     if (!item.isSelected() && item.getTreechildren() != null) {
@@ -387,11 +428,13 @@ public class PO_EAProductsCreate
                         }
                     }
                 }
+
                 private void modificarPadres(final Treeitem _item,
-                                             final boolean _checked) {
+                                             final boolean _checked)
+                {
                     _item.setSelected(_checked);
                     if (_checked && _item.getParentItem() != null
-                            && _item.getParentItem().getValue() != null) {
+                                    && _item.getParentItem().getValue() != null) {
                         modificarPadres(_item.getParentItem(), _checked);
                     }
                 }
@@ -399,19 +442,22 @@ public class PO_EAProductsCreate
         }
     }
 
+    /**
+     * @param _media Media with images.
+     */
     private void setImage(final Media _media)
     {
         if (_media != null) {
             final byte[] imgProducto = _media.getByteData();
             if (imgProducto != null) {
                 try {
-                    imgFoto.setContent(new AImage("foto", imgProducto));
-                    lbImageName.setValue(_media.getName());
-                    lbImageSize.setValue("" + _media.getByteData().length);
+                    this.imgFoto.setContent(new AImage("foto", imgProducto));
+                    this.lbImageName.setValue(_media.getName());
+                    this.lbImageSize.setValue("" + _media.getByteData().length);
 
                     final DTO_ProductImage img4Prod = new DTO_ProductImage();
-                    img4Prod.setCompanyId(company.getId());
-                    img4Prod.setImage(imgFoto.getContent().getByteData());
+                    img4Prod.setCompanyId(this.company.getId());
+                    img4Prod.setImage(this.imgFoto.getContent().getByteData());
                     img4Prod.setImageName(_media.getName());
 
                     final Listitem item = new Listitem();
@@ -423,14 +469,15 @@ public class PO_EAProductsCreate
                     cell = new Listcell();
                     cell.setLabel("" + _media.getByteData().length);
                     item.appendChild(cell);
-                    item.setParent(lstImages);
+                    item.setParent(this.lstImages);
                     item.addEventListener(Events.ON_CLICK, new EventListener<Event>()
                     {
+
                         @Override
-                        public void onEvent(final Event event)
+                        public void onEvent(final Event _event)
                             throws Exception
                         {
-                            final Listitem lItem = (Listitem) event.getTarget();
+                            final Listitem lItem = (Listitem) _event.getTarget();
                             final DTO_ProductImage img = lItem.getValue();
                             lbImageName.setValue(img.getImageName());
                             lbImageSize.setValue("" + img.getImage().length);
@@ -443,75 +490,81 @@ public class PO_EAProductsCreate
                 }
             }
         }
-        imgFoto.setSrc("/media/silueta.gif");
+        this.imgFoto.setSrc("/media/silueta.gif");
     }
 
+    /**
+     * @param _event Event parameter.
+     * @throws Exception on Error.
+     */
     @Listen("onUpload = #btnUpload")
     public void uploadPhoto(final UploadEvent _event)
         throws Exception
     {
-        Media media;
-        try {
-            media = _event.getMedia();
-            if (media == null) {
-                return;
-            }
-        } catch (final Exception ex) {
-            alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.uploadPhoto.Error.Label"),
-                            "Hubo un problema con el archivo proporcionado.", ex);
-            return;
-        }
-        System.out.println(media.getName());
-        if (media instanceof org.zkoss.image.Image) {
-            if (media.getByteData().length > 102400) {
-                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.uploadPhoto.Info.Label"),
-                                "El archivo seleccionado es muy grande. Maximo permitido = 100k", null);
-                return;
-            }
-            setImage(media);
-
-            // imgFoto.setContent((org.zkoss.image.Image)media);
+        final Media media = _event.getMedia();
+        if (media == null) {
+            alertaError(this.logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.uploadPhoto.Error.Label"),
+                            "Hubo un problema con el archivo proporcionado.", null);
         } else {
-            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.uploadPhoto.Info2.Label",
-                                            Constantes.EMPTY_STRING,
-                                            new String[] {media.getName()}),
-                            "El archivo seleccionado " + media.getName() + " no es una imagen", null);
-            return;
+            //System.out.println(media.getName());
+            if (media instanceof org.zkoss.image.Image) {
+                if (media.getByteData().length > 102400) {
+                    alertaInfo(this.logger,
+                                    Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.uploadPhoto.Info.Label"),
+                                    "El archivo seleccionado es muy grande. Maximo permitido = 100k", null);
+
+                } else {
+                    setImage(media);
+                }
+                // imgFoto.setContent((org.zkoss.image.Image)media);
+            } else {
+                alertaInfo(this.logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.uploadPhoto.Info2.Label",
+                                Constantes.EMPTY_STRING,
+                                new String[] { media.getName() }),
+                                "El archivo seleccionado " + media.getName() + " no es una imagen", null);
+                return;
+            }
         }
     }
 
+    /**
+     * @param _event Event parameter.
+     */
     @Listen("onClick = #btnSave3")
-    public void saveImages(final Event _event) {
-        if (product != null) {
-            if (lstImages.getItems() != null && !lstImages.getItems().isEmpty()) {
-                for (final Listitem imgIt : lstImages.getItems()) {
+    public void saveImages(final Event _event)
+    {
+        if (this.product != null) {
+            if (this.lstImages.getItems() != null && !this.lstImages.getItems().isEmpty()) {
+                for (final Listitem imgIt : this.lstImages.getItems()) {
                     if ((Boolean) imgIt.getAttribute(Constantes.ATTRIBUTE_PRODUCT_EDITIMAGE)) {
                         final DTO_ProductImage img4Prod = imgIt.getValue();
-                        img4Prod.setProductId(product.getId());
+                        img4Prod.setProductId(this.product.getId());
                         img4Prod.setActive(true);
                         img4Prod.setDefaul(false);
-                        product.getImages().add(img4Prod);
+                        this.product.getImages().add(img4Prod);
                         imgIt.setAttribute(Constantes.ATTRIBUTE_PRODUCT_EDITIMAGE, false);
                     }
                 }
-                final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(product);
+                final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>(this.product);
                 input.setAction(Constantes.V_REGISTERIMG4PROD);
-                final ServiceOutput<DTO_Product> output = productService.execute(input);
+                final ServiceOutput<DTO_Product> output = this.productService.execute(input);
                 if (output.getErrorCode() == Constantes.OK) {
-                    alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Info.Label"),
+                    alertaInfo(this.logger,
+                                    Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Info.Label"),
                                     Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Info.Label"), null);
-                    //product.setImages(new ArrayList<DTO_ProductImage>());
-                    //cleanImagePanel();
+                    // product.setImages(new ArrayList<DTO_ProductImage>());
+                    // cleanImagePanel();
                 } else {
-                    alertaError(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Error.Label"),
+                    alertaError(this.logger,
+                                    Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Error.Label"),
                                     "Erro al guardar la imagen.", null);
                 }
             } else {
-                alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Info3.Label"),
+                alertaInfo(this.logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Info3.Label"),
                                 "No hay imagenes para cargar", null);
             }
         } else {
-            alertaInfo(logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Info2.Label"),
+            alertaInfo(this.logger, Labels.getLabel("pe.com.jx_market.PO_EAProductsCreate.saveImage.Info2.Label"),
                             "Ningun producto a sido creado previamente", null);
         }
     }
