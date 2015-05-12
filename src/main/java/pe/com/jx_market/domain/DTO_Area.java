@@ -2,40 +2,72 @@ package pe.com.jx_market.domain;
 
 import java.io.Serializable;
 
+/**
+ * @author jcuevas
+ *
+ */
 public class DTO_Area
     implements Serializable
 {
+
+    /**
+     *
+     */
     private Integer id;
+    /**
+     *
+     */
     private Integer companyId;
+    /**
+     *
+     */
     private String areaAreaName;
 
+    /**
+     * @return Id of the table.
+     */
     public Integer getId()
     {
-        return id;
+        return this.id;
     }
 
-    public void setId(final Integer id)
+    /**
+     * @param _id Id of the table.
+     */
+    public void setId(final Integer _id)
     {
-        this.id = id;
+        this.id = _id;
     }
 
+    /**
+     * @return Company Id.
+     */
     public Integer getCompanyId()
     {
-        return companyId;
+        return this.companyId;
     }
 
+    /**
+     * @param _companyId Company Id.
+     */
     public void setCompanyId(final Integer _companyId)
     {
         this.companyId = _companyId;
     }
 
+    /**
+     * @return Area Name.
+     */
     public String getAreaName()
     {
-        return areaAreaName;
+        return this.areaAreaName;
     }
 
-    public void setAreaName(final String areaAreaName)
+    /**
+     * @param _areaAreaName Area Name
+     */
+    public void setAreaName(final String _areaAreaName)
     {
-        this.areaAreaName = areaAreaName;
+        this.areaAreaName = _areaAreaName;
     }
 }

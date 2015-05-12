@@ -1,74 +1,157 @@
 package pe.com.jx_market.domain;
 
+/**
+ * TODO comment!
+ *
+ * @author jcuevas
+ * @version $Id$
+ */
 public class DTO_User
     implements java.io.Serializable
 {
 
+    /**
+     *
+     */
     private Integer id;
+    /**
+     *
+     */
     private String username;
+    /**
+     *
+     */
     private Integer companyId;
+    /**
+     *
+     */
     private String password;
+    /**
+     *
+     */
     private Integer roleId;
+    /**
+     *
+     */
     private DTO_Role role;
 
-    public Integer getId()
+    /**
+     * Getter method for the variable {@link #id}.
+     *
+     * @return value of variable {@link #id}
+     */
+    public final Integer getId()
     {
-        return id;
+        return this.id;
     }
 
-    public void setId(final Integer id)
+    /**
+     * Setter method for variable {@link #id}.
+     *
+     * @param _id value for variable {@link #id}
+     */
+    public final void setId(final Integer _id)
     {
-        this.id = id;
+        this.id = _id;
     }
 
-    public Integer getRoleId()
+    /**
+     * Getter method for the variable {@link #username}.
+     *
+     * @return value of variable {@link #username}
+     */
+    public final String getUsername()
     {
-        return roleId;
+        return this.username;
     }
 
-    public DTO_Role getRole()
+    /**
+     * Setter method for variable {@link #username}.
+     *
+     * @param _username value for variable {@link #username}
+     */
+    public final void setUsername(final String _username)
     {
-        return role;
+        this.username = _username;
     }
 
-    public void setRole(final DTO_Role role)
+    /**
+     * Getter method for the variable {@link #companyId}.
+     *
+     * @return value of variable {@link #companyId}
+     */
+    public final Integer getCompanyId()
     {
-        this.role = role;
+        return this.companyId;
     }
 
-    public void setRoleId(final Integer roleId)
+    /**
+     * Setter method for variable {@link #companyId}.
+     *
+     * @param _companyId value for variable {@link #companyId}
+     */
+    public final void setCompanyId(final Integer _companyId)
     {
-        this.roleId = roleId;
+        this.companyId = _companyId;
     }
 
-    public String getUsername()
+    /**
+     * Getter method for the variable {@link #password}.
+     *
+     * @return value of variable {@link #password}
+     */
+    public final String getPassword()
     {
-        return username;
+        return this.password;
     }
 
-    public void setUsername(final String username)
+    /**
+     * Setter method for variable {@link #password}.
+     *
+     * @param _password value for variable {@link #password}
+     */
+    public final void setPassword(final String _password)
     {
-        this.username = username;
+        this.password = _password;
     }
 
-    public Integer getCompanyId()
+    /**
+     * Getter method for the variable {@link #roleId}.
+     *
+     * @return value of variable {@link #roleId}
+     */
+    public final Integer getRoleId()
     {
-        return companyId;
+        return this.roleId;
     }
 
-    public void setCompanyId(final Integer companyId)
+    /**
+     * Setter method for variable {@link #roleId}.
+     *
+     * @param _roleId value for variable {@link #roleId}
+     */
+    public final void setRoleId(final Integer _roleId)
     {
-        this.companyId = companyId;
+        this.roleId = _roleId;
     }
 
-    public String getPassword()
+    /**
+     * Getter method for the variable {@link #role}.
+     *
+     * @return value of variable {@link #role}
+     */
+    public final DTO_Role getRole()
     {
-        return password;
+        return this.role;
     }
 
-    public void setPassword(final String password)
+    /**
+     * Setter method for variable {@link #role}.
+     *
+     * @param _role value for variable {@link #role}
+     */
+    public final void setRole(final DTO_Role _role)
     {
-        this.password = password;
+        this.role = _role;
     }
-
 }

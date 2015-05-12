@@ -10,106 +10,207 @@ import java.util.List;
  * @author George
  *
  */
-public class DTO_Product implements Serializable
+public class DTO_Product
+    implements Serializable
 {
+    /**
+     *
+     */
     private Integer id;
+    /**
+     *
+     */
     private Integer companyId;
+    /**
+     *
+     */
     private List<DTO_Category> categories;
+    /**
+     *
+     */
     private String productName;
+    /**
+     *
+     */
     private String productDescription;
+    /**
+     *
+     */
     private DTO_TradeMark tradeMark;
-    //private BigDecimal precio;
-    //private Integer stock;
+    /**
+     *
+     */
     private Boolean active;
+    /**
+     *
+     */
     private List<DTO_ProductImage> images;
 
-    public Integer getId()
+    /**
+     * Getter method for the variable {@link #id}.
+     *
+     * @return value of variable {@link #id}
+     */
+    public final Integer getId()
     {
-        return id;
+        return this.id;
     }
-    public void setId(final Integer id)
+
+    /**
+     * Setter method for variable {@link #id}.
+     *
+     * @param _id value for variable {@link #id}
+     */
+
+    public final void setId(final Integer _id)
     {
-        this.id = id;
+        this.id = _id;
     }
-    public Integer getCompanyId()
+
+    /**
+     * Getter method for the variable {@link #companyId}.
+     *
+     * @return value of variable {@link #companyId}
+     */
+    public final Integer getCompanyId()
     {
-        return companyId;
+        return this.companyId;
     }
-    public void setCompanyId(final Integer _companyId)
+
+    /**
+     * Setter method for variable {@link #companyId}.
+     *
+     * @param _companyId value for variable {@link #companyId}
+     */
+
+    public final void setCompanyId(final Integer _companyId)
     {
         this.companyId = _companyId;
     }
-    public List<DTO_Category> getCategories()
+
+    /**
+     * Getter method for the variable {@link #categories}.
+     *
+     * @return value of variable {@link #categories}
+     */
+    public final List<DTO_Category> getCategories()
     {
-        return categories;
-    }
-    public void setCategories(final List<DTO_Category> categories)
-    {
-        this.categories = categories;
-    }
-    public String getProductName()
-    {
-        return productName;
-    }
-    public void setProductName(final String productName)
-    {
-        this.productName = productName;
-    }
-    public String getProductDescription()
-    {
-        return productDescription;
-    }
-    public void setProductDescription(final String productDescription)
-    {
-        this.productDescription = productDescription;
-    }
-    /*public String getTradeMark()
-    {
-        return tradeMark;
-    }
-    public void setTradeMark(String tradeMark)
-    {
-        this.tradeMark = tradeMark;
-    }
-    public BigDecimal getPrecio()
-    {
-        return precio;
-    }
-    public void setPrecio(BigDecimal precio)
-    {
-        this.precio = precio;
-    }
-    public Integer getStock()
-    {
-        return stock;
-    }
-    public void setStock(Integer stock)
-    {
-        this.stock = stock;
-    }*/
-    public Boolean isActive()
-    {
-        return active;
-    }
-    public void setActive(final Boolean active)
-    {
-        this.active = active;
-    }
-    public DTO_TradeMark getTradeMark()
-    {
-        return tradeMark;
-    }
-    public void setTradeMark(final DTO_TradeMark tradeMark)
-    {
-        this.tradeMark = tradeMark;
+        return this.categories;
     }
 
-    public List<DTO_ProductImage> getImages()
+    /**
+     * Setter method for variable {@link #categories}.
+     *
+     * @param _categories value for variable {@link #categories}
+     */
+
+    public final void setCategories(final List<DTO_Category> _categories)
     {
-        return images;
+        this.categories = _categories;
     }
-    public void setImages(final List<DTO_ProductImage> images)
+
+    /**
+     * Getter method for the variable {@link #productName}.
+     *
+     * @return value of variable {@link #productName}
+     */
+    public final String getProductName()
     {
-        this.images = images;
+        return this.productName;
+    }
+
+    /**
+     * Setter method for variable {@link #productName}.
+     *
+     * @param _productName value for variable {@link #productName}
+     */
+
+    public final void setProductName(final String _productName)
+    {
+        this.productName = _productName;
+    }
+
+    /**
+     * Getter method for the variable {@link #productDescription}.
+     *
+     * @return value of variable {@link #productDescription}
+     */
+    public final String getProductDescription()
+    {
+        return this.productDescription;
+    }
+
+    /**
+     * Setter method for variable {@link #productDescription}.
+     *
+     * @param _productDescription value for variable {@link #productDescription}
+     */
+
+    public final void setProductDescription(final String _productDescription)
+    {
+        this.productDescription = _productDescription;
+    }
+
+    /**
+     * Getter method for the variable {@link #tradeMark}.
+     *
+     * @return value of variable {@link #tradeMark}
+     */
+    public final DTO_TradeMark getTradeMark()
+    {
+        return this.tradeMark;
+    }
+
+    /**
+     * Setter method for variable {@link #tradeMark}.
+     *
+     * @param _tradeMark value for variable {@link #tradeMark}
+     */
+
+    public final void setTradeMark(final DTO_TradeMark _tradeMark)
+    {
+        this.tradeMark = _tradeMark;
+    }
+
+    /**
+     * Getter method for the variable {@link #active}.
+     *
+     * @return value of variable {@link #active}
+     */
+    public final Boolean getActive()
+    {
+        return this.active;
+    }
+
+    /**
+     * Setter method for variable {@link #active}.
+     *
+     * @param _active value for variable {@link #active}
+     */
+
+    public final void setActive(final Boolean _active)
+    {
+        this.active = _active;
+    }
+
+    /**
+     * Getter method for the variable {@link #images}.
+     *
+     * @return value of variable {@link #images}
+     */
+    public final List<DTO_ProductImage> getImages()
+    {
+        return this.images;
+    }
+
+    /**
+     * Setter method for variable {@link #images}.
+     *
+     * @param _images value for variable {@link #images}
+     */
+
+    public final void setImages(final List<DTO_ProductImage> _images)
+    {
+        this.images = _images;
     }
 }

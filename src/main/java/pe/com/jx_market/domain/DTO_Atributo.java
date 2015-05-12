@@ -2,75 +2,133 @@ package pe.com.jx_market.domain;
 
 import java.io.Serializable;
 
+/**
+ * @author jcuevas
+ *
+ */
 public class DTO_Atributo
     implements Serializable
 {
+    /**
+     *
+     */
     private Integer id;
-    private String nombre;
+    /**
+     *
+     */
+    private String name;
+    /**
+     *
+     */
     private String descr;
-    private Boolean activo;
+    /**
+     *
+     */
+    private Boolean active;
+    /**
+     *
+     */
     private Boolean filtrable;
+    /**
+     *
+     */
     private Integer categoryId;
-    
+
+    /**
+     * @return Table Id.
+     */
     public Integer getId()
     {
-        return id;
+        return this.id;
     }
-    
-    public void setId(Integer id)
+
+    /**
+     * @param _id Table Id.
+     */
+    public void setId(final Integer _id)
     {
-        this.id = id;
+        this.id = _id;
     }
-    
-    public String getNombre()
+
+    /**
+     * @return Attribute Name.
+     */
+    public String getName()
     {
-        return nombre;
+        return this.name;
     }
-    
+
+    /**
+     * @return Attribute Description.
+     */
     public String getDescr()
     {
-        return descr;
-    }
-    
-    public void setDescr(String descr)
-    {
-        this.descr = descr;
+        return this.descr;
     }
 
-    public void setNombre(String nombre)
+    /**
+     * @param _descr Attribute Description.
+     */
+    public void setDescr(final String _descr)
     {
-        this.nombre = nombre;
+        this.descr = _descr;
     }
-    
-    public Boolean getActivo()
+
+    /**
+     * @param _name Attribute Name.
+     */
+    public void setName(final String _name)
     {
-        return activo;
+        this.name = _name;
     }
-    
-    public void setActivo(Boolean activo)
+
+    /**
+     * @return Status.
+     */
+    public Boolean getActive()
     {
-        this.activo = activo;
+        return this.active;
     }
-    
+
+    /**
+     * @param _active Status.
+     */
+    public void setActive(final Boolean _active)
+    {
+        this.active = _active;
+    }
+
+    /**
+     * @return If will be filterable.
+     */
     public Boolean getFiltrable()
     {
-        return filtrable;
-    }
-    
-    public void setFiltrable(Boolean filtrable)
-    {
-        this.filtrable = filtrable;
+        return this.filtrable;
     }
 
-    
+    /**
+     * @param _filtrable If will be filterable.
+     */
+    public void setFiltrable(final Boolean _filtrable)
+    {
+        this.filtrable = _filtrable;
+    }
+
+
+    /**
+     * @return Category Id.
+     */
     public Integer getCategoryId()
     {
-        return categoryId;
+        return this.categoryId;
     }
 
-    
-    public void setCategoryId(Integer categoryId)
+
+    /**
+     * @param _categoryId Category Id.
+     */
+    public void setCategoryId(final Integer _categoryId)
     {
-        this.categoryId = categoryId;
+        this.categoryId = _categoryId;
     }
 }

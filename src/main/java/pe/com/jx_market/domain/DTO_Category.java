@@ -6,95 +6,176 @@ package pe.com.jx_market.domain;
 import java.io.Serializable;
 import java.util.List;
 
+
 /**
- * @author George
+ * @author jcuevas
  *
  */
-public class DTO_Category implements Serializable
+public class DTO_Category
+    implements Serializable
 {
+
+    /**
+     *
+     */
     private static final long serialVersionUID = 7736453145474958927L;
 
+    /**
+     *
+     */
     private Integer id;
+    /**
+     *
+     */
     private Integer companyId;
+    /**
+     *
+     */
     private String categoryName;
+    /**
+     *
+     */
     private Integer categoryParentId;
+    /**
+     *
+     */
     private Boolean active;
+    /**
+     *
+     */
     private byte[] imagen;
+    /**
+     *
+     */
     private List<DTO_Product> products;
 
-    public DTO_Category() {
+    /**
+     *
+     */
+    public DTO_Category()
+    {
     }
 
     /**
-     * Constructor solo utilizado para utilizar como raíz del arbol al editar.
+     * Constructor solo para utilizar como raíz del arbol al editar.
      *
-     * @param _nombre
+     * @param _categoryName Category Name.
      */
-    public DTO_Category(final String _categoryName) {
+    public DTO_Category(final String _categoryName)
+    {
         this.categoryName = _categoryName;
     }
 
+    /**
+     * @return Table Id.
+     */
     public Integer getId()
     {
-        return id;
+        return this.id;
     }
-    public void setId(final Integer id)
+
+    /**
+     * @param _id Table Id.
+     */
+    public void setId(final Integer _id)
     {
-        this.id = id;
+        this.id = _id;
     }
+
+    /**
+     * @return Company Id.
+     */
     public Integer getCompanyId()
     {
-        return companyId;
+        return this.companyId;
     }
-    public void setCompanyId(final Integer companyId)
+
+    /**
+     * @param _companyId Company Id.
+     */
+    public void setCompanyId(final Integer _companyId)
     {
-        this.companyId = companyId;
+        this.companyId = _companyId;
     }
+
+    /**
+     * @return Category Name.
+     */
     public String getCategoryName()
     {
-        return categoryName;
-    }
-    public void setCategoryName(final String categoryName)
-    {
-        this.categoryName = categoryName;
+        return this.categoryName;
     }
 
+    /**
+     * @param _categoryName Category Name.
+     */
+    public void setCategoryName(final String _categoryName)
+    {
+        this.categoryName = _categoryName;
+    }
+
+    /**
+     * @return Category parent Id.
+     */
     public Integer getCategoryParentId()
     {
-        return categoryParentId;
+        return this.categoryParentId;
     }
 
-    public void setCategoryParentId(final Integer categoryParentId)
+    /**
+     * @param _categoryParentId Category parent Id.
+     */
+    public void setCategoryParentId(final Integer _categoryParentId)
     {
-        this.categoryParentId = categoryParentId;
+        this.categoryParentId = _categoryParentId;
     }
 
+    /**
+     * @return Image.
+     */
     public byte[] getImagen()
     {
-        return imagen;
+        return this.imagen;
     }
 
-    public void setImagen(final byte[] imagen)
+    /**
+     * @param _imagen Image.
+     */
+    public void setImagen(final byte[] _imagen)
     {
-        this.imagen = imagen;
+        this.imagen = _imagen;
     }
 
+    /**
+     * @return Status.
+     */
     public Boolean isActive()
     {
-        return active;
+        return this.active;
     }
 
-    public void setActive(final Boolean active)
+    /**
+     * @param _active Status.
+     */
+    public void setActive(final Boolean _active)
     {
-        this.active = active;
+        this.active = _active;
     }
+
+    /**
+     * @return Related Products.
+     */
     public List<DTO_Product> getProducts()
     {
-        return products;
+        return this.products;
     }
-    public void setProducts(final List<DTO_Product> products)
+
+    /**
+     * @param _products Related Products.
+     */
+    public void setProducts(final List<DTO_Product> _products)
     {
-        this.products = products;
+        this.products = _products;
     }
 
     @Override

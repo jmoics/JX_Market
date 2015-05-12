@@ -2,62 +2,111 @@ package pe.com.jx_market.domain;
 
 import java.io.Serializable;
 
+/**
+ * @author jcuevas
+ *
+ */
 public class DTO_Company
     implements Serializable
 {
+    /**
+     *
+     */
     private Integer id;
+    /**
+     *
+     */
     private String businessName;
+    /**
+     *
+     */
     private Integer active;
+    /**
+     *
+     */
     private String docNumber;
+    /**
+     *
+     */
     private String domain;
 
+    /**
+     * @return Company Id.
+     */
     public Integer getId()
     {
-        return id;
+        return this.id;
     }
 
-    public void setId(final Integer id)
+    /**
+     * @param _id Company Id.
+     */
+    public void setId(final Integer _id)
     {
-        this.id = id;
+        this.id = _id;
     }
 
+    /**
+     * @return Company Name.
+     */
     public String getBusinessName()
     {
-        return businessName;
+        return this.businessName;
     }
 
-    public void setBusinessName(final String businessName)
+    /**
+     * @param _businessName Company Name.
+     */
+    public void setBusinessName(final String _businessName)
     {
-        this.businessName = businessName;
+        this.businessName = _businessName;
     }
 
+    /**
+     * @return Status.
+     */
     public Integer getActive()
     {
-        return active;
+        return this.active;
     }
 
-    public void setActive(final Integer active)
+    /**
+     * @param _active Status.
+     */
+    public void setActive(final Integer _active)
     {
-        this.active = active;
+        this.active = _active;
     }
 
+    /**
+     * @return Document Number.
+     */
     public String getDocNumber()
     {
-        return docNumber;
+        return this.docNumber;
     }
 
-    public void setDocNumber(final String docNumber)
+    /**
+     * @param _docNumber Document Number.
+     */
+    public void setDocNumber(final String _docNumber)
     {
-        this.docNumber = docNumber;
+        this.docNumber = _docNumber;
     }
 
+    /**
+     * @return Domain.
+     */
     public String getDomain()
     {
-        return domain;
+        return this.domain;
     }
 
-    public void setDomain(final String domain)
+    /**
+     * @param _domain Domain.
+     */
+    public void setDomain(final String _domain)
     {
-        this.domain = domain;
+        this.domain = _domain;
     }
 }

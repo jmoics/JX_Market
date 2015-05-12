@@ -3,73 +3,157 @@ package pe.com.jx_market.domain;
 import java.io.Serializable;
 import java.util.Set;
 
+/**
+ * TODO comment!
+ *
+ * @author jcuevas
+ * @version $Id$
+ */
 public class DTO_RoleModule
     implements Serializable
 {
+    /**
+     *
+     */
     private Integer id;
+    /**
+     *
+     */
     private Integer roleId;
+    /**
+     *
+     */
     private Integer moduleId;
+    /**
+     *
+     */
     private Boolean active;
+    /**
+     *
+     */
     private String accessTypesStr;
+    /**
+     *
+     */
     private Set<String> accessTypes;
 
-    public Integer getId()
+    /**
+     * Getter method for the variable {@link #id}.
+     *
+     * @return value of variable {@link #id}
+     */
+    public final Integer getId()
     {
-        return id;
+        return this.id;
     }
 
-    public void setId(final Integer id)
+    /**
+     * Setter method for variable {@link #id}.
+     *
+     * @param _id value for variable {@link #id}
+     */
+    public final void setId(final Integer _id)
     {
-        this.id = id;
+        this.id = _id;
     }
 
-    public Integer getRole()
+    /**
+     * Getter method for the variable {@link #roleId}.
+     *
+     * @return value of variable {@link #roleId}
+     */
+    public final Integer getRoleId()
     {
-        return roleId;
+        return this.roleId;
     }
 
-    public void setRole(final Integer roleId)
+    /**
+     * Setter method for variable {@link #roleId}.
+     *
+     * @param _roleId value for variable {@link #roleId}
+     */
+    public final void setRoleId(final Integer _roleId)
     {
-        this.roleId = roleId;
+        this.roleId = _roleId;
     }
 
-    public Integer getModuleId()
+    /**
+     * Getter method for the variable {@link #moduleId}.
+     *
+     * @return value of variable {@link #moduleId}
+     */
+    public final Integer getModuleId()
     {
-        return moduleId;
+        return this.moduleId;
     }
 
-    public void setModuleId(final Integer moduleId)
+    /**
+     * Setter method for variable {@link #moduleId}.
+     *
+     * @param _moduleId value for variable {@link #moduleId}
+     */
+    public final void setModuleId(final Integer _moduleId)
     {
-        this.moduleId = moduleId;
+        this.moduleId = _moduleId;
     }
 
-    public Boolean getActive()
+    /**
+     * Getter method for the variable {@link #active}.
+     *
+     * @return value of variable {@link #active}
+     */
+    public final Boolean getActive()
     {
-        return active;
+        return this.active;
     }
 
-    public void setActive(final Boolean active)
+    /**
+     * Setter method for variable {@link #active}.
+     *
+     * @param _active value for variable {@link #active}
+     */
+    public final void setActive(final Boolean _active)
     {
-        this.active = active;
+        this.active = _active;
     }
 
-    public String getAccessTypesStr()
+    /**
+     * Getter method for the variable {@link #accessTypesStr}.
+     *
+     * @return value of variable {@link #accessTypesStr}
+     */
+    public final String getAccessTypesStr()
     {
-        return accessTypesStr;
+        return this.accessTypesStr;
     }
 
-    public void setAccessTypesStr(final String accessTypesStr)
+    /**
+     * Setter method for variable {@link #accessTypesStr}.
+     *
+     * @param _accessTypesStr value for variable {@link #accessTypesStr}
+     */
+    public final void setAccessTypesStr(final String _accessTypesStr)
     {
-        this.accessTypesStr = accessTypesStr;
+        this.accessTypesStr = _accessTypesStr;
     }
 
-    public Set<String> getAccessTypes()
+    /**
+     * Getter method for the variable {@link #accessTypes}.
+     *
+     * @return value of variable {@link #accessTypes}
+     */
+    public final Set<String> getAccessTypes()
     {
-        return accessTypes;
+        return this.accessTypes;
     }
 
-    public void setAccessTypes(final Set<String> accessTypes)
+    /**
+     * Setter method for variable {@link #accessTypes}.
+     *
+     * @param _accessTypes value for variable {@link #accessTypes}
+     */
+    public final void setAccessTypes(final Set<String> _accessTypes)
     {
-        this.accessTypes = accessTypes;
+        this.accessTypes = _accessTypes;
     }
 }

@@ -2,35 +2,66 @@ package pe.com.jx_market.domain;
 
 import java.io.Serializable;
 
+/**
+ * @author jcuevas
+ *
+ */
 public class DTO_Category2Product
     implements Serializable
 {
+    /**
+     *
+     */
     private Integer id;
+    /**
+     *
+     */
     private Integer categoryId;
+    /**
+     *
+     */
     private Integer productId;
 
+    /**
+     * @return Category Id.
+     */
     public Integer getCategoryId()
     {
-        return categoryId;
+        return this.categoryId;
     }
-    public void setCategoryId(final Integer categoryId)
+    /**
+     * @param _categoryId Category Id.
+     */
+    public void setCategoryId(final Integer _categoryId)
     {
-        this.categoryId = categoryId;
+        this.categoryId = _categoryId;
     }
+    /**
+     * @return Product Id.
+     */
     public Integer getProductId()
     {
-        return productId;
+        return this.productId;
     }
-    public void setProductId(final Integer productId)
+    /**
+     * @param _productId Product Id.
+     */
+    public void setProductId(final Integer _productId)
     {
-        this.productId = productId;
+        this.productId = _productId;
     }
+    /**
+     * @return Product Id.
+     */
     public Integer getId()
     {
-        return id;
+        return this.id;
     }
-    public void setId(final Integer id)
+    /**
+     * @param _id Product Id.
+     */
+    public void setId(final Integer _id)
     {
-        this.id = id;
+        this.id = _id;
     }
 }

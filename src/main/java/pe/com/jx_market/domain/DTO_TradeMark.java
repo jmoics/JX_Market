@@ -2,75 +2,157 @@ package pe.com.jx_market.domain;
 
 import java.io.Serializable;
 
-
+/**
+ * TODO comment!
+ *
+ * @author jcuevas
+ * @version $Id$
+ */
 public class DTO_TradeMark
     implements Serializable
 {
+    /**
+     *
+     */
     private Integer id;
+    /**
+     *
+     */
     private Integer companyId;
+    /**
+     *
+     */
     private String tradeMarkName;
+    /**
+     *
+     */
     private Boolean active;
+    /**
+     *
+     */
     private byte[] image;
+    /**
+     *
+     */
     private String imageName;
 
-    public Integer getId()
+    /**
+     * Getter method for the variable {@link #id}.
+     *
+     * @return value of variable {@link #id}
+     */
+    public final Integer getId()
     {
-        return id;
+        return this.id;
     }
 
-    public void setId(final Integer id)
+    /**
+     * Setter method for variable {@link #id}.
+     *
+     * @param _id value for variable {@link #id}
+     */
+    public final void setId(final Integer _id)
     {
-        this.id = id;
+        this.id = _id;
     }
 
-    public Integer getCompanyId()
+    /**
+     * Getter method for the variable {@link #companyId}.
+     *
+     * @return value of variable {@link #companyId}
+     */
+    public final Integer getCompanyId()
     {
-        return companyId;
+        return this.companyId;
     }
 
-    public void setCompanyId(final Integer companyId)
+    /**
+     * Setter method for variable {@link #companyId}.
+     *
+     * @param _companyId value for variable {@link #companyId}
+     */
+    public final void setCompanyId(final Integer _companyId)
     {
-        this.companyId = companyId;
+        this.companyId = _companyId;
     }
 
-    public String getTradeMarkName()
+    /**
+     * Getter method for the variable {@link #tradeMarkName}.
+     *
+     * @return value of variable {@link #tradeMarkName}
+     */
+    public final String getTradeMarkName()
     {
-        return tradeMarkName;
+        return this.tradeMarkName;
     }
 
-    public void setTradeMarkName(final String tradeMarkName)
+    /**
+     * Setter method for variable {@link #tradeMarkName}.
+     *
+     * @param _tradeMarkName value for variable {@link #tradeMarkName}
+     */
+    public final void setTradeMarkName(final String _tradeMarkName)
     {
-        this.tradeMarkName = tradeMarkName;
+        this.tradeMarkName = _tradeMarkName;
     }
 
-    public Boolean isActive()
+    /**
+     * Getter method for the variable {@link #active}.
+     *
+     * @return value of variable {@link #active}
+     */
+    public final Boolean getActive()
     {
-        return active;
+        return this.active;
     }
 
-    public void setActive(final Boolean active)
+    /**
+     * Setter method for variable {@link #active}.
+     *
+     * @param _active value for variable {@link #active}
+     */
+    public final void setActive(final Boolean _active)
     {
-        this.active = active;
+        this.active = _active;
     }
 
-    public byte[] getImage()
+    /**
+     * Getter method for the variable {@link #image}.
+     *
+     * @return value of variable {@link #image}
+     */
+    public final byte[] getImage()
     {
-        return image;
+        return this.image;
     }
 
-    public void setImage(final byte[] image)
+    /**
+     * Setter method for variable {@link #image}.
+     *
+     * @param _image value for variable {@link #image}
+     */
+    public final void setImage(final byte[] _image)
     {
-        this.image = image;
+        this.image = _image;
     }
 
-    public String getImageName()
+    /**
+     * Getter method for the variable {@link #imageName}.
+     *
+     * @return value of variable {@link #imageName}
+     */
+    public final String getImageName()
     {
-        return imageName;
+        return this.imageName;
     }
 
-    public void setImageName(final String imageName)
+    /**
+     * Setter method for variable {@link #imageName}.
+     *
+     * @param _imageName value for variable {@link #imageName}
+     */
+    public final void setImageName(final String _imageName)
     {
-        this.imageName = imageName;
+        this.imageName = _imageName;
     }
-
 }

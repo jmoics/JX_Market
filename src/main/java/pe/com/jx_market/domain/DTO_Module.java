@@ -2,63 +2,111 @@ package pe.com.jx_market.domain;
 
 import java.io.Serializable;
 
+/**
+ * @author jcuevas
+ *
+ */
 public class DTO_Module
     implements Serializable
 {
+    /**
+     *
+     */
     private Integer id;
+    /**
+     *
+     */
     private Integer companyId;
+    /**
+     *
+     */
     private String moduleDescription;
+    /**
+     *
+     */
     private String moduleResource;
+    /**
+     *
+     */
     private Boolean activeConnection;
 
-    public Integer getId()
+    /**
+     * @return the id
+     */
+    public final Integer getId()
     {
-        return id;
+        return this.id;
     }
 
-    public void setId(final Integer id)
+    /**
+     * @param _id the id to set
+     */
+    public final void setId(final Integer _id)
     {
-        this.id = id;
+        this.id = _id;
     }
 
-    public String getModuleResource()
+    /**
+     * @return the companyId
+     */
+    public final Integer getCompanyId()
     {
-        return moduleResource;
+        return this.companyId;
     }
 
-    public void setModuleResource(final String moduleResource)
+    /**
+     * @param _companyId the companyId to set
+     */
+    public final void setCompanyId(final Integer _companyId)
     {
-        this.moduleResource = moduleResource;
+        this.companyId = _companyId;
     }
 
-    public Integer getCompanyId()
+    /**
+     * @return the moduleDescription
+     */
+    public final String getModuleDescription()
     {
-        return companyId;
+        return this.moduleDescription;
     }
 
-    public void setCompanyId(final Integer companyId)
+    /**
+     * @param _moduleDescription the moduleDescription to set
+     */
+    public final void setModuleDescription(final String _moduleDescription)
     {
-        this.companyId = companyId;
+        this.moduleDescription = _moduleDescription;
     }
 
-    public String getModuleDescription()
+    /**
+     * @return the moduleResource
+     */
+    public final String getModuleResource()
     {
-        return moduleDescription;
+        return this.moduleResource;
     }
 
-    public void setModuleDescription(final String moduleDescription)
+    /**
+     * @param _moduleResource the moduleResource to set
+     */
+    public final void setModuleResource(final String _moduleResource)
     {
-        this.moduleDescription = moduleDescription;
+        this.moduleResource = _moduleResource;
     }
 
-    public Boolean getActiveConnection()
+    /**
+     * @return the activeConnection
+     */
+    public final Boolean getActiveConnection()
     {
-        return activeConnection;
+        return this.activeConnection;
     }
 
-    public void setActiveConnection(final Boolean activeConnection)
+    /**
+     * @param _activeConnection the activeConnection to set
+     */
+    public final void setActiveConnection(final Boolean _activeConnection)
     {
-        this.activeConnection = activeConnection;
+        this.activeConnection = _activeConnection;
     }
-
 }

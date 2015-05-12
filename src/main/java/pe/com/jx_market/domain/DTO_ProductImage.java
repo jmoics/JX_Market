@@ -2,87 +2,191 @@ package pe.com.jx_market.domain;
 
 import java.io.Serializable;
 
+/**
+  * TODO comment!
+  *
+  * @author jcuevas
+  * @version $Id$
+  */
 public class DTO_ProductImage
     implements Serializable
 {
 
+    /**
+     *
+     */
     private Integer id;
+    /**
+     *
+     */
     private Integer companyId;
+    /**
+     *
+     */
     private String imageName;
+    /**
+     *
+     */
     private Integer productId;
+    /**
+     *
+     */
     private boolean defaul;
+    /**
+     *
+     */
     private boolean active;
+    /**
+     *
+     */
     private byte[] image;
 
-    public Integer getId()
+    /**
+     * Getter method for the variable {@link #id}.
+     *
+     * @return value of variable {@link #id}
+     */
+    public final Integer getId()
     {
-        return id;
+        return this.id;
     }
 
-    public void setId(final Integer id)
+    /**
+     * Setter method for variable {@link #id}.
+     *
+     * @param _id value for variable {@link #id}
+     */
+
+    public final void setId(final Integer _id)
     {
-        this.id = id;
+        this.id = _id;
     }
 
-    public Integer getCompanyId()
+    /**
+     * Getter method for the variable {@link #companyId}.
+     *
+     * @return value of variable {@link #companyId}
+     */
+    public final Integer getCompanyId()
     {
-        return companyId;
+        return this.companyId;
     }
 
-    public void setCompanyId(final Integer _companyId)
+    /**
+     * Setter method for variable {@link #companyId}.
+     *
+     * @param _companyId value for variable {@link #companyId}
+     */
+
+    public final void setCompanyId(final Integer _companyId)
     {
         this.companyId = _companyId;
     }
 
-    public String getImageName()
+    /**
+     * Getter method for the variable {@link #imageName}.
+     *
+     * @return value of variable {@link #imageName}
+     */
+    public final String getImageName()
     {
-        return imageName;
+        return this.imageName;
     }
 
-    public void setImageName(final String imageName)
+    /**
+     * Setter method for variable {@link #imageName}.
+     *
+     * @param _imageName value for variable {@link #imageName}
+     */
+
+    public final void setImageName(final String _imageName)
     {
-        this.imageName = imageName;
+        this.imageName = _imageName;
     }
 
-    public boolean isDefaul()
+    /**
+     * Getter method for the variable {@link #productId}.
+     *
+     * @return value of variable {@link #productId}
+     */
+    public final Integer getProductId()
     {
-        return defaul;
+        return this.productId;
     }
 
-    public void setDefaul(final boolean defaul)
+    /**
+     * Setter method for variable {@link #productId}.
+     *
+     * @param _productId value for variable {@link #productId}
+     */
+
+    public final void setProductId(final Integer _productId)
     {
-        this.defaul = defaul;
+        this.productId = _productId;
     }
 
-    public Integer getProductId()
+    /**
+     * Getter method for the variable {@link #defaul}.
+     *
+     * @return value of variable {@link #defaul}
+     */
+    public final boolean isDefaul()
     {
-        return productId;
+        return this.defaul;
     }
 
-    public void setProductId(final Integer productId)
+    /**
+     * Setter method for variable {@link #defaul}.
+     *
+     * @param _defaul value for variable {@link #defaul}
+     */
+
+    public final void setDefaul(final boolean _defaul)
     {
-        this.productId = productId;
+        this.defaul = _defaul;
     }
 
-    public byte[] getImage()
+    /**
+     * Getter method for the variable {@link #active}.
+     *
+     * @return value of variable {@link #active}
+     */
+    public final boolean isActive()
     {
-        return image;
+        return this.active;
     }
 
-    public void setImage(final byte[] image)
+    /**
+     * Setter method for variable {@link #active}.
+     *
+     * @param _active value for variable {@link #active}
+     */
+
+    public final void setActive(final boolean _active)
     {
-        this.image = image;
+        this.active = _active;
     }
 
-
-    public boolean isActive()
+    /**
+     * Getter method for the variable {@link #image}.
+     *
+     * @return value of variable {@link #image}
+     */
+    public final byte[] getImage()
     {
-        return active;
+        return this.image;
     }
 
-    public void setActive(final boolean active)
+    /**
+     * Setter method for variable {@link #image}.
+     *
+     * @param _image value for variable {@link #image}
+     */
+
+    public final void setImage(final byte[] _image)
     {
-        this.active = active;
+        this.image = _image;
     }
+
 
 }

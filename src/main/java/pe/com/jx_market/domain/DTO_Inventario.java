@@ -1,64 +1,117 @@
 package pe.com.jx_market.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-
+/**
+ * @author jcuevas
+ *
+ */
 public class DTO_Inventario
+    implements Serializable
 {
+
+    /**
+     *
+     */
     private Integer id;
+    /**
+     *
+     */
     private Integer productId;
+    /**
+     *
+     */
     private BigDecimal stock;
+    /**
+     *
+     */
     private BigDecimal reserva;
+    /**
+     *
+     */
     private Date fecha;
-    
-    public Integer getId()
+
+    /**
+     * @return the id
+     */
+    public final Integer getId()
     {
-        return id;
+        return this.id;
     }
-    
-    public void setId(Integer id)
+
+    /**
+     * @param _id the id to set
+     */
+    public final void setId(final Integer _id)
     {
-        this.id = id;
+        this.id = _id;
     }
-    
-    public Integer getProductId()
+
+    /**
+     * @return the productId
+     */
+    public final Integer getProductId()
     {
-        return productId;
+        return this.productId;
     }
-    
-    public void setProductId(Integer productId)
+
+    /**
+     * @param _productId the productId to set
+     */
+    public final void setProductId(final Integer _productId)
     {
-        this.productId = productId;
+        this.productId = _productId;
     }
-    
-    public BigDecimal getStock()
+
+    /**
+     * @return the stock
+     */
+    public final BigDecimal getStock()
     {
-        return stock;
+        return this.stock;
     }
-    
-    public void setStock(BigDecimal stock)
+
+    /**
+     * @param _stock the stock to set
+     */
+    public final void setStock(final BigDecimal _stock)
     {
-        this.stock = stock;
+        this.stock = _stock;
     }
-    
-    public BigDecimal getReserva()
+
+    /**
+     * @return the reserva
+     */
+    public final BigDecimal getReserva()
     {
-        return reserva;
+        return this.reserva;
     }
-    
-    public void setReserva(BigDecimal reserva)
+
+    /**
+     * @param _reserva the reserva to set
+     */
+    public final void setReserva(final BigDecimal _reserva)
     {
-        this.reserva = reserva;
+        this.reserva = _reserva;
     }
-    
-    public Date getFecha()
+
+    /**
+     * @return the fecha
+     */
+    public final Date getFecha()
     {
-        return fecha;
+        return this.fecha;
     }
-    
-    public void setFecha(Date fecha)
+
+    /**
+     * @param _fecha the fecha to set
+     */
+    public final void setFecha(final Date _fecha)
     {
-        this.fecha = fecha;
+        this.fecha = _fecha;
     }
+
+
 }
