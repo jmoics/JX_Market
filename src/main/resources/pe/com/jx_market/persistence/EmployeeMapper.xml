@@ -8,10 +8,9 @@
 
     <!-- MANTENIMIENTO DE EMPLEADOS -->
 
-    <select id="getEmployees" parameterType="DTO_Employee" resultType="DTO_Employee">
+    <select id="getEmployees" parameterType="DTO_Employee" resultMap="employeeResultMap">
         SELECT
-            emp.id as id,
-            emp.userid as userId,
+            emp.id as employeeId,
             emp.companyid as companyId,
             emp.name as employeeName,
             emp.birthday as birthday,
@@ -25,17 +24,45 @@
             emp.email as email,
             emp.city as city,
             emp.ubigeo as ubigeo,
-            emp.active as active
+            emp.active as active,
+            us.id as userId,
+            us.username as username,
+            us.companyid as companyId,
+            us.password as password,
+            rol.id as roleId,
+            rol.name as roleName,
+            rol.description as roleDescription,
+            rol.areaid as roleAreaId,
+            area.id areaId,
+            area.name as areaName
         FROM
-            T_BUS_EMPLOYEE emp
+            T_BUS_EMPLOYEE emp LEFT JOIN 
+            T_SEG_USER us ON emp.userid = us.id LEFT JOIN
+            T_SEG_ROLE rol ON us.roleid = rol.id LEFT JOIN
+            T_COM_AREA area ON rol.areaid = area.id
         WHERE
             emp.companyid = #{companyId}
-        <if test="userId != null">AND
-            emp.userid = #{userId}
+        <if test="userId != null">
+            AND emp.userid = #{userId}
         </if>
-        <if test="id != null">AND
-            emp.id = #{id}
+        <if test="id != null">
+            AND emp.id = #{id}
         </if>
+        <if test="employeeLastName != null">
+            AND emp.lastname LIKE '%' || #{employeeLastName} || '%'
+            <if test="employeeLastName2 != null">
+                AND emp.lastname2 LIKE '%' || #{employeeLastName2} || '%'
+            </if>
+            <if test="employeeName != null">
+                <bind name="patternEmpName" value="'%' + employeeName + '%'" />
+                AND emp.name LIKE #{patternEmpName}
+            </if>
+        </if>
+        <if test="documentTypeId != null and documentNumber != null">
+            AND emp.doctypeid = #{documentTypeId}
+            AND emp.docnumber = #{documentNumber}
+        </if>
+        
     </select>
 
     <insert id="insertEmployee" parameterType="DTO_Employee">
@@ -84,5 +111,48 @@
       AND
          id = #{id}
     </delete>
+    
+    <resultMap id="employeeResultMap" type="DTO_Employee">
+        <id property="id" column="employeeId" />
+        <result property="companyId" column="companyId" />
+        <result property="employeeName" column="employeeName" />
+        <result property="birthday" column="birthday" />
+        <result property="employeeLastName" column="employeeLastName" />
+        <result property="employeeLastName2" column="employeeLastName2" />
+        <result property="documentTypeId" column="documentTypeId" />
+        <result property="documentNumber" column="documentNumber" />
+        <result property="address" column="address" />
+        <result property="phone" column="phone" />
+        <result property="cellPhone" column="cellPhone" />
+        <result property="email" column="email" /> 
+        <result property="city" column="city" />
+        <result property="ubigeo" column="ubigeo" /> 
+        <result property="active" column="active" />
+        <association property="user" column="userId" javaType="DTO_User" resultMap="userResultMap">
+        </association>
+    </resultMap>
+    <resultMap id="userResultMap" type="DTO_User">
+        <id property="id" column="userId" />
+        <result property="companyId" column="companyId" />
+        <result property="username" column="username" />
+        <result property="password" column="password" />
+        <result property="roleId" column="roleId" />
+        <association property="role" column="roleId" javaType="DTO_Role" resultMap="roleResultMap">
+        </association>
+    </resultMap>
+    <resultMap id="roleResultMap" type="DTO_Role">
+        <id property="id" column="roleId" />
+        <result property="companyId" column="companyId" />
+        <result property="areaId" column="areaId" />
+        <result property="roleName" column="roleName" />
+        <result property="roleDescription" column="roleDescription" />
+        <association property="area" column="areaId" javaType="DTO_Area" resultMap="areaResultMap">
+        </association>
+    </resultMap>
+    <resultMap id="areaResultMap" type="DTO_Area">
+        <id property="id" column="areaId" />
+        <result property="companyId" column="companyId" />
+        <result property="areaName" column="areaName" />
+    </resultMap>
 
 </mapper>

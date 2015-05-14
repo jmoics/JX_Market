@@ -48,8 +48,8 @@
                             #{id, jdbcType=INTEGER}
                     </foreach>
                 </if>
-                <if test="name != null">AND
-                    art.name LIKE %#{name}%
+                <if test="productName != null">AND
+                    art.name LIKE '%' || #{productName} || '%'
                 </if>
                 <if test="active != null">AND
                     art.active = #{active}

@@ -412,6 +412,7 @@ public class PO_EAAdministrateEmployeeEdit
 
     private DTO_User getUser(final Integer codigo)
     {
+        DTO_User ret = null;
         final DTO_User user = new DTO_User();
         user.setId(codigo);
         user.setCompanyId(company.getId());
@@ -419,14 +420,14 @@ public class PO_EAAdministrateEmployeeEdit
         input.setAction(Constantes.V_LIST);
         final ServiceOutput output = userService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            return (DTO_User) output.getLista().get(0);
-        } else {
-            return null;
+            ret = (DTO_User) output.getLista().get(0);
         }
+        return ret;
     }
 
     private DTO_Role getRole(final Integer codigo)
     {
+        DTO_Role ret = null;
         final DTO_Role role = new DTO_Role();
         role.setId(codigo);
         role.setCompanyId(company.getId());
@@ -434,10 +435,9 @@ public class PO_EAAdministrateEmployeeEdit
         input.setAction(Constantes.V_GET);
         final ServiceOutput output = roleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            return (DTO_Role) output.getObject();
-        } else {
-            return null;
+            ret = (DTO_Role) output.getObject();
         }
+        return ret;
     }
 
     public void cargarRoles()

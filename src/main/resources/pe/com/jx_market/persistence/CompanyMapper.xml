@@ -40,14 +40,11 @@
             </if>
     </select>
 
-    <insert id="insertCompany" parameterType="DTO_Company">
+    <insert id="insertCompany" parameterType="DTO_Company" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
         INSERT INTO T_COM_COMPANY
             (businessname,active,docnumber,domain)
         VALUES
             (#{businessName},#{active},#{docNumber},#{domain})
-        <selectKey keyProperty="id" resultType="int" order="AFTER">
-           select LAST_INSERT_ID() as value
-        </selectKey>
     </insert>
 
     <update id="updateCompany" parameterType="DTO_Company">
@@ -61,7 +58,7 @@
             id = #{id}
     </update>
 
-   <delete id="deleteCompany">
+   <delete id="deleteCompany" parameterType="DTO_Company">
       DELETE FROM
          T_COM_COMPANY
       WHERE

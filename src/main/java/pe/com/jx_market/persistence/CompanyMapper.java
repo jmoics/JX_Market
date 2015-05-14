@@ -13,37 +13,40 @@ import pe.com.jx_market.domain.DTO_Company;
  * @author George
  *
  */
-public interface CompanyMapper {
+public interface CompanyMapper
+{
 
     /**
      * Metodo para obtener una company a partir de su codigo.
      *
-     * @param codigo codigo de la company.
+     * @param _company company.
      * @return DTO_Company con la data de la company.
      */
-    public DTO_Company getCompany4DocNumber (DTO_Company company);
+    DTO_Company getCompany4DocNumber(DTO_Company _company);
 
     /**
-     * @param codigo
-     * @return
+     * @param _company company.
+     * @return boolean with delete confirmation
      */
-    public boolean deleteCompany (String codigo);
+    boolean deleteCompany(DTO_Company _company);
 
     /**
-     * @param company
-     * @return
+     * @param _company company.
+     * @return boolean with insert confirmation
      */
-    public Integer insertCompany (DTO_Company company);
+    boolean insertCompany(DTO_Company _company);
 
     /**
-     * @param company
-     * @return
+     * @param _company company.
+     * @return boolean with update confirmation
      */
-    public Integer updateCompany (DTO_Company company);
+    boolean updateCompany(DTO_Company _company);
 
     /**
-     * @return
+     * @param _businessName Name of Company.
+     * @param _docNumber Document Number.
+     * @return List of companies.
      */
-    public List<DTO_Company> getCompanies (@Param("businessName") String businessName,
-                                          @Param("docNumber")String docNumber);
+    List<DTO_Company> getCompanies(@Param("businessName") String _businessName,
+                                   @Param("docNumber") String _docNumber);
 }

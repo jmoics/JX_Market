@@ -255,10 +255,10 @@ public class PO_EAProducts
             input.addMapPair("lstCategory", listCat);
         }
         if (txtProdName.getValue().length() > 0) {
-            input.addMapPair("nombre", txtProdName.getValue());
+            input.addMapPair("productName", txtProdName.getValue());
         }
         if (cmbEstad.getSelectedItem() != null) {
-            input.addMapPair("activo", cmbEstad.getSelectedItem().getValue());
+            input.addMapPair("active", cmbEstad.getSelectedItem().getValue());
         }
         input.addMapPair("company", company.getId());
         input.setAction(Constantes.V_LIST);

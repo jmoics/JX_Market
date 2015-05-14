@@ -1,11 +1,17 @@
 <?page title="Seguridad y Servicio al Client" contentType="text/html;charset=UTF-8"?>
 
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
+<style src="s-style.css"/>
+<style>
+.z-window-content {
+    padding: 1px;
+}
+</style>
 <window id="wEAAE" hflex="1" vflex="1"
         apply="pe.com.jx_market.controller.PO_EAAdministrateEmployee">
     <borderlayout id="bl" hflex="1" vflex="1">
-        <north size="25%" collapsible="false" sclass="s-north">
-            <div align="center" hflex="1" vflex="1">
+        <north size="30%" collapsible="false" sclass="s-north">
+            <vbox align="center" hflex="1" vflex="1">
                 <label zclass="z-south-header" sclass="s-header">
                     ${labels.pe.com.jx_market.eAAdministrateEmployee.Title}
                 </label>
@@ -16,9 +22,9 @@
                     </auxhead>
                     <columns sizable="true">
                         <column hflex="1" />
-                        <column hflex="3" />
+                        <column hflex="2" />
                         <column hflex="1" />
-                        <column hflex="3" />
+                        <column hflex="2" />
                     </columns>
                     <rows>
                         <row>
@@ -34,7 +40,7 @@
                             <textbox id="txtSecLastName" hflex="1" />
                         </row>
                         <row>
-                            <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.txtLastName.Label}" />
+                            <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.txtName.Label}" />
                             <textbox id="txtName" hflex="1" />
                         </row>
                     </rows>
@@ -45,10 +51,10 @@
                     <button id="btnClean" label="${labels.pe.com.jx_market.eAAdministrateEmployee.btnClean.Label}"
                             image="/media/filenew.png" />
                 </hbox>
-            </div>
+            </vbox>
         </north>
         <center autoscroll="true" sclass="s-center2">
-            <listbox id="lstRole" mold="paging" pagingPosition="bottom" autopaging="true" sizedByContent="true"  hflex="1" vflex="1">
+            <listbox id="lstEmp" mold="paging" pagingPosition="bottom" autopaging="true" sizedByContent="true"  hflex="1" vflex="1">
                 <listhead>
                     <listheader label="Nº" id="headNumber" width="30px"/>
                     <listheader label="${labels.pe.com.jx_market.eAAdministrateEmployee.DocType.Label}" sort="auto" hflex="1"/>
@@ -58,7 +64,6 @@
                     <listheader label="${labels.pe.com.jx_market.eAAdministrateEmployee.Names.Label}" sort="auto" hflex="1"/>
                     <listheader label="${labels.pe.com.jx_market.eAAdministrateEmployee.User.Label}" sort="auto" hflex="1"/>
                     <listheader label="${labels.pe.com.jx_market.eAAdministrateEmployee.Role.Label}" sort="auto" hflex="1"/>
-                    <listheader label="${labels.pe.com.jx_market.eAAdministrateEmployee.Details.Label}" sort="auto" hflex="1"/>
                 </listhead>
             </listbox>
         </center>

@@ -82,6 +82,11 @@ public class Constantes {
     public static final String STATUS_PENDIENTE = "Pendiente";
 
     /*
+     * Parametros configurables
+     */
+    public static final String PARAM_DOCUMENT_TYPE = "DOCUMENT_TYPE";
+
+    /*
      * Temas configurables
      */
 

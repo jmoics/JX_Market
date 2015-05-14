@@ -20,6 +20,10 @@ public class DTO_Employee
      */
     private Integer userId;
     /**
+    *
+    */
+   private DTO_User user;
+    /**
      *
      */
     private Integer companyId;
@@ -106,6 +110,26 @@ public class DTO_Employee
     public void setUserId(final Integer _userId)
     {
         this.userId = _userId;
+    }
+
+    /**
+     * Getter method for the variable {@link #user}.
+     *
+     * @return value of variable {@link #user}
+     */
+    public final DTO_User getUser()
+    {
+        return this.user;
+    }
+
+    /**
+     * Setter method for variable {@link #user}.
+     *
+     * @param _user value for variable {@link #user}
+     */
+    public final void setUser(final DTO_User _user)
+    {
+        this.user = _user;
     }
 
     /**

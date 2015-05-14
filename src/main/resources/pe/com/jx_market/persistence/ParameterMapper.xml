@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.ParameterMapper">
+
+    <cache />
+
+    <!-- MANTENIMIENTO DE PARAMETERS -->
+
+    <select id="getParameters" parameterType="Parameter" resultMap="parameterResultMap">
+        SELECT
+            par.id as id,
+            par.name as parameterName,
+            par.description as parameterDesc,
+            par.companyid as companyId,
+            part.id as parameterTypeId,
+            part.name as parameterTypeName,
+            part.description as parameterTypeDesc
+        FROM
+            T_BUS_PARAMETER par LEFT JOIN T_BUS_PARAMTYPE part ON par.paramtypeid = part.id
+        <where>
+            par.companyid = #{companyId}
+            <if test="parameterTypeId != null">AND
+                part.id = #{parameterTypeId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getParameter4Id" parameterType="Parameter" resultMap="parameterResultMap">
+        SELECT
+            par.id as id,
+            par.name as parameterName,
+            par.description as parameterDesc,
+            par.companyid as companyId,
+            part.id as parameterTypeId,
+            part.name as parameterTypeName,
+            part.description as parameterTypeDesc
+        FROM
+            T_BUS_PARAMETER par LEFT JOIN T_BUS_PARAMTYPE part ON par.paramtypeid = part.id
+        WHERE
+            par.companyid = #{companyId}
+        AND
+            par.id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertParameter" parameterType="Parameter" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+        INSERT INTO T_BUS_PARAMETER
+            (name, description, companyid, paramtypeid)
+        VALUES
+            (#{parameterName}, #{parameterDesc}, #{companyId}, #{parameterTypeId})
+    </insert>
+
+    <update id="updateParameter" parameterType="Parameter">
+        UPDATE T_BUS_PARAMETER
+        SET
+            name = #{parameterName},
+            description = #{parameterDesc}
+        WHERE
+            id = #{id}
+        AND
+            companyid = #{companyId}
+    </update>
+
+    <delete id="deleteParameter" parameterType="Parameter">
+      DELETE FROM
+         T_BUS_PARAMETER
+      WHERE
+            id = #{id}
+        AND
+            companyid = #{companyId}
+    </delete>
+    
+    <resultMap id="parameterResultMap" type="Parameter">
+        <id property="id" column="parameterId" />
+        <result property="companyId" column="companyId" />
+        <result property="parameterTypeId" column="parameterTypeId" />
+        <result property="parameterName" column="parameterName" />
+        <result property="parameterDesc" column="parameterDesc" />
+        <association property="parameterType" column="parameterTypeId" javaType="ParameterType" resultMap="parameterTypeResultMap">
+        </association>
+    </resultMap>
+    <resultMap id="parameterTypeResultMap" type="ParameterType">
+        <id property="id" column="parameterTypeId" />
+        <result property="companyId" column="companyId" />
+        <result property="parameterTypeName" column="parameterTypeName" />
+        <result property="parameterTypeDesc" column="parameterTypeDesc" />
+    </resultMap>
+    
+    
+    <!-- MANTENIMIENTO DE PARAMETER TYPES -->
+    <select id="getParameterTypes" parameterType="ParameterType" resultType="ParameterType">
+        SELECT
+            part.id as id,
+            part.name as parameterTypeName,
+            part.description as parameterTypeDesc,
+            part.companyid as companyId
+        FROM
+            T_BUS_PARAMTYPE part
+        <where>
+            part.companyid = #{companyId}
+            <if test="parameterTypeName != null">AND
+                part.name = #{parameterTypeName}
+            </if>
+        </where>
+    </select>
+
+    <select id="getParameterType4Id" parameterType="ParameterType" resultType="ParameterType">
+        SELECT
+            part.id as id,
+            part.name as parameterTypeName,
+            part.description as parameterTypeDesc,
+            part.companyid as companyId
+        FROM
+            T_BUS_PARAMTYPE part
+        WHERE
+            part.companyid = #{companyId}
+        AND
+            part.id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertParameterType" parameterType="ParameterType" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+        INSERT INTO T_BUS_PARAMTYPE
+            (name, description, companyid)
+        VALUES
+            (#{parameterTypeName}, #{parameterTypeDesc}, #{companyId})
+    </insert>
+
+    <update id="updateParameterType" parameterType="ParameterType">
+        UPDATE T_BUS_PARAMTYPE
+        SET
+            name = #{parameterTypeName},
+            description = #{parameterTypeDesc}
+        WHERE
+            id = #{id}
+        AND
+            companyid = #{companyId}
+    </update>
+
+    <delete id="deleteParameterType" parameterType="ParameterType">
+      DELETE FROM
+         T_BUS_PARAMTYPE
+      WHERE
+            id = #{id}
+        AND
+            companyid = #{companyId}
+    </delete>
+
+</mapper>

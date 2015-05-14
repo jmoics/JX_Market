@@ -155,7 +155,7 @@ INSERT INTO T_SEG_ROLE2MODULE (ROLEID, MODULEID, ACTIVE)
                   (5,2,true),(5,4,true),(5,5,true),(5,6,true),(5,7,true),(5,10,true),(5,11,true);
 
 INSERT INTO T_BUS_PARAMTYPE (COMPANYID,NAME,DESCRIPTION)
-            VALUES (2,'Tipo de Documento','Parametros para guardar los tipos de documento');
+            VALUES (2,'DOCUMENT_TYPE','Parametros para guardar los tipos de documento');
 
 INSERT INTO T_BUS_PARAMETER (COMPANYID,PARAMTYPEID,NAME,DESCRIPTION)
             VALUES (2,1,'DNI','DNI'),(2,1,'CE','Carnet de Extranjería');

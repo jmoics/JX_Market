@@ -12,8 +12,10 @@ import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
 /**
- * @author jcuevas
+ * TODO comment!
  *
+ * @author jcuevas
+ * @version $Id$
  */
 @Service
 public class ModuleService
