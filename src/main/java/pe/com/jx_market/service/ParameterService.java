@@ -17,6 +17,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
 /**
  * TODO comment!
  *
+ * @param <T>
  * @author jcuevas
  * @version $Id$
  */

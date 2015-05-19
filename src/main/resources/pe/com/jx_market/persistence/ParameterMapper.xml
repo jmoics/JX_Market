@@ -10,7 +10,7 @@
 
     <select id="getParameters" parameterType="Parameter" resultMap="parameterResultMap">
         SELECT
-            par.id as id,
+            par.id as parameterId,
             par.name as parameterName,
             par.description as parameterDesc,
             par.companyid as companyId,
