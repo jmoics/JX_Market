@@ -171,7 +171,10 @@ public class Constantes {
         MODULE_EDIT_FORM("eAAdministrateModuleEdit.zul"),
         MODULE_CREATE_FORM("eAAdministrateModuleCreate.zul"),
         ROLEMODULE_FORM("eAAdministrateRoleModule.zul"),
-        ROLEMODULE_EDIT_FORM("eAAdministrateRoleModuleEdit.zul");
+        ROLEMODULE_EDIT_FORM("eAAdministrateRoleModuleEdit.zul"),
+        EMPLOYEE_FORM("eAAdministrateEmployee.zul"),
+        EMPLOYEE_EDIT_FORM("eAAdministrateEmployeeEdit.zul"),
+        EMPLOYEE_CREATE_FORM("eAAdministrateEmployeeCreate.zul");
 
         private final String form;
 

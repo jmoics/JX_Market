@@ -69,6 +69,8 @@
         </center>
         <south size="5%" style="visibility:visible;" sclass="s-south2">
             <hbox align="center" pack="end" hflex="1" vflex="1" sclass="s-hbox">
+                <!-- <button id="btnView" label="${labels.pe.com.jx_market.eAAdministrateEmployee.btnView.Label}"
+                    image="/media/filenew.png" /> -->
                 <button id="btnCreate" label="${labels.pe.com.jx_market.eAAdministrateEmployee.btnCreate.Label}"
                     image="/media/filenew.png" />
                 <button id="btnEdit" label="${labels.pe.com.jx_market.eAAdministrateEmployee.btnEdit.Label}"
@@ -78,7 +80,7 @@
             </hbox>
         </south>
     </borderlayout>
-    <popup id="popDetails" width="400px">
+    <popup id="popDetails" width="440px">
         <div align="center">
             <label style="font-family: sans-serif; font-weight:normal; color:#473C8B;font-size:14px">
                 Detalle de Employee
@@ -87,14 +89,10 @@
         <html:p />
         <grid>
             <columns>
-                <column label="${labels.pe.com.jx_market.eAAdministrateEmployee.Field.Label}" width="100px" />
+                <column label="${labels.pe.com.jx_market.eAAdministrateEmployee.Field.Label}" width="150px" />
                 <column label="${labels.pe.com.jx_market.eAAdministrateEmployee.Content.Label}" width="250px" />
             </columns>
             <rows>
-                <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.User.Label}" />
-                    <label id="lblUser" value="" />
-                </row>
                 <row>
                     <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Name.Label}" />
                     <label id="lblName" value="" />
@@ -116,8 +114,16 @@
                     <label id="lblDocument" value="" />
                 </row>
                 <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Role.Label}" />
-                    <label id="lblRole" value="" />
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Birthday.Label}" />
+                    <label id="lblBirthday" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblAddress.Label}" />
+                    <label id="lblAddress" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblUbigeo.Label}" />
+                    <label id="lblUbigeo" value="" />
                 </row>
                 <row>
                     <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Phone.Label}" />
@@ -134,6 +140,14 @@
                 <row>
                     <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Status.Label}" />
                     <label id="lblStatus" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.User.Label}" />
+                    <label id="lblUser" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Role.Label}" />
+                    <label id="lblRole" value="" />
                 </row>
             </rows>
         </grid>
