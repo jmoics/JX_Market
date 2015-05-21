@@ -15,8 +15,8 @@ ALTER TABLE T_BUS_EMPLOYEE ALTER COLUMN ID SET DEFAULT nextval('T_BUS_EMPLOYEE_I
 ALTER SEQUENCE T_BUS_EMPLOYEE_ID_SEQ OWNED BY T_BUS_EMPLOYEE.ID;
 
 CREATE SEQUENCE T_COM_COMPANY_ID_SEQ;
-ALTER TABLE T_COM_COMPANY ALTER COLUMN COMPANYID SET DEFAULT nextval('T_COM_COMPANY_ID_SEQ');
-ALTER SEQUENCE T_COM_COMPANY_ID_SEQ OWNED BY T_COM_COMPANY.COMPANYID;
+ALTER TABLE T_COM_COMPANY ALTER COLUMN ID SET DEFAULT nextval('T_COM_COMPANY_ID_SEQ');
+ALTER SEQUENCE T_COM_COMPANY_ID_SEQ OWNED BY T_COM_COMPANY.ID;
 
 CREATE SEQUENCE T_BUS_TRADEMARK_ID_SEQ;
 ALTER TABLE T_BUS_TRADEMARK ALTER COLUMN ID SET DEFAULT nextval('T_BUS_TRADEMARK_ID_SEQ');
@@ -120,32 +120,36 @@ INSERT INTO T_SEG_USER (COMPANYID, PASSWORD, USERNAME, ROLEID)
                  (1,'e10adc3949ba59abbe56e057f20f883e','jmoics@gmail.com',2),
                  (1,'e10adc3949ba59abbe56e057f20f883e','jacky@gmail.com',2);
 
-INSERT INTO T_SEG_MODULE (COMPANYID, DESCRIPTION, RESOURCE) VALUES (2,'Module para administracion de empleados','MODULE_ADM_EMPLOYEE'),
-                (2,'Modulo para productos','MODULE_PRODUCTS'),
-                (2,'Modulo para gestion de productos','MODULE_PROD_PRODUCT'),
-                (2,'Modulo para edici髇 de productos','MODULE_PROD_PRODUCT_EDIT'),
-                (2,'Modulo para creaci髇 de productos','MODULE_PROD_PRODUCT_CREATE'),
-                (2,'Modulo para gestion de categories','MODULE_PROD_CATEGORY'),
-                (2,'Modulo para edici髇 de categories','MODULE_PROD_CATEGORY_EDIT'),
-                (2,'Modulo para creaci髇 de categories','MODULE_PROD_CATEGORY_CREATE'),
-                (2,'Modulo para gestion de inventario','MODULE_PROD_INVENTORY'),
-                (2,'Modulo para gestion de marcas','MODULE_PROD_TRADEMARK'),
-                (2,'Modulo para edici髇 de marcas','MODULE_PROD_TRADEMARK_EDIT'),
-                (2,'Modulo para creaci髇 de marcas','MODULE_PROD_TRADEMARK_CREATE'),
-                (2,'Modulo para gestion de montos','MODULE_PROD_AMOUNT'),
-                (2,'Modulo para administracion','MODULE_ADMINISTRACION'),
-                (2,'Modulo para administracion de roles','MODULE_ADM_ROLE'),
-                (2,'Modulo para edici髇 de roles','MODULE_ADM_ROLE_EDIT'),
-                (2,'Modulo para creaci髇 de roles','MODULE_ADM_ROLE_CREATE'),
-                (2,'Modulo para administracion de areas','MODULE_ADM_AREA'),
-                (2,'Modulo para edici髇 de areas','MODULE_ADM_AREA_EDIT'),
-                (2,'Modulo para creaci髇 de areas','MODULE_ADM_AREA_CREATE'),
-                (2,'Modulo para administracion de modules','MODULE_ADM_MODULE'),
-                (2,'Modulo para edici髇 de recursos','MODULE_ADM_MODULE_EDIT'),
-                (2,'Modulo para creaci髇 de recursos','MODULE_ADM_MODULE_CREATE'),
-                (2,'Modulo para asignacion de recursos a roles','MODULE_ADM_ROLEMODULE'),
-                (2,'Modulo para editar asignaciones de recursos a roles','MODULE_ADM_ROLEMODULE_EDIT'),
-                (2,'Modulo para administrar la contrasena','MODULE_CHANGE_PASS');
+INSERT INTO T_SEG_MODULE (COMPANYID, DESCRIPTION, RESOURCE) 
+		 VALUES (2,'M贸dulo para administracion de empleados','MODULE_ADM_EMPLOYEE'),
+                (2,'M贸dulo para productos','MODULE_PRODUCTS'),
+                (2,'M贸dulo para gestion de productos','MODULE_PROD_PRODUCT'),
+                (2,'M贸dulo para edici贸n de productos','MODULE_PROD_PRODUCT_EDIT'),
+                (2,'M贸dulo para creaci贸n de productos','MODULE_PROD_PRODUCT_CREATE'),
+                (2,'M贸dulo para gestion de categories','MODULE_PROD_CATEGORY'),
+                (2,'M贸dulo para edici贸n de categories','MODULE_PROD_CATEGORY_EDIT'),
+                (2,'M贸dulo para creaci贸n de categories','MODULE_PROD_CATEGORY_CREATE'),
+                (2,'M贸dulo para gestion de inventario','MODULE_PROD_INVENTORY'),
+                (2,'M贸dulo para gestion de marcas','MODULE_PROD_TRADEMARK'),
+                (2,'M贸dulo para edici贸n de marcas','MODULE_PROD_TRADEMARK_EDIT'),
+                (2,'M贸dulo para creaci贸n de marcas','MODULE_PROD_TRADEMARK_CREATE'),
+                (2,'M贸dulo para gestion de montos','MODULE_PROD_AMOUNT'),
+                (2,'M贸dulo para administracion','MODULE_ADMINISTRACION'),
+                (2,'M贸dulo para administracion de roles','MODULE_ADM_ROLE'),
+                (2,'M贸dulo para edici贸n de roles','MODULE_ADM_ROLE_EDIT'),
+                (2,'M贸dulo para creaci贸n de roles','MODULE_ADM_ROLE_CREATE'),
+                (2,'M贸dulo para administracion de areas','MODULE_ADM_AREA'),
+                (2,'M贸dulo para edici贸n de areas','MODULE_ADM_AREA_EDIT'),
+                (2,'M贸dulo para creaci贸n de areas','MODULE_ADM_AREA_CREATE'),
+                (2,'M贸dulo para administracion de modules','MODULE_ADM_MODULE'),
+                (2,'M贸dulo para edici贸n de recursos','MODULE_ADM_MODULE_EDIT'),
+                (2,'M贸dulo para creaci贸n de recursos','MODULE_ADM_MODULE_CREATE'),
+                (2,'M贸dulo para asignacion de recursos a roles','MODULE_ADM_ROLEMODULE'),
+                (2,'M贸dulo para editar asignaciones de recursos a roles','MODULE_ADM_ROLEMODULE_EDIT'),
+                (2,'M贸dulo para administracion de empleados','MODULE_ADM_EMPLOYEE'),
+                (2,'M贸dulo para creaci贸n de empleados','MODULE_ADM_EMPLOYEE_CREATE'),
+                (2,'M贸dulo para edici贸n de empleados','MODULE_ADM_EMPLOYEE_EDIT'),
+                (2,'M贸dulo para administrar la contrasena','MODULE_CHANGE_PASS');
 
 
 INSERT INTO T_SEG_ROLE2MODULE (ROLEID, MODULEID, ACTIVE)
@@ -156,11 +160,11 @@ INSERT INTO T_SEG_ROLE2MODULE (ROLEID, MODULEID, ACTIVE)
 
 INSERT INTO T_BUS_PARAMTYPE (COMPANYID,NAME,DESCRIPTION)
             VALUES (2,'DOCUMENT_TYPE','Parametros para guardar los tipos de documento'),
-                   (2,'SEX_TYPE','Parametro para guardar el g閚ero de la persona'),
+                   (2,'SEX_TYPE','Parametro para guardar el g茅nero de la persona'),
                    (2,'CIVILSTATE_TYPE','Parametro para guardar el estado civil de la persona');
 
 INSERT INTO T_BUS_PARAMETER (COMPANYID,PARAMTYPEID,NAME,DESCRIPTION)
-            VALUES (2,1,'DNI','DNI'),(2,1,'CE','Carnet de Extranjer韆'),
+            VALUES (2,1,'DNI','DNI'),(2,1,'CE','Carnet de Extranjer铆a'),
                    (2,2,'Masculino','Masculino'),(2,2,'Femenino','Femenino'),
                    (2,3,'Soltero','Soltero'),(2,3,'Casado','Casado');
 
@@ -169,8 +173,8 @@ INSERT INTO T_BUS_EMPLOYEE (USERID, COMPANYID, NAME, LASTNAME, LASTNAME2, DOCTYP
                    (2,2,'George','Cave',null,1,'44128463','mi house','4563423','987755443','','lima','lima','1987-04-03',3,5,true);
                   
 INSERT INTO T_BUS_CATEGORY (COMPANYID, NAME, ACTIVE, PARENTID)
-           VALUES (2, 'C髆puto y Videojuegos', true, null),
-                  (2, 'C髆puto', true, 1),
+           VALUES (2, 'C贸mputo y Videojuegos', true, null),
+                  (2, 'C贸mputo', true, 1),
                   (2, 'Tablets y Accesorios', true, 1),
                   (2, 'Videojuegos', true, 1),
                   (2, 'PlayStation 4', true, 4),
