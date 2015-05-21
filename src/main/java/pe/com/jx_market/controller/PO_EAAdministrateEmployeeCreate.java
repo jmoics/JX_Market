@@ -169,6 +169,7 @@ public class PO_EAAdministrateEmployeeCreate
                 }
                 bandPop.appendChild(lstBRoles);
             }
+            this.bndRole.appendChild(bandPop);
         } else {
             alertaError(this.logger, "Error en la carga de roles",
                             "error al cargar los roles", null);

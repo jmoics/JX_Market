@@ -3,6 +3,9 @@ package pe.com.jx_market.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * @author jcuevas
  *
@@ -404,5 +407,38 @@ public class DTO_Employee
     public final void setCivilStateId(final Integer _civilStateId)
     {
         this.civilStateId = _civilStateId;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(final Object _obj)
+    {
+        boolean ret = super.equals(_obj);
+        if (!(_obj instanceof DTO_Employee)) {
+            ret = false;
+        } else {
+            if (_obj == this) {
+                ret = true;
+            } else {
+                ret = new EqualsBuilder()
+                        .append(this.id, ((DTO_Employee) _obj).id)
+                        .isEquals();
+            }
+        }
+        return ret;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        return new HashCodeBuilder(17, 31).// two randomly chosen prime numbers
+                        // if deriving: appendSuper(super.hashCode()).
+                        append(this.id).
+                        toHashCode();
     }
 }
