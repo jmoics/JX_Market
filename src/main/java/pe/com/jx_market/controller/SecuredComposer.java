@@ -125,6 +125,9 @@ public abstract class SecuredComposer<T extends Component>
         }
     }
 
+    /**
+     * @param _combo Combobox to add items.
+     */
     public void buildActiveCombo(final Combobox _combo)
     {
         Comboitem item = new Comboitem();

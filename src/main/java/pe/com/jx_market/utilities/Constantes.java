@@ -85,6 +85,8 @@ public class Constantes {
      * Parametros configurables
      */
     public static final String PARAM_DOCUMENT_TYPE = "DOCUMENT_TYPE";
+    public static final String PARAM_SEX_TYPE = "SEX_TYPE";
+    public static final String PARAM_CIVILSTATE_TYPE = "CIVILSTATE_TYPE";
 
     /*
      * Temas configurables
@@ -131,6 +133,8 @@ public class Constantes {
     public static final String MODULE_ADM_AREA_EDIT = "MODULE_ADM_AREA_EDIT";
     public static final String MODULE_ADM_AREA_CREATE = "MODULE_ADM_AREA_CREATE";
     public static final String MODULE_ADM_EMPLOYEE = "MODULE_ADM_EMPLOYEE";
+    public static final String MODULE_ADM_EMPLOYEE_CREATE = "MODULE_ADM_EMPLOYEE_CREATE";
+    public static final String MODULE_ADM_EMPLOYEE_EDIT = "MODULE_ADM_EMPLOYEE_EDIT";
     public static final String MODULE_ADM_MODULE = "MODULE_ADM_MODULE";
     public static final String MODULE_ADM_MODULE_EDIT = "MODULE_ADM_MODULE_EDIT";
     public static final String MODULE_ADM_MODULE_CREATE = "MODULE_ADM_MODULE_CREATE";

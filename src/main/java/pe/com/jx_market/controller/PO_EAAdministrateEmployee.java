@@ -49,7 +49,7 @@ public class PO_EAAdministrateEmployee
     private Popup popDetails;
     @Wire
     private Label lblUser, lblName, lblLastName, lblSecLastName, lblDocType, lblDocument, lblRole,
-                  lblPhone, lblMail, lblCity, lblStatus, lblBirthday, lblAddress, lblUbigeo;
+                  lblPhone, lblMail, lblCity, lblStatus, lblBirthday, lblAddress, lblUbigeo, lblCivilState, lblSex;
     @Wire
     private Button btnView;
     @Wire
@@ -107,6 +107,8 @@ public class PO_EAAdministrateEmployee
             this.lblDocType.setValue(getParameter(employee.getDocumentTypeId()).getParameterName());
             this.lblDocument.setValue(employee.getDocumentNumber());
             this.lblBirthday.setValue(new SimpleDateFormat("dd/MM/yyyy").format(employee.getBirthday()));
+            this.lblSex.setValue(getParameter(employee.getSexId()).getParameterName());
+            this.lblCivilState.setValue(getParameter(employee.getCivilStateId()).getParameterName());
             this.lblAddress.setValue(employee.getAddress());
             this.lblUbigeo.setValue(employee.getUbigeo());
             final String estado = Constantes.ST_ACTIVO.equals(employee.getActive()) ? Constantes.STATUS_ACTIVO
@@ -185,16 +187,15 @@ public class PO_EAAdministrateEmployee
                 /*final Image imgDet = new Image("media/details.png");
                 imgDet.setStyle("cursor:pointer");
                 imgDet.setPopup(this.popDetails);*/
-                item.addEventListener(Events.ON_CLICK,
-                    new EventListener<Event>() {
-                        @Override
-                        public void onEvent(final Event _event)
-                            throws UiException
-                        {
-                             loadEmployeeDetail();
-                             popDetails.open(_event.getTarget().getParent(), "overlap");
-                        }
-                    });
+                item.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+                    @Override
+                    public void onEvent(final Event _event)
+                        throws UiException
+                    {
+                         loadEmployeeDetail();
+                         popDetails.open(_event.getTarget().getParent(), "overlap");
+                    }
+                });
                 this.lstEmp.appendChild(item);
                 countItem++;
             }

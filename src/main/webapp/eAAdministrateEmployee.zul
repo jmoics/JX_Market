@@ -118,6 +118,14 @@
                     <label id="lblBirthday" value="" />
                 </row>
                 <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Sex.Label}" />
+                    <label id="lblSex" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.CivilState.Label}" />
+                    <label id="lblCivilState" value="" />
+                </row>
+                <row>
                     <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblAddress.Label}" />
                     <label id="lblAddress" value="" />
                 </row>

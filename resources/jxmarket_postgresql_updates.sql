@@ -155,14 +155,19 @@ INSERT INTO T_SEG_ROLE2MODULE (ROLEID, MODULEID, ACTIVE)
                   (5,2,true),(5,4,true),(5,5,true),(5,6,true),(5,7,true),(5,10,true),(5,11,true);
 
 INSERT INTO T_BUS_PARAMTYPE (COMPANYID,NAME,DESCRIPTION)
-            VALUES (2,'DOCUMENT_TYPE','Parametros para guardar los tipos de documento');
+            VALUES (2,'DOCUMENT_TYPE','Parametros para guardar los tipos de documento'),
+                   (2,'SEX_TYPE','Parametro para guardar el género de la persona'),
+                   (2,'CIVILSTATE_TYPE','Parametro para guardar el estado civil de la persona');
 
 INSERT INTO T_BUS_PARAMETER (COMPANYID,PARAMTYPEID,NAME,DESCRIPTION)
-            VALUES (2,1,'DNI','DNI'),(2,1,'CE','Carnet de Extranjería');
+            VALUES (2,1,'DNI','DNI'),(2,1,'CE','Carnet de Extranjería'),
+                   (2,2,'Masculino','Masculino'),(2,2,'Femenino','Femenino'),
+                   (2,3,'Soltero','Soltero'),(2,3,'Casado','Casado');
 
-INSERT INTO T_BUS_EMPLOYEE (USERID, COMPANYID, NAME, LASTNAME, LASTNAME2, DOCTYPEID, DOCNUMBER, ADDRESS, PHONE, CELLPHONE, EMAIL, CITY, UBIGEO, BIRTHDAY, ACTIVE)
-            VALUES (4,2,'Jorge','Cueva','Samames',1,'44128463','Mi casa','4823262','945190242','jmoics@gmail.com','Lima','150135','1987-12-01',true),
-                  (2,2,'George','Cave',null,1,'44128463','mi house','4563423','987755443','','lima','lima','1987-04-03',true);
+INSERT INTO T_BUS_EMPLOYEE (USERID, COMPANYID, NAME, LASTNAME, LASTNAME2, DOCTYPEID, DOCNUMBER, ADDRESS, PHONE, CELLPHONE, EMAIL, CITY, UBIGEO, BIRTHDAY, SEXID, CIVILSTATEID, ACTIVE)
+            VALUES (4,2,'Jorge','Cueva','Samames',1,'44128463','Mi casa','4823262','945190242','jmoics@gmail.com','Lima','150135','1987-12-01',3,5,true),
+                   (2,2,'George','Cave',null,1,'44128463','mi house','4563423','987755443','','lima','lima','1987-04-03',3,5,true);
+                  
 INSERT INTO T_BUS_CATEGORY (COMPANYID, NAME, ACTIVE, PARENTID)
            VALUES (2, 'Cómputo y Videojuegos', true, null),
                   (2, 'Cómputo', true, 1),

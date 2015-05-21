@@ -54,6 +54,14 @@ public class DTO_Employee
     /**
      *
      */
+    private Integer sexId;
+    /**
+     *
+     */
+    private Integer civilStateId;
+    /**
+     *
+     */
     private String address;
     /**
      *
@@ -354,5 +362,47 @@ public class DTO_Employee
     public void setActive(final Boolean _active)
     {
         this.active = _active;
+    }
+
+
+    /**
+     * Getter method for the variable {@link #sex}.
+     *
+     * @return value of variable {@link #sex}
+     */
+    public final Integer getSexId()
+    {
+        return this.sexId;
+    }
+
+
+    /**
+     * Setter method for variable {@link #sex}.
+     *
+     * @param _sexId value for variable {@link #sex}
+     */
+    public final void setSexId(final Integer _sexId)
+    {
+        this.sexId = _sexId;
+    }
+
+    /**
+     * Getter method for the variable {@link #civilState}.
+     *
+     * @return value of variable {@link #civilState}
+     */
+    public final Integer getCivilStateId()
+    {
+        return this.civilStateId;
+    }
+
+    /**
+     * Setter method for variable {@link #civilState}.
+     *
+     * @param _civilStateId value for variable {@link #civilState}
+     */
+    public final void setCivilStateId(final Integer _civilStateId)
+    {
+        this.civilStateId = _civilStateId;
     }
 }

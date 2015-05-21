@@ -24,6 +24,8 @@
             emp.email as email,
             emp.city as city,
             emp.ubigeo as ubigeo,
+            emp.sexid as sexId,
+            emp.civilstateid as civilStateId,
             emp.active as active,
             us.id as userId,
             us.username as username,
@@ -127,6 +129,8 @@
         <result property="email" column="email" /> 
         <result property="city" column="city" />
         <result property="ubigeo" column="ubigeo" /> 
+        <result property="civilStateId" column="civilStateId"/>
+        <result property="sexId" column="sexId"/>
         <result property="active" column="active" />
         <association property="user" column="userId" javaType="DTO_User" resultMap="userResultMap">
         </association>
