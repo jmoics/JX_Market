@@ -22,6 +22,7 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listgroup;
 import org.zkoss.zul.Listhead;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
@@ -141,8 +142,9 @@ public class PO_EAAdministrateEmployeeCreate
                  */
             }
             final Bandpopup bandPop = new Bandpopup();
-            for (final Entry<DTO_Area, List<DTO_Role>> entry : mapArea2Roles.entrySet()) {
+            /*for (final Entry<DTO_Area, List<DTO_Role>> entry : mapArea2Roles.entrySet()) {
                 final Listbox lstBRoles = new Listbox();
+                lstBRoles.setWidth("250px");
                 final Listhead lstHead = new Listhead();
                 final Listheader lstHeader = new Listheader(entry.getKey().getAreaName());
                 lstHead.appendChild(lstHeader);
@@ -152,7 +154,7 @@ public class PO_EAAdministrateEmployeeCreate
                     item.setValue(role);
                     final Listcell cell = new Listcell(role.getRoleName());
                     item.appendChild(cell);
-                    item.addEventListener(Events.ON_SELECT, new EventListener<Event>()
+                    item.addEventListener(Events.ON_CLICK, new EventListener<Event>()
                     {
                         @Override
                         public void onEvent(final Event _event)
@@ -168,7 +170,39 @@ public class PO_EAAdministrateEmployeeCreate
                     lstBRoles.appendChild(item);
                 }
                 bandPop.appendChild(lstBRoles);
+            }*/
+            final Listbox lstBRoles = new Listbox();
+            lstBRoles.setWidth("250px");
+            final Listhead lstHead = new Listhead();
+            final Listheader lstHeader = new Listheader();
+            lstHead.appendChild(lstHeader);
+            lstBRoles.appendChild(lstHead);
+            for (final Entry<DTO_Area, List<DTO_Role>> entry : mapArea2Roles.entrySet()) {
+                final Listgroup lstGrp = new Listgroup();
+                lstGrp.appendChild(new Listcell(entry.getKey().getAreaName()));
+                lstBRoles.appendChild(lstGrp);
+                for (final DTO_Role role : entry.getValue()) {
+                    final Listitem item = new Listitem();
+                    item.setValue(role);
+                    final Listcell cell = new Listcell(role.getRoleName());
+                    item.appendChild(cell);
+                    item.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+                    {
+                        @Override
+                        public void onEvent(final Event _event)
+                            throws UiException
+                        {
+                            final Bandbox bandBox = (Bandbox) _event.getTarget().getParent().getParent().getParent();
+                            final DTO_Role rol = ((Listitem) _event.getTarget()).getValue();
+                            bandBox.setValue(rol.getRoleName());
+                            bandBox.setAttribute(Constantes.ATTRIBUTE_ROLE, role);
+                            bandBox.close();
+                        }
+                    });
+                    lstBRoles.appendChild(item);
+                }
             }
+            bandPop.appendChild(lstBRoles);
             this.bndRole.appendChild(bandPop);
         } else {
             alertaError(this.logger, "Error en la carga de roles",
