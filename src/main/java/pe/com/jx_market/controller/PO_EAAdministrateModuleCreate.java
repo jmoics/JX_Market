@@ -43,21 +43,24 @@ public class PO_EAAdministrateModuleCreate
     {
         super.doAfterCompose(_comp);
 
-        company = (DTO_Company) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
+        this.company = (DTO_Company) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
 
         // Obtenemos el controlador de la pantalla principal de roles.
-        final Map<?, ?> mapArg = desktop.getExecution().getArg();
-        moduleParentUI = (PO_EAAdministrateModule) mapArg.get(Constantes.ATTRIBUTE_PARENTFORM);
+        final Map<?, ?> mapArg = this.desktop.getExecution().getArg();
+        this.moduleParentUI = (PO_EAAdministrateModule) mapArg.get(Constantes.ATTRIBUTE_PARENTFORM);
     }
 
+    /**
+     *
+     */
     @Listen("onClick = #btnSave")
     public void createModule()
     {
-        if (!txtDescription.getValue().isEmpty() && !txtResource.getValue().isEmpty()) {
+        if (!this.txtDescription.getValue().isEmpty() && !this.txtResource.getValue().isEmpty()) {
             final DTO_Module modNew = new DTO_Module();
-            modNew.setModuleResource(txtResource.getValue());
-            modNew.setModuleDescription(txtDescription.getValue());
-            modNew.setCompanyId(company.getId());
+            modNew.setModuleResource(this.txtResource.getValue());
+            modNew.setModuleDescription(this.txtDescription.getValue());
+            modNew.setCompanyId(this.company.getId());
 
             final ServiceInput<DTO_Module> input = new ServiceInput<DTO_Module>(modNew);
             input.setAction(Constantes.V_REGISTER);
@@ -65,17 +68,17 @@ public class PO_EAAdministrateModuleCreate
             final ServiceOutput<DTO_Module> output = moduleService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 final int resp = alertaInfo(logger,
-                                Labels.getLabel("pe.com.jx_market.PO_EAAdministrateModuleCreate.createModule.Info.Label"),
-                                Labels.getLabel("pe.com.jx_market.PO_EAAdministrateModuleCreate.createModule.Info.Label"),
+                            Labels.getLabel("pe.com.jx_market.PO_EAAdministrateModuleCreate.createModule.Info.Label"),
+                            Labels.getLabel("pe.com.jx_market.PO_EAAdministrateModuleCreate.createModule.Info.Label"),
                                 null);
                 if (resp == Messagebox.OK) {
-                    moduleParentUI.getModules();
+                    this.moduleParentUI.getModules();
                 }
             } else {
                 alertaError(logger,
-                                Labels.getLabel("pe.com.jx_market.PO_EAAdministrateModuleCreate.createModule.Error.Label"),
-                                Labels.getLabel("pe.com.jx_market.PO_EAAdministrateModuleCreate.createModule.Error.Label"),
-                                null);
+                            Labels.getLabel("pe.com.jx_market.PO_EAAdministrateModuleCreate.createModule.Error.Label"),
+                            Labels.getLabel("pe.com.jx_market.PO_EAAdministrateModuleCreate.createModule.Error.Label"),
+                            null);
             }
 
         } else {

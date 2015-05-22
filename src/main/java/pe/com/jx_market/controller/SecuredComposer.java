@@ -93,35 +93,48 @@ public abstract class SecuredComposer<T extends Component>
 
     abstract String[] requiredResources();
 
+    /**
+     * @param _logger
+     * @param _txt
+     * @param _txt2
+     * @param _t
+     * @return
+     */
     public int alertaInfo(final Log _logger,
-                           final String txt,
-                           final String txt2,
-                           final Throwable t)
+                          final String _txt,
+                          final String _txt2,
+                          final Throwable _t)
     {
         int ret = 0;
-        if (txt.length() > 0) {
-            ret = Messagebox.show(txt, company.getBusinessName(), Messagebox.OK, Messagebox.INFORMATION);
+        if (_txt.length() > 0) {
+            ret = Messagebox.show(_txt, this.company.getBusinessName(), Messagebox.OK, Messagebox.INFORMATION);
         }
-        if (t != null) {
-            _logger.info(txt2, t);
+        if (_t != null) {
+            _logger.info(_txt2, _t);
         } else {
-            _logger.info(txt2);
+            _logger.info(_txt2);
         }
-         return ret;
+        return ret;
     }
 
+    /**
+     * @param _logger
+     * @param _txt
+     * @param _txt2
+     * @param _t
+     */
     public void alertaError(final Log _logger,
-                            final String txt,
-                            final String txt2,
-                            final Throwable t)
+                            final String _txt,
+                            final String _txt2,
+                            final Throwable _t)
     {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, company.getBusinessName(), Messagebox.OK, Messagebox.EXCLAMATION);
+        if (_txt.length() > 0) {
+            Messagebox.show(_txt, this.company.getBusinessName(), Messagebox.OK, Messagebox.EXCLAMATION);
         }
-        if (t != null) {
-            _logger.error(txt2, t);
+        if (_t != null) {
+            _logger.error(_txt2, _t);
         } else {
-            _logger.error(txt2);
+            _logger.error(_txt2);
         }
     }
 

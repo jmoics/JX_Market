@@ -62,10 +62,10 @@
                                 value="${labels.pe.com.jx_market.eAAdministrateEmployeeCreate.txtEMail.Label}" />
                             <textbox id="txtEMail" hflex="1"/>
                         </row>
-                        <row>
+                        <row spans="1,3">
                             <label style="font-size:small"
                                 value="${labels.pe.com.jx_market.eAAdministrateEmployeeCreate.txtAddress.Label}" />
-                            <textbox id="txtAddress" cols="3" />
+                            <textbox id="txtAddress" hflex="1" />
                         </row>
                         <row>
                             <label style="font-size:small"
@@ -108,7 +108,7 @@
                             <textbox id="txtUser" constraint="/^[a-zA-Z0-9_]*$/: Username es inválido" maxlength="20" />
                             <label style="font-size:small"
                                 value="${labels.pe.com.jx_market.eAAdministrateEmployeeCreate.cmbRole.Label}" />
-                            <bandbox id="bndRole" hflex="1" />
+                            <bandbox id="bndRole" mold="rounded" autodrop="true" hflex="1" />
                         </row>
                         <row id="row_pass">
                             <label style="font-size:small"
@@ -116,7 +116,15 @@
                             <textbox type="password" id="txtPass" maxlength="32" hflex="1"/>
                             <label style="font-size:small"
                                 value="${labels.pe.com.jx_market.eAAdministrateEmployeeCreate.txtRepPass.Label}" />
-                            <textbox type="password" id="txtRepPass" maxlength="32" hflex="1"/>
+                            <textbox type="password" id="txtRepPass" maxlength="32" hflex="1">
+                                <attribute w:name="onChange">
+                                    if (this.$f('txtPass').getValue() != this.$f('txtRepPass').getValue()) {
+                                        this.$f('txtRepPass').setStyle('color: red');
+                                    } else {
+                                        this.$f('txtRepPass').setStyle('color: black');
+                                    }
+                                </attribute>
+                            </textbox>
                         </row>
                     </rows>
                 </grid>
