@@ -61,6 +61,7 @@ public class Constantes {
     public static final String V_USTOCK = "upStock";
     public static final String V_GETIMG = "getimg";
     public static final String V_UPDATE = "update";
+    public static final String V_CHANGEPASS = "chgpass";
 
     /*
      * Constantes para estados

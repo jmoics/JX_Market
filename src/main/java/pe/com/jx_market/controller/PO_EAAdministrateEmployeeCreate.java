@@ -92,6 +92,7 @@ public class PO_EAAdministrateEmployeeCreate
     /**
      *
      */
+    @Listen("onClick = #btnSave")
     public void createEmployee()
     {
         if (!this.txtName.getValue().isEmpty() && !this.txtLastName.getValue().isEmpty()
@@ -109,12 +110,13 @@ public class PO_EAAdministrateEmployeeCreate
             employee.setPhone(this.txtPhone.getValue());
             employee.setCellPhone(this.txtCellphone.getValue());
             employee.setCity(this.txtCity.getValue());
-            if (this.cmbActive.getSelectedItem() != null) {
-                employee.setCivilStateId(((Parameter) this.cmbActive.getSelectedItem().getValue()).getId());
+            if (this.cmbCivilState.getSelectedItem() != null) {
+                employee.setCivilStateId(((Parameter) this.cmbCivilState.getSelectedItem().getValue()).getId());
             }
             if (this.cmbSex.getSelectedItem() != null) {
                 employee.setSexId(((Parameter) this.cmbSex.getSelectedItem().getValue()).getId());
             }
+            employee.setActive((Boolean) this.cmbActive.getSelectedItem().getValue());
             employee.setEmail(this.txtEMail.getValue());
             employee.setUbigeo(this.txtUbigeo.getValue());
             final ServiceInput<DTO_Employee> input = new ServiceInput<DTO_Employee>();

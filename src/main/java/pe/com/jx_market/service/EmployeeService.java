@@ -1,8 +1,6 @@
 package pe.com.jx_market.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,7 +24,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
  */
 @Service
 public class EmployeeService
-    implements BusinessService
+    implements BusinessService<DTO_Employee>
 {
 
     /**
@@ -42,7 +40,7 @@ public class EmployeeService
      *
      */
     @Autowired
-    private BusinessService userService;
+    private BusinessService<DTO_User> userService;
 
     /**
      * El ServiceInput contendrá como verbo un String: para realizar una
@@ -60,27 +58,27 @@ public class EmployeeService
      */
     @Override
     @Transactional
-    public ServiceOutput execute(final ServiceInput _input)
+    public ServiceOutput<DTO_Employee> execute(final ServiceInput<DTO_Employee> _input)
     {
 
-        final ServiceOutput output = new ServiceOutput();
+        final ServiceOutput<DTO_Employee> output = new ServiceOutput<DTO_Employee>();
         if (Constantes.V_LIST.equals(_input.getAction())) {
-            final DTO_Employee employee = (DTO_Employee) _input.getObject();
+            final DTO_Employee employee = _input.getObject();
             output.setLista(this.employeeMapper.getEmployees(employee));
             output.setErrorCode(Constantes.OK);
         } else if (Constantes.V_GET.equals(_input.getAction())) {
-            final DTO_Employee employee = (DTO_Employee) _input.getObject();
+            final DTO_Employee employee = _input.getObject();
             output.setObject(this.employeeMapper.getEmployees(employee).get(0));
             output.setErrorCode(Constantes.OK);
         } else if (Constantes.V_REGISTER.equals(_input.getAction())) {
-            final Map map = _input.getMapa();
-            final DTO_Employee employee = (DTO_Employee) map.get("employee");
-            DTO_User user = (DTO_User) map.get("user");
-            final ServiceInput inp = new ServiceInput(user);
+            //final Map<?, ?> map = _input.getMapa();
+            final DTO_Employee employee = _input.getObject();
+            /*final DTO_User user = (DTO_User) map.get(Constantes.ATTRIBUTE_USER);
+            final ServiceInput<DTO_User> inp = new ServiceInput<DTO_User>(user);
             if (user != null) {
                 if (user.getId() == null) {
                     inp.setAction(Constantes.V_REGISTER);
-                    final ServiceOutput out = this.userService.execute(inp);
+                    final ServiceOutput<DTO_User> out = this.userService.execute(inp);
                     if (out.getErrorCode() == Constantes.OK) {
                         user = getUser(user);
                         employee.setUserId(user.getId());
@@ -91,15 +89,15 @@ public class EmployeeService
                     map2.put("nonPass", "nonPass");
                     map2.put("oldPass", null);
                     inp.setMapa(map2);
-                    inp.setAction("chgpass");
-                    final ServiceOutput out = this.userService.execute(inp);
+                    inp.setAction(Constantes.V_CHANGEPASS);
+                    final ServiceOutput<DTO_User> out = this.userService.execute(inp);
                     if (out.getErrorCode() == Constantes.OK) {
                         this.logger.info("El password fue cambiado correctamente");
                     } else {
                         this.logger.error("Error al cambiar el password");
                     }
                 }
-            }
+            }*/
             final List<DTO_Employee> empTmp = this.employeeMapper.getEmployees(employee);
             if (empTmp == null || empTmp.isEmpty()) {
                 this.employeeMapper.insertEmployee(employee);
@@ -108,7 +106,7 @@ public class EmployeeService
             }
             output.setErrorCode(Constantes.OK);
         } else if (Constantes.V_DELETE.equals(_input.getAction())) {
-            this.employeeMapper.eliminaEmployee((DTO_Employee) _input.getObject());
+            this.employeeMapper.eliminaEmployee(_input.getObject());
             output.setErrorCode(Constantes.OK);
         } else {
             throw new RuntimeException("No se especifico verbo adecuado");
