@@ -38,6 +38,7 @@ import pe.com.jx_market.domain.DTO_Employee;
 import pe.com.jx_market.domain.DTO_Role;
 import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.domain.Parameter;
+import pe.com.jx_market.domain.Ubication;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -54,7 +55,7 @@ public class PO_EAAdministrateEmployeeCreate
     @Wire
     private Datebox datBirthday;
     @Wire
-    private Combobox cmbDocType, cmbActive, cmbSex, cmbCivilState;
+    private Combobox cmbDocType, cmbActive, cmbSex, cmbCivilState, cmbDepartment, cmbProvince, cmbDistrict;
     @Wire
     private Window wEAAEC;
     @Wire
@@ -83,6 +84,7 @@ public class PO_EAAdministrateEmployeeCreate
         buildParameterCombo(this.cmbDocType, Constantes.PARAM_DOCUMENT_TYPE);
         buildParameterCombo(this.cmbSex, Constantes.PARAM_SEX_TYPE);
         buildParameterCombo(this.cmbCivilState, Constantes.PARAM_CIVILSTATE_TYPE);
+        buildDepartmentCombo();
 
         // Obtenemos el controlador de la pantalla principal de empleados.
         final Map<?, ?> mapArg = this.desktop.getExecution().getArg();
@@ -286,6 +288,43 @@ public class PO_EAAdministrateEmployeeCreate
         } else {
             alertaError(this.logger, "Error en la carga de roles",
                             "error al cargar los roles", null);
+        }
+    }
+
+    /**
+     *
+     */
+    protected void buildDepartmentCombo()
+    {
+        getDepartments(this.cmbDepartment, this.cmbProvince);
+    }
+
+    /**
+     * @param _departmentId
+     */
+    protected void buildProvinceCombo(final Integer _departmentId)
+    {
+        getProvinces(_departmentId, this.cmbProvince, this.cmbDistrict);
+    }
+
+    /**
+     * @param _departmentId
+     * @param _provinceId
+     */
+    protected void buildDistrictCombo(final Integer _departmentId,
+                                      final Integer _provinceId)
+    {
+        getDistricts(_departmentId, _provinceId, this.cmbDistrict, null);
+    }
+
+    @Override
+    protected void buildNextCombo(final Combobox _combo)
+    {
+        if (_combo.equals(this.cmbProvince)) {
+            buildProvinceCombo(((Ubication) this.cmbDepartment.getSelectedItem().getValue()).getId());
+        } else if (_combo.equals(this.cmbDistrict)) {
+            buildDistrictCombo(((Ubication) this.cmbDepartment.getSelectedItem().getValue()).getId(),
+                            ((Ubication) this.cmbProvince.getSelectedItem().getValue()).getId());
         }
     }
 

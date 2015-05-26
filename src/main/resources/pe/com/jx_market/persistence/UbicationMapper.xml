@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.UbicationMapper">
+
+    <cache />
+
+    <!-- MANTENIMIENTO DE PARAMETERS -->
+
+    <select id="getUbications" parameterType="Ubication" resultType="Ubication">
+        SELECT
+            ubi.id as id,
+            ubi.name as name,
+            ubi.code as code,
+            ubi.parentid as parentId
+        FROM
+            T_BUS_UBICATION ubi
+    </select>
+
+    <select id="getUbication4Id" parameterType="Ubication" resultType="Ubication">
+        SELECT
+            ubi.id as id,
+            ubi.name as name,
+            ubi.code as code,
+            ubi.parentid as parentId
+        FROM
+            T_BUS_UBICATION ubi
+        <where>
+            ubi.id = #{id, jdbcType=INTEGER}
+        </where>
+    </select>
+
+    <insert id="insertUbication" parameterType="Ubication" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+        INSERT INTO T_BUS_UBICATION
+            (name, code, parentid)
+        VALUES
+            (#{name}, #{code}, #{parentId})
+    </insert>
+
+    <update id="updateUbication" parameterType="Ubication">
+        UPDATE T_BUS_UBICATION
+        SET
+            name = #{name},
+            code = #{code}
+        WHERE
+            id = #{id}
+    </update>
+
+    <delete id="deleteUbication" parameterType="Ubication">
+      DELETE FROM
+         T_BUS_UBICATION
+      WHERE
+            id = #{id}
+    </delete>
+    
+</mapper>

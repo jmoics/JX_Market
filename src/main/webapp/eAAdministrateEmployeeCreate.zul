@@ -69,8 +69,16 @@
                         </row>
                         <row>
                             <label style="font-size:small"
-                                value="${labels.pe.com.jx_market.eAAdministrateEmployeeCreate.txtCity.Label}" />
-                            <textbox id="txtCity" hflex="1"/>
+                                value="${labels.pe.com.jx_market.eAAdministrateEmployeeCreate.cmbDepartment.Label}" />
+                            <combobox id="cmbDepartment" hflex="1"/>
+                            <label style="font-size:small"
+                                value="${labels.pe.com.jx_market.eAAdministrateEmployeeCreate.cmbProvince.Label}" />
+                            <combobox id="cmbProvince" hflex="1"/>
+                        </row>
+                        <row>
+                            <label style="font-size:small"
+                                value="${labels.pe.com.jx_market.eAAdministrateEmployeeCreate.cmbDistrict.Label}" />
+                            <combobox id="cmbDistrict" hflex="1"/>
                             <label style="font-size:small"
                                 value="${labels.pe.com.jx_market.eAAdministrateEmployeeCreate.txtUbigeo.Label}" />
                             <textbox id="txtUbigeo" hflex="1"/>

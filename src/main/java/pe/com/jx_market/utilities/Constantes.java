@@ -205,7 +205,12 @@ public class Constantes {
     public static final String ATTRIBUTE_ROLEMODULE = "roleModule";
     public static final String ATTRIBUTE_EMPLOYEE = "employee";
     public static final String ATTRIBUTE_USER = "login";
+    public static final String ATTRIBUTE_UBICATION = "ubication";
 
+
+    public static final Integer UBICATION_DEPARTMENT = 1;
+    public static final Integer UBICATION_PROVINCE = 2;
+    public static final Integer UBICATION_DISTRICT = 3;
 
     /**
      * To use in future to check access.

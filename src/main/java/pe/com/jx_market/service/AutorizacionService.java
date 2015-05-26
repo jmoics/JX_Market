@@ -35,7 +35,7 @@ public class AutorizacionService<T>
      * especifico o varios, devolviendo en el ServiceOutput OK si tiene
      * autorizacion para acceder a ese recurso y AUTH_ERROR si no la tiene.
      *
-     * @param Objeto estándar de entrada
+     * @param _input Objeto estándar de entrada
      * @return Objeto estándar de salida
      */
     @Override

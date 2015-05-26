@@ -42,7 +42,7 @@ public class AuthService
      * solo los atributos username y password. En caso de autenticacion
      * positiva, el ServiceOutput tiene codigo de error OK
      *
-     * @param Objeto estandar de entrada
+     * @param _input Objeto estandar de entrada
      * @return Objeto estandar de salida
      */
     @Override

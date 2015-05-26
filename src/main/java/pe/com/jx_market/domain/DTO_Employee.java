@@ -23,9 +23,9 @@ public class DTO_Employee
      */
     private Integer userId;
     /**
-    *
-    */
-   private DTO_User user;
+     *
+     */
+    private DTO_User user;
     /**
      *
      */
@@ -86,6 +86,18 @@ public class DTO_Employee
      *
      */
     private String ubigeo;
+    /**
+     *
+     */
+    private Integer districtId;
+    /**
+     *
+     */
+    private Integer provinceId;
+    /**
+     *
+     */
+    private Integer departmentId;
     /**
      *
      */
@@ -369,9 +381,9 @@ public class DTO_Employee
 
 
     /**
-     * Getter method for the variable {@link #sex}.
+     * Getter method for the variable {@link #sexId}.
      *
-     * @return value of variable {@link #sex}
+     * @return value of variable {@link #sexId}
      */
     public final Integer getSexId()
     {
@@ -380,9 +392,9 @@ public class DTO_Employee
 
 
     /**
-     * Setter method for variable {@link #sex}.
+     * Setter method for variable {@link #sexId}.
      *
-     * @param _sexId value for variable {@link #sex}
+     * @param _sexId value for variable {@link #sexId}
      */
     public final void setSexId(final Integer _sexId)
     {
@@ -390,9 +402,9 @@ public class DTO_Employee
     }
 
     /**
-     * Getter method for the variable {@link #civilState}.
+     * Getter method for the variable {@link #civilStateId}.
      *
-     * @return value of variable {@link #civilState}
+     * @return value of variable {@link #civilStateId}
      */
     public final Integer getCivilStateId()
     {
@@ -400,13 +412,78 @@ public class DTO_Employee
     }
 
     /**
-     * Setter method for variable {@link #civilState}.
+     * Setter method for variable {@link #civilStateId}.
      *
-     * @param _civilStateId value for variable {@link #civilState}
+     * @param _civilStateId value for variable {@link #civilStateId}
      */
     public final void setCivilStateId(final Integer _civilStateId)
     {
         this.civilStateId = _civilStateId;
+    }
+
+    /**
+     * Getter method for the variable {@link #districtId}.
+     *
+     * @return value of variable {@link #districtId}
+     */
+    public final Integer getDistrictId()
+    {
+        return this.districtId;
+    }
+
+
+    /**
+     * Setter method for variable {@link #districtId}.
+     *
+     * @param _districtId value for variable {@link #districtId}
+     */
+    public final void setDistrictId(final Integer _districtId)
+    {
+        this.districtId = _districtId;
+    }
+
+
+    /**
+     * Getter method for the variable {@link #provinceId}.
+     *
+     * @return value of variable {@link #provinceId}
+     */
+    public final Integer getProvinceId()
+    {
+        return this.provinceId;
+    }
+
+
+    /**
+     * Setter method for variable {@link #provinceId}.
+     *
+     * @param _provinceId value for variable {@link #provinceId}
+     */
+    public final void setProvinceId(final Integer _provinceId)
+    {
+        this.provinceId = _provinceId;
+    }
+
+
+    /**
+     * Getter method for the variable {@link #departmentId}.
+     *
+     * @return value of variable {@link #departmentId}
+     */
+    public final Integer getDepartmentId()
+    {
+        return this.departmentId;
+    }
+
+
+    /**
+     * Setter method for variable {@link #departmentId}.
+     *
+     * @param _departmentId value for variable {@link #departmentId}
+     */
+    public final void setDepartmentId(final Integer _departmentId)
+    {
+        this.departmentId = _departmentId;
     }
 
     /* (non-Javadoc)

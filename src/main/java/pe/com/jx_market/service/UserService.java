@@ -46,7 +46,7 @@ public class UserService
      * una lista de objetos DTO_Contacto con todos los campos leidos de la Base
      * de Datos.
      *
-     * @param Objeto estandar de entrada
+     * @param _input Objeto estandar de entrada
      * @return Objeto estandar de salida
      */
     @SuppressWarnings("rawtypes")

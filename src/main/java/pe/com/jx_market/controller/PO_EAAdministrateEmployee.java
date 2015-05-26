@@ -33,6 +33,7 @@ import pe.com.jx_market.domain.DTO_Employee;
 import pe.com.jx_market.domain.DTO_Role;
 import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.domain.Parameter;
+import pe.com.jx_market.domain.Ubication;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
@@ -48,7 +49,7 @@ public class PO_EAAdministrateEmployee
     @Wire
     private Popup popDetails;
     @Wire
-    private Label lblUser, lblName, lblLastName, lblSecLastName, lblDocType, lblDocument, lblRole,
+    private Label lblUser, lblName, lblLastName, lblSecLastName, lblDocType, lblDocument, lblRole, lblUbication,
                   lblPhone, lblMail, lblCity, lblStatus, lblBirthday, lblAddress, lblUbigeo, lblCivilState, lblSex;
     @Wire
     private Button btnView;
@@ -93,6 +94,7 @@ public class PO_EAAdministrateEmployee
     /**
      *
      */
+    @SuppressWarnings("unchecked")
     public void loadEmployeeDetail()
     {
         if (this.lstEmp.getSelectedItem() != null) {
@@ -118,6 +120,13 @@ public class PO_EAAdministrateEmployee
             this.lblPhone.setValue(employee.getPhone());
             this.lblStatus.setValue(employee.getActive() ? Labels.getLabel("pe.com.jx_market.Active.TRUE")
                             : Labels.getLabel("pe.com.jx_market.Active.FALSE"));
+            final StringBuilder strBuilder = new StringBuilder();
+            final Map<Integer, Ubication> mapUbi = (Map<Integer, Ubication>) this.desktop.getSession()
+                            .getAttribute(Constantes.ATTRIBUTE_UBICATION);
+            strBuilder.append(mapUbi.get(employee.getDepartmentId())).append(" - ")
+                        .append(mapUbi.get(employee.getProvinceId())).append(" - ")
+                        .append(mapUbi.get(employee.getDistrictId()));
+            this.lblUbication.setValue(strBuilder.toString());
         }
     }
 

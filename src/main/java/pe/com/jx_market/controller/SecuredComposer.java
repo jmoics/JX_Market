@@ -1,11 +1,18 @@
 package pe.com.jx_market.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Desktop;
+import org.zkoss.zk.ui.UiException;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
@@ -19,11 +26,18 @@ import pe.com.jx_market.domain.DTO_Employee;
 import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.domain.Parameter;
 import pe.com.jx_market.domain.ParameterType;
+import pe.com.jx_market.domain.Ubication;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
+/**
+ * TODO comment!
+ *
+ * @author jcuevas
+ * @version $Id$
+ */
 @VariableResolver(DelegatingVariableResolver.class)
 public abstract class SecuredComposer<T extends Component>
     extends SelectorComposer<T>
@@ -39,13 +53,15 @@ public abstract class SecuredComposer<T extends Component>
     private BusinessService<Parameter> parameterService;
     @WireVariable
     private BusinessService<ParameterType> parameterTypeService;
+    @WireVariable
+    private BusinessService<Ubication> ubicationService;
 
     @Override
     public void doAfterCompose(final T _comp)
         throws Exception
     {
         super.doAfterCompose(_comp);
-        final DTO_User user = (DTO_User) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_USER);
+        final DTO_User user = (DTO_User) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_USER);
         if (user == null) {
             throw new RuntimeException("La sesión se perdió. Vuelva a ingresar por favor.");
         }
@@ -55,16 +71,19 @@ public abstract class SecuredComposer<T extends Component>
         this.company = (DTO_Company) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
     }
 
-    private void checkResources(final DTO_User user)
+    /**
+     * @param _user
+     */
+    private void checkResources(final DTO_User _user)
     {
         final String[] resources = requiredResources();
         if (resources == null || resources.length == 0) {
             return;
         }
         final ServiceInput<DTO_Employee> input = new ServiceInput<DTO_Employee>();
-        input.addMapPair(Constantes.ATTRIBUTE_USER, user);
+        input.addMapPair(Constantes.ATTRIBUTE_USER, _user);
         input.addMapPair(Constantes.ATTRIBUTE_MODULES, resources);
-        final ServiceOutput<DTO_Employee> output = autorizacionService.execute(input);
+        final ServiceOutput<DTO_Employee> output = this.autorizacionService.execute(input);
         if (output.getErrorCode() == Constantes.AUTH_ERROR) {
             throw new RuntimeException("Acceso no autorizado!");
         }
@@ -72,22 +91,22 @@ public abstract class SecuredComposer<T extends Component>
 
     /**
      * Method to check if the employee have access to system.
-     * @param comp
-     * @param widget
-     * @param module
-     * @param employee
+     * @param _comp
+     * @param _widget
+     * @param _module
+     * @param _user
      */
-    public void setVisibilityByResource(final Component comp,
-                                        final String widget,
-                                        final String module,
-                                        final DTO_User user)
+    public void setVisibilityByResource(final Component _comp,
+                                        final String _widget,
+                                        final String _module,
+                                        final DTO_User _user)
     {
         final ServiceInput<DTO_Employee> input = new ServiceInput<DTO_Employee>();
-        input.addMapPair(Constantes.ATTRIBUTE_USER, user);
-        input.addMapPair(Constantes.ATTRIBUTE_MODULE, module);
-        final ServiceOutput<DTO_Employee> output = autorizacionService.execute(input);
+        input.addMapPair(Constantes.ATTRIBUTE_USER, _user);
+        input.addMapPair(Constantes.ATTRIBUTE_MODULE, _module);
+        final ServiceOutput<DTO_Employee> output = this.autorizacionService.execute(input);
         if (output.getErrorCode() != Constantes.OK) {
-            comp.getFellow(widget).setVisible(false);
+            _comp.getFellow(_widget).setVisible(false);
         }
     }
 
@@ -206,5 +225,155 @@ public abstract class SecuredComposer<T extends Component>
             retPar = output.getObject();
         }
         return retPar;
+    }
+
+    /**
+     * @return {@link Map} with ubications.
+     */
+    @SuppressWarnings("unchecked")
+    private Map<Integer, Ubication> getUbications()
+    {
+        Map<Integer, Ubication> ret;
+        // verificar cache de BD, para no tener que hacer un cache temporal en la sesion.
+        if (this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_UBICATION) != null) {
+            ret = (Map<Integer, Ubication>) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_UBICATION);
+        } else {
+            ret = new HashMap<Integer, Ubication>();
+            final Ubication ubicSe = new Ubication();
+            final ServiceInput<Ubication> input = new ServiceInput<Ubication>();
+            input.setAction(Constantes.V_LIST);
+            input.setObject(ubicSe);
+            final ServiceOutput<Ubication> output = this.ubicationService.execute(input);
+            if (Constantes.OK == output.getErrorCode()) {
+                for (final Ubication ubic : output.getLista()) {
+                    ret.put(ubic.getId(), ubic);
+                }
+                this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_UBICATION, ret);
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * @param _comboParent Current {@link Combobox} to add items.
+     * @param _comboChild {@link Combobox} to build with the event generated in _comboParent.
+     * @return Return {@link List} with the departments.
+     */
+    public Map<Integer, Ubication> getDepartments(final Combobox _comboParent,
+                                                  final Combobox _comboChild)
+    {
+        final Map<Integer, Ubication> ubicMap = getUbications();
+        final Map<Integer, Ubication> departMap = new HashMap<Integer, Ubication>();
+        for (final Entry<Integer, Ubication> entry : ubicMap.entrySet()) {
+            if (entry.getValue().getParentId() == null) {
+                departMap.put(entry.getKey(), entry.getValue());
+                buildCombo4Ubications(_comboParent, entry.getValue());
+            }
+        }
+        buildEvent4UbicationCombo(_comboParent, _comboChild);
+        return departMap;
+    }
+
+    /**
+     * @param _departmentId Id of the {@link Ubication} for department.
+     * @param _comboParent Current {@link Combobox} to add items.
+     * @param _comboChild {@link Combobox} to build with the event generated in _comboParent.
+     * @return {@link List} with the provinces.
+     */
+    public Map<Integer, Ubication> getProvinces(final Integer _departmentId,
+                                                final Combobox _comboParent,
+                                                final Combobox _comboChild)
+    {
+        final Map<Integer, Ubication> ubicMap = getUbications();
+        final Map<Integer, Ubication> departMap = getDepartments(null, null);
+        final Map<Integer, Ubication> provinceMap = new HashMap<Integer, Ubication>();
+        for (final Entry<Integer, Ubication> entry : ubicMap.entrySet()) {
+            if (_departmentId == null) {
+                if (departMap.containsKey(entry.getValue().getParentId())) {
+                    provinceMap.put(entry.getKey(), entry.getValue());
+                    buildCombo4Ubications(_comboParent, entry.getValue());
+                }
+            } else {
+                if (_departmentId.equals(entry.getValue().getParentId())) {
+                    provinceMap.put(entry.getKey(), entry.getValue());
+                    buildCombo4Ubications(_comboParent, entry.getValue());
+                }
+            }
+        }
+        buildEvent4UbicationCombo(_comboParent, _comboChild);
+        return provinceMap;
+    }
+
+    /**
+     * @param _departmentId Id of the {@link Ubication} for department.
+     * @param _provinceId Id of the {@link Ubication} for provinces.
+     * @param _comboParent Current {@link Combobox} to add items.
+     * @param _comboChild {@link Combobox} to build with the event generated in _comboParent.
+     * @return {@link List} with the districts.
+     */
+    public Map<Integer, Ubication> getDistricts(final Integer _departmentId,
+                                                final Integer _provinceId,
+                                                final Combobox _comboParent,
+                                                final Combobox _comboChild)
+    {
+        final Map<Integer, Ubication> ubicMap = getUbications();
+        final Map<Integer, Ubication> provinceMap = getProvinces(_departmentId, null, null);
+        final Map<Integer, Ubication> districtMap = new HashMap<Integer, Ubication>();
+        for (final Entry<Integer, Ubication> entry : ubicMap.entrySet()) {
+            if (_provinceId == null) {
+                if (provinceMap.containsKey(entry.getValue().getParentId())) {
+                    provinceMap.put(entry.getKey(), entry.getValue());
+                    buildCombo4Ubications(_comboParent, entry.getValue());
+                }
+            } else {
+                if (_provinceId.equals(entry.getValue().getParentId())) {
+                    provinceMap.put(entry.getKey(), entry.getValue());
+                    buildCombo4Ubications(_comboParent, entry.getValue());
+                }
+            }
+        }
+        buildEvent4UbicationCombo(_comboParent, _comboChild);
+        return districtMap;
+    }
+
+    /**
+     * @param _comboParent Current {@link Combobox} to add items.
+     * @param _ubi {@link Ubication} to add in the {@link #Comboitem}.
+     */
+    private void buildCombo4Ubications(final Combobox _comboParent,
+                                       final Ubication _ubi)
+    {
+        if (_comboParent != null && _ubi != null) {
+            final Comboitem item = new Comboitem(_ubi.getName());
+            item.setValue(_ubi);
+            _comboParent.appendChild(item);
+        }
+    }
+
+    /**
+     * @param _comboParent Current {@link Combobox} to add items.
+     * @param _comboChild {@link Combobox} to build with the event generated in _comboParent.
+     */
+    private void buildEvent4UbicationCombo(final Combobox _comboParent,
+                                           final Combobox _comboChild)
+    {
+        if (_comboChild != null) {
+            _comboParent.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+                @Override
+                public void onEvent(final Event _event)
+                    throws UiException
+                {
+                    buildNextCombo(_comboChild);
+                }
+            });
+        }
+    }
+
+    /**
+     * @param _comboChild {@link Combobox} to build with the event generated in _comboParent.
+     */
+    protected void buildNextCombo(final Combobox _comboChild)
+    {
+
     }
 }

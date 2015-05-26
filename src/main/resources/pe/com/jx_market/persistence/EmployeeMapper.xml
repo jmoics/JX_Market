@@ -70,28 +70,54 @@
     <insert id="insertEmployee" parameterType="DTO_Employee">
         INSERT INTO
         T_BUS_EMPLOYEE
-            (userid, companyid,
-            name, birthday, lastname, lastname2,
-            doctypeid, docnumber, address, phone,
-            cellphone, email, city,
-            ubigeo, active)
+            (userid,
+             companyid,
+             name,
+             lastname,
+             lastname2,
+             doctypeid,
+             docnumber,
+             birthday,
+             sexid,
+             civilstateid,
+             address,
+             phone,
+             cellphone,
+             email,
+             city,
+             ubigeo,
+             active)
         VALUES
-            (#{userId}, #{companyId},
-            #{employeeName}, #{birthday}, #{employeeLastName}, #{employeeLastName2},
-            #{documentTypeId}, #{documentNumber}, #{address}, #{phone},
-            #{cellPhone}, #{email}, #{city},
-            #{ubigeo}, #{active})
+            (#{userId}, 
+             #{companyId},
+             #{employeeName},
+             #{employeeLastName},
+             #{employeeLastName2},
+             #{documentTypeId},
+             #{documentNumber},
+             #{birthday},
+             #{sexId},
+             #{civilStateId},
+             #{address},
+             #{phone},
+             #{cellPhone},
+             #{email},
+             #{city},
+             #{ubigeo},
+             #{active})
     </insert>
 
     <update id="updateEmployee" parameterType="DTO_Employee">
         UPDATE T_BUS_EMPLOYEE
         SET
             name = #{employeeName},
-            birthday = #{birthday},
             lastname = #{employeeLastName},
             lastname2 = #{employeeLastName2},
             doctypeid = #{documentTypeId},
             docnumber = #{documentNumber},
+            birthday = #{birthday},
+            sexid = #{sexId},
+            civilstateid = #{civilStateId},
             address = #{address},
             phone = #{phone},
             cellphone = #{cellPhone},

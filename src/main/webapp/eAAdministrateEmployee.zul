@@ -146,6 +146,10 @@
                     <label id="lblCity" value="" />
                 </row>
                 <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Ubication.Label}" />
+                    <label id="lblUbication" value="" />
+                </row>
+                <row>
                     <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Status.Label}" />
                     <label id="lblStatus" />
                 </row>
