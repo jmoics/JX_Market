@@ -111,7 +111,7 @@ public class PO_EAAdministrateEmployeeCreate
             employee.setBirthday(this.datBirthday.getValue());
             employee.setPhone(this.txtPhone.getValue());
             employee.setCellPhone(this.txtCellphone.getValue());
-            employee.setCity(this.txtCity.getValue());
+            // employee.setCity(this.txtCity != null ? this.txtCity.getValue() : null);
             if (this.cmbCivilState.getSelectedItem() != null) {
                 employee.setCivilStateId(((Parameter) this.cmbCivilState.getSelectedItem().getValue()).getId());
             }
@@ -120,38 +120,29 @@ public class PO_EAAdministrateEmployeeCreate
             }
             employee.setActive((Boolean) this.cmbActive.getSelectedItem().getValue());
             employee.setEmail(this.txtEMail.getValue());
-            employee.setUbigeo(this.txtUbigeo.getValue());
+            if (this.cmbDepartment.getSelectedItem() != null) {
+                employee.setDepartmentId(((Ubication) this.cmbDepartment.getSelectedItem().getValue()).getId());
+                if (this.cmbProvince.getSelectedItem() != null) {
+                    employee.setProvinceId(((Ubication) this.cmbProvince.getSelectedItem().getValue()).getId());
+                    if (this.cmbDistrict.getSelectedItem() != null) {
+                        employee.setDistrictId(((Ubication) this.cmbDistrict.getSelectedItem().getValue()).getId());
+                        employee.setUbigeo(((Ubication) this.cmbDistrict.getSelectedItem().getValue()).getCode());
+                    } else {
+                        employee.setUbigeo(((Ubication) this.cmbProvince.getSelectedItem().getValue()).getCode());
+                    }
+                } else {
+                    employee.setUbigeo(((Ubication) this.cmbDepartment.getSelectedItem().getValue()).getCode());
+                }
+            }
+            if (this.chbCreateUser.isChecked()) {
+                final DTO_User user = createUser();
+                employee.setUserId(user.getId());
+            }
             final ServiceInput<DTO_Employee> input = new ServiceInput<DTO_Employee>();
             input.setAction(Constantes.V_REGISTER);
             input.setObject(employee);
             final ServiceOutput<DTO_Employee> output = this.employeeService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
-                if (this.chbCreateUser.isChecked()) {
-                    final DTO_User user = new DTO_User();
-                    user.setCompanyId(this.company.getId());
-                    user.setUsername(this.txtUser.getValue());
-                    user.setRoleId(((DTO_Role) this.bndRole.getAttribute(Constantes.ATTRIBUTE_ROLE)).getId());
-                    user.setPassword(this.txtPass.getValue());
-                    if (this.txtPass.getValue().equals(this.txtRepPass.getValue())) {
-                        final ServiceInput<DTO_User> input2 = new ServiceInput<DTO_User>();
-                        input2.setAction(Constantes.V_REGISTER);
-                        input2.setObject(user);
-                        final ServiceOutput<DTO_User> output2 = this.userService.execute(input2);
-                        if (Constantes.OK == output2.getErrorCode()) {
-                            alertaInfo(this.logger, "",
-                                Labels.getLabel("pe.com.jx_market.PO_EAAdministrateEmployeeCreate"
-                                                + ".createEmployee.Info3.Label"),
-                                null);
-                        } else {
-                            alertaError(this.logger,
-                                Labels.getLabel("pe.com.jx_market.PO_EAAdministrateEmployeeCreate"
-                                                + ".createEmployee.Error.Label"),
-                                Labels.getLabel("pe.com.jx_market.PO_EAAdministrateEmployeeCreate"
-                                                + ".createEmployee.Error.Label"),
-                                null);
-                        }
-                    }
-                }
                 final int resp = alertaInfo(this.logger,
                         Labels.getLabel("pe.com.jx_market.PO_EAAdministrateEmployeeCreate.createEmployee.Info.Label"),
                         Labels.getLabel("pe.com.jx_market.PO_EAAdministrateEmployeeCreate.createEmployee.Info.Label"),
@@ -175,6 +166,35 @@ public class PO_EAAdministrateEmployeeCreate
     }
 
     /**
+     * @return {@link DTO_User} with the user created.
+     */
+    protected DTO_User createUser()
+    {
+        final DTO_User user = new DTO_User();
+        user.setCompanyId(this.company.getId());
+        user.setUsername(this.txtUser.getValue());
+        user.setRoleId(((DTO_Role) this.bndRole.getAttribute(Constantes.ATTRIBUTE_ROLE)).getId());
+        user.setPassword(this.txtPass.getValue());
+        if (this.txtPass.getValue().equals(this.txtRepPass.getValue())) {
+            final ServiceInput<DTO_User> input2 = new ServiceInput<DTO_User>();
+            input2.setAction(Constantes.V_REGISTER);
+            input2.setObject(user);
+            final ServiceOutput<DTO_User> output2 = this.userService.execute(input2);
+            if (Constantes.OK == output2.getErrorCode()) {
+                alertaInfo(this.logger, "",
+                        Labels.getLabel("pe.com.jx_market.PO_EAAdministrateEmployeeCreate.createEmployee.Info3.Label"),
+                        null);
+            } else {
+                alertaError(this.logger,
+                        Labels.getLabel("pe.com.jx_market.PO_EAAdministrateEmployeeCreate.createEmployee.Error.Label"),
+                        Labels.getLabel("pe.com.jx_market.PO_EAAdministrateEmployeeCreate.createEmployee.Error.Label"),
+                        null);
+            }
+        }
+        return user;
+    }
+
+    /**
      *
      */
     public void cleanFields()
@@ -182,11 +202,19 @@ public class PO_EAAdministrateEmployeeCreate
         this.txtName.setValue("");
         this.txtLastName.setValue("");
         this.txtLastName2.setValue("");
+        this.cmbDocType.setSelectedItem(null);
+        this.txtDocument.setValue("");
+        this.datBirthday.setValue(null);
         this.txtPhone.setValue("");
         this.txtCellphone.setValue("");
         this.txtEMail.setValue("");
         this.txtUser.setValue("");
         this.txtPass.setValue("");
+        this.txtRepPass.setValue("");
+        this.txtAddress.setValue("");
+        this.cmbDepartment.setSelectedItem(null);
+        this.cmbProvince.setSelectedItem(null);
+        this.cmbDistrict.setSelectedItem(null);
         this.cmbActive.setSelectedItem(null);
         this.bndRole.setValue(null);
         this.bndRole.removeAttribute(Constantes.ATTRIBUTE_ROLE);

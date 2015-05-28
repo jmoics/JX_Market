@@ -24,6 +24,9 @@
             emp.email as email,
             emp.city as city,
             emp.ubigeo as ubigeo,
+            emp.departmentid as departmentId,
+            emp.provinceid as provinceId,
+            emp.districtid as districtId,
             emp.sexid as sexId,
             emp.civilstateid as civilStateId,
             emp.active as active,
@@ -86,9 +89,12 @@
              email,
              city,
              ubigeo,
+             departmentid,
+             provinceid,
+             districtid,
              active)
         VALUES
-            (#{userId}, 
+            (#{userId, jdbcType=INTEGER}, 
              #{companyId},
              #{employeeName},
              #{employeeLastName},
@@ -102,8 +108,11 @@
              #{phone},
              #{cellPhone},
              #{email},
-             #{city},
+             #{city, jdbcType=VARCHAR},
              #{ubigeo},
+             #{departmentId},
+             #{provinceId},
+             #{districtId},
              #{active})
     </insert>
 
@@ -123,7 +132,9 @@
             cellphone = #{cellPhone},
             email = #{email},
             city = #{city},
-            ubigeo = #{ubigeo},
+            departmentid = #{departmentId},
+            provinceid = #{provinceId},
+            districtid = #{districtId},
             active = #{active}
         WHERE
             id = #{id}
@@ -154,7 +165,10 @@
         <result property="cellPhone" column="cellPhone" />
         <result property="email" column="email" /> 
         <result property="city" column="city" />
-        <result property="ubigeo" column="ubigeo" /> 
+        <result property="ubigeo" column="ubigeo" />
+        <result property="departmentId" column="departmentId" />
+        <result property="provinceId" column="provinceId" />
+        <result property="districtId" column="districtId" />
         <result property="civilStateId" column="civilStateId"/>
         <result property="sexId" column="sexId"/>
         <result property="active" column="active" />

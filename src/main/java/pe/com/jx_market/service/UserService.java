@@ -22,7 +22,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
  */
 @Service
 public class UserService
-    implements BusinessService
+    implements BusinessService<DTO_User>
 {
     /**
      *
@@ -52,39 +52,39 @@ public class UserService
     @SuppressWarnings("rawtypes")
     @Override
     @Transactional
-    public ServiceOutput execute(final ServiceInput _input)
+    public ServiceOutput<DTO_User> execute(final ServiceInput<DTO_User> _input)
     {
 
-        final ServiceOutput output = new ServiceOutput();
+        final ServiceOutput<DTO_User> output = new ServiceOutput<DTO_User>();
         if (Constantes.V_LIST.equals(_input.getAction())) {
-            final DTO_User user = (DTO_User) _input.getObject();
+            final DTO_User user = _input.getObject();
             output.setLista(this.userDAO.getUsers(user));
             output.setErrorCode(Constantes.OK);
         } else if (Constantes.V_GET.equals(_input.getAction())) {
-            output.setObject(this.userDAO.getUser4Username((DTO_User) _input.getObject()));
+            output.setObject(this.userDAO.getUser4Username(_input.getObject()));
             output.setErrorCode(Constantes.OK);
         } else if (Constantes.V_REGISTER.equals(_input.getAction())) {
-            final DTO_User user = (DTO_User) _input.getObject();
+            final DTO_User user = _input.getObject();
             user.setPassword(encriptaPass(user.getPassword()));
             final DTO_User nonused = this.userDAO.getUser4Username(user);
             if (nonused == null) {
-                final Integer idUser = this.userDAO.insertUser(user);
+                this.userDAO.insertUser(user);
                 output.setErrorCode(Constantes.OK);
             } else {
                 output.setErrorCode(Constantes.ERROR_RC);
             }
         } else if (Constantes.V_DELETE.equals(_input.getAction())) {
-            this.userDAO.eliminaUser((DTO_User) _input.getObject());
+            this.userDAO.eliminaUser(_input.getObject());
             output.setErrorCode(Constantes.OK);
         } else if ("consultaSiEstaDisponible".equals(_input.getAction())) {
-            final DTO_User us = this.userDAO.getUser4Username((DTO_User) _input.getObject());
+            final DTO_User us = this.userDAO.getUser4Username(_input.getObject());
             if (us == null) {
                 output.setErrorCode(Constantes.OK);
             } else {
                 output.setErrorCode(Constantes.ALREADY_USED);
             }
         } else if ("chgpass".equals(_input.getAction())) {
-            final DTO_User user = (DTO_User) _input.getObject();
+            final DTO_User user = _input.getObject();
             final String nuevoPassword = user.getPassword();
             final Map map = _input.getMapa();
             //final String oldPass = (String) map.get("oldPass");

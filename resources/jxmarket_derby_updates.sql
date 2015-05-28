@@ -1125,7 +1125,8 @@ INSERT INTO T_BUS_UBICATION (PARENTID, NAME, CODE) VALUES
 (985,'Huanuco','100101'),
 (985,'Amarilis','100102'),
 (985,'Chinchao','100103'),
-(985,'Churubamba','100104'),
+(985,'Churubamba','100104');
+INSERT INTO T_BUS_UBICATION (PARENTID, NAME, CODE) VALUES
 (985,'Margos','100105'),
 (985,'Quisqui','100106'),
 (985,'San Francisco De Cayran','100107'),
@@ -2125,7 +2126,8 @@ INSERT INTO T_BUS_UBICATION (PARENTID, NAME, CODE) VALUES
 (1989,'Ciudad Nueva','230104'),
 (1989,'Inclan','230105'),
 (1989,'Pachia','230106'),
-(1989,'Palca','230107'),
+(1989,'Palca','230107');
+INSERT INTO T_BUS_UBICATION (PARENTID, NAME, CODE) VALUES
 (1989,'Pocollay','230108'),
 (1989,'Sama','230109'),
 (1989,'Coronel Gregorio Albarracin Lanchipa','230110'),

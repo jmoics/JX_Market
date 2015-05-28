@@ -94,35 +94,35 @@
             </columns>
             <rows>
                 <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Name.Label}" />
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblName.Label}" />
                     <label id="lblName" value="" />
                 </row>
                 <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.LastName.Label}" />
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblLastName.Label}" />
                     <label id="lblLastName" value="" />
                 </row>
                 <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.SecLastName.Label}" />
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblSecLastName.Label}" />
                     <label id="lblSecLastName" value="" />
                 </row>
                 <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.DocType.Label}" />
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblDocType.Label}" />
                     <label id="lblDocType" value="" />
                 </row>
                 <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Document.Label}" />
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblDocument.Label}" />
                     <label id="lblDocument" value="" />
                 </row>
                 <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Birthday.Label}" />
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblBirthday.Label}" />
                     <label id="lblBirthday" value="" />
                 </row>
                 <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Sex.Label}" />
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblSex.Label}" />
                     <label id="lblSex" value="" />
                 </row>
                 <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.CivilState.Label}" />
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblCivilState.Label}" />
                     <label id="lblCivilState" value="" />
                 </row>
                 <row>
@@ -130,35 +130,35 @@
                     <label id="lblAddress" value="" />
                 </row>
                 <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblCity.Label}" />
+                    <label id="lblCity" value="" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblUbication.Label}" />
+                    <label id="lblUbication" value="" />
+                </row>
+                <row>
                     <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblUbigeo.Label}" />
                     <label id="lblUbigeo" value="" />
                 </row>
                 <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Phone.Label}" />
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblPhone.Label}" />
                     <label id="lblPhone" value="" />
                 </row>
                 <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.EMail.Label}" />
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblMail.Label}" />
                     <label id="lblMail" value="" />
                 </row>
                 <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.City.Label}" />
-                    <label id="lblCity" value="" />
-                </row>
-                <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Ubication.Label}" />
-                    <label id="lblUbication" value="" />
-                </row>
-                <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Status.Label}" />
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblStatus.Label}" />
                     <label id="lblStatus" />
                 </row>
                 <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.User.Label}" />
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblUser.Label}" />
                     <label id="lblUser" value="" />
                 </row>
                 <row>
-                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.Role.Label}" />
+                    <label value="${labels.pe.com.jx_market.eAAdministrateEmployee.lblRole.Label}" />
                     <label id="lblRole" value="" />
                 </row>
             </rows>
