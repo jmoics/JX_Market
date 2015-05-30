@@ -75,7 +75,7 @@ public class PO_EAAdministrateEmployee
     {
         super.doAfterCompose(_comp);
         this.company = (DTO_Company) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
-        buildParameterCombo(this.cmbDocType, Constantes.PARAM_DOCUMENT_TYPE);
+        buildParameterCombo(this.cmbDocType, Constantes.PARAM_DOCUMENT_TYPE, null);
         // this.btnView.setPopup(this.popDetails);
     }
 
@@ -113,19 +113,19 @@ public class PO_EAAdministrateEmployee
             this.lblCivilState.setValue(getParameter(employee.getCivilStateId()).getParameterName());
             this.lblAddress.setValue(employee.getAddress());
             this.lblUbigeo.setValue(employee.getUbigeo());
-            final String estado = Constantes.ST_ACTIVO.equals(employee.getActive()) ? Constantes.STATUS_ACTIVO
+            final String estado = Constantes.ST_ACTIVO.equals(employee.isActive()) ? Constantes.STATUS_ACTIVO
                             : Constantes.STATUS_INACTIVO;
             this.lblStatus.setValue(estado);
             this.lblMail.setValue(employee.getEmail());
             this.lblPhone.setValue(employee.getPhone());
-            this.lblStatus.setValue(employee.getActive() ? Labels.getLabel("pe.com.jx_market.Active.TRUE")
+            this.lblStatus.setValue(employee.isActive() ? Labels.getLabel("pe.com.jx_market.Active.TRUE")
                             : Labels.getLabel("pe.com.jx_market.Active.FALSE"));
             final StringBuilder strBuilder = new StringBuilder();
             final Map<Integer, Ubication> mapUbi = (Map<Integer, Ubication>) this.desktop.getSession()
                             .getAttribute(Constantes.ATTRIBUTE_UBICATION);
-            strBuilder.append(mapUbi.get(employee.getDepartmentId())).append(" - ")
-                        .append(mapUbi.get(employee.getProvinceId())).append(" - ")
-                        .append(mapUbi.get(employee.getDistrictId()));
+            strBuilder.append(mapUbi.get(employee.getDepartmentId()).getName()).append(" - ")
+                        .append(mapUbi.get(employee.getProvinceId()).getName()).append(" - ")
+                        .append(mapUbi.get(employee.getDistrictId()).getName());
             this.lblUbication.setValue(strBuilder.toString());
         }
     }
@@ -201,8 +201,8 @@ public class PO_EAAdministrateEmployee
                     public void onEvent(final Event _event)
                         throws UiException
                     {
-                         loadEmployeeDetail();
-                         popDetails.open(_event.getTarget().getParent(), "overlap");
+                        loadEmployeeDetail();
+                        popDetails.open(_event.getTarget().getParent(), "overlap");
                     }
                 });
                 this.lstEmp.appendChild(item);

@@ -45,7 +45,7 @@ import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_EAAdministrateEmployeeCreate
-    extends SecuredComposer<Window>
+    extends SecuredComposerModal<Window>
 {
 
     private final Log logger = LogFactory.getLog(PO_EAAdministrateEmployeeCreate.class);
@@ -81,9 +81,9 @@ public class PO_EAAdministrateEmployeeCreate
         this.company = (DTO_Company) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
         buildRoles();
         buildActiveCombo(this.cmbActive);
-        buildParameterCombo(this.cmbDocType, Constantes.PARAM_DOCUMENT_TYPE);
-        buildParameterCombo(this.cmbSex, Constantes.PARAM_SEX_TYPE);
-        buildParameterCombo(this.cmbCivilState, Constantes.PARAM_CIVILSTATE_TYPE);
+        buildParameterCombo(this.cmbDocType, Constantes.PARAM_DOCUMENT_TYPE, null);
+        buildParameterCombo(this.cmbSex, Constantes.PARAM_SEX_TYPE, null);
+        buildParameterCombo(this.cmbCivilState, Constantes.PARAM_CIVILSTATE_TYPE, null);
         buildDepartmentCombo();
 
         // Obtenemos el controlador de la pantalla principal de empleados.

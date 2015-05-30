@@ -69,6 +69,7 @@ public abstract class SecuredComposer<T extends Component>
             checkResources(user);
         }
         this.company = (DTO_Company) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
+        getUbications();
     }
 
     /**
@@ -175,9 +176,11 @@ public abstract class SecuredComposer<T extends Component>
     /**
      * @param _combo UI Combobox to add the parameters.
      * @param _parameterType Constant of the parameter type.
+     * @param _selectId With the id to be select.
      */
     public void buildParameterCombo(final Combobox _combo,
-                                    final String _parameterType)
+                                    final String _parameterType,
+                                    final Integer _selectId)
     {
         final ParameterType parTyp = new ParameterType();
         parTyp.setCompanyId(this.company.getId());
@@ -202,6 +205,9 @@ public abstract class SecuredComposer<T extends Component>
                     item.setLabel(param.getParameterName());
                     item.setValue(param);
                     _combo.appendChild(item);
+                    if (_selectId != null && _selectId.equals(param.getId())) {
+                        _combo.setSelectedItem(item);
+                    }
                 }
             }
         }
@@ -267,7 +273,9 @@ public abstract class SecuredComposer<T extends Component>
         for (final Entry<Integer, Ubication> entry : ubicMap.entrySet()) {
             if (entry.getValue().getParentId() == null) {
                 departMap.put(entry.getKey(), entry.getValue());
-                buildCombo4Ubications(_comboParent, entry.getValue());
+                if (_comboParent != null && entry.getValue() != null) {
+                    buildCombo4Ubications(_comboParent, entry.getValue());
+                }
             }
         }
         buildEvent4UbicationCombo(_comboParent, _comboChild);
@@ -291,12 +299,16 @@ public abstract class SecuredComposer<T extends Component>
             if (_departmentId == null) {
                 if (departMap.containsKey(entry.getValue().getParentId())) {
                     provinceMap.put(entry.getKey(), entry.getValue());
-                    buildCombo4Ubications(_comboParent, entry.getValue());
+                    if (_comboParent != null && entry.getValue() != null) {
+                        buildCombo4Ubications(_comboParent, entry.getValue());
+                    }
                 }
             } else {
                 if (_departmentId.equals(entry.getValue().getParentId())) {
                     provinceMap.put(entry.getKey(), entry.getValue());
-                    buildCombo4Ubications(_comboParent, entry.getValue());
+                    if (_comboParent != null && entry.getValue() != null) {
+                        buildCombo4Ubications(_comboParent, entry.getValue());
+                    }
                 }
             }
         }
@@ -323,12 +335,16 @@ public abstract class SecuredComposer<T extends Component>
             if (_provinceId == null) {
                 if (provinceMap.containsKey(entry.getValue().getParentId())) {
                     provinceMap.put(entry.getKey(), entry.getValue());
-                    buildCombo4Ubications(_comboParent, entry.getValue());
+                    if (_comboParent != null && entry.getValue() != null) {
+                        buildCombo4Ubications(_comboParent, entry.getValue());
+                    }
                 }
             } else {
                 if (_provinceId.equals(entry.getValue().getParentId())) {
                     provinceMap.put(entry.getKey(), entry.getValue());
-                    buildCombo4Ubications(_comboParent, entry.getValue());
+                    if (_comboParent != null && entry.getValue() != null) {
+                        buildCombo4Ubications(_comboParent, entry.getValue());
+                    }
                 }
             }
         }
@@ -339,15 +355,15 @@ public abstract class SecuredComposer<T extends Component>
     /**
      * @param _comboParent Current {@link Combobox} to add items.
      * @param _ubi {@link Ubication} to add in the {@link #Comboitem}.
+     * @return Comboitem with the item.
      */
-    private void buildCombo4Ubications(final Combobox _comboParent,
-                                       final Ubication _ubi)
+    protected Comboitem buildCombo4Ubications(final Combobox _comboParent,
+                                              final Ubication _ubi)
     {
-        if (_comboParent != null && _ubi != null) {
-            final Comboitem item = new Comboitem(_ubi.getName());
-            item.setValue(_ubi);
-            _comboParent.appendChild(item);
-        }
+        final Comboitem item = new Comboitem(_ubi.getName());
+        item.setValue(_ubi);
+        _comboParent.appendChild(item);
+        return item;
     }
 
     /**

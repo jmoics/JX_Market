@@ -135,6 +135,7 @@
             departmentid = #{departmentId},
             provinceid = #{provinceId},
             districtid = #{districtId},
+            ubigeo = #{ubigeo},
             active = #{active}
         WHERE
             id = #{id}

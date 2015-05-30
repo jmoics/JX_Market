@@ -366,7 +366,7 @@ public class DTO_Employee
     /**
      * @return Active.
      */
-    public Boolean getActive()
+    public Boolean isActive()
     {
         return this.active;
     }

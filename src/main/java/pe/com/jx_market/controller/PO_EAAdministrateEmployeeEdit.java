@@ -1,185 +1,134 @@
 package pe.com.jx_market.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Caption;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zul.Bandbox;
+import org.zkoss.zul.Bandpopup;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Div;
-import org.zkoss.zul.Grid;
-import org.zkoss.zul.Groupbox;
-import org.zkoss.zul.Image;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.Popup;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listgroup;
+import org.zkoss.zul.Listhead;
+import org.zkoss.zul.Listheader;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
+import pe.com.jx_market.domain.DTO_Area;
 import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Employee;
 import pe.com.jx_market.domain.DTO_Role;
 import pe.com.jx_market.domain.DTO_User;
+import pe.com.jx_market.domain.Ubication;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_EAAdministrateEmployeeEdit
-    extends SecuredWindow
+    extends SecuredComposerModal<Window>
 {
 
-    static Log logger = LogFactory.getLog(PO_EAAdministrateEmployeeEdit.class);
-    private Grid grdEmp;
-    private Textbox txtUser, txtPass, txtNombre, txtApellidos, txtDNI, txtTelefono, txtCelular, txtMail,
-                    txtDireccion, txtCiudad, txtRegion;
-    private Label lblUser, lblNombre, lblApellidos, lblDNI, lblRole, lblTelefono, lblMail, lblCiudad, lblEstado;
-    private Datebox datNac;
-    private Button btnInfo, btnCancel, btnCrear;
-    private Caption capNombre, capInfo;
-    private Groupbox grpEmployees;
-    private Popup popDetails;
-    private Combobox cmbRole, cmbEstado;
+    private final Log logger = LogFactory.getLog(PO_EAAdministrateEmployeeEdit.class);
+    @Wire
+    private Textbox txtUser, txtPass, txtName, txtLastName, txtLastName2, txtDocument, txtPhone, txtCellphone, txtEMail,
+                    txtAddress, txtUbigeo, txtCity, txtRepPass;
+    @Wire
+    private Datebox datBirthday;
+    @Wire
+    private Combobox cmbDocType, cmbActive, cmbSex, cmbCivilState, cmbDepartment, cmbProvince, cmbDistrict;
+    @Wire
+    private Bandbox bndRole;
+    @Wire
+    private Window wEAAEE;
+    @Wire
+    private Checkbox chbCreateUser;
+    @WireVariable
+    private BusinessService<DTO_Employee> employeeService;
+    @WireVariable
+    private BusinessService<DTO_Role> roleService;
+    @WireVariable
+    private BusinessService<DTO_User> userService;
+    @WireVariable
+    private Desktop desktop;
     private DTO_Company company;
-    private BusinessService employeeService, roleService, userService;
+    private DTO_Employee employee;
+    private PO_EAAdministrateEmployee employeeParentUI;
 
     @Override
-    public void realOnCreate()
+    public void doAfterCompose(final Window _comp)
+        throws Exception
     {
-        grdEmp = (Grid) getFellow("grdEmp");
-        txtUser = (Textbox) getFellow("txtUser");
-        txtPass = (Textbox) getFellow("txtPass");
-        txtNombre = (Textbox) getFellow("txtNombre");
-        txtApellidos = (Textbox) getFellow("txtApellidos");
-        txtDNI = (Textbox) getFellow("txtDNI");
-        txtTelefono = (Textbox) getFellow("txtTelefono");
-        txtCelular = (Textbox) getFellow("txtCelular");
-        txtMail = (Textbox) getFellow("txtMail");
-        txtDireccion = (Textbox) getFellow("txtDireccion");
-        txtCiudad = (Textbox) getFellow("txtCiudad");
-        txtRegion = (Textbox) getFellow("txtRegion");
-        lblUser = (Label) getFellow("lblUser");
-        lblNombre = (Label) getFellow("lblNombre");
-        lblApellidos = (Label) getFellow("lblApellidos");
-        lblRole = (Label) getFellow("lblRole");
-        lblDNI = (Label) getFellow("lblDNI");
-        lblTelefono = (Label) getFellow("lblTelefono");
-        lblMail = (Label) getFellow("lblMail");
-        lblCiudad = (Label) getFellow("lblCiudad");
-        lblEstado = (Label) getFellow("lblEstado");
-        cmbRole = (Combobox) getFellow("cmbRole");
-        cmbEstado = (Combobox) getFellow("cmbEstado");
-        btnInfo = (Button) getFellow("btnInfo");
-        btnCancel = (Button) getFellow("btnCancel");
-        btnCrear = (Button) getFellow("btnCrear");
-        grpEmployees = (Groupbox) getFellow("grpEmployees");
-        capNombre = (Caption) getFellow("capNombre");
-        capInfo = (Caption) getFellow("capInfo");
-        popDetails = (Popup) getFellow("popDetails");
-        employeeService = ContextLoader.getService(this, "employeeService");
-        roleService = ContextLoader.getService(this, "roleService");
-        userService = ContextLoader.getService(this, "userService");
+        super.doAfterCompose(_comp);
 
-        company = (DTO_Company) getDesktop().getSession().getAttribute("company");
-        cargarRoles();
-        CargarTabla();
+        this.company = (DTO_Company) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
+        this.employee = (DTO_Employee) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_EMPLOYEE);
+        if (this.employee == null) {
+            alertaInfo(logger, "", "No se encontro empleado, retornando a busqueda", null);
+        } else {
+            // Obtenemos el controlador de la pantalla principal de marcas.
+            final Map<?, ?> mapArg = this.desktop.getExecution().getArg();
+            this.employeeParentUI = (PO_EAAdministrateEmployee) mapArg.get(Constantes.ATTRIBUTE_PARENTFORM);
+            loadData();
+        }
     }
 
-    public void elimina(final DTO_Employee employee)
+    private void loadData()
     {
-
-        final ServiceInput input = new ServiceInput(employee);
-        input.setAction("delete");
-        final ServiceOutput output = employeeService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            logger.info("El contacto se elimino correctamente");
-        } else {
-            logger.error("Error al eliminar contacto");
-
+        buildRoles();
+        buildActiveCombo(this.cmbActive);
+        buildParameterCombo(this.cmbDocType, Constantes.PARAM_DOCUMENT_TYPE, this.employee.getDocumentTypeId());
+        buildParameterCombo(this.cmbSex, Constantes.PARAM_SEX_TYPE, this.employee.getSexId());
+        buildParameterCombo(this.cmbCivilState, Constantes.PARAM_CIVILSTATE_TYPE, this.employee.getCivilStateId());
+        if (this.employee.getDepartmentId() != null) {
+            buildDepartmentCombo();
+            /*buildProvinceCombo(this.employee.getDepartmentId());
+            if (this.employee.getProvinceId() != null) {
+                buildDistrictCombo(this.employee.getDepartmentId(), this.employee.getProvinceId());
+            }*/
         }
-        CargarTabla();
+        this.txtName.setValue(this.employee.getEmployeeLastName());
+        this.txtLastName.setValue(this.employee.getEmployeeLastName());
+        this.txtLastName2.setValue(this.employee.getEmployeeLastName2());
+        this.txtDocument.setValue(this.employee.getDocumentNumber());
+        this.txtAddress.setValue(this.employee.getAddress() != null ? this.employee.getAddress() : "");
+        this.txtPhone.setValue(this.employee.getPhone() != null ? this.employee.getPhone() : "");
+        this.txtCellphone.setValue(this.employee.getCellPhone() != null ? this.employee.getCellPhone() : "");
+        // this.txtCity.setValue(this.employee.getCity() != null ? this.employee.getCity() : "");
+        this.txtEMail.setValue(this.employee.getEmail() != null ? this.employee.getEmail() : "");
 
-    }
-
-    public void editar(final DTO_Employee emp,
-                       final String username,
-                       final String pass,
-                       final String nombre,
-                       final String apellido,
-                       final String dni,
-                       final String telefono,
-                       final String mail,
-                       final Boolean estado,
-                       final Integer role,
-                       final String celular,
-                       final String ciudad,
-                       final String direccion,
-                       final String region)
-    {
-        final DTO_Employee employee = new DTO_Employee(); // nuevo user
-        employee.setEmployeeName(nombre);
-        employee.setEmployeeLastName(apellido);
-        employee.setDocumentNumber(dni);
-        employee.setPhone(telefono);
-        employee.setEmail(mail);
-        employee.setActive(estado);
-        //employee.setRoleId(role);
-        employee.setCompanyId(company.getId());
-        employee.setCellPhone(celular);
-        employee.setCity(ciudad);
-        employee.setAddress(direccion);
-        employee.setUbigeo(region);
-
-        final ServiceInput input = new ServiceInput();
-        final Map<String, Object> map = new HashMap<String,Object>();
-        map.put("employee", employee);
-        if(emp == null) {
-            final DTO_User user = new DTO_User();
-            user.setUsername(username);
-            user.setPassword(pass);
-            user.setCompanyId(company.getId());
-
-            map.put("user", user);
-        } else if (emp != null && pass != null && pass.length() != 0) {
-            //para cambiar pass
-            employee.setId(emp.getId());
-            final DTO_User user = new DTO_User();
-            user.setId(emp.getUserId());
-            user.setUsername(username);
-            user.setPassword(pass);
-            user.setCompanyId(company.getId());
-
-            map.put("user", user);
-        } else {
-            employee.setId(emp.getId());
-        }
-        input.setAction(Constantes.V_REGISTER);
-        input.setMapa(map);
-        final ServiceOutput output = employeeService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            alertaInfo("El employee se registro correctamente", "El contacto se registro correctamente", null);
-        } else {
-            alertaError("Error al registrar el contacto", "Error al registrar el contacto", null);
-        }
+        txtUser.setAttribute("user", employee);
+        txtUser.setReadonly(true);
+        //txtUser.setValue((getUser(employee.getUserId())).getUsername());
     }
 
     public void cancelar()
     {
         txtUser.setReadonly(false);
-        CargarTabla();
+        //CargarTabla();
     }
 
-    public void actualizar()
+    @Listen("onClick = #btnSave")
+    public void editEmployee()
     {
-        if (!txtUser.getValue().equals("") && !txtNombre.getValue().equals("") &&
+        /*if (!txtUser.getValue().equals("") && !txtNombre.getValue().equals("") &&
                         !txtApellidos.getValue().equals("") && !txtDNI.getValue().equals("") &&
                         cmbRole.getSelectedItem() != null && cmbEstado.getSelectedItem() != null) {
 
@@ -189,36 +138,20 @@ public class PO_EAAdministrateEmployeeEdit
                             (Boolean)cmbEstado.getSelectedItem().getValue(),
                             ((DTO_Role) cmbRole.getSelectedItem().getAttribute("role")).getId(),
                             txtCelular.getValue(), txtCiudad.getValue(), txtDireccion.getValue(), txtRegion.getValue());
-            CargarTabla();
             limpiarCrear();
-            btnCrear.setVisible(true);
-            btnInfo.setVisible(false);
-            btnCancel.setVisible(false);
-            capInfo.setLabel("Nuevo Contacto");
             txtUser.setReadonly(false);
         } else { // validar para cada campo obligatorio
-            alertaInfo("Faltan llenar algunos campos", "No se llenaron los campos obligatorios", null);
-        }
+            alertaInfo(logger, "Faltan llenar algunos campos", "No se llenaron los campos obligatorios", null);
+        }*/
     }
 
-    public void crear()
+    @Listen("onClick = #btnClose")
+    public void close(final Event _event)
     {
-        if (!txtPass.getValue().equals("") && !txtUser.getValue().equals("") && !txtNombre.getValue().equals("") &&
-                        !txtApellidos.getValue().equals("") && !txtDNI.getValue().equals("") &&
-                        cmbRole.getSelectedItem() != null && cmbEstado.getSelectedItem() != null) {
-            editar(null, txtUser.getValue(), txtPass.getValue(), txtNombre.getValue(), txtApellidos.getValue(),
-                            txtDNI.getValue(), txtTelefono.getValue(), txtMail.getValue(),
-                            (Boolean)cmbEstado.getSelectedItem().getValue(),
-                            ((DTO_Role) cmbRole.getSelectedItem().getAttribute("role")).getId(),
-                            txtCelular.getValue(), txtCiudad.getValue(), txtDireccion.getValue(), txtRegion.getValue());
-            CargarTabla();
-            limpiarCrear();
-        } else {
-            alertaInfo("Faltan llenar algunos campos", "No se llenaron algunos campos", null);
-        }
+        wEAAEE.detach();
     }
 
-    public void limpiarCrear()
+    /*public void limpiarCrear()
     {
         txtNombre.setValue("");
         txtApellidos.setValue("");
@@ -228,263 +161,142 @@ public class PO_EAAdministrateEmployeeEdit
         txtPass.setValue("");
         cmbEstado.setSelectedItem(null);
         cmbRole.setSelectedItem(null);
-    }
+    }*/
 
-    @SuppressWarnings("unchecked")
-    public void cargarInformacionContacto(final DTO_Employee employee)
+    /**
+    *
+    */
+    public void buildRoles()
     {
-        capInfo.setLabel("Información del Contacto");
-        btnCrear.setVisible(false);
-        txtUser.setAttribute("user", employee);
-        txtUser.setReadonly(true);
-        txtUser.setValue((getUser(employee.getUserId())).getUsername());
-        txtNombre.setValue(employee.getEmployeeName());
-        txtApellidos.setValue(employee.getEmployeeLastName());
-        txtDNI.setValue(employee.getDocumentNumber());
-        txtDireccion.setValue(employee.getAddress() != null ? employee.getAddress() : "");
-        txtCelular.setValue(employee.getPhone() != null ? employee.getPhone() : "");
-        txtCiudad.setValue(employee.getCity() != null ? employee.getCity() : "");
-        txtRegion.setValue(employee.getUbigeo() != null ? employee.getUbigeo() : "");
-        txtTelefono.setValue(employee.getCellPhone() != null ? employee.getCellPhone() : "");
-        txtMail.setValue(employee.getEmail());
-        txtPass.setValue("");
-
-        final List<Comboitem> roles = cmbRole.getItems();
-        for(final Comboitem item : roles) {
-            final DTO_Role role = (DTO_Role) item.getAttribute("role");
-            /*if(role.getId().equals(employee.getRoleId())) {
-                cmbRole.setSelectedItem(item);
-            }*/
-        }
-        final List<Comboitem> estados = cmbEstado.getItems();
-        for(final Comboitem item : estados) {
-            final Integer stat = Integer.parseInt((String) item.getValue());
-            if(stat.equals(employee.getActive())) {
-                cmbEstado.setSelectedItem(item);
-            }
-        }
-    }
-
-    public void cargarPop(final DTO_Employee employee)
-    {
-        lblUser.setValue((getUser(employee.getUserId())).getUsername());
-        lblNombre.setValue(employee.getEmployeeName());
-        lblApellidos.setValue(employee.getEmployeeLastName());
-        //lblRole.setValue((getRole(employee.getRoleId()).getRoleName()));
-        lblCiudad.setValue(employee.getCity());
-        lblDNI.setValue(employee.getDocumentNumber());
-        final String estado = Constantes.ST_ACTIVO.equals(employee.getActive()) ? Constantes.STATUS_ACTIVO
-                                                                                     : Constantes.STATUS_INACTIVO;
-        lblEstado.setValue(estado);
-        lblMail.setValue(employee.getEmail());
-        lblTelefono.setValue(employee.getPhone());
-    }
-
-    public void CargarTabla()
-    {
-        grdEmp.getRows().getChildren().clear();
-        final DTO_Employee emp = new DTO_Employee();
-        emp.setCompanyId(company.getId());
-        final ServiceInput input = new ServiceInput(emp);
+        final DTO_Role roleSe = new DTO_Role();
+        roleSe.setCompanyId(this.company.getId());
+        final ServiceInput<DTO_Role> input = new ServiceInput<DTO_Role>(roleSe);
         input.setAction(Constantes.V_LIST);
-        final ServiceOutput output = employeeService.execute(input);
+        final ServiceOutput<DTO_Role> output = this.roleService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Employee> ulist = output.getLista();
-            for (final DTO_Employee uOut : ulist) {
-                final Row fila = new Row();
-                fila.setAttribute("employee", uOut);
-                // Fecha Creacion
-                /*
-                 fila.appendChild(new Label(new SimpleDateFormat("dd/MM/yyyy")
-                 .format(uOut.getFecha_creacion())));
-                 */
-                // Username
-                // fila.appendChild(new Label(uOut.getUser()));
-                fila.appendChild(new Label(uOut.getEmployeeName()));
-                fila.appendChild(new Label(uOut.getEmployeeLastName()));
-                fila.appendChild(new Label(getUser(uOut.getUserId()).getUsername()));
-                //fila.appendChild(new Label((getRole(uOut.getRoleId())).getRoleName()));
-
-                final Image ImDetalles = new Image("media/details.png");
-                ImDetalles.setStyle("cursor:pointer");
-                ImDetalles.setPopup(popDetails);
-                ImDetalles.addEventListener("onClick",
-                                new org.zkoss.zk.ui.event.EventListener() {
-                                    @Override
-                                    public void onEvent(final Event e)
-                                        throws UiException
-                                    {
-                                         cargarPop((DTO_Employee) ((Row)
-                                         e.getTarget().getParent()).getAttribute("employee"));
-
-                                    }
-                                });
-                fila.appendChild(ImDetalles);
-                final Image ImEditar = new Image("media/edit.png");
-                ImEditar.setStyle("cursor:pointer");
-                ImEditar.addEventListener("onClick",
-                                new org.zkoss.zk.ui.event.EventListener() {
-                                    @Override
-                                    public void onEvent(final Event e)
-                                        throws UiException
-                                    {
-                                        for (int i = 0; i < grdEmp.getRows()
-                                                        .getChildren().size(); i++) {
-
-                                            ((Image) ((Div) (((Row) (((Rows) e
-                                                            .getTarget().getParent()
-                                                            .getParent().getParent())
-                                                            .getChildren().get(i)))
-                                                            .getChildren().get(6)))
-                                                            .getChildren().get(0))
-                                                            .setVisible(false);
-                                            ((Image) ((Div) (((Row) (((Rows) e
-                                                            .getTarget().getParent()
-                                                            .getParent().getParent())
-                                                            .getChildren().get(i)))
-                                                            .getChildren().get(6)))
-                                                            .getChildren().get(1))
-                                                            .setVisible(true);
-                                            ((Image) ((Div) (((Row) (((Rows) e
-                                                            .getTarget().getParent()
-                                                            .getParent().getParent())
-                                                            .getChildren().get(i)))
-                                                            .getChildren().get(5)))
-                                                            .getChildren().get(0))
-                                                            .setVisible(false);
-                                            ((Image) ((Div) (((Row) (((Rows) e
-                                                            .getTarget().getParent()
-                                                            .getParent().getParent())
-                                                            .getChildren().get(i)))
-                                                            .getChildren().get(5)))
-                                                            .getChildren().get(1))
-                                                            .setVisible(true);
-                                        }
-                                        btnCancel.setVisible(true);
-                                        btnInfo.setVisible(true);
-
-                                        cargarInformacionContacto((DTO_Employee) ((Row) e
-                                        .getTarget().getParent().getParent())
-                                        .getAttribute("employee"));
-                                    }
-                                });
-
-                final Image ImEditarDisab = new Image("media/editdelete.png");
-                ImEditarDisab.setVisible(false);
-                final Div Diveditar = new Div();
-                Diveditar.appendChild(ImEditar);
-                Diveditar.appendChild(ImEditarDisab);
-                fila.appendChild(Diveditar);
-                final Image ImEliminar = new Image("media/cancel.png");
-                ImEliminar.setStyle("cursor:pointer");
-                ImEliminar.addEventListener("onClick",
-                                new org.zkoss.zk.ui.event.EventListener() {
-                                    @Override
-                                    public void onEvent(final Event e)
-                                        throws UiException
-                                    {
-                                        final int msg = Messagebox.show("¿Está seguro de eliminar el Employee?",
-                                                                    company.getBusinessName(),
-                                                                    Messagebox.YES | Messagebox.NO,
-                                                                    Messagebox.QUESTION);
-                                        if (msg == Messagebox.YES) {
-                                            elimina((DTO_Employee) ((Row) e
-                                                            .getTarget().getParent()
-                                                            .getParent())
-                                                            .getAttribute("employee"));
-                                        }
-
-                                    }
-                                });
-                final Image ImDisable = new Image("media/fileclose.png");
-                ImDisable.setVisible(false);
-
-                final Div Diveliminar = new Div();
-                Diveliminar.appendChild(ImEliminar);
-                Diveliminar.appendChild(ImDisable);
-                fila.appendChild(Diveliminar);
-                grdEmp.getRows().appendChild(fila);
+            final Map<DTO_Area, List<DTO_Role>> mapArea2Roles = new HashMap<DTO_Area, List<DTO_Role>>();
+            final List<DTO_Role> lstRoles = output.getLista();
+            for (final DTO_Role role : lstRoles) {
+                if (mapArea2Roles.containsKey(role.getArea())) {
+                    final List<DTO_Role> lstRoles4Map = mapArea2Roles.get(role.getArea());
+                    lstRoles4Map.add(role);
+                } else {
+                    final List<DTO_Role> lstRoles4Map = new ArrayList<DTO_Role>();
+                    lstRoles4Map.add(role);
+                    mapArea2Roles.put(role.getArea(), lstRoles4Map);
+                }
             }
+            final Bandpopup bandPop = new Bandpopup();
+            final Listbox lstBRoles = new Listbox();
+            lstBRoles.setWidth("250px");
+            final Listhead lstHead = new Listhead();
+            final Listheader lstHeader = new Listheader();
+            lstHead.appendChild(lstHeader);
+            lstBRoles.appendChild(lstHead);
+            for (final Entry<DTO_Area, List<DTO_Role>> entry : mapArea2Roles.entrySet()) {
+                final Listgroup lstGrp = new Listgroup();
+                lstGrp.appendChild(new Listcell(entry.getKey().getAreaName()));
+                lstBRoles.appendChild(lstGrp);
+                for (final DTO_Role role : entry.getValue()) {
+                    final Listitem item = new Listitem();
+                    item.setValue(role);
+                    final Listcell cell = new Listcell(role.getRoleName());
+                    item.appendChild(cell);
+                    item.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+                    {
+                        @Override
+                        public void onEvent(final Event _event)
+                            throws UiException
+                        {
+                            final Bandbox bandBox = (Bandbox) _event.getTarget().getParent().getParent().getParent();
+                            final DTO_Role rol = ((Listitem) _event.getTarget()).getValue();
+                            bandBox.setValue(rol.getRoleName());
+                            bandBox.setAttribute(Constantes.ATTRIBUTE_ROLE, role);
+                            bandBox.close();
+                        }
+                    });
+                    if (this.employee.getUser() != null
+                                    && this.employee.getUser().getRole().getId().equals(role.getId())) {
+                        this.bndRole.setValue(role.getRoleName());
+                        this.bndRole.setAttribute(Constantes.ATTRIBUTE_ROLE, role);
+                    }
+                    lstBRoles.appendChild(item);
+                }
+            }
+            bandPop.appendChild(lstBRoles);
+            this.bndRole.appendChild(bandPop);
         } else {
-
-        }
-    }
-
-    private DTO_User getUser(final Integer codigo)
-    {
-        DTO_User ret = null;
-        final DTO_User user = new DTO_User();
-        user.setId(codigo);
-        user.setCompanyId(company.getId());
-        final ServiceInput input = new ServiceInput(user);
-        input.setAction(Constantes.V_LIST);
-        final ServiceOutput output = userService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            ret = (DTO_User) output.getLista().get(0);
-        }
-        return ret;
-    }
-
-    private DTO_Role getRole(final Integer codigo)
-    {
-        DTO_Role ret = null;
-        final DTO_Role role = new DTO_Role();
-        role.setId(codigo);
-        role.setCompanyId(company.getId());
-        final ServiceInput input = new ServiceInput(role);
-        input.setAction(Constantes.V_GET);
-        final ServiceOutput output = roleService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            ret = (DTO_Role) output.getObject();
-        }
-        return ret;
-    }
-
-    public void cargarRoles()
-    {
-        final DTO_Role per = new DTO_Role();
-        per.setCompanyId(company.getId());
-        final ServiceInput input = new ServiceInput(per);
-        input.setAction(Constantes.V_LIST);
-        final ServiceOutput output = roleService.execute(input);
-        if (output.getErrorCode() == Constantes.OK) {
-            final List<DTO_Role> listado = output.getLista();
-            for (final DTO_Role role : listado) {
-                final Comboitem item = new Comboitem(role.getRoleName());
-                item.setAttribute("role", role);
-                cmbRole.appendChild(item);
-            }
-        } else {
-            alertaError("Error en la carga de roles",
+            alertaError(this.logger, "Error en la carga de roles",
                             "error al cargar los roles", null);
         }
     }
 
-    public void alertaInfo(final String txt,
-                           final String txt2,
-                           final Throwable t)
+    /**
+    *
+    */
+    protected void buildDepartmentCombo()
     {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.INFORMATION);
-        }
-        if (t != null) {
-            logger.info(txt2, t);
-        } else {
-            logger.info(txt2);
+        getDepartments(this.cmbDepartment, this.cmbProvince);
+    }
+
+    /**
+     * @param _departmentId
+     */
+    protected void buildProvinceCombo(final Integer _departmentId)
+    {
+        getProvinces(_departmentId, this.cmbProvince, this.cmbDistrict);
+    }
+
+    /**
+     * @param _departmentId
+     * @param _provinceId
+     */
+    protected void buildDistrictCombo(final Integer _departmentId,
+                                      final Integer _provinceId)
+    {
+        getDistricts(_departmentId, _provinceId, this.cmbDistrict, null);
+    }
+
+    @Override
+    protected void buildNextCombo(final Combobox _combo)
+    {
+        if (_combo.equals(this.cmbProvince)) {
+            buildProvinceCombo(((Ubication) this.cmbDepartment.getSelectedItem().getValue()).getId());
+        } else if (_combo.equals(this.cmbDistrict)) {
+            buildDistrictCombo(((Ubication) this.cmbDepartment.getSelectedItem().getValue()).getId(),
+                            ((Ubication) this.cmbProvince.getSelectedItem().getValue()).getId());
         }
     }
 
-    public void alertaError(final String txt,
-                            final String txt2,
-                            final Throwable t)
+    @Override
+    protected Comboitem buildCombo4Ubications(final Combobox _comboParent,
+                                              final Ubication _ubi)
     {
-        if (txt.length() > 0) {
-            Messagebox.show(txt, company.getBusinessName(), 1, Messagebox.EXCLAMATION);
+        final Comboitem item = super.buildCombo4Ubications(_comboParent, _ubi);
+        if (_comboParent.equals(this.cmbDepartment)) {
+            if (this.employee.getDepartmentId().equals(_ubi.getId())) {
+                this.cmbDepartment.setSelectedItem(item);
+            }
+        } else if (_comboParent.equals(this.cmbProvince)) {
+            if (this.employee.getProvinceId().equals(_ubi.getId())) {
+                this.cmbProvince.setSelectedItem(item);
+            }
+        } else if (_comboParent.equals(this.cmbDistrict)) {
+            if (this.employee.getDistrictId().equals(_ubi.getId())) {
+                this.cmbDistrict.setSelectedItem(item);
+            }
         }
-        if (t != null) {
-            logger.error(txt2, t);
-        } else {
-            logger.error(txt2);
+        return item;
+    }
+
+    @Override
+    public void buildActiveCombo(final Combobox _combo)
+    {
+        super.buildActiveCombo(this.cmbActive);
+        for (final Comboitem item : this.cmbActive.getItems()) {
+            if (this.employee.isActive().equals(item.getValue())) {
+                this.cmbActive.setSelectedItem(item);
+            }
         }
     }
 

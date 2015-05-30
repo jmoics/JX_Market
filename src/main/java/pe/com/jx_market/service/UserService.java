@@ -33,7 +33,7 @@ public class UserService
      *
      */
     @Autowired
-    private BusinessService passwordHashService;
+    private BusinessService<String> passwordHashService;
 
     /**
      * El ServiceInput contendrá como verbo un String: para realizar una consulta
@@ -149,9 +149,9 @@ public class UserService
         boolean ret = false;
         String passEncriptado;
         // encriptar password enviado
-        final ServiceOutput output = this.passwordHashService.execute(new ServiceInput(_pass));
+        final ServiceOutput<String> output = this.passwordHashService.execute(new ServiceInput<String>(_pass));
         if (output.getErrorCode() == Constantes.OK) {
-            passEncriptado = (String) output.getObject();
+            passEncriptado = output.getObject();
             if (passEncriptado.equals(user.getPassword())) {
                 ret = true;
             }
