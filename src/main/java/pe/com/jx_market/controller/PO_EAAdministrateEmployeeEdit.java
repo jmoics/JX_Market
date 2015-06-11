@@ -81,7 +81,7 @@ public class PO_EAAdministrateEmployeeEdit
         this.company = (DTO_Company) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
         this.employee = (DTO_Employee) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_EMPLOYEE);
         if (this.employee == null) {
-            alertaInfo(logger, "", "No se encontro empleado, retornando a busqueda", null);
+            alertaInfo(this.logger, "", "No se encontro empleado, retornando a busqueda", null);
         } else {
             // Obtenemos el controlador de la pantalla principal de marcas.
             final Map<?, ?> mapArg = this.desktop.getExecution().getArg();
@@ -90,6 +90,9 @@ public class PO_EAAdministrateEmployeeEdit
         }
     }
 
+    /**
+     *
+     */
     private void loadData()
     {
         buildRoles();
@@ -97,16 +100,17 @@ public class PO_EAAdministrateEmployeeEdit
         buildParameterCombo(this.cmbDocType, Constantes.PARAM_DOCUMENT_TYPE, this.employee.getDocumentTypeId());
         buildParameterCombo(this.cmbSex, Constantes.PARAM_SEX_TYPE, this.employee.getSexId());
         buildParameterCombo(this.cmbCivilState, Constantes.PARAM_CIVILSTATE_TYPE, this.employee.getCivilStateId());
+        buildDepartmentCombo();
         if (this.employee.getDepartmentId() != null) {
-            buildDepartmentCombo();
-            /*buildProvinceCombo(this.employee.getDepartmentId());
+            buildProvinceCombo(this.employee.getDepartmentId());
             if (this.employee.getProvinceId() != null) {
                 buildDistrictCombo(this.employee.getDepartmentId(), this.employee.getProvinceId());
-            }*/
+            }
         }
         this.txtName.setValue(this.employee.getEmployeeLastName());
         this.txtLastName.setValue(this.employee.getEmployeeLastName());
         this.txtLastName2.setValue(this.employee.getEmployeeLastName2());
+        this.datBirthday.setValue(this.employee.getBirthday());
         this.txtDocument.setValue(this.employee.getDocumentNumber());
         this.txtAddress.setValue(this.employee.getAddress() != null ? this.employee.getAddress() : "");
         this.txtPhone.setValue(this.employee.getPhone() != null ? this.employee.getPhone() : "");
@@ -114,17 +118,15 @@ public class PO_EAAdministrateEmployeeEdit
         // this.txtCity.setValue(this.employee.getCity() != null ? this.employee.getCity() : "");
         this.txtEMail.setValue(this.employee.getEmail() != null ? this.employee.getEmail() : "");
 
-        txtUser.setAttribute("user", employee);
-        txtUser.setReadonly(true);
+        this.txtUser.setAttribute("user", this.employee);
+        this.txtUser.setValue(this.employee.getUser().getUsername());
+        this.txtUser.setReadonly(true);
         //txtUser.setValue((getUser(employee.getUserId())).getUsername());
     }
 
-    public void cancelar()
-    {
-        txtUser.setReadonly(false);
-        //CargarTabla();
-    }
-
+    /**
+     *
+     */
     @Listen("onClick = #btnSave")
     public void editEmployee()
     {
@@ -145,23 +147,23 @@ public class PO_EAAdministrateEmployeeEdit
         }*/
     }
 
+    /**
+     * @param _event Event
+     */
     @Listen("onClick = #btnClose")
     public void close(final Event _event)
     {
-        wEAAEE.detach();
+        this.wEAAEE.detach();
     }
 
-    /*public void limpiarCrear()
+    /**
+     *
+     */
+    public void cleanFields()
     {
-        txtNombre.setValue("");
-        txtApellidos.setValue("");
-        txtTelefono.setValue("");
-        txtMail.setValue("");
-        txtUser.setValue("");
-        txtPass.setValue("");
-        cmbEstado.setSelectedItem(null);
-        cmbRole.setSelectedItem(null);
-    }*/
+        this.txtPass.setValue("");
+        this.txtRepPass.setValue("");
+    }
 
     /**
     *
@@ -274,15 +276,15 @@ public class PO_EAAdministrateEmployeeEdit
     {
         final Comboitem item = super.buildCombo4Ubications(_comboParent, _ubi);
         if (_comboParent.equals(this.cmbDepartment)) {
-            if (this.employee.getDepartmentId().equals(_ubi.getId())) {
+            if (this.employee.getDepartmentId() != null && this.employee.getDepartmentId().equals(_ubi.getId())) {
                 this.cmbDepartment.setSelectedItem(item);
             }
         } else if (_comboParent.equals(this.cmbProvince)) {
-            if (this.employee.getProvinceId().equals(_ubi.getId())) {
+            if (this.employee.getProvinceId() != null && this.employee.getProvinceId().equals(_ubi.getId())) {
                 this.cmbProvince.setSelectedItem(item);
             }
         } else if (_comboParent.equals(this.cmbDistrict)) {
-            if (this.employee.getDistrictId().equals(_ubi.getId())) {
+            if (this.employee.getDistrictId() != null && this.employee.getDistrictId().equals(_ubi.getId())) {
                 this.cmbDistrict.setSelectedItem(item);
             }
         }
