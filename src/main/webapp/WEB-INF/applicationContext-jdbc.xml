@@ -44,6 +44,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="typeAliasesPackage" value="pe.com.jx_market.domain" />
+        <property name="typeHandlersPackage" value="pe.com.jx_market.typehandler" />
     </bean>
 
     <!-- escaneo de mappers en el paquete especificado -->

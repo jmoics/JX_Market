@@ -126,6 +126,10 @@ public class Constantes {
     public static final String MODULE_PROD_AMOUNT = "MODULE_PROD_AMOUNUT";
     public static final String MODULE_PROD_INVENTORY = "MODULE_PROD_INVENTORY";
 
+    public static final String MODULE_SALES_CURRENCY = "MODULE_SALES_CURRENCY";
+    public static final String MODULE_SALES_CURRENCY_EDIT = "MODULE_SALES_CURRENCY_EDIT";
+    public static final String MODULE_SALES_CURRENCY_CREATE = "MODULE_SALES_CURRENCY_CREATE";
+
     public static final String MODULE_ADMINISTRACION = "MODULE_ADMINISTRACION";
     public static final String MODULE_ADM_ROLE = "MODULE_ADM_ROLE";
     public static final String MODULE_ADM_ROLE_EDIT = "MODULE_ADM_ROLE_EDIT";
@@ -179,7 +183,10 @@ public class Constantes {
         ROLEMODULE_EDIT_FORM("eAAdministrateRoleModuleEdit.zul"),
         EMPLOYEE_FORM("eAAdministrateEmployee.zul"),
         EMPLOYEE_EDIT_FORM("eAAdministrateEmployeeEdit.zul"),
-        EMPLOYEE_CREATE_FORM("eAAdministrateEmployeeCreate.zul");
+        EMPLOYEE_CREATE_FORM("eAAdministrateEmployeeCreate.zul"),
+        CURRENCY_FORM("eACurrency.zul"),
+        CURRENCY_EDIT_FORM("eACurrencyEdit.zul"),
+        CURRENCY_CREATE_FORM("eACurrencyCreate.zul");
 
         private final String form;
 
@@ -206,6 +213,7 @@ public class Constantes {
     public static final String ATTRIBUTE_EMPLOYEE = "employee";
     public static final String ATTRIBUTE_USER = "login";
     public static final String ATTRIBUTE_UBICATION = "ubication";
+    public static final String ATTRIBUTE_CURRENCY = "currency";
 
 
     public static final Integer UBICATION_DEPARTMENT = 1;

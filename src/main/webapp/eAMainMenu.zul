@@ -47,6 +47,8 @@
                     </div>
                     <html:p />
                     <menubar style="text-align:left" orient="vertical" autodrop="true">
+                        <menuitem src="/media/filenew.png" id="id_option_sales_currency"
+                                          label="${labels.pe.com.jx_market.eAMainMenu.sales.currency.Label }"/>
                         <menuitem src="/media/filenew.png" id="id_option_order"
                                           label="${labels.pe.com.jx_market.eAMainMenu.sales.order.Label }"/>
                         <menuitem src="/media/filenew.png" id=""

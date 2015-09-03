@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.CurrencyMapper">
+
+    <cache />
+
+    <!-- MANTENIMIENTO DE MONEDAS -->
+
+    <select id="getCurrencies" parameterType="Currency" resultMap="currencyResultMap">
+        SELECT
+            cur.id as currencyId,
+            cur.companyid as companyId,
+            cur.name as currencyName,
+            cur.curbase as curBase,
+            rat.id as rateCurrId,
+            rat.companyid as ratCompanyId,
+            rat.fromdate as fromDate,
+            rat.todate as toDate,
+            rat.rate as rate
+        FROM
+            T_BUS_CURRENCY cur INNER JOIN 
+            T_BUS_CURRATES rat ON cur.id = rat.currencyid
+        <where>
+            cur.companyid = #{companyId}
+        </where>
+    </select>
+
+    <select id="getCurrency4Id" parameterType="Currency" resultType="Currency">
+        SELECT
+            cur.id as id,
+            cur.companyid as companyId,
+            cur.name as currencyName,
+            cur.curbase as curBase
+        FROM
+            T_BUS_CURRENCY cur
+        WHERE
+            cur.id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertCurrency" parameterType="Currency" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+        INSERT INTO T_BUS_CURRENCY
+            (name, companyid)
+        VALUES
+            (#{curName}, #{companyId})
+    </insert>
+
+    <update id="updateCurrency" parameterType="Currency">
+        UPDATE T_BUS_CURRENCY
+        SET
+            name = #{curName},
+            curbase = #{curBase}
+        WHERE
+            id = #{id}
+    </update>
+
+    <delete id="deleteCurrency" parameterType="Currency">
+      DELETE FROM
+         T_BUS_CURRENCY
+      WHERE
+            id = #{id}
+    </delete>
+    
+    <resultMap id="currencyResultMap" type="Currency">
+        <id property="id" column="currencyId" />
+        <result property="currencyName" column="currencyName" />
+        <result property="companyId" column="companyId" />
+        <result property="curBase" column="curBase" />
+        <collection property="currencyRates" column="rateCurrId"
+                    ofType="CurrencyRate" javaType="ArrayList" resultMap="rateCurrencyResultMap">
+        </collection>
+    </resultMap>
+    <resultMap id="rateCurrencyResultMap" type="CurrencyRate">
+        <id property="id" column="rateCurrId" />
+        <result property="companyId" column="ratCompanyId" />
+        <result property="currencyId" column="currencyId" />
+        <result property="fromDate" column="fromDate" />
+        <result property="toDate" column="toDate" />
+        <result property="rate" column="rate" />
+    </resultMap>
+    
+    <insert id="insertCurrencyRate" parameterType="CurrencyRate" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+        INSERT INTO T_BUS_CURRENCY
+            (companyid, currencyid, fromdate, todate, rate)
+        VALUES
+            (#{companyId}, #{currencyId}, #{fromDate}, #{toDate}, #{rate})
+    </insert>
+
+    <update id="updateCurrencyRate" parameterType="CurrencyRate">
+        UPDATE T_BUS_CURRENCY
+        SET
+            fromdate = #{fromDate},
+            todate = #{toDate},
+            rate = #{rate}
+        WHERE
+            id = #{id}
+        OR
+            currencyid = #{currencyId}
+    </update>
+</mapper>

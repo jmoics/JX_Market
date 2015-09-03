@@ -1,0 +1,59 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+<style src="s-style.css"/>
+<style>
+.z-window-content {
+    padding: 1px;
+}
+</style>
+<window id="wEAC" hflex="1" vflex="1" apply="pe.com.jx_market.controller.PO_EACurrency">
+    <borderlayout id="bl" hflex="1" vflex="1">
+        <north size="20%" collapsible="false" sclass="s-north">
+            <vbox hflex="1" vflex="1" align="center">
+                <label zclass="z-south-header" sclass="s-header">
+                    ${labels.pe.com.jx_market.eACurrency.Title}
+                </label>
+                <html:p />
+                <grid fixedLayout="true" width="100%" visible="true" hflex="1" sclass="s-grid">
+                    <auxhead>
+                        <auxheader label="${labels.pe.com.jx_market.eACurrency.SubTitle}" colspan="4" />
+                    </auxhead>
+                    <columns sizable="true">
+                        <column hflex="1" />
+                        <column hflex="3" />
+                    </columns>
+                    <rows>
+                        <row>
+                            <label value="${labels.pe.com.jx_market.eACurrency.txtCurrencyName.Label}" />
+                            <textbox id="txtCurrencyName" hflex="1" />
+                        </row>
+                    </rows>
+                </grid>
+                <hbox align="end" pack="end" hflex="1" vflex="1" sclass="s-hbox">
+                    <button id="btnSearch" label="${labels.pe.com.jx_market.eACurrency.btnSearch.Label}"
+                            image="/media/search4.png" />
+                    <button id="btnClean" label="${labels.pe.com.jx_market.eACurrency.btnClean.Label}"
+                            image="/media/filenew.png" />
+                </hbox>
+            </vbox>
+        </north>
+        <center autoscroll="true" sclass="s-center2">
+            <listbox id="lstCurrency" mold="paging" pagingPosition="bottom" autopaging="true" sizedByContent="true"  hflex="1" vflex="1">
+                <listhead>
+                    <listheader label="Nº" id="headNumber" hflex="1"/>
+                    <listheader label="${labels.pe.com.jx_market.eACurrency.CurrencyName.Label}" sort="auto" hflex="8"/>
+                    <listheader label="${labels.pe.com.jx_market.eACurrency.CurBase.Label}" sort="auto" hflex="2"/>
+                </listhead>
+            </listbox>
+        </center>
+        <south size="5%" style="visibility:visible;" sclass="s-south2">
+            <hbox align="center" pack="end" hflex="1" vflex="1" sclass="s-hbox">
+                <button id="btnCreate" label="${labels.pe.com.jx_market.eACurrency.btnCreate.Label}"
+                    image="/media/filenew.png" />
+                <button id="btnEdit" label="${labels.pe.com.jx_market.eACurrency.btnEdit.Label}"
+                    image="/media/edit.png" />
+            </hbox>
+        </south>
+    </borderlayout>
+</window>
+</zk>
