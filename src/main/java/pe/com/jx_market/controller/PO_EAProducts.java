@@ -93,75 +93,87 @@ public class PO_EAProducts
     {
         super.doAfterCompose(_comp);
 
-        company = (DTO_Company) _comp.getDesktop().getSession().getAttribute("company");
+        this.company = (DTO_Company) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
 
         listCategories();
 
-        buildActiveCombo(cmbEstad);
+        buildActiveCombo(this.cmbEstad);
         buildTradeMarkCombo();
         buildOrderComparator();
 
-        if (desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD) != null
-                        && (Boolean) desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD)) {
-            desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, false);
+        if (this.desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD) != null
+                        && (Boolean) this.desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD)) {
+            this.desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, false);
             searchProducts();
         }
     }
 
-    private void buildOrderComparator() {
-        headNumber.setSortAscending(new Comparator<Listitem>()
+    /**
+     * Configuration for the sort type for number column.
+     */
+    private void buildOrderComparator()
+    {
+        this.headNumber.setSortAscending(new Comparator<Listitem>()
         {
+
             @Override
-            public int compare(final Listitem o1,
-                               final Listitem o2)
+            public int compare(final Listitem _o1,
+                               final Listitem _o2)
             {
-                final Integer c1 = Integer.parseInt(((Listcell) o1.getChildren().get(0)).getLabel());
-                final Integer c2 = Integer.parseInt(((Listcell) o2.getChildren().get(0)).getLabel());
+                final Integer c1 = Integer.parseInt(((Listcell) _o1.getChildren().get(0)).getLabel());
+                final Integer c2 = Integer.parseInt(((Listcell) _o2.getChildren().get(0)).getLabel());
                 return c1.compareTo(c2);
             }
 
         });
-        headNumber.setSortDescending(new Comparator<Listitem>()
+        this.headNumber.setSortDescending(new Comparator<Listitem>()
         {
+
             @Override
-            public int compare(final Listitem o1,
-                               final Listitem o2)
+            public int compare(final Listitem _o1,
+                               final Listitem _o2)
             {
-                final Integer c1 = Integer.parseInt(((Listcell) o1.getChildren().get(0)).getLabel());
-                final Integer c2 = Integer.parseInt(((Listcell) o2.getChildren().get(0)).getLabel());
+                final Integer c1 = Integer.parseInt(((Listcell) _o1.getChildren().get(0)).getLabel());
+                final Integer c2 = Integer.parseInt(((Listcell) _o2.getChildren().get(0)).getLabel());
                 return c2.compareTo(c1);
             }
 
         });
     }
 
+    /**
+     * Get the trade marks in a combo.
+     */
     private void buildTradeMarkCombo()
     {
         final DTO_TradeMark marFi = new DTO_TradeMark();
-        marFi.setCompanyId(company.getId());
+        marFi.setCompanyId(this.company.getId());
         final ServiceInput<DTO_TradeMark> input = new ServiceInput<DTO_TradeMark>(marFi);
         input.setAction(Constantes.V_LIST);
-        final ServiceOutput<DTO_TradeMark> output = tradeMarkService.execute(input);
+        final ServiceOutput<DTO_TradeMark> output = this.tradeMarkService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_TradeMark> lstMar = output.getLista();
             for (final DTO_TradeMark marIt : lstMar) {
                 final Comboitem item = new Comboitem();
                 item.setLabel(marIt.getTradeMarkName());
                 item.setValue(marIt);
-                cmbTradeMark.appendChild(item);
+                this.cmbTradeMark.appendChild(item);
             }
         } else {
             alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"), "Error cargando marcas", null);
         }
     }
 
+    /**
+     * Get the categories for the search of products.
+     */
     private void listCategories()
     {
         final DTO_Category cat = new DTO_Category();
-        cat.setCompanyId(company.getId());
+        cat.setCompanyId(this.company.getId());
         final ServiceInput<DTO_Category> input = new ServiceInput<DTO_Category>(cat);
         input.setAction(Constantes.V_LIST);
-        final ServiceOutput<DTO_Category> output = categoryService.execute(input);
+        final ServiceOutput<DTO_Category> output = this.categoryService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             alertaInfo(logger, "", "Exito al cargar categories", null);
             final List<DTO_Category> lstCat = output.getLista();
@@ -171,12 +183,18 @@ public class PO_EAProducts
             buildChosenBox(categoryTreeNode, lstCat2, Constantes.EMPTY_STRING);
             final ListModelList<DTO_Category> modelCat = new ListModelList<DTO_Category>(lstCat2);
             //chbCat.setModel(ListModels.toListSubModel(modelCat));
-            chbCat.setModel(modelCat);
+            this.chbCat.setModel(modelCat);
         } else {
             alertaError(logger, Labels.getLabel("pe.com.jx_market.Error.Label"), "Error cargando categories", null);
         }
     }
 
+    /**
+     * Build the tree of categories to choose those and add to the products search.
+     *
+     * @param _categories List with the categories.
+     * @return CategoryTreeNode to build the choosen box.
+     */
     private CategoryTreeNode buildCategoryTree(final List<DTO_Category> _categories)
     {
         final Map<Integer, DTO_Category> mapCateg = new TreeMap<Integer, DTO_Category>();
@@ -194,33 +212,40 @@ public class PO_EAProducts
         }
 
         final CategoryTreeNode categoryTreeNode = new CategoryTreeNode(null,
-                        new CategoryTreeNodeCollection()
-        {
-            private static final long serialVersionUID = -8249078122595873454L;
+            new CategoryTreeNodeCollection()
             {
-                for (final DTO_Category root : roots.values()) {
-                    if (!setPadres.contains(root.getId())) {
-                        add(new CategoryTreeNode(root));
-                    } else {
-                        add(new CategoryTreeNode(root,
-                                        new CategoryTreeNodeCollection()
-                        {
-                            private static final long serialVersionUID = -5643408533240445491L;
-                            {
-                                construirJerarquia(childs.values(), root, setPadres, false);
-                            }
-                        }, true));
+                private static final long serialVersionUID = -8249078122595873454L;
+                {
+                    for (final DTO_Category root : roots.values()) {
+                        if (!setPadres.contains(root.getId())) {
+                            add(new CategoryTreeNode(root));
+                        } else {
+                            add(new CategoryTreeNode(root,
+                                new CategoryTreeNodeCollection()
+                                {
+                                    private static final long serialVersionUID = -5643408533240445491L;
+                                    {
+                                        construirJerarquia(childs.values(), root, setPadres,
+                                                        false);
+                                    }
+                                }, true));
+                        }
                     }
                 }
-            }
-        },
+            },
         true);
         return categoryTreeNode;
     }
 
+    /**
+     * @param _nodo CategoryTreeNode with the categories
+     * @param _lstCat List of categories to show in the chosen box.
+     * @param _space
+     */
     private void buildChosenBox(final CategoryTreeNode _nodo,
                                 final List<DTO_Category> _lstCat,
-                                final String _space) {
+                                final String _space)
+    {
         final DTO_Category categ = _nodo.getData();
         if (categ != null) {
             if (categ.getCategoryParentId() != null) {
@@ -241,28 +266,31 @@ public class PO_EAProducts
         }
     }
 
+    /**
+     * Method to search products.
+     */
     @Listen("onClick = #btnSearch")
     public void searchProducts()
     {
-        lstProd.getItems().clear();
+        this.lstProd.getItems().clear();
         final ArrayList<Integer> listCat = new ArrayList<Integer>();
         final ServiceInput<DTO_Product> input = new ServiceInput<DTO_Product>();
-        if (chbCat.getSelectedObjects() != null && !chbCat.getSelectedObjects().isEmpty()) {
-            final Set<DTO_Category> setCateg = chbCat.getSelectedObjects();
+        if (this.chbCat.getSelectedObjects() != null && !this.chbCat.getSelectedObjects().isEmpty()) {
+            final Set<DTO_Category> setCateg = this.chbCat.getSelectedObjects();
             for (final DTO_Category categ : setCateg) {
                 listCat.add(categ.getId());
             }
             input.addMapPair("lstCategory", listCat);
         }
-        if (txtProdName.getValue().length() > 0) {
-            input.addMapPair("productName", txtProdName.getValue());
+        if (this.txtProdName.getValue().length() > 0) {
+            input.addMapPair("productName", this.txtProdName.getValue());
         }
-        if (cmbEstad.getSelectedItem() != null) {
-            input.addMapPair("active", cmbEstad.getSelectedItem().getValue());
+        if (this.cmbEstad.getSelectedItem() != null) {
+            input.addMapPair("active", this.cmbEstad.getSelectedItem().getValue());
         }
-        input.addMapPair("company", company.getId());
+        input.addMapPair("company", this.company.getId());
         input.setAction(Constantes.V_LIST);
-        final ServiceOutput<DTO_Product> output = productService.execute(input);
+        final ServiceOutput<DTO_Product> output = this.productService.execute(input);
         if (output.getErrorCode() == Constantes.OK) {
             final List<DTO_Product> lst = output.getLista();
             int columnNumber = 1;
@@ -298,39 +326,44 @@ public class PO_EAProducts
                 item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>()
                 {
                     @Override
-                    public void onEvent(final Event e)
+                    public void onEvent(final Event _e)
                         throws UiException
                     {
-                        runWindowEdit((MouseEvent) e);
+                        runWindowEdit((MouseEvent) _e);
                         //incluir("eAEditaProducto.zul");
                     }
                 });
-                lstProd.appendChild(item);
+                this.lstProd.appendChild(item);
                 columnNumber++;
             }
-        }
-        else {
+        } else {
         }
     }
 
+    /**
+     *
+     */
     public void limpiarConsulta()
     {
-        txtProdName.setValue("");
-        chbCat.clearSelection();
-        cmbEstad.setValue("");
-        cmbEstad.setSelectedItem(null);
+        this.txtProdName.setValue("");
+        this.chbCat.clearSelection();
+        this.cmbEstad.setValue("");
+        this.cmbEstad.setSelectedItem(null);
     }
 
+    /**
+     * @param _event
+     */
     @Listen("onClick = #btnEdit")
-    public void runWindowEdit(final MouseEvent event) {
-        if (lstProd.getSelectedItem() != null) {
-            desktop.getSession().setAttribute(Constantes.ATTRIBUTE_PRODUCT,
-                            lstProd.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_PRODUCT));
+    public void runWindowEdit(final MouseEvent _event) {
+        if (this.lstProd.getSelectedItem() != null) {
+            this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_PRODUCT,
+                            this.lstProd.getSelectedItem().getAttribute(Constantes.ATTRIBUTE_PRODUCT));
             final Map<String, Object> dataArgs = new HashMap<String, Object>();
             dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
             final Window w = (Window) Executions.createComponents(Constantes.Form.PRODUCTS_EDIT_FORM.getForm(),
                             null, dataArgs);
-            w.setPage(wEAP.getPage());
+            w.setPage(this.wEAP.getPage());
             //w.setParent(wEACC);
             //w.doOverlapped();
             w.doHighlighted();
@@ -341,17 +374,21 @@ public class PO_EAProducts
         }
     }
 
+    /**
+     * @param _event
+     */
     @Listen("onClick = #btnCreate")
-    public void runWindowCreate(final MouseEvent event) {
+    public void runWindowCreate(final MouseEvent _event)
+    {
         final Map<String, Object> dataArgs = new HashMap<String, Object>();
         dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
         final Window w = (Window) Executions.createComponents(Constantes.Form.PRODUCTS_CREATE_FORM.getForm(),
                         null, dataArgs);
-        w.setPage(wEAP.getPage());
-        //w.setParent(wEACC);
-        //w.doOverlapped();
+        w.setPage(this.wEAP.getPage());
+        // w.setParent(wEACC);
+        // w.doOverlapped();
         w.doModal();
-        //w.doEmbedded();
+        // w.doEmbedded();
     }
 
     @Override

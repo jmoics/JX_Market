@@ -102,7 +102,7 @@ public class PO_EAProductsCreate
     {
         super.doAfterCompose(_comp);
 
-        this.company = (DTO_Company) this.desktop.getSession().getAttribute("company");
+        this.company = (DTO_Company) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
         buildActiveCombo(this.cmbStatus);
         this.product = null;
 
@@ -119,7 +119,7 @@ public class PO_EAProductsCreate
 
         // Obtenemos el controlador de la pantalla principal de marcas.
         final Map<?, ?> mapArg = this.desktop.getExecution().getArg();
-        this.productParentUI = (PO_EAProducts) mapArg.get("parent");
+        this.productParentUI = (PO_EAProducts) mapArg.get(Constantes.ATTRIBUTE_PARENTFORM);
     }
 
     /**

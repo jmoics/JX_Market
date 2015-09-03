@@ -31,7 +31,7 @@ import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_EAAdministrateModule
-    extends SecuredComposerModal<Window>
+    extends SecuredComposer<Window>
 {
 
     static Log logger = LogFactory.getLog(PO_EAAdministrateModule.class);

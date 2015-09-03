@@ -127,7 +127,7 @@ public class PO_EAProductsEdit
 
             // Obtenemos el controlador de la pantalla principal de marcas.
             final Map<?, ?> mapArg = this.desktop.getExecution().getArg();
-            this.productParentUI = (PO_EAProducts) mapArg.get("parent");
+            this.productParentUI = (PO_EAProducts) mapArg.get(Constantes.ATTRIBUTE_PARENTFORM);
         }
     }
 
