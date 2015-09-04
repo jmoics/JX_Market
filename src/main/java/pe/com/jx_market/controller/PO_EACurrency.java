@@ -70,13 +70,13 @@ public class PO_EACurrency
     public void searchCurrencies()
     {
         this.lstCurrency.getItems().clear();
-        final Currency trMarkSearch = new Currency();
-        trMarkSearch.setCompanyId(this.company.getId());
+        final Currency curSearch = new Currency();
+        curSearch.setCompanyId(this.company.getId());
         final ServiceInput<Currency> input = new ServiceInput<Currency>();
         if (this.txtCurrencyName.getValue().length() > 0) {
-            trMarkSearch.setCurrencyName(this.txtCurrencyName.getValue());
+            curSearch.setCurrencyName(this.txtCurrencyName.getValue());
         }
-        input.setObject(trMarkSearch);
+        input.setObject(curSearch);
         input.setAction(Constantes.V_LIST);
         final ServiceOutput<Currency> output = this.currencyService.execute(input);
         if (Constantes.OK == output.getErrorCode()) {

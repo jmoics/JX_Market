@@ -1,5 +1,6 @@
 package pe.com.jx_market.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import org.joda.time.DateTime;
@@ -12,6 +13,7 @@ import org.joda.time.DateTime;
  * @version $Id$
  */
 public class CurrencyRate
+    implements Serializable
 {
     /**
     *

@@ -184,9 +184,9 @@ public class Constantes {
         EMPLOYEE_FORM("eAAdministrateEmployee.zul"),
         EMPLOYEE_EDIT_FORM("eAAdministrateEmployeeEdit.zul"),
         EMPLOYEE_CREATE_FORM("eAAdministrateEmployeeCreate.zul"),
-        CURRENCY_FORM("eACurrency.zul"),
-        CURRENCY_EDIT_FORM("eACurrencyEdit.zul"),
-        CURRENCY_CREATE_FORM("eACurrencyCreate.zul");
+        CURRENCY_FORM("pages/sales/eACurrency.zul"),
+        CURRENCY_EDIT_FORM("pages/sales/eACurrencyEdit.zul"),
+        CURRENCY_CREATE_FORM("pages/sales/eACurrencyCreate.zul");
 
         private final String form;
 

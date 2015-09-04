@@ -20,7 +20,7 @@
             rat.todate as toDate,
             rat.rate as rate
         FROM
-            T_BUS_CURRENCY cur INNER JOIN 
+            T_BUS_CURRENCY cur LEFT JOIN 
             T_BUS_CURRATES rat ON cur.id = rat.currencyid
         <where>
             cur.companyid = #{companyId}
@@ -41,15 +41,15 @@
 
     <insert id="insertCurrency" parameterType="Currency" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
         INSERT INTO T_BUS_CURRENCY
-            (name, companyid)
+            (name, companyid, curbase)
         VALUES
-            (#{curName}, #{companyId})
+            (#{currencyName}, #{companyId}, #{curBase})
     </insert>
 
     <update id="updateCurrency" parameterType="Currency">
         UPDATE T_BUS_CURRENCY
         SET
-            name = #{curName},
+            name = #{currencyName},
             curbase = #{curBase}
         WHERE
             id = #{id}
