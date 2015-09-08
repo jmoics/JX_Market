@@ -186,7 +186,10 @@ public class Constantes {
         EMPLOYEE_CREATE_FORM("eAAdministrateEmployeeCreate.zul"),
         CURRENCY_FORM("pages/sales/eACurrency.zul"),
         CURRENCY_EDIT_FORM("pages/sales/eACurrencyEdit.zul"),
-        CURRENCY_CREATE_FORM("pages/sales/eACurrencyCreate.zul");
+        CURRENCY_CREATE_FORM("pages/sales/eACurrencyCreate.zul"),
+        CURRENCYRATE_FORM("pages/sales/eACurrencyRate.zul"),
+        CURRENCYRATE_EDIT_FORM("pages/sales/eACurrencyRateEdit.zul"),
+        CURRENCYRATE_CREATE_FORM("pages/sales/eACurrencyRateCreate.zul");
 
         private final String form;
 
@@ -201,6 +204,7 @@ public class Constantes {
 
     public static final String ATTRIBUTE_RELOAD = "reloadPage";
     public static final String ATTRIBUTE_PARENTFORM = "parentForm";
+    public static final String ATTRIBUTE_PARENT_INCLUDEFORM = "parentIncludeForm";
     public static final String ATTRIBUTE_COMPANY = "company";
     public static final String ATTRIBUTE_PRODUCT = "product";
     public static final String ATTRIBUTE_PRODUCT_EDITIMAGE = "productEditImage";
@@ -214,6 +218,7 @@ public class Constantes {
     public static final String ATTRIBUTE_USER = "login";
     public static final String ATTRIBUTE_UBICATION = "ubication";
     public static final String ATTRIBUTE_CURRENCY = "currency";
+    public static final String ATTRIBUTE_CURRENCYRATE = "currencyRate";
 
 
     public static final Integer UBICATION_DEPARTMENT = 1;

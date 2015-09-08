@@ -41,11 +41,17 @@ public interface CurrencyMapper
      * @param _currencyRate
      * @return
      */
+    public CurrencyRate getCurrencyRate4Id(CurrencyRate _currencyRate);
+
+    /**
+     * @param _currencyRate
+     * @return
+     */
     public Integer insertCurrencyRate(CurrencyRate _currencyRate);
 
     /**
-     * @param _currency
+     * @param _currencyRate
      * @return
      */
-    public Integer updateCurrencyRate(CurrencyRate _currency);
+    public Integer updateCurrencyRate(CurrencyRate _currencyRate);
 }

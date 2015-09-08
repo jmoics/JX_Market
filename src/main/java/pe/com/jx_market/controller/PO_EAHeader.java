@@ -5,7 +5,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -30,6 +34,7 @@ import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Employee;
+import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.utilities.Constantes;
 
 /**
@@ -53,55 +58,68 @@ public class PO_EAHeader
     private DTO_Company company;
 
     @Override
-    public void doAfterCompose(final Window comp)
+    public void doAfterCompose(final Window _comp)
         throws Exception
     {
-        super.doAfterCompose(comp);
-        company = (DTO_Company) comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
-        loadPhoto(company.getDomain());
+        super.doAfterCompose(_comp);
+        this.company = (DTO_Company) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
+        loadPhoto(this.company.getDomain());
         setGraficoFoto();
 
-        final DTO_Employee employee = (DTO_Employee) desktop.getSession().getAttribute(Constantes.ATTRIBUTE_EMPLOYEE);
+        final DTO_Employee employee = (DTO_Employee)
+                        this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_EMPLOYEE);
         if (employee == null) {
             throw new RuntimeException("La sesion se perdio, vuelva a ingresar por favor");
         }
-        userdata.setValue(employee.getEmployeeLastName() + " " + employee.getEmployeeName());
+        this.userdata.setValue(employee.getEmployeeLastName() + " " + employee.getEmployeeName());
+
+        final DTO_User user = (DTO_User) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_USER);
+        this.desktop.getSession().setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, user.getLocale());
+
         getLocaleCombo();
-        cmbLocale.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+        this.cmbLocale.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
             @Override
-            public void onEvent(final Event event)
+            public void onEvent(final Event _event)
                 throws Exception
             {
-                final String localeValue = cmbLocale.getSelectedItem().getValue();
-                final Locale prefer_locale = new Locale(localeValue);
-                desktop.getSession().setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, prefer_locale);
+                final String localeValue = ((Combobox) _event.getTarget()).getSelectedItem().getValue();
+                if (localeValue != null) {
+                    final Locale locale;
+                    if (localeValue.indexOf("_") >= 0) {
+                        locale = new Locale(localeValue.split("_")[0], localeValue.split("_")[1]);
+                    } else {
+                        locale = new Locale(localeValue);
+                    }
+                    desktop.getSession().setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, locale);
+                }
+
                 //session.setAttribute("Demo_Locale", self.getSelectedIndex());
                 Executions.sendRedirect(null);
             }
-    });
+        });
     }
 
     private void setGraficoFoto()
     {
-        if (imgLogoByte != null) {
+        if (this.imgLogoByte != null) {
             try {
-                imaLogo.setContent(new AImage("foto", imgLogoByte));
+                this.imaLogo.setContent(new AImage("foto", this.imgLogoByte));
                 return;
             } catch (final IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
-        imaLogo.setSrc("/media/imagProd.gif");
+        this.imaLogo.setSrc("/media/imagProd.gif");
     }
 
     private void loadPhoto(final String name)
     {
         final File photo = getPhotoFile(name);
         if (!photo.exists()) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("No existe archivo de foto " + photo.getName());
+            if (this.logger.isDebugEnabled()) {
+                this.logger.debug("No existe archivo de foto " + photo.getName());
             }
-            imgLogoByte = null;
+            this.imgLogoByte = null;
             return;
         }
         if (logger.isDebugEnabled()) {
@@ -116,9 +134,9 @@ public class PO_EAHeader
             }
             bis.close();
             baos.close();
-            imgLogoByte = baos.toByteArray();
-            if (logger.isDebugEnabled()) {
-                logger.debug("Cargamos bytes en foto " + imgLogoByte.length);
+            this.imgLogoByte = baos.toByteArray();
+            if (this.logger.isDebugEnabled()) {
+                this.logger.debug("Cargamos bytes en foto " + this.imgLogoByte.length);
             }
         } catch (final IOException ex) {
             throw new RuntimeException(ex);
@@ -136,20 +154,39 @@ public class PO_EAHeader
         return new File(ruta);
     }
 
+    /**
+     *
+     */
     private void getLocaleCombo()
     {
+        final Locale currentLocale = (Locale) this.desktop.getSession()
+                        .getAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE);
         final Locale[] locales = Locale.getAvailableLocales();
+        final List<Locale> listLocales = Arrays.asList(locales);
+        Collections.sort(listLocales, new Comparator<Locale>()
+        {
+            @Override
+            public int compare(final Locale _o1,
+                               final Locale _o2)
+            {
+                return _o1.getDisplayLanguage(Locales.getCurrent())
+                                .compareTo(_o2.getDisplayLanguage(Locales.getCurrent()));
+
+            }
+        });
         final Set<String> setLocale = new HashSet<String>();
 
-        for (final Locale locale : locales) {
-            if (!setLocale.contains(locale.getLanguage())) {
-                setLocale.add(locale.getLanguage());
+        for (final Locale locale : listLocales) {
+            if (!setLocale.contains(locale.getLanguage() + "_" + locale.getCountry())) {
+                setLocale.add(locale.getLanguage() + "_" + locale.getCountry());
                 final Comboitem item = new Comboitem();
-                item.setValue(locale.getLanguage());
-                item.setLabel(locale.getDisplayLanguage(Locales.getCurrent()));
-                cmbLocale.appendChild(item);
-                if (Locales.getCurrent().getLanguage().equals(locale.getLanguage())) {
-                    cmbLocale.setSelectedItem(item);
+                item.setValue(locale.getLanguage() + "_" + locale.getCountry());
+                item.setLabel(locale.getDisplayLanguage(currentLocale) + " - "
+                                + locale.getDisplayCountry(currentLocale));
+                this.cmbLocale.appendChild(item);
+                if (currentLocale.getLanguage().equals(locale.getLanguage())
+                                && currentLocale.getCountry().equals(locale.getCountry())) {
+                    this.cmbLocale.setSelectedItem(item);
                 }
             }
         }
@@ -158,10 +195,10 @@ public class PO_EAHeader
     @Listen("onClick=#btnSalir")
     public void salir()
     {
-        desktop.getSession().removeAttribute("login");
-        desktop.getSession().removeAttribute("actualizar");
-        desktop.getSession().removeAttribute("company");
-        desktop.getSession().removeAttribute("employee");
+        this.desktop.getSession().removeAttribute("login");
+        this.desktop.getSession().removeAttribute("actualizar");
+        this.desktop.getSession().removeAttribute("company");
+        this.desktop.getSession().removeAttribute("employee");
         // getDesktop().getSession().removeAttribute("paginaActual");
         Executions.sendRedirect("eALogin.zul");
     }

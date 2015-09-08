@@ -80,15 +80,28 @@
         <result property="rate" column="rate" />
     </resultMap>
     
+    <select id="getCurrencyRate4Id" parameterType="CurrencyRate" resultType="CurrencyRate">
+        SELECT
+            cur.id as id,
+            cur.companyid as companyId,
+            cur.fromdate as fromDate,
+            cur.todate as toDate,
+            cur.rate as rate
+        FROM
+            T_BUS_CURRATES cur
+        WHERE
+            cur.id = #{id, jdbcType=INTEGER}
+    </select>
+    
     <insert id="insertCurrencyRate" parameterType="CurrencyRate" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
-        INSERT INTO T_BUS_CURRENCY
+        INSERT INTO T_BUS_CURRATES
             (companyid, currencyid, fromdate, todate, rate)
         VALUES
             (#{companyId}, #{currencyId}, #{fromDate}, #{toDate}, #{rate})
     </insert>
 
     <update id="updateCurrencyRate" parameterType="CurrencyRate">
-        UPDATE T_BUS_CURRENCY
+        UPDATE T_BUS_CURRATES
         SET
             fromdate = #{fromDate},
             todate = #{toDate},

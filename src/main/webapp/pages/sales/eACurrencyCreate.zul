@@ -1,7 +1,7 @@
 <?page title="JX_Market" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:html="http://www.w3.org/1999/xhtml">
 <window id="wEACC" apply="pe.com.jx_market.controller.PO_EACurrencyCreate" sizable="true"
-        width="500px" height="540px" position="center,center" closable="true"
+        width="600px" height="540px" position="center,center" closable="true"
         action="show: slideDown;hide: slideUp" sclass="s-window-content-popup">
     <style src="s-style.css"/>
     <tabbox hflex="1" vflex="1">
@@ -11,40 +11,47 @@
         </tabs>
         <tabpanels>
             <tabpanel>
-                <vbox height="100%" width="100%" sclass="s-vbox-popup">
-                    <div align="center" height="10%">
-                        <label zclass="z-south-header" sclass="s-header">
-                            ${labels.pe.com.jx_market.eACurrencyCreate.Title}
-                        </label>
-                    </div>
-                    <grid width="100%" fixedLayout="true" sclass="s-grid-popup">
-                        <auxhead>
-                            <auxheader label="${labels.pe.com.jx_market.eACurrencyCreate.SubTitle}" colspan="2" />
-                        </auxhead>
-                        <columns>
-                            <column hflex="1" />
-                            <column hflex="2" />
-                        </columns>
-                        <rows>
-                            <row>
-                                <label value="${labels.pe.com.jx_market.eACurrencyCreate.txtCurrencyName.Label}" />
-                                <textbox id="txtCurrencyName" width="60%" />
-                            </row>
-                            <row>
-                                <label value="${labels.pe.com.jx_market.eACurrencyCreate.cmbCurBase.Label}" />
-                                <combobox id="cmbCurBase" />
-                            </row>
-                        </rows>
-                    </grid>
-                    <hbox align="end" pack="end" hflex="1" vflex="1" sclass="s-hbox-popup">
-                        <button id="btnSave" label="${labels.pe.com.jx_market.eACurrencyCreate.btnSave.Label }"
-                            image="/media/filesave.png" />
-                        <button id="btnClose" label="${labels.pe.com.jx_market.eACurrencyCreate.btnClose.Label }"
-                            image="/media/cancel.png" />
-                    </hbox>
-                </vbox>
+                <borderlayout hflex="1" vflex="1" sclass="s-borderlayout-popup">
+                    <north height="6%" collapsible="false" sclass="s-north-popup"><!-- No recuerdo que es collapsible -->
+                        <div hflex="1" vflex="1" align="center">
+                            <label zclass="z-south-header" sclass="s-header">
+                                ${labels.pe.com.jx_market.eACurrencyCreate.Title}
+                            </label>
+                        </div>
+                    </north>
+                    <center autoscroll="true" sclass="s-center-popup">
+                        <grid width="100%" fixedLayout="true" sclass="s-grid-popup">
+                            <auxhead>
+                                <auxheader label="${labels.pe.com.jx_market.eACurrencyCreate.SubTitle}" colspan="2" />
+                            </auxhead>
+                            <columns>
+                                <column hflex="1" />
+                                <column hflex="2" />
+                            </columns>
+                            <rows>
+                                <row>
+                                    <label value="${labels.pe.com.jx_market.eACurrencyCreate.txtCurrencyName.Label}" />
+                                    <textbox id="txtCurrencyName" width="60%" />
+                                </row>
+                                <row>
+                                    <label value="${labels.pe.com.jx_market.eACurrencyCreate.cmbCurBase.Label}" />
+                                    <combobox id="cmbCurBase" />
+                                </row>
+                            </rows>
+                        </grid>
+                    </center>
+                    <south size="8%" sclass="s-south-popup">
+                        <hbox align="end" pack="end" hflex="1" vflex="1" sclass="s-hbox-popup">
+                            <button id="btnSave" label="${labels.pe.com.jx_market.eACurrencyCreate.btnSave.Label }"
+                                image="/media/filesave.png" />
+                            <button id="btnClose" label="${labels.pe.com.jx_market.eACurrencyCreate.btnClose.Label }"
+                                image="/media/cancel.png" />
+                        </hbox>
+                    </south>
+                </borderlayout>
             </tabpanel>
             <tabpanel>
+                <include id="incCurRate" hflex="1" />
             </tabpanel>
         </tabpanels>
     </tabbox>

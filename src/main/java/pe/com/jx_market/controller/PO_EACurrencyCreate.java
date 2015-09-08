@@ -1,5 +1,6 @@
 package pe.com.jx_market.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,11 +13,13 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Include;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.Currency;
+import pe.com.jx_market.domain.CurrencyRate;
 import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
@@ -47,11 +50,14 @@ public class PO_EACurrencyCreate
     private Textbox txtCurrencyName;
     @Wire
     private Window wEACC;
+    @Wire
+    private Include incCurRate;
     @WireVariable
     private BusinessService<Currency> currencyService;
     @WireVariable
     private Desktop desktop;
     private DTO_Company company;
+    private Currency currency;
     private PO_EACurrency currencyParentUI;
 
     @Override
@@ -60,12 +66,15 @@ public class PO_EACurrencyCreate
     {
         super.doAfterCompose(_comp);
 
+        this.currency = null;
         this.company = (DTO_Company) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
         buildActiveCombo(this.cmbCurBase);
         this.cmbCurBase.setSelectedIndex(1);
         // Obtenemos el controlador de la pantalla principal de marcas.
         final Map<?, ?> mapArg = this.desktop.getExecution().getArg();
         this.currencyParentUI = (PO_EACurrency) mapArg.get(Constantes.ATTRIBUTE_PARENTFORM);
+
+        this.incCurRate.setSrc(Constantes.Form.CURRENCYRATE_FORM.getForm());
     }
 
     /**
@@ -83,11 +92,15 @@ public class PO_EACurrencyCreate
             input.setAction(Constantes.V_REGISTER);
             final ServiceOutput<Currency> output = this.currencyService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
+                this.currency = newCur;
+                // asignamos la moneda como variable de sesion para obtenerla al crear
+                this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_CURRENCY, this.currency);
+                this.currency.setCurrencyRates(new ArrayList<CurrencyRate>());
                 if ((Boolean) this.cmbCurBase.getSelectedItem().getValue()) {
                     updateCurrencyBase(newCur.getId());
                 }
                 final int resp = alertaInfo(this.logger,
-                            Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyCreate.createCurrency.Info.Label"),
+                            Labels.getLabel("pe.com.jx_market.PO_EACurrencyCreate.createCurrency.Info.Label"),
                             Labels.getLabel("pe.com.jx_market.PO_EACurrencyCreate.createCurrency.Info.Label"), null);
                 if (resp == Messagebox.OK) {
                     this.currencyParentUI.searchCurrencies();
@@ -98,14 +111,14 @@ public class PO_EACurrencyCreate
                 }
             } else {
                 alertaError(this.logger,
-                                Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyCreate.createCurrency.Error.Label"),
-                                Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyCreate.createCurrency.Error.Label"),
+                                Labels.getLabel("pe.com.jx_market.PO_EACurrencyCreate.createCurrency.Error.Label"),
+                                Labels.getLabel("pe.com.jx_market.PO_EACurrencyCreate.createCurrency.Error.Label"),
                                 null);
             }
         } else {
             alertaInfo(this.logger,
-                            Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyCreate.createCurrency.Info2.Label"),
-                            Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyCreate.createCurrency.Info2.Label"), null);
+                            Labels.getLabel("pe.com.jx_market.PO_EACurrencyCreate.createCurrency.Info2.Label"),
+                            Labels.getLabel("pe.com.jx_market.PO_EACurrencyCreate.createCurrency.Info2.Label"), null);
         }
     }
 
@@ -134,8 +147,8 @@ public class PO_EACurrencyCreate
                                 null);
                     } else {
                         alertaError(this.logger,
-                                Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyCreate.createCurrency.Error2.Label"),
-                                Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyCreate.createCurrency.Error2.Label"),
+                                Labels.getLabel("pe.com.jx_market.PO_EACurrencyCreate.createCurrency.Error2.Label"),
+                                Labels.getLabel("pe.com.jx_market.PO_EACurrencyCreate.createCurrency.Error2.Label"),
                                 null);
                     }
                 }

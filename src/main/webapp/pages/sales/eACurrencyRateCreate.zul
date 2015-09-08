@@ -1,0 +1,44 @@
+<?page title="JX_Market" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+<window id="wEACRC" apply="pe.com.jx_market.controller.PO_EACurrencyRateCreate" sizable="true"
+        width="400px" height="340px" position="center,center" closable="true"
+        action="show: slideDown;hide: slideUp" sclass="s-window-content-popup">
+    <style src="s-style.css"/>
+    <vbox height="100%" width="100%" sclass="s-vbox-popup">
+        <div align="center" height="10%">
+            <label zclass="z-south-header" sclass="s-header">
+                ${labels.pe.com.jx_market.eACurrencyRateCreate.Title}
+            </label>
+        </div>
+        <grid width="100%" fixedLayout="true" sclass="s-grid-popup">
+            <auxhead>
+                <auxheader label="${labels.pe.com.jx_market.eACurrencyRateCreate.SubTitle}" colspan="2" />
+            </auxhead>
+            <columns>
+                <column hflex="1" />
+                <column hflex="2" />
+            </columns>
+            <rows>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eACurrencyRateCreate.datFromDate.Label}" />
+                    <datebox id="datFromDate" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eACurrencyRateCreate.datToDate.Label}" />
+                    <datebox id="datToDate" />
+                </row>
+                <row>
+                    <label value="${labels.pe.com.jx_market.eACurrencyRateCreate.decRate.Label}" />
+                    <decimalbox id="decRate" format="#,##0.##" locale="es_PE" />
+                </row>
+            </rows>
+        </grid>
+        <hbox align="end" pack="end" hflex="1" vflex="1" sclass="s-hbox-popup">
+            <button id="btnSave" label="${labels.pe.com.jx_market.eACurrencyRateCreate.btnSave.Label }"
+                image="/media/filesave.png" />
+            <button id="btnClose" label="${labels.pe.com.jx_market.eACurrencyRateCreate.btnClose.Label }"
+                image="/media/cancel.png" />
+        </hbox>
+    </vbox>
+</window>
+</zk>

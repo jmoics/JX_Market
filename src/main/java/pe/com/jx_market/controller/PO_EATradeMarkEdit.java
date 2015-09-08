@@ -26,7 +26,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
 public class PO_EATradeMarkEdit
     extends SecuredComposer<Window>
 {
-    static Log logger = LogFactory.getLog(PO_EAProductsCreate.class);
+    static Log logger = LogFactory.getLog(PO_EATradeMarkEdit.class);
     @Wire
     private Combobox cmbActive;
     @Wire

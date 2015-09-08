@@ -1,6 +1,7 @@
 package pe.com.jx_market.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,10 +59,13 @@ public class UserService
         final ServiceOutput<DTO_User> output = new ServiceOutput<DTO_User>();
         if (Constantes.V_LIST.equals(_input.getAction())) {
             final DTO_User user = _input.getObject();
-            output.setLista(this.userDAO.getUsers(user));
+            final List<DTO_User> lstUsers = this.userDAO.getUsers(user);
+            // buildLocaleFromString(lstUsers);
+            output.setLista(lstUsers);
             output.setErrorCode(Constantes.OK);
         } else if (Constantes.V_GET.equals(_input.getAction())) {
-            output.setObject(this.userDAO.getUser4Username(_input.getObject()));
+            final DTO_User user = this.userDAO.getUser4Username(_input.getObject());
+            output.setObject(user);
             output.setErrorCode(Constantes.OK);
         } else if (Constantes.V_REGISTER.equals(_input.getAction())) {
             final DTO_User user = _input.getObject();
@@ -172,4 +176,29 @@ public class UserService
         }
         return ret;
     }
+
+    /*@SuppressWarnings("unchecked")
+    private void buildLocaleFromString(final Object _user) {
+        if (_user instanceof List) {
+            final List<DTO_User> lstUsers = (List<DTO_User>) _user;
+            for (final DTO_User user : lstUsers) {
+                if (user.getLocaleStr().indexOf("_") >= 0) {
+                    final Locale loc = new Locale(user.getLocaleStr().split("_")[0], user.getLocaleStr().split("_")[1]);
+                    user.setLocale(loc);
+                } else {
+                    final Locale loc = new Locale(user.getLocaleStr());
+                    user.setLocale(loc);
+                }
+            }
+        } else if (_user instanceof DTO_User) {
+            final DTO_User user = (DTO_User) _user;
+            if (user.getLocaleStr().indexOf("_") >= 0) {
+                final Locale loc = new Locale(user.getLocaleStr().split("_")[0], user.getLocaleStr().split("_")[1]);
+                user.setLocale(loc);
+            } else {
+                final Locale loc = new Locale(user.getLocaleStr());
+                user.setLocale(loc);
+            }
+        }
+    }*/
 }

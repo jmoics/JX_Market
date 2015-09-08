@@ -14,6 +14,7 @@
             us.username as username,
             us.companyid as companyId,
             us.password as password,
+            us.locale as locale,
             rol.id as roleId,
             rol.name as roleName,
             rol.description as roleDescription,
@@ -35,6 +36,7 @@
             us.id as userId,
             us.username as username,
             us.companyid as companyId,
+            us.locale as locale,
             rol.id as roleId,
             rol.name as roleName,
             rol.description as roleDescription,
@@ -57,16 +59,17 @@
 
     <insert id="insertUser" parameterType="DTO_User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO T_SEG_USER
-            (username, password, companyid, roleid)
+            (username, password, companyid, roleid, locale)
         VALUES
-            (#{username}, #{password}, #{companyId}, #{roleId})
+            (#{username}, #{password}, #{companyId}, #{roleId}, #{locale})
     </insert>
 
     <update id="updateUser" parameterType="DTO_User">
         UPDATE T_SEG_USER
         SET
             username = #{username},
-            roleid = #{roleId}
+            roleid = #{roleId},
+            locale = #{locale}
         WHERE
             id = #{id}
         AND
@@ -89,6 +92,7 @@
         <result property="username" column="username" />
         <result property="password" column="password" />
         <result property="roleId" column="roleId" />
+        <result property="locale" column="locale" />
         <association property="role" column="roleId" javaType="DTO_Role" resultMap="roleResultMap">
         </association>
     </resultMap>

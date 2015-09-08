@@ -99,7 +99,7 @@ public class PO_EACurrencyEdit
                     updateCurrencyBase(this.currency.getId());
                 }
                 final int resp = alertaInfo(this.logger,
-                                Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyEdit.editCurrency.Info.Label",
+                                Labels.getLabel("pe.com.jx_market.PO_EACurrencyEdit.editCurrency.Info.Label",
                                                 new Object[] { this.currency.getCurrencyName() }),
                                 Labels.getLabel("pe.com.jx_market.PO_EACurrencyCreate.editCurrency.Info.Label"), null);
                 if (resp == Messagebox.OK) {
@@ -110,12 +110,12 @@ public class PO_EACurrencyEdit
                 }
             } else {
                 alertaError(this.logger,
-                                Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyEdit.editCurrency.Error.Label"),
-                                Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyEdit.editCurrency.Error.Label"), null);
+                                Labels.getLabel("pe.com.jx_market.PO_EACurrencyEdit.editCurrency.Error.Label"),
+                                Labels.getLabel("pe.com.jx_market.PO_EACurrencyEdit.editCurrency.Error.Label"), null);
             }
         } else {
-            alertaInfo(this.logger, Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyEdit.editCurrency.Info2.Label"),
-                            Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyEdit.editCurrency.Info2.Label"), null);
+            alertaInfo(this.logger, Labels.getLabel("pe.com.jx_market.PO_EACurrencyEdit.editCurrency.Info2.Label"),
+                            Labels.getLabel("pe.com.jx_market.PO_EACurrencyEdit.editCurrency.Info2.Label"), null);
         }
     }
 
@@ -140,12 +140,12 @@ public class PO_EACurrencyEdit
                     final ServiceOutput<Currency> output2 = this.currencyService.execute(input2);
                     if (Constantes.OK == output2.getErrorCode()) {
                         alertaInfo(this.logger, Constantes.EMPTY_STRING,
-                                Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyEdit.editCurrency.Info3.Label"),
+                                Labels.getLabel("pe.com.jx_market.PO_EACurrencyEdit.editCurrency.Info3.Label"),
                                 null);
                     } else {
                         alertaError(this.logger,
-                                Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyEdit.editCurrency.Error2.Label"),
-                                Labels.getLabel("pe.com.jx_market.PO_EAPCurrencyEdit.editCurrency.Error2.Label"),
+                                Labels.getLabel("pe.com.jx_market.PO_EACurrencyEdit.editCurrency.Error2.Label"),
+                                Labels.getLabel("pe.com.jx_market.PO_EACurrencyEdit.editCurrency.Error2.Label"),
                                 null);
                     }
                 }

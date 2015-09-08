@@ -1,5 +1,7 @@
 package pe.com.jx_market.domain;
 
+import java.util.Locale;
+
 /**
  * TODO comment!
  *
@@ -34,6 +36,14 @@ public class DTO_User
      *
      */
     private DTO_Role role;
+    /**
+     *
+     */
+    private String localeStr;
+    /**
+     *
+     */
+    private Locale locale;
 
     /**
      * Getter method for the variable {@link #id}.
@@ -154,4 +164,45 @@ public class DTO_User
     {
         this.role = _role;
     }
+
+    /**
+     * Getter method for the variable {@link #localeStr}.
+     *
+     * @return value of variable {@link #localeStr}
+     */
+    public final String getLocaleStr()
+    {
+        return this.localeStr;
+    }
+
+    /**
+     * Setter method for variable {@link #localeStr}.
+     *
+     * @param _localeStr value for variable {@link #localeStr}
+     */
+    public final void setLocaleStr(final String _localeStr)
+    {
+        this.localeStr = _localeStr;
+    }
+
+    /**
+     * Getter method for the variable {@link #locale}.
+     *
+     * @return value of variable {@link #locale}
+     */
+    public final Locale getLocale()
+    {
+        return this.locale;
+    }
+
+    /**
+     * Setter method for variable {@link #locale}.
+     *
+     * @param _locale value for variable {@link #locale}
+     */
+    public final void setLocale(final Locale _locale)
+    {
+        this.locale = _locale;
+    }
+
 }
