@@ -42,10 +42,12 @@ public class ServiceProvider
      * ingresamos los distintos beans a partir del xml applicationContext.
      * Además inicializamos la instancia del mapa de servicios que se irá
      * llenando mientras los servicios sean convocados.
+     *
+     * @param _context
      */
     private ServiceProvider(final WebApplicationContext _context)
     {
-        logger.info("ContextLoader - Starting Spring");
+        this.logger.info("ContextLoader - Starting Spring");
         this.serviceMap = new HashMap<String, BusinessService>();
         /*
          * if (properties != null) {
@@ -59,16 +61,19 @@ public class ServiceProvider
          */
     }
 
+    /**
+     * Esto se usaba cuando se creaba el WebApplicationContext directamente aqui.
+     */
     private ServiceProvider()
     {
-        logger.info("ContextLoader - Starting Spring");
+        this.logger.info("ContextLoader - Starting Spring");
         this.serviceMap = new HashMap<String, BusinessService>();
         if (properties != null) {
             PropertiesFactoryBean.setProperties(properties);
-            context = new ClassPathXmlApplicationContext(
+            this.context = new ClassPathXmlApplicationContext(
                             "applicationContext-jdbc-prop.xml");
         } else {
-            context = new ClassPathXmlApplicationContext("applicationContext-jdbc.xml");
+            this.context = new ClassPathXmlApplicationContext("applicationContext-jdbc.xml");
             System.out.println("test");
         }
     }
@@ -78,12 +83,12 @@ public class ServiceProvider
      * cual si no se encuentra dentro del mapa de servicios de la clase, éste
      * será buscado dentro de los beans del contexto de spring.
      *
-     * @param name id del bean en los beans de servicios.
+     * @param _name id del bean en los beans de servicios.
      * @return frontEnd el objeto que contiene el servicio.
      */
     public BusinessService getService(final String _name)
     {
-        logger.debug("Retrieving service " + _name + " via Spring");
+        this.logger.debug("Retrieving service " + _name + " via Spring");
         BusinessService srv = this.serviceMap.get(_name);
         BusinessService ret = srv;
         if (srv == null) {
@@ -140,5 +145,9 @@ public class ServiceProvider
     public static void setProperties(final Properties aProperties)
     {
         properties = aProperties;
+    }
+
+    public ApplicationContext getContext() {
+        return this.context;
     }
 }

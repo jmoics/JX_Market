@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.logging.Log;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Desktop;
@@ -13,13 +12,11 @@ import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
-import org.zkoss.zul.Messagebox;
 
 import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Employee;
@@ -40,7 +37,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
  */
 @VariableResolver(DelegatingVariableResolver.class)
 public abstract class SecuredComposer<T extends Component>
-    extends SelectorComposer<T>
+    extends CommonComposer<T>
 {
 
     private static final long serialVersionUID = 3258515575680520815L;
@@ -55,6 +52,8 @@ public abstract class SecuredComposer<T extends Component>
     private BusinessService<ParameterType> parameterTypeService;
     @WireVariable
     private BusinessService<Ubication> ubicationService;
+    @WireVariable
+    private BusinessService<String> passwordHashService;
 
     @Override
     public void doAfterCompose(final T _comp)
@@ -111,56 +110,15 @@ public abstract class SecuredComposer<T extends Component>
         }
     }
 
-    abstract String[] requiredResources();
-
     /**
-     * @param _logger
-     * @param _txt
-     * @param _txt2
-     * @param _t
      * @return
      */
-    public int alertaInfo(final Log _logger,
-                          final String _txt,
-                          final String _txt2,
-                          final Throwable _t)
-    {
-        int ret = 0;
-        if (_txt.length() > 0) {
-            ret = Messagebox.show(_txt, this.company.getBusinessName(), Messagebox.OK, Messagebox.INFORMATION);
-        }
-        if (_t != null) {
-            _logger.info(_txt2, _t);
-        } else {
-            _logger.info(_txt2);
-        }
-        return ret;
-    }
-
-    /**
-     * @param _logger
-     * @param _txt
-     * @param _txt2
-     * @param _t
-     */
-    public void alertaError(final Log _logger,
-                            final String _txt,
-                            final String _txt2,
-                            final Throwable _t)
-    {
-        if (_txt.length() > 0) {
-            Messagebox.show(_txt, this.company.getBusinessName(), Messagebox.OK, Messagebox.EXCLAMATION);
-        }
-        if (_t != null) {
-            _logger.error(_txt2, _t);
-        } else {
-            _logger.error(_txt2);
-        }
-    }
+    abstract String[] requiredResources();
 
     /**
      * @param _combo Combobox to add items.
      */
+    @Override
     public void buildActiveCombo(final Combobox _combo)
     {
         Comboitem item = new Comboitem();

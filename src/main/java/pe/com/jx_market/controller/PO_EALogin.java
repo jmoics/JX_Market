@@ -1,10 +1,11 @@
 package pe.com.jx_market.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -21,6 +22,8 @@ import pe.com.jx_market.domain.DTO_Employee;
 import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.Context;
+import pe.com.jx_market.utilities.JXMarketException;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
@@ -33,7 +36,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
  */
 @VariableResolver(DelegatingVariableResolver.class)
 public class PO_EALogin
-    extends SelectorComposer<Window>
+    extends CommonComposer<Window>
 {
 
     private static final long serialVersionUID = -1869322490528675540L;
@@ -87,11 +90,11 @@ public class PO_EALogin
     }
 
     /**
-     * @throws InterruptedException on error.
+     * @throws JXMarketException on jxmarket error.
      */
     @Listen("onClick = #btnIngresar; onOK = #txtPass; onOK = #txtUser")
     public void authenticate()
-        throws InterruptedException
+        throws JXMarketException
     {
         final DTO_User user = new DTO_User();
         user.setUsername(this.txtUser.getValue());
@@ -108,6 +111,22 @@ public class PO_EALogin
                     this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_EMPLOYEE, employee);
                     this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_USER, validado);
                     this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_COMPANY, company);
+
+                    // Probar y ver si es más conveniente tener este context y utilizarlo para almacenar variables
+                    // en vez de usar la sesion del webapp desktop.
+                    final Map<String, Object> sessionAttributes = new HashMap<String, Object>();
+                    sessionAttributes.put(Constantes.ATTRIBUTE_EMPLOYEE, employee);
+                    sessionAttributes.put(Constantes.SYSTEM_LANGUAGE, validado.getLocale());
+
+                    // Initialize context.
+                    final String key = encryption("" + validado.getId() + validado.getCompanyId());
+                    Context.begin(key, validado, company, sessionAttributes, null, null);
+                    this.desktop.getSession().setAttribute(Constantes.SYSTEM_KEY, key);
+
+                    // check if the user locale is the same that the current session locale.
+                    this.desktop.getSession().setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE,
+                                    Context.getThreadContext(this.desktop).getLocale());
+
                     if (company.getId().equals(Constantes.INSTITUCION_JX_MARKET)) {
                         Executions.sendRedirect("eESolicitudesPendientes.zul");
                     } else {

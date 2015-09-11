@@ -225,6 +225,9 @@ public class Constantes {
     public static final Integer UBICATION_PROVINCE = 2;
     public static final Integer UBICATION_DISTRICT = 3;
 
+    public static final String SYSTEM_LANGUAGE = "SYSTEM_LANGUAGE";
+    public static final String SYSTEM_KEY = "SYSTEM_KEY";
+
     /**
      * To use in future to check access.
      * @author jcuevas

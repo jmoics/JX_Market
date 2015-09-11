@@ -31,6 +31,7 @@ import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.FormatUtilities;
+import pe.com.jx_market.utilities.JXMarketException;
 
 @VariableResolver(DelegatingVariableResolver.class)
 public class PO_EACurrencyRate
@@ -64,12 +65,13 @@ public class PO_EACurrencyRate
         if (this.desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD) != null
                         && (Boolean) this.desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD)) {
             this.desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, false);
-            searchCurrenciesRates();
+            searchCurrencyRates();
         }
     }
 
     @Listen("onClick = #btnSearch")
-    public void searchCurrenciesRates()
+    public void searchCurrencyRates()
+        throws JXMarketException
     {
         this.lstCurrencyRate.getItems().clear();
         final List<CurrencyRate> lstCurRat = this.currency.getCurrencyRates();
@@ -86,6 +88,7 @@ public class PO_EACurrencyRate
             item.setAttribute(Constantes.ATTRIBUTE_CURRENCYRATE, curRat);
             item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>()
             {
+
                 @Override
                 public void onEvent(final Event _e)
                     throws UiException
@@ -98,6 +101,9 @@ public class PO_EACurrencyRate
         }
     }
 
+    /**
+     * @param _event
+     */
     @Listen("onClick = #btnEdit")
     public void runWindowEdit(final MouseEvent _event)
     {
@@ -119,6 +125,9 @@ public class PO_EACurrencyRate
         }
     }
 
+    /**
+     * @param _event
+     */
     @Listen("onClick = #btnCreate")
     public void runWindowCreate(final MouseEvent _event)
     {
@@ -147,7 +156,7 @@ public class PO_EACurrencyRate
      * @param _event
      */
     @Listen("onClick = #btnClose")
-    public void accionCerrar(final Event _event)
+    public void close(final Event _event)
     {
         this.wEACR.detach();
     }

@@ -171,10 +171,11 @@
             <artifactId>joda-time</artifactId>
             <version>2.7</version>
         </dependency>
+        <!-- used for toString methods -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.0</version>
+            <version>3.3.2</version>
         </dependency>
         <dependency>
             <groupId>postgresql</groupId>

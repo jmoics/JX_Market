@@ -34,8 +34,9 @@ import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Employee;
-import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.Context;
+import pe.com.jx_market.utilities.JXMarketException;
 
 /**
  * @author <._.>
@@ -45,7 +46,7 @@ public class PO_EAHeader
     extends SelectorComposer<Window>
 {
 
-    static Log logger = LogFactory.getLog(PO_EAHeader.class);
+    private final Log logger = LogFactory.getLog(PO_EAHeader.class);
     @WireVariable
     private Desktop desktop;
     @Wire
@@ -69,12 +70,9 @@ public class PO_EAHeader
         final DTO_Employee employee = (DTO_Employee)
                         this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_EMPLOYEE);
         if (employee == null) {
-            throw new RuntimeException("La sesion se perdio, vuelva a ingresar por favor");
+            throw new JXMarketException(PO_EAHeader.class, "La sesion se perdio, vuelva a ingresar por favor");
         }
         this.userdata.setValue(employee.getEmployeeLastName() + " " + employee.getEmployeeName());
-
-        final DTO_User user = (DTO_User) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_USER);
-        this.desktop.getSession().setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, user.getLocale());
 
         getLocaleCombo();
         this.cmbLocale.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
@@ -91,6 +89,7 @@ public class PO_EAHeader
                         locale = new Locale(localeValue);
                     }
                     desktop.getSession().setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, locale);
+                    Context.getThreadContext(desktop).setSessionAttribute(Constantes.SYSTEM_LANGUAGE, locale);
                 }
 
                 //session.setAttribute("Demo_Locale", self.getSelectedIndex());
@@ -99,6 +98,9 @@ public class PO_EAHeader
         });
     }
 
+    /**
+     *
+     */
     private void setGraficoFoto()
     {
         if (this.imgLogoByte != null) {
@@ -112,9 +114,14 @@ public class PO_EAHeader
         this.imaLogo.setSrc("/media/imagProd.gif");
     }
 
-    private void loadPhoto(final String name)
+    /**
+     * @param _name
+     * @throws JXMarketException on error
+     */
+    private void loadPhoto(final String _name)
+        throws JXMarketException
     {
-        final File photo = getPhotoFile(name);
+        final File photo = getPhotoFile(_name);
         if (!photo.exists()) {
             if (this.logger.isDebugEnabled()) {
                 this.logger.debug("No existe archivo de foto " + photo.getName());
@@ -122,8 +129,8 @@ public class PO_EAHeader
             this.imgLogoByte = null;
             return;
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Existe archivo de foto " + photo.getName());
+        if (this.logger.isDebugEnabled()) {
+            this.logger.debug("Existe archivo de foto " + photo.getName());
         }
         try {
             final BufferedInputStream bis = new BufferedInputStream(new FileInputStream(photo));
@@ -139,32 +146,40 @@ public class PO_EAHeader
                 this.logger.debug("Cargamos bytes en foto " + this.imgLogoByte.length);
             }
         } catch (final IOException ex) {
-            throw new RuntimeException(ex);
+            throw new JXMarketException("Error in file reading", ex);
         }
     }
 
-    private File getPhotoFile(final String name)
+    /**
+     * @param _name
+     * @return File.
+     */
+    private File getPhotoFile(final String _name)
     {
         String ruta;
         if (System.getProperty("os.name").contains("Windows")) {
-            ruta = Constantes.RUTA_IMAGENES_WINDOWS + File.separator + name;
+            ruta = Constantes.RUTA_IMAGENES_WINDOWS + File.separator + _name;
         } else {
-            ruta = Constantes.RUTA_IMAGENES + File.separator + name;
+            ruta = Constantes.RUTA_IMAGENES + File.separator + _name;
         }
         return new File(ruta);
     }
 
     /**
+     * @throws JXMarketException on error.
      *
      */
     private void getLocaleCombo()
+        throws JXMarketException
     {
-        final Locale currentLocale = (Locale) this.desktop.getSession()
-                        .getAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE);
+        /** TODO si se separa el lenguaje del locale esta parte cambiaria*/
+        final Locale currentLocale = (Locale) Context.getThreadContext(this.desktop)
+                        .getSessionAttribute(Constantes.SYSTEM_LANGUAGE);
         final Locale[] locales = Locale.getAvailableLocales();
         final List<Locale> listLocales = Arrays.asList(locales);
         Collections.sort(listLocales, new Comparator<Locale>()
         {
+
             @Override
             public int compare(final Locale _o1,
                                final Locale _o2)
@@ -192,13 +207,18 @@ public class PO_EAHeader
         }
     }
 
+    /**
+     * @throws JXMarketException on error.
+     */
     @Listen("onClick=#btnSalir")
-    public void salir()
+    public void logout()
+        throws JXMarketException
     {
         this.desktop.getSession().removeAttribute("login");
         this.desktop.getSession().removeAttribute("actualizar");
         this.desktop.getSession().removeAttribute("company");
         this.desktop.getSession().removeAttribute("employee");
+        Context.getThreadContext(this.desktop).finalize();
         // getDesktop().getSession().removeAttribute("paginaActual");
         Executions.sendRedirect("eALogin.zul");
     }

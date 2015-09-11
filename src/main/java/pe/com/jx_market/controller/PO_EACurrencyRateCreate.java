@@ -21,6 +21,7 @@ import pe.com.jx_market.domain.CurrencyRate;
 import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.Constantes;
+import pe.com.jx_market.utilities.JXMarketException;
 import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
@@ -60,10 +61,12 @@ public class PO_EACurrencyRateCreate
     }
 
     /**
+     * @throws JXMarketException on error.
      *
      */
     @Listen("onClick = #btnSave")
     public void createCurrencyRate()
+        throws JXMarketException
     {
         if (this.datFromDate != null && this.datToDate != null && this.decRate != null) {
             final CurrencyRate newCurRat = new CurrencyRate();
@@ -77,12 +80,13 @@ public class PO_EACurrencyRateCreate
             final ServiceOutput<CurrencyRate> output = this.currencyRateService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 this.currency.getCurrencyRates().add(newCurRat);
-                final int resp = alertaInfo(this.logger,
+                final int resp = alertaInfo(
+                            this.logger,
                             Labels.getLabel("pe.com.jx_market.PO_EACurrencyRateCreate.createCurrencyRate.Info.Label"),
                             Labels.getLabel("pe.com.jx_market.PO_EACurrencyRateCreate.createCurrencyRate.Info.Label"),
                             null);
                 if (resp == Messagebox.OK) {
-                    this.currencyRateParentUI.searchCurrenciesRates();
+                    this.currencyRateParentUI.searchCurrencyRates();
                     // desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
                     // ContextLoader.recargar(desktop,
                     // Constantes.Form.TRADEMARK_FORM.getForm());

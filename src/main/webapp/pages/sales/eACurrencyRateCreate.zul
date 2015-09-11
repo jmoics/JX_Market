@@ -29,7 +29,7 @@
                 </row>
                 <row>
                     <label value="${labels.pe.com.jx_market.eACurrencyRateCreate.decRate.Label}" />
-                    <decimalbox id="decRate" format="#,##0.##" locale="es_PE" />
+                    <decimalbox id="decRate" />
                 </row>
             </rows>
         </grid>

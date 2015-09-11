@@ -18,16 +18,17 @@ public class FormatUtilities
 {
     /**
      * @return a format used to format BigDecimal for the user interface
-     * @param _desktop ui desktop to get the locale.
      * @param _maxFrac maximum Faction, null to deactivate
      * @param _minFrac minimum Faction, null to activate
-     * @throws EFapsException on error
+     * @throws JXMarketException on error
      */
     public static DecimalFormat getFormatter(final Desktop _desktop,
                                              final Integer _minFrac,
                                              final Integer _maxFrac)
+        throws JXMarketException
     {
-        final Locale locale = (Locale) _desktop.getSession().getAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE);
+        // final Locale locale = Context.getThreadContext().getLocale();
+        final Locale locale = (Locale) Context.getThreadContext(_desktop).getSessionAttribute(Constantes.SYSTEM_LANGUAGE);
         final DecimalFormat formater = (DecimalFormat) NumberFormat.getInstance(locale);
         if (_maxFrac != null) {
             formater.setMaximumFractionDigits(_maxFrac);
