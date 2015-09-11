@@ -16,7 +16,7 @@
             </auxhead>
             <columns>
                 <column hflex="1" />
-                <column hflex="3" />
+                <column hflex="2" />
             </columns>
             <rows>
                 <row>

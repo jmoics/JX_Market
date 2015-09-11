@@ -62,11 +62,7 @@ public class PO_EACurrencyRate
         super.doAfterCompose(_comp);
 
         this.company = (DTO_Company) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
-        if (this.desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD) != null
-                        && (Boolean) this.desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD)) {
-            this.desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, false);
-            searchCurrencyRates();
-        }
+        searchCurrencyRates();
     }
 
     @Listen("onClick = #btnSearch")
@@ -74,6 +70,9 @@ public class PO_EACurrencyRate
         throws JXMarketException
     {
         this.lstCurrencyRate.getItems().clear();
+        if (this.currency == null) {
+            this.currency = (Currency) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_CURRENCY);
+        }
         final List<CurrencyRate> lstCurRat = this.currency.getCurrencyRates();
         int columnNumber = 1;
         for (final CurrencyRate curRat : lstCurRat) {
@@ -85,6 +84,7 @@ public class PO_EACurrencyRate
             cell = new Listcell(curRat.getToDate().toString(DateTimeFormat.shortDate()));
             item.appendChild(cell);
             cell = new Listcell(FormatUtilities.getFormatter(this.desktop, 2, 4).format(curRat.getRate()));
+            item.appendChild(cell);
             item.setAttribute(Constantes.ATTRIBUTE_CURRENCYRATE, curRat);
             item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>()
             {
@@ -135,8 +135,6 @@ public class PO_EACurrencyRate
             this.currency = (Currency) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_CURRENCY);
         }
         if (this.currency != null) {
-            this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_CURRENCY);
-            this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_CURRENCY, this.currency);
             final Map<String, Object> dataArgs = new HashMap<String, Object>();
             dataArgs.put(Constantes.ATTRIBUTE_PARENTFORM, this);
             final Window w = (Window) Executions.createComponents(Constantes.Form.CURRENCYRATE_CREATE_FORM.getForm(),
@@ -158,6 +156,7 @@ public class PO_EACurrencyRate
     @Listen("onClick = #btnClose")
     public void close(final Event _event)
     {
+        this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_CURRENCY);
         this.wEACR.detach();
     }
 

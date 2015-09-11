@@ -67,9 +67,9 @@ public class PO_EACurrencyRateEdit
      */
     private void loadData()
     {
-        this.datFromDate.setValue(currencyRate.getFromDate().toDate());
-        this.datToDate.setValue(currencyRate.getToDate().toDate());
-        this.decRate.setValue(currencyRate.getRate());
+        this.datFromDate.setValue(this.currencyRate.getFromDate().toDate());
+        this.datToDate.setValue(this.currencyRate.getToDate().toDate());
+        this.decRate.setValue(this.currencyRate.getRate());
     }
 
     @Listen("onClick = #btnSave")
@@ -86,20 +86,26 @@ public class PO_EACurrencyRateEdit
             final ServiceOutput<CurrencyRate> output = this.currencyRateService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 final int resp = alertaInfo(
-                                this.logger,
+                                logger,
                                 Labels.getLabel("pe.com.jx_market.PO_EACurrencyRateEdit.editCurrencyRate.Info.Label",
                                                 new Object[] { this.currencyRate.getFromDate().toString(
                                                                 DateTimeFormat.shortDate())
                                                                 + " - "
                                                                 + this.currencyRate.getToDate().toString(
                                                                 DateTimeFormat.shortDate()) }),
-                                Labels.getLabel("pe.com.jx_market.PO_EACurrencyRateCreate.editCurrencyRate.Info.Label"),
+                                Labels.getLabel("pe.com.jx_market.PO_EACurrencyRateEdit.editCurrencyRate.Info.Label",
+                                                new Object[] { this.currencyRate.getFromDate().toString(
+                                                                DateTimeFormat.shortDate())
+                                                                + " - "
+                                                                + this.currencyRate.getToDate().toString(
+                                                                DateTimeFormat.shortDate()) }),
                                 null);
                 if (resp == Messagebox.OK) {
                     this.currencyRateParentUI.searchCurrencyRates();
                     // desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, true);
                     // ContextLoader.recargar(desktop,
                     // Constantes.Form.TRADEMARK_FORM.getForm());
+                    this.wEACRE.detach();
                 }
             } else {
                 alertaError(logger,

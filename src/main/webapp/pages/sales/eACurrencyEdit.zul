@@ -45,6 +45,7 @@
                 </vbox>
             </tabpanel>
             <tabpanel>
+                <include id="incCurRate" hflex="1" />
             </tabpanel>
         </tabpanels>
     </tabbox>

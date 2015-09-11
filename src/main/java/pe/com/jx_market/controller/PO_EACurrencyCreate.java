@@ -93,7 +93,7 @@ public class PO_EACurrencyCreate
             final ServiceOutput<Currency> output = this.currencyService.execute(input);
             if (output.getErrorCode() == Constantes.OK) {
                 this.currency = newCur;
-                // asignamos la moneda como variable de sesion para obtenerla al crear
+                // asignamos la moneda como variable de sesion para obtenerla al crear tipos de cambio
                 this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_CURRENCY, this.currency);
                 this.currency.setCurrencyRates(new ArrayList<CurrencyRate>());
                 if ((Boolean) this.cmbCurBase.getSelectedItem().getValue()) {
@@ -162,6 +162,7 @@ public class PO_EACurrencyCreate
     @Listen("onClick = #btnClose")
     public void accionCerrar(final Event _event)
     {
+        this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_CURRENCY);
         this.wEACC.detach();
     }
 

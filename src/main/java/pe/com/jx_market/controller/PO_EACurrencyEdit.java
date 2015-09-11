@@ -13,6 +13,7 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Include;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
@@ -34,6 +35,8 @@ public class PO_EACurrencyEdit
     @Wire
     private Textbox txtCurrencyName;
     @Wire
+    private Include incCurRate;
+    @Wire
     private Window wEACE;
     @WireVariable
     private BusinessService<Currency> currencyService;
@@ -54,10 +57,11 @@ public class PO_EACurrencyEdit
         if (this.currency == null) {
             alertaInfo(this.logger, "", "No se encontro producto, retornando a busqueda", null);
         } else {
-            this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_CURRENCY);
+            // this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_CURRENCY);
             // Obtenemos el controlador de la pantalla principal de monedas.
             final Map<?, ?> mapArg = this.desktop.getExecution().getArg();
             this.currencyParentUI = (PO_EACurrency) mapArg.get(Constantes.ATTRIBUTE_PARENTFORM);
+            this.incCurRate.setSrc(Constantes.Form.CURRENCYRATE_FORM.getForm());
             loadData();
         }
     }
@@ -159,6 +163,7 @@ public class PO_EACurrencyEdit
     @Listen("onClick = #btnClose")
     public void accionCerrar(final Event _event)
     {
+        this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_CURRENCY);
         this.wEACE.detach();
     }
 

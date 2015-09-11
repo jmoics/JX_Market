@@ -13,6 +13,7 @@
         <center autoscroll="true" sclass="s-center-popup">
             <listbox id="lstCurrencyRate" sclass="employee-list" vflex="1" hflex="1">
                 <listhead>
+                    <listheader label="Nº" id="headNumber" hflex="1"/>
                     <listheader label="${labels.pe.com.jx_market.eACurrencyRate.fromDate.Label}" hflex="1" />
                     <listheader label="${labels.pe.com.jx_market.eACurrencyRate.toDate.Label}" hflex="1" />
                     <listheader label="${labels.pe.com.jx_market.eACurrencyRate.rate.Label}" hflex="1" />
