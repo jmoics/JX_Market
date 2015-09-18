@@ -73,31 +73,35 @@ public class PO_EACurrencyRate
         if (this.currency == null) {
             this.currency = (Currency) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_CURRENCY);
         }
-        final List<CurrencyRate> lstCurRat = this.currency.getCurrencyRates();
-        int columnNumber = 1;
-        for (final CurrencyRate curRat : lstCurRat) {
-            final Listitem item = new Listitem();
-            Listcell cell = new Listcell("" + columnNumber);
-            item.appendChild(cell);
-            cell = new Listcell(curRat.getFromDate().toString(DateTimeFormat.shortDate()));
-            item.appendChild(cell);
-            cell = new Listcell(curRat.getToDate().toString(DateTimeFormat.shortDate()));
-            item.appendChild(cell);
-            cell = new Listcell(FormatUtilities.getFormatter(this.desktop, 2, 4).format(curRat.getRate()));
-            item.appendChild(cell);
-            item.setAttribute(Constantes.ATTRIBUTE_CURRENCYRATE, curRat);
-            item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>()
-            {
-
-                @Override
-                public void onEvent(final Event _e)
-                    throws UiException
+        if (this.currency != null) {
+            final List<CurrencyRate> lstCurRat = this.currency.getCurrencyRates();
+            int columnNumber = 1;
+            for (final CurrencyRate curRat : lstCurRat) {
+                final Listitem item = new Listitem();
+                Listcell cell = new Listcell("" + columnNumber);
+                item.appendChild(cell);
+                cell = new Listcell(curRat.getFromDate().toString(DateTimeFormat.shortDate()));
+                item.appendChild(cell);
+                cell = new Listcell(curRat.getToDate().toString(DateTimeFormat.shortDate()));
+                item.appendChild(cell);
+                cell = new Listcell(FormatUtilities.getFormatter(this.desktop, 2, 4).format(curRat.getRate()));
+                item.appendChild(cell);
+                item.setAttribute(Constantes.ATTRIBUTE_CURRENCYRATE, curRat);
+                item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>()
                 {
-                    runWindowEdit((MouseEvent) _e);
-                }
-            });
-            this.lstCurrencyRate.appendChild(item);
-            columnNumber++;
+
+                    @Override
+                    public void onEvent(final Event _e)
+                        throws UiException
+                    {
+                        runWindowEdit((MouseEvent) _e);
+                    }
+                });
+                this.lstCurrencyRate.appendChild(item);
+                columnNumber++;
+            }
+        } else {
+            // Create Initial Mode
         }
     }
 

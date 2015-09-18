@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.UiException;
@@ -114,22 +113,6 @@ public abstract class SecuredComposer<T extends Component>
      * @return
      */
     abstract String[] requiredResources();
-
-    /**
-     * @param _combo Combobox to add items.
-     */
-    @Override
-    public void buildActiveCombo(final Combobox _combo)
-    {
-        Comboitem item = new Comboitem();
-        item.setLabel(Labels.getLabel("pe.com.jx_market.Active.TRUE"));
-        item.setValue(Constantes.STB_ACTIVO);
-        _combo.appendChild(item);
-        item = new Comboitem();
-        item.setLabel(Labels.getLabel("pe.com.jx_market.Active.FALSE"));
-        item.setValue(Constantes.STB_INACTIVO);
-        _combo.appendChild(item);
-    }
 
     /**
      * @param _combo UI Combobox to add the parameters.

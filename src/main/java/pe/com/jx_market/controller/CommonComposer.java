@@ -42,6 +42,7 @@ public abstract class CommonComposer<T extends Component>
         throws Exception
     {
         super.doAfterCompose(_comp);
+        this.company = (DTO_Company) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
     }
 
     /**
