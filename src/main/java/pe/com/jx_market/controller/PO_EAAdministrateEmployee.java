@@ -123,10 +123,13 @@ public class PO_EAAdministrateEmployee
             final StringBuilder strBuilder = new StringBuilder();
             final Map<Integer, Ubication> mapUbi = (Map<Integer, Ubication>) this.desktop.getSession()
                             .getAttribute(Constantes.ATTRIBUTE_UBICATION);
-            strBuilder.append(mapUbi.get(employee.getDepartmentId()).getName()).append(" - ")
-                        .append(mapUbi.get(employee.getProvinceId()).getName()).append(" - ")
-                        .append(mapUbi.get(employee.getDistrictId()).getName());
-            this.lblUbication.setValue(strBuilder.toString());
+            if (employee.getDepartmentId() != null && employee.getProvinceId() != null
+                            && employee.getDistrictId() != null) {
+                strBuilder.append(mapUbi.get(employee.getDepartmentId()).getName()).append(" - ")
+                            .append(mapUbi.get(employee.getProvinceId()).getName()).append(" - ")
+                            .append(mapUbi.get(employee.getDistrictId()).getName());
+                this.lblUbication.setValue(strBuilder.toString());
+            }
         }
     }
 

@@ -112,8 +112,9 @@ public class PO_EALogin
                     this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_USER, validado);
                     this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_COMPANY, company);
 
-                    // Probar y ver si es más conveniente tener este context y utilizarlo para almacenar variables
-                    // en vez de usar la sesion del webapp desktop.
+                    /** TODO
+                     * Probar y ver si es más conveniente tener este context y utilizarlo para almacenar variables
+                       en vez de usar la sesion del webapp desktop. */
                     final Map<String, Object> sessionAttributes = new HashMap<String, Object>();
                     sessionAttributes.put(Constantes.ATTRIBUTE_EMPLOYEE, employee);
                     sessionAttributes.put(Constantes.SYSTEM_LANGUAGE, validado.getLocale());
