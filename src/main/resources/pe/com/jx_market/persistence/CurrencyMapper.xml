@@ -15,6 +15,7 @@
             cur.name as currencyName,
             cur.curbase as curBase,
             rat.id as rateCurrId,
+            rat.currencyid as currencyRatId,
             rat.companyid as ratCompanyId,
             rat.fromdate as fromDate,
             rat.todate as toDate,
@@ -74,7 +75,7 @@
     <resultMap id="rateCurrencyResultMap" type="CurrencyRate">
         <id property="id" column="rateCurrId" />
         <result property="companyId" column="ratCompanyId" />
-        <result property="currencyId" column="currencyId" />
+        <result property="currencyId" column="currencyRatId" />
         <result property="fromDate" column="fromDate" />
         <result property="toDate" column="toDate" />
         <result property="rate" column="rate" />

@@ -161,7 +161,11 @@ public class PO_EACurrencyRate
     public void close(final Event _event)
     {
         this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_CURRENCY);
-        this.wEACR.detach();
+        final PO_EACurrencyEdit editCurForm = (PO_EACurrencyEdit) this.desktop.getSession()
+                        .getAttribute(Constantes.ATTRIBUTE_PARENT_INCLUDEFORM);
+        this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_PARENT_INCLUDEFORM);
+        editCurForm.accionCerrar(_event);
+        //this.wEACR.getParent().getPage().getFellow("wEACE").detach();
     }
 
     @Override

@@ -62,6 +62,8 @@ public class PO_EACurrencyEdit
             final Map<?, ?> mapArg = this.desktop.getExecution().getArg();
             this.currencyParentUI = (PO_EACurrency) mapArg.get(Constantes.ATTRIBUTE_PARENTFORM);
             this.incCurRate.setSrc(Constantes.Form.CURRENCYRATE_FORM.getForm());
+            // se agrega el controlador de este controlador a la sesion para su uso en el include de tipo de cambio
+            this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_PARENT_INCLUDEFORM, this);
             loadData();
         }
     }
