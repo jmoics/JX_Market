@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.jx_market.persistence.PricelistMapper">
+
+    <cache />
+
+    <!-- MANTENIMIENTO DE PRECIOS -->
+
+    <select id="getPricelistRetail" parameterType="PricelistRetail" resultMap="pricelistRetailResultMap">
+        SELECT
+            pr.id as pricelistId,
+            pr.productid as productId,
+            pr.validfrom as validFrom,
+            pr.validto as validTo,
+            pr.price as price,
+            pr.currencyid as currencyId,
+            cu.name as currencyName,
+            cu.curbase as curBase
+        FROM
+            T_BUS_PRICELIST pr INNER JOIN
+            T_BUS_PRICELISTRETAIL prt ON pr.id = prt.id LEFT JOIN
+            T_BUS_CURRENCY cu ON pr.currencyid = cu.id
+        <where>
+            pr.productid = #{productId}
+        </where>
+    </select>
+
+    <select id="getPricelistCost" parameterType="PricelistCost" resultMap="pricelistCostResultMap">
+        SELECT
+            pr.id as pricelistId,
+            pr.productid as productId,
+            pr.validfrom as validFrom,
+            pr.validto as validTo,
+            pr.price as price,
+            pr.currencyid as currencyId,
+            cu.name as currencyName,
+            cu.curbase as curBase
+        FROM
+            T_BUS_PRICELIST pr INNER JOIN
+            T_BUS_PRICELISTCOST prc ON pr.id = prc.id LEFT JOIN
+            T_BUS_CURRENCY cu ON pr.currencyid = cu.id
+        <where>
+            pr.productid = #{productId}
+        </where>
+    </select>
+    
+    <select id="getPricelist4Id" parameterType="AbstractPricelist" resultType="AbstractPricelist">
+        SELECT
+            pr.id as pricelistId,
+            pr.productid as productId,
+            pr.validfrom as validFrom,
+            pr.validto as validTo,
+            pr.price as price
+        FROM
+            T_BUS_PRICELIST pr
+        <where>
+            pr.id = #{id, jdbcType=INTEGER}
+        </where>
+    </select>
+
+    <insert id="insertPricelist" parameterType="AbstractPricelist" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+        INSERT INTO T_BUS_PRICELIST
+            (productid, validfrom, validto, price, currencyid)
+        VALUES
+            (#{productId}, #{validFrom}, #{validTo}, #{price}, #{currency.id})
+    </insert>
+    
+    <insert id="insertPricelistRetail" parameterType="PricelistRetail" >
+        INSERT INTO T_BUS_PRICELISTRETAIL
+            (id)
+        VALUES
+            (#{id})
+    </insert>
+    
+    <insert id="insertPricelistCost" parameterType="PricelistCost" >
+        INSERT INTO T_BUS_PRICELISTCOST
+            (id)
+        VALUES
+            (#{id})
+    </insert>
+
+    <update id="updatePricelist" parameterType="PricelistRetail">
+        UPDATE T_NEG_PRICELIST
+        SET
+            price = #{price},
+            currencyid = #{currencyId}
+        WHERE
+            id = #{id}
+    </update>
+    
+    <!-- <update id="updatePricelistRetail" parameterType="PricelistRetail">
+    </update>
+    
+    <update id="updatePricelistCost" parameterType="PricelistCost">
+    </update> -->
+
+    <delete id="deletePricelist" parameterType="PricelistRetail">
+      DELETE FROM
+         T_NEG_PRICELIST
+      WHERE
+            id = #{id}
+    </delete>
+    
+    <resultMap id="pricelistRetailResultMap" type="PricelistRetail">
+        <id property="id" column="pricelistId" />
+        <result property="productId" column="productId" />
+        <result property="validFrom" column="validFrom" />
+        <result property="validTo" column="validTo" />
+        <result property="price" column="price" />
+        <association property="currency" column="currencyId" javaType="Currency" resultMap="currencyResultMap">
+        </association>
+    </resultMap>
+    
+    <resultMap id="pricelistCostResultMap" type="PricelistCost">
+        <id property="id" column="pricelistId" />
+        <result property="productId" column="productId" />
+        <result property="validFrom" column="validFrom" />
+        <result property="validTo" column="validTo" />
+        <result property="price" column="price" />
+        <association property="currency" column="currencyId" javaType="Currency" resultMap="currencyResultMap">
+        </association>
+    </resultMap>
+    <resultMap id="currencyResultMap" type="Currency">
+        <id property="id" column="currencyId" />
+        <result property="currencyName" column="currencyName" />
+        <result property="curBase" column="curBase" />
+    </resultMap>
+
+</mapper>

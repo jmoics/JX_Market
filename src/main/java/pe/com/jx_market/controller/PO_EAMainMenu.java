@@ -35,17 +35,17 @@ public class PO_EAMainMenu
      */
     public static final Map<String, String> MENU_MAP = new HashMap<String, String>();
     {
-        PO_EAMainMenu.MENU_MAP.put("id_option_prod_categ", "eACategory.zul");
-        PO_EAMainMenu.MENU_MAP.put("id_option_prod_products", "eAProducts.zul");
-        PO_EAMainMenu.MENU_MAP.put("id_option_prod_tradeMark", "eATradeMark.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_prod_categ", Constantes.Form.CATEGORY_FORM.getForm());
+        PO_EAMainMenu.MENU_MAP.put("id_option_prod_products", Constantes.Form.PRODUCTS_FORM.getForm());
+        PO_EAMainMenu.MENU_MAP.put("id_option_prod_tradeMark", Constantes.Form.TRADEMARK_FORM.getForm());
         PO_EAMainMenu.MENU_MAP.put("id_option_prod_amount", "");
         PO_EAMainMenu.MENU_MAP.put("id_option_prod_inventory", "");
         PO_EAMainMenu.MENU_MAP.put("id_option_sales_currency", Constantes.Form.CURRENCY_FORM.getForm());
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_areas", "eAAdministrateArea.zul");
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_emp", "eAAdministrateEmployee.zul");
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perf", "eAAdministrateRole.zul");
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_mod", "eAAdministrateModule.zul");
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perfi_module", "eAAdministrateRoleModule.zul");
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_areas", Constantes.Form.AREA_FORM.getForm());
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_emp", Constantes.Form.EMPLOYEE_FORM.getForm());
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perf", Constantes.Form.ROLE_FORM.getForm());
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_mod", Constantes.Form.MODULE_FORM.getForm());
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perfi_module", Constantes.Form.ROLEMODULE_FORM.getForm());
         PO_EAMainMenu.MENU_MAP.put("id_option_chgpass", "eACambiarContrasenia.zul");
     }
 

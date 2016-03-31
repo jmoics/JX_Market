@@ -31,6 +31,7 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Image;
+import org.zkoss.zul.Include;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -85,6 +86,10 @@ public class PO_EAProductsEdit
     @Wire
     private Listbox lstImages;
     //private byte[] imgProducto;
+    @Wire
+    private Include incPricelistRetail;
+    @Wire
+    private Include incPricelistCost;
     @WireVariable
     private BusinessService<DTO_Product> productService;
     @WireVariable
@@ -119,11 +124,16 @@ public class PO_EAProductsEdit
         if (this.product == null) {
             alertaInfo(this.logger, "", "No se encontro producto, retornando a busqueda", null);
         } else {
-            this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_PRODUCT);
+            // this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_PRODUCT);
             this.tree.setCheckmark(true);
             this.tree.setMultiple(true);
             loadData();
             buildTradeMarkCombo();
+
+            this.incPricelistRetail.setAttribute(Constantes.V_REGISTERPRICE, Constantes.PRICELIST_RETAIL);
+            this.incPricelistRetail.setSrc(Constantes.Form.PRICELIST_FORM.getForm());
+            this.incPricelistCost.setAttribute(Constantes.V_REGISTERPRICE, Constantes.PRICELIST_COST);
+            this.incPricelistCost.setSrc(Constantes.Form.PRICELIST_FORM.getForm());
 
             // Obtenemos el controlador de la pantalla principal de marcas.
             final Map<?, ?> mapArg = this.desktop.getExecution().getArg();
@@ -281,6 +291,7 @@ public class PO_EAProductsEdit
     {
         // ContextLoader.recargar(desktop,
         // Constantes.Form.PRODUCTS_FORM.getForm());
+        this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_PRODUCT);
         this.wEAEP.detach();
     }
 

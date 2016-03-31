@@ -160,11 +160,16 @@ public class PO_EACurrencyRate
     @Listen("onClick = #btnClose")
     public void close(final Event _event)
     {
-        this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_CURRENCY);
-        final PO_EACurrencyEdit editCurForm = (PO_EACurrencyEdit) this.desktop.getSession()
+        final Object curForm = this.desktop.getSession()
                         .getAttribute(Constantes.ATTRIBUTE_PARENT_INCLUDEFORM);
         this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_PARENT_INCLUDEFORM);
-        editCurForm.accionCerrar(_event);
+        if (curForm instanceof PO_EACurrencyEdit) {
+            final PO_EACurrencyEdit edit = (PO_EACurrencyEdit) curForm;
+            edit.accionCerrar(_event);
+        } else if (curForm instanceof PO_EACurrencyCreate) {
+            final PO_EACurrencyCreate create = (PO_EACurrencyCreate) curForm;
+            create.accionCerrar(_event);
+        }
         //this.wEACR.getParent().getPage().getFellow("wEACE").detach();
     }
 

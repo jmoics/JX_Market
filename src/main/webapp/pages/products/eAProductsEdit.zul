@@ -9,6 +9,7 @@
             <tab id="tabCategory" label="Categorías" />
             <tab id="tabImages" label="Imágenes" />
             <tab id="tabPrices" label="Precios" />
+            <tab id="tabCost" label="Costos" />
         </tabs>
         <tabpanels>
             <tabpanel>
@@ -134,6 +135,10 @@
                 </vlayout>
             </tabpanel>
             <tabpanel>
+                <include id="incPricelistRetail" hflex="1" />
+            </tabpanel>
+            <tabpanel>
+                <include id="incPricelistCost" hflex="1" />
             </tabpanel>
         </tabpanels>
     </tabbox>

@@ -42,7 +42,7 @@ public class CompanyService
     public ServiceOutput<DTO_Company> execute(final ServiceInput<DTO_Company> _input)
     {
         final ServiceOutput<DTO_Company> output = new ServiceOutput<DTO_Company>();
-        if ("list".equals(_input.getAction())) {
+        if (Constantes.V_LIST.equals(_input.getAction())) {
             String nombre = null;
             String ruc = null;
             if (_input.getMapa() != null) {
@@ -61,7 +61,7 @@ public class CompanyService
                 this.companyMapper.updateCompany(company);
             }
             output.setErrorCode(Constantes.OK);
-        } else if ("delete".equals(_input.getAction())) {
+        } else if (Constantes.V_DELETE.equals(_input.getAction())) {
             this.companyMapper.deleteCompany(_input.getObject());
             output.setErrorCode(Constantes.OK);
         } else {

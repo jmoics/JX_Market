@@ -31,6 +31,7 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Image;
+import org.zkoss.zul.Include;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -82,6 +83,10 @@ public class PO_EAProductsCreate
     private Tree tree;
     @Wire
     private Listbox lstImages;
+    @Wire
+    private Include incPricelistRetail;
+    @Wire
+    private Include incPricelistCost;
     @WireVariable
     private BusinessService<DTO_Product> productService;
     @WireVariable
@@ -116,6 +121,11 @@ public class PO_EAProductsCreate
         this.tree.setModel(this.categoryTreeModel);
 
         buildTradeMarkCombo();
+
+        this.incPricelistRetail.setAttribute(Constantes.V_REGISTERPRICE, Constantes.PRICELIST_RETAIL);
+        this.incPricelistRetail.setSrc(Constantes.Form.PRICELIST_FORM.getForm());
+        this.incPricelistCost.setAttribute(Constantes.V_REGISTERPRICE, Constantes.PRICELIST_COST);
+        this.incPricelistCost.setSrc(Constantes.Form.PRICELIST_FORM.getForm());
 
         // Obtenemos el controlador de la pantalla principal de marcas.
         final Map<?, ?> mapArg = this.desktop.getExecution().getArg();

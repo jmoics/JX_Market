@@ -50,8 +50,10 @@ public class Constantes {
      * Constantes para acciones
      */
     public static final String V_REGISTER = "register";
+    public static final String V_REGISTERPRICE = "registerPrice";
     public static final String V_REGISTERCAT4PROD = "registerCat4Prod";
     public static final String V_REGISTERIMG4PROD = "registerImg4Prod";
+
     public static final String V_REGISTERPM = "registerPM";
     public static final String V_GET = "get";
     public static final String V_LIST = "list";
@@ -165,11 +167,14 @@ public class Constantes {
     public enum Form {
         EMPTY_FORM("eAFondo.zul"),
         PRODUCTS_FORM("pages/products/eAProducts.zul"),
-        PRODUCTS_EDIT_FORM("pages/productseAProductsEdit.zul"),
-        PRODUCTS_CREATE_FORM("pages/productseAProductsCreate.zul"),
-        TRADEMARK_FORM("pages/productseATradeMark.zul"),
-        TRADEMARK_EDIT_FORM("pages/productseATradeMarkEdit.zul"),
-        TRADEMARK_CREATE_FORM("pages/productseATradeMarkCreate.zul"),
+        PRODUCTS_EDIT_FORM("pages/products/eAProductsEdit.zul"),
+        PRODUCTS_CREATE_FORM("pages/products/eAProductsCreate.zul"),
+        CATEGORY_FORM("pages/products/eACategory.zul"),
+        CATEGORY_EDIT_FORM("pages/products/eACategoryEdit.zul"),
+        CATEGORY_CREATE_FORM("pages/products/eACategoryCreate.zul"),
+        TRADEMARK_FORM("pages/products/eATradeMark.zul"),
+        TRADEMARK_EDIT_FORM("pages/products/eATradeMarkEdit.zul"),
+        TRADEMARK_CREATE_FORM("pages/products/eATradeMarkCreate.zul"),
         AREA_FORM("pages/administration/eAAdministrateArea.zul"),
         AREA_EDIT_FORM("pages/administration/eAAdministrateAreaEdit.zul"),
         AREA_CREATE_FORM("pages/administration/eAAdministrateAreaCreate.zul"),
@@ -189,7 +194,10 @@ public class Constantes {
         CURRENCY_CREATE_FORM("pages/sales/eACurrencyCreate.zul"),
         CURRENCYRATE_FORM("pages/sales/eACurrencyRate.zul"),
         CURRENCYRATE_EDIT_FORM("pages/sales/eACurrencyRateEdit.zul"),
-        CURRENCYRATE_CREATE_FORM("pages/sales/eACurrencyRateCreate.zul");
+        CURRENCYRATE_CREATE_FORM("pages/sales/eACurrencyRateCreate.zul"),
+        PRICELIST_FORM("pages/products/eAPricelist.zul"),
+        PRICELIST_EDIT_FORM("pages/products/eAPricelistEdit.zul"),
+        PRICELIST_CREATE_FORM("pages/products/eAPricelistCreate.zul");
 
         private final String form;
 
@@ -219,11 +227,15 @@ public class Constantes {
     public static final String ATTRIBUTE_UBICATION = "ubication";
     public static final String ATTRIBUTE_CURRENCY = "currency";
     public static final String ATTRIBUTE_CURRENCYRATE = "currencyRate";
+    public static final String ATTRIBUTE_PRICELIST = "pricelist";
 
 
     public static final Integer UBICATION_DEPARTMENT = 1;
     public static final Integer UBICATION_PROVINCE = 2;
     public static final Integer UBICATION_DISTRICT = 3;
+
+    public static final Integer PRICELIST_RETAIL = 1;
+    public static final Integer PRICELIST_COST = 2;
 
     public static final String SYSTEM_LANGUAGE = "SYSTEM_LANGUAGE";
     public static final String SYSTEM_KEY = "SYSTEM_KEY";

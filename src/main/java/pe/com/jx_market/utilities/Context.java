@@ -140,9 +140,9 @@ public final class Context
     /**
      * Destructor of class <code>Context</code>.
      */
-    @Override
-    public void finalize()
+    public void finalize(final String _key)
     {
+        THREADCONTEXT.remove(_key);
         if (Context.LOG.isDebugEnabled()) {
             Context.LOG.debug("finalize context for " + this.person);
         }

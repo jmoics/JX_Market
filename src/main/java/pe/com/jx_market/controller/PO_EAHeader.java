@@ -22,7 +22,6 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
@@ -34,6 +33,7 @@ import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Employee;
+import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.Context;
 import pe.com.jx_market.utilities.JXMarketException;
@@ -43,7 +43,7 @@ import pe.com.jx_market.utilities.JXMarketException;
  *
  */
 public class PO_EAHeader
-    extends SelectorComposer<Window>
+    extends CommonComposer<Window>
 {
 
     private final Log logger = LogFactory.getLog(PO_EAHeader.class);
@@ -214,11 +214,13 @@ public class PO_EAHeader
     public void logout()
         throws JXMarketException
     {
+        final DTO_User user = (DTO_User) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_USER);
+        final String key = encryption("" + user.getId() + user.getCompanyId());
         this.desktop.getSession().removeAttribute("login");
         this.desktop.getSession().removeAttribute("actualizar");
         this.desktop.getSession().removeAttribute("company");
         this.desktop.getSession().removeAttribute("employee");
-        Context.getThreadContext(this.desktop).finalize();
+        Context.getThreadContext(this.desktop).finalize(key);
         // getDesktop().getSession().removeAttribute("paginaActual");
         Executions.sendRedirect("eALogin.zul");
     }
