@@ -82,8 +82,10 @@
     </insert>
 
     <update id="updatePricelist" parameterType="PricelistRetail">
-        UPDATE T_NEG_PRICELIST
+        UPDATE T_BUS_PRICELIST
         SET
+            validfrom = #{validFrom},
+            validto = #{validTo},
             price = #{price},
             currencyid = #{currencyId}
         WHERE

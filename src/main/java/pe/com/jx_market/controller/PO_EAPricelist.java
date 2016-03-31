@@ -119,7 +119,7 @@ public class PO_EAPricelist
             cell = new Listcell(FormatUtilities.getFormatter(this.desktop, 2, 4).format(
                             ((AbstractPricelist) curPl).getPrice()));
             item.appendChild(cell);
-            item.setAttribute(Constantes.ATTRIBUTE_CURRENCYRATE, curPl);
+            item.setAttribute(Constantes.ATTRIBUTE_PRICELIST, curPl);
             item.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>()
             {
 

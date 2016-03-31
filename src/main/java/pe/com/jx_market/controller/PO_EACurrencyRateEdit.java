@@ -28,7 +28,7 @@ import pe.com.jx_market.utilities.ServiceOutput;
 public class PO_EACurrencyRateEdit
     extends SecuredComposer<Window>
 {
-    private final static Log logger = LogFactory.getLog(PO_EACurrencyRateEdit.class);
+    private final Log logger = LogFactory.getLog(PO_EACurrencyRateEdit.class);
     @Wire
     private Datebox datFromDate;
     @Wire
@@ -52,7 +52,7 @@ public class PO_EACurrencyRateEdit
 
         this.currencyRate = (CurrencyRate) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_CURRENCYRATE);
         if (this.currencyRate == null) {
-            alertaInfo(logger, "", "No se encontro producto, retornando a busqueda", null);
+            alertaInfo(this.logger, "", "No se encontro producto, retornando a busqueda", null);
         } else {
             this.desktop.getSession().removeAttribute(Constantes.ATTRIBUTE_CURRENCYRATE);
             // Obtenemos el controlador de la pantalla principal de marcas.

@@ -74,8 +74,6 @@ public class PricelistService<E>
                 this.pricelistMapper.insertPricelistCost(new PricelistCost(((AbstractPricelist) _input.getObject())
                                 .getId()));
             }
-        } else {
-            this.pricelistMapper.updatePricelist(_input.getObject());
         }
         output.setErrorCode(Constantes.OK);
         return output;
@@ -87,8 +85,10 @@ public class PricelistService<E>
     @Override
     public ServiceOutput<E> update(final ServiceInput<E> _input)
     {
-        // TODO Auto-generated method stub
-                return null;
+        final ServiceOutput<E> output = new ServiceOutput<E>();
+        this.pricelistMapper.updatePricelist(_input.getObject());
+        output.setErrorCode(Constantes.OK);
+        return output;
     }
 
     /* (non-Javadoc)
