@@ -87,7 +87,7 @@
             validfrom = #{validFrom},
             validto = #{validTo},
             price = #{price},
-            currencyid = #{currencyId}
+            currencyid = #{currency.id}
         WHERE
             id = #{id}
     </update>
