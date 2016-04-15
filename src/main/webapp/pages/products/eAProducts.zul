@@ -64,9 +64,11 @@
         <south size="5%" style="visibility:visible;" sclass="s-south2">
             <hbox align="center" pack="end" hflex="1" vflex="1" sclass="s-hbox">
                 <button id="btnCreate" label="${labels.pe.com.jx_market.eAProducts.btnCreate.Label}"
-                    image="/media/filenew.png" />
+                    image="/media/filenew.png" visible="false"/>
+                <button id="btnView" label="${labels.pe.com.jx_market.eAProducts.btnView.Label}"
+                    image="/media/details.png" visible="false"/>
                 <button id="btnEdit" label="${labels.pe.com.jx_market.eAProducts.btnEdit.Label}"
-                    image="/media/edit.png" />
+                    image="/media/edit.png" visible="false"/>
             </hbox>
         </south>
     </borderlayout>

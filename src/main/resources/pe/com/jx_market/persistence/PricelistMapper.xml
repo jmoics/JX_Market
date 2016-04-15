@@ -81,7 +81,7 @@
             (#{id})
     </insert>
 
-    <update id="updatePricelist" parameterType="PricelistRetail">
+    <update id="updatePricelist" parameterType="AbstractPricelist">
         UPDATE T_BUS_PRICELIST
         SET
             validfrom = #{validFrom},

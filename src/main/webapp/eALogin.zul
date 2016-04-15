@@ -14,7 +14,8 @@
       </style>
       <image src="media/jx_market.gif" onClick='Executions.sendRedirect("index.zul")' style="cursor: pointer"/>
       <html:p />
-      <window id="wEAL" width="600px" apply="pe.com.jx_market.controller.PO_EALogin">
+      <window id="wEAL" width="600px" apply="pe.com.jx_market.controller.PO_EALogin" 
+                xmlns:w="http://www.zkoss.org/2005/zk/client">
          <div align="left">
             <vbox width="600px">
                <html:p />
@@ -39,7 +40,14 @@
                         </row>
                         <row>
                            <label class="desc">${labels.pe.com.jx_market.eALogin.User.Label}:</label>
-                           <textbox id="txtUser" hflex="1"></textbox>
+                           <textbox id="txtUser" hflex="1">
+                           <!-- <textbox id="txtUser" hflex="1" w:onFocus="this.$f('txtPass').focus(100)"> -->
+                              <!-- <attribute w:name="onFocus">
+                                 if (this.$f('txtUser').getValue() != null) {
+                                    this.$f('txtPass').focus(10);
+                                 }
+                              </attribute> -->
+                           </textbox>
                         </row>
                         <row>
                            <label class="desc">${labels.pe.com.jx_market.eALogin.Password.Label}:</label>

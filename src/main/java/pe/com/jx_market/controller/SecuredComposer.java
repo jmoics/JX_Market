@@ -19,7 +19,9 @@ import org.zkoss.zul.Comboitem;
 
 import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Employee;
+import pe.com.jx_market.domain.DTO_Module;
 import pe.com.jx_market.domain.DTO_User;
+import pe.com.jx_market.domain.ModuleAccessUI;
 import pe.com.jx_market.domain.Parameter;
 import pe.com.jx_market.domain.ParameterType;
 import pe.com.jx_market.domain.Ubication;
@@ -88,6 +90,22 @@ public abstract class SecuredComposer<T extends Component>
         }
     }
 
+    protected void checkResources2(final DTO_User _user)
+    {
+        final String clazzName = this.getClass().getName();
+        final List<DTO_Module> modules = _user.getRole().getModules();
+        boolean band = false;
+        for (final DTO_Module module : modules) {
+            if (module.getAccessUisMap().containsKey(clazzName)) {
+                band = true;
+                break;
+            }
+        }
+        if (!band) {
+            throw new RuntimeException("Acceso no autorizado!");
+        }
+    }
+
     /**
      * Method to check if the employee have access to system.
      * @param _comp
@@ -107,6 +125,26 @@ public abstract class SecuredComposer<T extends Component>
         if (output.getErrorCode() != Constantes.OK) {
             _comp.getFellow(_widget).setVisible(false);
         }
+    }
+
+    public boolean setVisibilityByResource2(final Component _comp,
+                                            final String _widget,
+                                            final DTO_User _user)
+    {
+        final String clazzName = this.getClass().getName();
+        final List<DTO_Module> modules = _user.getRole().getModules();
+        boolean band = false;
+        for (final DTO_Module module : modules) {
+            if (module.getAccessUisMap().containsKey(clazzName)) {
+                final ModuleAccessUI modAccUi = module.getAccessUisMap().get(clazzName);
+                if (modAccUi.getWidgetsUisMap().containsKey(_widget)) {
+                    band = true;
+                    break;
+                }
+            }
+        }
+        _comp.getFellow(_widget).setVisible(band);
+        return band;
     }
 
     /**

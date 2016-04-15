@@ -50,6 +50,7 @@ import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.domain.DTO_ProductImage;
 import pe.com.jx_market.domain.DTO_TradeMark;
+import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.utilities.AdvancedTreeModel;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.CategoryTreeNode;
@@ -138,6 +139,12 @@ public class PO_EAProductsEdit
             // Obtenemos el controlador de la pantalla principal de marcas.
             final Map<?, ?> mapArg = this.desktop.getExecution().getArg();
             this.productParentUI = (PO_EAProducts) mapArg.get(Constantes.ATTRIBUTE_PARENTFORM);
+
+            final DTO_User user = (DTO_User) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_USER);
+            checkResources2(user);
+            setVisibilityByResource2(_comp, "btnSave", user);
+            setVisibilityByResource2(_comp, "btnSave2", user);
+            setVisibilityByResource2(_comp, "btnSave3", user);
         }
     }
 

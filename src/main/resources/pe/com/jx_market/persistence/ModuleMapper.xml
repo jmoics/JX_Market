@@ -33,7 +33,7 @@
         AND
             modu.id = #{id, jdbcType=INTEGER}
     </select>
-
+    
     <insert id="insertModule" parameterType="DTO_Module" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
         INSERT INTO T_SEG_MODULE
             (description, resource, companyid)
@@ -60,5 +60,4 @@
         AND
             companyid = #{companyId}
     </delete>
-
 </mapper>

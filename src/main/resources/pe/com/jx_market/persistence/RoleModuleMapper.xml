@@ -38,7 +38,6 @@
             T_COM_AREA area ON rol.areaid = area.id LEFT JOIN
             T_SEG_ROLE2MODULE rolMod ON rol.id = rolMod.roleid LEFT JOIN
             T_SEG_MODULE modu ON rolMod.moduleid = modu.id
-
         <where>
             rol.companyid = #{companyId}
             <if test="areaId != null">AND
@@ -54,6 +53,30 @@
             <!-- <if test="id != null">AND
                 rol.id = #{id, jdbcType=INTEGER}
             </if>-->
+        </where>
+    </select>
+    
+    <select id="getModulesAccess4Role" parameterType="DTO_Role" resultMap="moduleAccessResultMap">
+        SELECT
+            modu.id as moduId,
+            modu.companyid as companyId,
+            modu.description as moduDescription,
+            modu.resource as moduResource,
+            ac.id as moduAccessId,
+            ac.nameui as accNameUi,
+            wi.id as moduWidgetId,
+            wi.nameui as widNameUi
+        FROM
+            T_SEG_ROLE rol LEFT JOIN
+            T_SEG_ROLE2MODULE rolMod ON rol.id = rolMod.roleid LEFT JOIN
+            T_SEG_MODULE modu ON rolMod.moduleid = modu.id LEFT JOIN
+            T_SEG_MODULE_ACCESSUI ac ON modu.id = ac.moduleid LEFT JOIN
+            T_SEG_MODULE_WIDGETUI wi ON ac.id = wi.accessuiid
+        <where>
+            rol.companyid = #{companyId}
+            <if test="id != null">AND
+                rol.id = #{id}
+            </if>
         </where>
     </select>
 
@@ -96,5 +119,28 @@
         <result property="moduleDescription" column="moduDescription" />
         <result property="moduleResource" column="moduResource" />
         <result property="activeConnection" column="roleModuActive" />
+    </resultMap>
+    
+    <resultMap id="moduleAccessResultMap" type="DTO_Module">
+        <id property="id" column="moduId" />
+        <result property="companyId" column="companyId" />
+        <result property="moduleDescription" column="moduDescription" />
+        <result property="moduleResource" column="moduResource" />
+        <collection property="accessUis" column="moduAccessId"
+                    ofType="ModuleAccessUI" javaType="ArrayList" resultMap="accessUIResultMap">
+        </collection>
+    </resultMap>
+    <resultMap id="accessUIResultMap" type="ModuleAccessUI">
+        <id property="id" column="moduAccessId" />
+        <result property="nameUi" column="accNameUi" />
+        <result property="moduleId" column="moduId" />
+        <collection property="widgetsUis" column="moduWidgetId"
+                    ofType="ModuleWidgetUI" javaType="ArrayList" resultMap="widgetUIResultMap">
+        </collection>
+    </resultMap>
+    <resultMap id="widgetUIResultMap" type="ModuleWidgetUI">
+        <id property="id" column="moduWidgetId" />
+        <result property="nameUi" column="widNameUi" />
+        <result property="accessUiId" column="moduAccessId" />
     </resultMap>
 </mapper>

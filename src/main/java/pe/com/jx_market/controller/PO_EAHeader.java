@@ -158,9 +158,9 @@ public class PO_EAHeader
     {
         String ruta;
         if (System.getProperty("os.name").contains("Windows")) {
-            ruta = Constantes.RUTA_IMAGENES_WINDOWS + File.separator + _name;
+            ruta = Constantes.IMAGES_PATH_WINDOWS + File.separator + _name;
         } else {
-            ruta = Constantes.RUTA_IMAGENES + File.separator + _name;
+            ruta = Constantes.IMAGES_PATH + File.separator + _name;
         }
         return new File(ruta);
     }

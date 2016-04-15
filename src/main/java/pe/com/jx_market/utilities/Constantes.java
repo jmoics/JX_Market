@@ -109,8 +109,8 @@ public class Constantes {
     /*
      * imagenes
      */
-    public static final String RUTA_IMAGENES = "/home/imagenesJXMarket";
-    public static final String RUTA_IMAGENES_WINDOWS = "C:/imagenesJXMarket";
+    public static final String IMAGES_PATH = "/JXMarket/images";
+    public static final String IMAGES_PATH_WINDOWS = "C:/JXMarket/images";
 
     /*
      * Modules para accesos

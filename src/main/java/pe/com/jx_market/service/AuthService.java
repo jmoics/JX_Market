@@ -58,21 +58,22 @@ public class AuthService
         if (us == null) {
             this.logger.error("No se proporciono user valido");
             output.setErrorCode(Constantes.NOT_FOUND);
-        }
-        if (password == null || password.length() == 0) {
-            this.logger.error("No se proporciono password valido");
-            output.setErrorCode(Constantes.NOT_FOUND);
-        }
-
-        if (encriptacion(password).equals(us.getPassword())) {
-            output.setObject(us);
-            output.setErrorCode(Constantes.OK);
-            // por mientras ya que no hay encriptacion....
-        } else if (password.equals(us.getPassword())) {
-            output.setObject(us);
-            output.setErrorCode(Constantes.OK);
         } else {
-            output.setErrorCode(Constantes.AUTH_ERROR);
+            if (password == null || password.length() == 0) {
+                this.logger.error("No se proporciono password valido");
+                output.setErrorCode(Constantes.NOT_FOUND);
+            } else {
+                if (encriptacion(password).equals(us.getPassword())) {
+                    output.setObject(us);
+                    output.setErrorCode(Constantes.OK);
+                    // por mientras ya que no hay encriptacion....
+                } else if (password.equals(us.getPassword())) {
+                    output.setObject(us);
+                    output.setErrorCode(Constantes.OK);
+                } else {
+                    output.setErrorCode(Constantes.AUTH_ERROR);
+                }
+            }
         }
         return output;
     }

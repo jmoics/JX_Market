@@ -57,8 +57,15 @@ public class RoleModuleService
         final ServiceOutputConnection<DTO_RoleModule, DTO_Role, DTO_Module> output =
                         new ServiceOutputConnection<DTO_RoleModule, DTO_Role, DTO_Module>();
         if (Constantes.V_LIST.equals(_input.getAction())) {
-            output.setResultListTo(this.moduleMapper.getModules(_input.getObjectTo()));
-            output.setResultListFrom(this.roleModuleMapper.getModules4Role(_input.getMapa()));
+            if (_input.getObjectTo() != null) {
+                output.setResultListTo(this.moduleMapper.getModules(_input.getObjectTo()));
+                output.setResultListFrom(this.roleModuleMapper.getModules4Role(_input.getMapa()));
+            } else if (_input.getObjectFrom() != null) {
+                output.setResultListTo(this.roleModuleMapper.getModulesAccess4Role(_input.getObjectFrom()));
+                for (final DTO_Module rlt : output.getResultListTo()) {
+                    rlt.setAccessUisMap();
+                }
+            }
             output.setErrorCode(Constantes.OK);
         } else if (Constantes.V_REGISTER.equals(_input.getAction())) {
             final Map<DTO_Role, Set<DTO_RoleModule>> mapa = (Map<DTO_Role, Set<DTO_RoleModule>>) _input.getMapa();

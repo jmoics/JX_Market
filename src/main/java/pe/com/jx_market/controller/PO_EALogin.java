@@ -19,13 +19,19 @@ import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Employee;
+import pe.com.jx_market.domain.DTO_Module;
+import pe.com.jx_market.domain.DTO_Role;
+import pe.com.jx_market.domain.DTO_RoleModule;
 import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.utilities.BusinessService;
+import pe.com.jx_market.utilities.BusinessServiceConnection;
 import pe.com.jx_market.utilities.Constantes;
 import pe.com.jx_market.utilities.Context;
 import pe.com.jx_market.utilities.JXMarketException;
 import pe.com.jx_market.utilities.ServiceInput;
+import pe.com.jx_market.utilities.ServiceInputConnection;
 import pe.com.jx_market.utilities.ServiceOutput;
+import pe.com.jx_market.utilities.ServiceOutputConnection;
 
 /* Permite tener acceso a los servicios*/
 /**
@@ -55,6 +61,8 @@ public class PO_EALogin
     private BusinessService<DTO_User> authService;
     @WireVariable
     private BusinessService<DTO_Employee> employeeService;
+    @WireVariable
+    private BusinessServiceConnection<DTO_RoleModule, DTO_Role, DTO_Module> roleModuleService;
 
     @Override
     public void doAfterCompose(final Window _comp)
@@ -107,6 +115,8 @@ public class PO_EALogin
 
                 final DTO_User validado = getUser(user);
                 if (validado != null) {
+                    final List<DTO_Module> modules = getModules(validado.getRole());
+                    validado.getRole().setModules(modules);
                     final DTO_Employee employee = getEmployee(validado);
                     this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_EMPLOYEE, employee);
                     this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_USER, validado);
@@ -140,11 +150,32 @@ public class PO_EALogin
                     this.wEAL.getFellow("badauth").setVisible(true);
                 }
             } else {
-                Messagebox.show("No se cargo la company", "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
+                Messagebox.show("No se cargo la empresa", "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
             }
         } else {
-            Messagebox.show("Debe seleccionar una company", "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
+            Messagebox.show("Debe seleccionar una empresa", "JX_Market", Messagebox.OK, Messagebox.INFORMATION);
         }
+    }
+
+    /**
+     * @param role
+     * @return
+     */
+    private List<DTO_Module> getModules(final DTO_Role role)
+    {
+        List<DTO_Module> modules;
+        final ServiceInputConnection<DTO_RoleModule, DTO_Role, DTO_Module> input =
+                        new ServiceInputConnection<DTO_RoleModule, DTO_Role, DTO_Module>();
+        input.setObjectFrom(role);
+        input.setAction(Constantes.V_LIST);
+        final ServiceOutputConnection<DTO_RoleModule, DTO_Role, DTO_Module> output = this.roleModuleService
+                        .execute(input);
+        if (output.getErrorCode() == Constantes.OK) {
+            modules = output.getResultListTo();
+        } else {
+            modules = null;
+        }
+        return modules;
     }
 
     /**

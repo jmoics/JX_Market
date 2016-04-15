@@ -155,9 +155,9 @@ public class ProductService
     {
         String ruta;
         if (System.getProperty("os.name").contains("Windows")) {
-            ruta = Constantes.RUTA_IMAGENES_WINDOWS + File.separator + _image.getImageName();
+            ruta = Constantes.IMAGES_PATH_WINDOWS + File.separator + _image.getImageName();
         } else {
-            ruta = Constantes.RUTA_IMAGENES + File.separator + _image.getImageName();
+            ruta = Constantes.IMAGES_PATH + File.separator + _image.getImageName();
         }
         return new File(ruta);
     }

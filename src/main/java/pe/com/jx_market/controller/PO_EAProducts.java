@@ -46,6 +46,7 @@ import pe.com.jx_market.domain.DTO_Category;
 import pe.com.jx_market.domain.DTO_Company;
 import pe.com.jx_market.domain.DTO_Product;
 import pe.com.jx_market.domain.DTO_TradeMark;
+import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.CategoryTreeNode;
 import pe.com.jx_market.utilities.CategoryTreeNodeCollection;
@@ -105,6 +106,13 @@ public class PO_EAProducts
                         && (Boolean) this.desktop.getAttribute(Constantes.ATTRIBUTE_RELOAD)) {
             this.desktop.setAttribute(Constantes.ATTRIBUTE_RELOAD, false);
             searchProducts();
+        }
+        final DTO_User user = (DTO_User) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_USER);
+        checkResources2(user);
+        setVisibilityByResource2(_comp, "btnCreate", user);
+        final boolean canEdit = setVisibilityByResource2(_comp, "btnEdit", user);
+        if (!canEdit) {
+            setVisibilityByResource2(_comp, "btnView", user);
         }
     }
 
@@ -354,7 +362,7 @@ public class PO_EAProducts
     /**
      * @param _event
      */
-    @Listen("onClick = #btnEdit")
+    @Listen("onClick = #btnEdit, #btnView")
     public void runWindowEdit(final MouseEvent _event) {
         if (this.lstProd.getSelectedItem() != null) {
             this.desktop.getSession().setAttribute(Constantes.ATTRIBUTE_PRODUCT,

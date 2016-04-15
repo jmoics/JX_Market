@@ -25,9 +25,9 @@ INSERT INTO T_SEG_USER (COMPANYID, PASSWORD, USERNAME, ROLEID)
 
 INSERT INTO T_SEG_MODULE (COMPANYID, DESCRIPTION, RESOURCE) VALUES
                 (2,'Módulo para productos','MODULE_PRODUCTS'),
-                (2,'Módulo para gestion de productos','MODULE_PROD_PRODUCT'),
+                (2,'Módulo para visualización de productos','MODULE_PROD_PRODUCT_VIEW'),
                 (2,'Módulo para edición de productos','MODULE_PROD_PRODUCT_EDIT'),
-                (2,'Módulo para creación de productos','MODULE_PROD_PRODUCT_CREATE'),
+                (2,'Módulo para creación y edición de productos','MODULE_PROD_PRODUCT_CREATE'),
                 (2,'Módulo para gestion de categories','MODULE_PROD_CATEGORY'),
                 (2,'Módulo para edición de categories','MODULE_PROD_CATEGORY_EDIT'),
                 (2,'Módulo para creación de categories','MODULE_PROD_CATEGORY_CREATE'),
@@ -54,10 +54,36 @@ INSERT INTO T_SEG_MODULE (COMPANYID, DESCRIPTION, RESOURCE) VALUES
                 (2,'Módulo para administrar la contrasena','MODULE_CHANGE_PASS');
 
 INSERT INTO T_SEG_ROLE2MODULE (ROLEID, MODULEID, ACTIVE)
-            VALUES (1,1,true),(1,2,true),(1,3,true),(1,4,true),(1,5,true),(1,6,true),(1,7,true),(1,8,true),(1,9,true),(1,10,true),(1,11,true),(1,12,true),
-                   (1,13,true),(1,14,true),(1,15,true),(1,16,true),(1,17,true),(1,18,true),(1,19,true),(1,20,true),(1,21,true),(1,22,true),(1,23,true),(1,24,true),(1,25,true),(1,26,true),
-                   (2,2,true),(2,4,true),(3,2,true),(3,3,true),(3,4,true),(3,5,true),(3,11,true),(4,1,true),(4,6,true),(4,7,true),(4,11,true),
-                   (5,2,true),(5,4,true),(5,5,true),(5,6,true),(5,7,true),(5,10,true),(5,11,true);
+            VALUES (1,1,true),(1,4,true),(1,5,true),(1,6,true),(1,7,true),(1,8,true),(1,9,true),(1,10,true),(1,11,true),(1,12,true),(1,13,true),
+                   (1,14,true),(1,15,true),(1,16,true),(1,17,true),(1,18,true),(1,19,true),(1,20,true),(1,21,true),(1,22,true),(1,23,true),(1,24,true),(1,25,true),(1,26,true),(1,26,true),
+                   (2,1,true),(2,3,true),(2,5,true),(3,3,true),(3,4,true),(3,5,true),(3,6,true),(3,12,true),(4,2,true),(4,7,true),(4,8,true),(4,12,true),
+                   (5,3,true),(5,5,true),(5,6,true),(5,7,true),(5,8,true),(5,11,true),(5,12,true);
+                   
+INSERT INTO T_SEG_MODULE_ACCESSUI (MODULEID, NAMEUI) VALUES
+                (1,'pe.com.jx_market.controller.PO_EAMainMenu'),
+                (2,'pe.com.jx_market.controller.PO_EAProducts'),
+                (2,'pe.com.jx_market.controller.PO_EAProductsEdit'),
+                (3,'pe.com.jx_market.controller.PO_EAProducts'),
+                (3,'pe.com.jx_market.controller.PO_EAProductsEdit'),
+                (4,'pe.com.jx_market.controller.PO_EAProducts'),
+                (4,'pe.com.jx_market.controller.PO_EAProductsEdit'),
+                (4,'pe.com.jx_market.controller.PO_EAProductsCreate');
+                
+INSERT INTO T_SEG_MODULE_WIDGETUI (ACCESSUIID, NAMEUI) VALUES
+                (1,'id_option_prod_products'),
+                (2,'btnView'),
+                (4,'btnEdit'),
+                (5,'btnSave'),
+                (5,'btnSave2'),
+                (5,'btnSave3'),
+                (6,'btnCreate'),
+                (6,'btnEdit'),
+                (7,'btnSave'),
+                (7,'btnSave2'),
+                (7,'btnSave3'),
+                (8,'btnSave'),
+                (8,'btnSave2'),
+                (8,'btnSave3');
 
 INSERT INTO T_BUS_PARAMTYPE (COMPANYID,NAME,DESCRIPTION)
             VALUES (2,'DOCUMENT_TYPE','Parametro para guardar los tipos de documento'),
