@@ -1,7 +1,9 @@
 package pe.com.jx_market.domain;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -29,7 +31,12 @@ public class ModuleAccessUI
     /**
      *
      */
-    private List<ModuleAccessUI> widgetsUis;
+    private List<ModuleWidgetUI> widgetsUis;
+
+    /**
+     *
+     */
+    private Map<String, ModuleWidgetUI> widgetsUisMap;
 
     /**
      * Getter method for the variable {@link #id}.
@@ -96,7 +103,7 @@ public class ModuleAccessUI
      *
      * @return value of variable {@link #widgetsUis}
      */
-    public final List<ModuleAccessUI> getWidgetsUis()
+    public final List<ModuleWidgetUI> getWidgetsUis()
     {
         return this.widgetsUis;
     }
@@ -106,9 +113,30 @@ public class ModuleAccessUI
      *
      * @param _widgetsUis value for variable {@link #widgetsUis}
      */
-    public final void setWidgetsUis(final List<ModuleAccessUI> _widgetsUis)
+    public final void setWidgetsUis(final List<ModuleWidgetUI> _widgetsUis)
     {
         this.widgetsUis = _widgetsUis;
     }
 
+    /**
+     * Getter method for the variable {@link #widgetsUisSet}.
+     *
+     * @return value of variable {@link #widgetsUisSet}
+     */
+    public final Map<String, ModuleWidgetUI> getWidgetsUisMap()
+    {
+        return this.widgetsUisMap;
+    }
+
+    /**
+     * Setter method for variable {@link #widgetsUisMap}.
+     *
+     */
+    public final void setWidgetsUisMap()
+    {
+        this.widgetsUisMap = new HashMap<String, ModuleWidgetUI>();
+        for (final ModuleWidgetUI wu : this.widgetsUis) {
+            this.widgetsUisMap.put(wu.getNameUi(), wu);
+        }
+    }
 }
