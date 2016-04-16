@@ -217,7 +217,7 @@ public class PO_EAAdministrateEmployee
     /**
      * @param _event Event
      */
-    @Listen("onClick = #btnView")
+    /*@Listen("onClick = #btnView")
     public void runWindowView(final MouseEvent _event)
     {
         if (this.lstEmp.getSelectedItem() != null) {
@@ -228,12 +228,12 @@ public class PO_EAAdministrateEmployee
                             Labels.getLabel("pe.com.jx_market.PO_EAAdministrateEmployee.runWindowView.Info.Label"),
                             "No se selecciono un registro a consultar", null);
         }
-    }
+    }*/
 
     /**
      * @param _event Event.
      */
-    @Listen("onClick = #btnEdit")
+    @Listen("onClick = #btnEdit, #btnView")
     public void runWindowEdit(final MouseEvent _event)
     {
         if (this.lstEmp.getSelectedItem() != null) {

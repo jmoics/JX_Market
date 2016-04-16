@@ -54,6 +54,8 @@
             <hbox align="center" pack="end" hflex="1" vflex="1" sclass="s-hbox">
                 <button id="btnCreate" label="${labels.pe.com.jx_market.eATradeMark.btnCreate.Label}"
                     image="/media/filenew.png" />
+                <button id="btnView" label="${labels.pe.com.jx_market.eATradeMark.btnView.Label}"
+                    image="/media/details.png" visible="false"/>
                 <button id="btnEdit" label="${labels.pe.com.jx_market.eATradeMark.btnEdit.Label}"
                     image="/media/edit.png" />
             </hbox>

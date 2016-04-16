@@ -92,7 +92,7 @@ public class PO_EAAdministrateModule
         }
     }
 
-    @Listen("onClick = #btnEdit")
+    @Listen("onClick = #btnEdit, #btnView")
     public void runWindowEdit(final MouseEvent event) {
         if (lstModule.getSelectedItem() != null) {
             desktop.getSession().setAttribute(Constantes.ATTRIBUTE_MODULE,

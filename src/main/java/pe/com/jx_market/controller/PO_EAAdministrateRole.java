@@ -97,7 +97,7 @@ public class PO_EAAdministrateRole
         }
     }
 
-    @Listen("onClick = #btnEdit")
+    @Listen("onClick = #btnEdit, #btnView")
     public void runWindowEdit(final MouseEvent event) {
         if (lstRole.getSelectedItem() != null) {
             desktop.getSession().setAttribute(Constantes.ATTRIBUTE_ROLE,

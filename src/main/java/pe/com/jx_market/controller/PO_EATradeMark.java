@@ -118,7 +118,7 @@ public class PO_EATradeMark
         }
     }
 
-    @Listen("onClick = #btnEdit")
+    @Listen("onClick = #btnEdit, #btnView")
     public void runWindowEdit(final MouseEvent _event)
     {
         if (this.lstTradeMarks.getSelectedItem() != null) {

@@ -115,7 +115,7 @@ public class PO_EAAdministrateArea
         }
     }
 
-    @Listen("onClick = #btnEdit")
+    @Listen("onClick = #btnEdit, #btnView")
     public void runWindowEdit(final MouseEvent event) {
         if (lstArea.getSelectedItem() != null) {
             desktop.getSession().setAttribute(Constantes.ATTRIBUTE_AREA,

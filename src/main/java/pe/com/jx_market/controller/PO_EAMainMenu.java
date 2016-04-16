@@ -43,9 +43,9 @@ public class PO_EAMainMenu
         PO_EAMainMenu.MENU_MAP.put("id_option_sales_currency", Constantes.Form.CURRENCY_FORM.getForm());
         PO_EAMainMenu.MENU_MAP.put("id_option_adm_areas", Constantes.Form.AREA_FORM.getForm());
         PO_EAMainMenu.MENU_MAP.put("id_option_adm_emp", Constantes.Form.EMPLOYEE_FORM.getForm());
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perf", Constantes.Form.ROLE_FORM.getForm());
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_roles", Constantes.Form.ROLE_FORM.getForm());
         PO_EAMainMenu.MENU_MAP.put("id_option_adm_mod", Constantes.Form.MODULE_FORM.getForm());
-        PO_EAMainMenu.MENU_MAP.put("id_option_adm_perfi_module", Constantes.Form.ROLEMODULE_FORM.getForm());
+        PO_EAMainMenu.MENU_MAP.put("id_option_adm_role_module", Constantes.Form.ROLEMODULE_FORM.getForm());
         PO_EAMainMenu.MENU_MAP.put("id_option_chgpass", "eACambiarContrasenia.zul");
     }
 
@@ -102,8 +102,8 @@ public class PO_EAMainMenu
         setVisibilityByResource(_comp, "id_option_adm_areas", Constantes.MODULE_ADM_AREA, user);
         setVisibilityByResource(_comp, "id_option_adm_emp", Constantes.MODULE_ADM_EMPLOYEE, user);
         setVisibilityByResource(_comp, "id_option_adm_mod", Constantes.MODULE_ADM_MODULE, user);
-        setVisibilityByResource(_comp, "id_option_adm_perf", Constantes.MODULE_ADM_ROLE, user);
-        setVisibilityByResource(_comp, "id_option_adm_perfi_module", Constantes.MODULE_ADM_ROLEMODULE, user);
+        setVisibilityByResource(_comp, "id_option_adm_roles", Constantes.MODULE_ADM_ROLE, user);
+        setVisibilityByResource(_comp, "id_option_adm_role_module", Constantes.MODULE_ADM_ROLEMODULE, user);
         setVisibilityByResource(_comp, "id_option_chgpass", Constantes.MODULE_CHANGE_PASS, user);
     }
 
@@ -112,8 +112,8 @@ public class PO_EAMainMenu
      */
     @Listen("onClick = #id_option_prod_products, #id_option_prod_categ, #id_option_prod_amount, "
                     + "#id_option_prod_inventory, #id_option_prod_tradeMark, #id_option_sales_currency, "
-                    + "#id_option_adm_areas, #id_option_adm_emp, #id_option_adm_perf, "
-                    + "#id_option_adm_mod, #id_option_adm_perfi_module, #id_option_chgpass, "
+                    + "#id_option_adm_areas, #id_option_adm_emp, #id_option_adm_roles, "
+                    + "#id_option_adm_mod, #id_option_adm_role_module, #id_option_chgpass, "
                     + "#id_option_categ")
     public void incluir(final MouseEvent _event)
     {

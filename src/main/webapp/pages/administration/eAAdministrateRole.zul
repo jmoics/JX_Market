@@ -29,6 +29,8 @@
         </center>
         <south size="5%" style="visibility:visible;" sclass="s-south2">
             <hbox align="center" pack="end" hflex="1" vflex="1" sclass="s-hbox">
+                <button id="btnView" label="${labels.pe.com.jx_market.eAAdministrateRole.btnView.Label}"
+                    image="/media/details.png" />
                 <button id="btnCreate" label="${labels.pe.com.jx_market.eAAdministrateRole.btnCreate.Label}"
                     image="/media/filenew.png" />
                 <button id="btnEdit" label="${labels.pe.com.jx_market.eAAdministrateRole.btnEdit.Label}"

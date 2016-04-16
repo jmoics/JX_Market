@@ -132,25 +132,29 @@ extends SelectorComposer<Window>
     }
 
     @Listen("onClick = #btnEdit")
-    public void lanzarWindowEditar(final MouseEvent event) {
+    public void lanzarWindowEditar(final MouseEvent event)
+    {
         final Map<String, Object> dataArgs = new HashMap<String, Object>();
-        final Window w = (Window) Executions.createComponents("eACategoryEdit.zul", null, dataArgs);
-        w.setPage(wEACC.getPage());
-        //w.setParent(wEACC);
-        //w.doOverlapped();
+        final Window w = (Window) Executions.createComponents(Constantes.Form.CATEGORY_EDIT_FORM.getForm(), null,
+                        dataArgs);
+        w.setPage(this.wEACC.getPage());
+        // w.setParent(wEACC);
+        // w.doOverlapped();
         w.doHighlighted();
-        //w.doEmbedded();
+        // w.doEmbedded();
     }
 
     @Listen("onClick = #btnCreate")
-    public void lanzarWindowNuevo(final MouseEvent event) {
+    public void lanzarWindowNuevo(final MouseEvent event)
+    {
         final Map<String, Object> dataArgs = new HashMap<String, Object>();
-        final Window w = (Window) Executions.createComponents("eACategoryCreate.zul", null, dataArgs);
-        w.setPage(wEACC.getPage());
-        //w.setParent(wEACC);
-        //w.doOverlapped();
+        final Window w = (Window) Executions.createComponents(Constantes.Form.CATEGORY_CREATE_FORM.getForm(), null,
+                        dataArgs);
+        w.setPage(this.wEACC.getPage());
+        // w.setParent(wEACC);
+        // w.doOverlapped();
         w.doModal();
-        //w.doEmbedded();
+        // w.doEmbedded();
     }
 
     private final class CategoryTreeRenderer
