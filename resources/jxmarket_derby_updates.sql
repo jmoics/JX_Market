@@ -47,7 +47,7 @@ INSERT INTO T_SEG_MODULE (COMPANYID, DESCRIPTION, RESOURCE) VALUES
                 (2,'Módulo para visualización de empleados','MODULE_ADM_EMPLOYEE_VIEW'),
                 (2,'Módulo para edición de empleados','MODULE_ADM_EMPLOYEE_EDIT'),
                 (2,'Módulo para creación de empleados','MODULE_ADM_EMPLOYEE_CREATE'),
-                (2,'Módulo para administrar la contrasena','MODULE_CHANGE_PASS');;
+                (2,'Módulo para administrar la contrasena','MODULE_CHANGE_PASS');
 
 INSERT INTO T_SEG_ROLE2MODULE (ROLEID, MODULEID, ACTIVE)
             VALUES (1,3,true),(1,6,true),(1,9,true),(1,12,true),(1,15,true),(1,18,true),(1,20,true),(1,23,true),(1,24,true),
