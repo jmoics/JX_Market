@@ -93,7 +93,7 @@ public class PO_EAMainMenu
         });
 
         setVisibilityByResource2(_comp, "id_option_prod_products", user);
-        setVisibilityByResource(_comp, "id_option_prod_categ", Constantes.MODULE_PROD_CATEGORY, user);
+        setVisibilityByResource2(_comp, "id_option_prod_categ", user);
         setVisibilityByResource(_comp, "id_option_prod_tradeMark", Constantes.MODULE_PROD_TRADEMARK, user);
         setVisibilityByResource(_comp, "id_option_prod_amount", Constantes.MODULE_PROD_AMOUNT, user);
         setVisibilityByResource(_comp, "id_option_prod_inventory", Constantes.MODULE_PROD_INVENTORY, user);

@@ -66,7 +66,7 @@ public abstract class SecuredComposer<T extends Component>
             throw new RuntimeException("La sesión se perdió. Vuelva a ingresar por favor.");
         }
         if (!user.getCompanyId().equals(Constantes.INSTITUCION_JX_MARKET)) {
-            checkResources(user);
+            //checkResources(user);
         }
         this.company = (DTO_Company) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
         getUbications();

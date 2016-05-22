@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.MouseEvent;
-import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
@@ -29,6 +28,7 @@ import org.zkoss.zul.Window;
 
 import pe.com.jx_market.domain.DTO_Category;
 import pe.com.jx_market.domain.DTO_Company;
+import pe.com.jx_market.domain.DTO_User;
 import pe.com.jx_market.utilities.AdvancedTreeModel;
 import pe.com.jx_market.utilities.BusinessService;
 import pe.com.jx_market.utilities.CategoryTreeNode;
@@ -38,7 +38,7 @@ import pe.com.jx_market.utilities.ServiceInput;
 import pe.com.jx_market.utilities.ServiceOutput;
 
 public class PO_EACategory
-extends SelectorComposer<Window>
+    extends SecuredComposer<Window>
 {
 
     private static final long serialVersionUID = -1481359887612974294L;
@@ -58,21 +58,32 @@ extends SelectorComposer<Window>
 
     @SuppressWarnings("unchecked")
     @Override
-    public void doAfterCompose(final Window comp)
+    public void doAfterCompose(final Window _comp)
         throws Exception
     {
-        super.doAfterCompose(comp);
+        super.doAfterCompose(_comp);
 
-        categoryService = (BusinessService<DTO_Category>) ContextLoader.getService(comp, "categoryService");
+        this.categoryService = (BusinessService<DTO_Category>) ContextLoader.getService(_comp, "categoryService");
 
-        company = (DTO_Company) desktop.getSession().getAttribute("company");
+        this.company = (DTO_Company) this.desktop.getSession().getAttribute(Constantes.ATTRIBUTE_COMPANY);
 
         listarCategories();
-        categoryTreeModel = new AdvancedTreeModel(categoryTreeNode);
-        tree.setItemRenderer(new CategoryTreeRenderer());
-        tree.setModel(categoryTreeModel);
+        this.categoryTreeModel = new AdvancedTreeModel(this.categoryTreeNode);
+        this.tree.setItemRenderer(new CategoryTreeRenderer());
+        this.tree.setModel(this.categoryTreeModel);
+
+        final DTO_User user = (DTO_User) _comp.getDesktop().getSession().getAttribute(Constantes.ATTRIBUTE_USER);
+        checkResources2(user);
+        setVisibilityByResource2(_comp, "btnCreate", user);
+        final boolean canEdit = setVisibilityByResource2(_comp, "btnEdit", user);
+        if (!canEdit) {
+            setVisibilityByResource2(_comp, "btnView", user);
+        }
     }
 
+    /**
+     *
+     */
     public void listarCategories()
     {
         final DTO_Category cat = new DTO_Category();
@@ -157,21 +168,25 @@ extends SelectorComposer<Window>
         // w.doEmbedded();
     }
 
+    /**
+     * @author Jorge
+     *
+     */
     private final class CategoryTreeRenderer
         implements TreeitemRenderer<CategoryTreeNode>
     {
         @Override
-        public void render(final Treeitem treeItem,
-                           final CategoryTreeNode treeNode,
-                           final int index)
+        public void render(final Treeitem _treeItem,
+                           final CategoryTreeNode _treeNode,
+                           final int _index)
             throws Exception
         {
-            final CategoryTreeNode ctn = treeNode;
+            final CategoryTreeNode ctn = _treeNode;
             final DTO_Category categ = ctn.getData();
             final Treerow dataRow = new Treerow();
-            dataRow.setParent(treeItem);
-            treeItem.setValue(ctn);
-            treeItem.setOpen(ctn.isOpen());
+            dataRow.setParent(_treeItem);
+            _treeItem.setValue(ctn);
+            _treeItem.setOpen(ctn.isOpen());
 
             final Hlayout hl = new Hlayout();
             hl.appendChild(new Image("/widgets/tree/dynamic_tree/img/" + categ.getImagen()));
@@ -186,5 +201,12 @@ extends SelectorComposer<Window>
             treeCell2.appendChild(h2);
             dataRow.appendChild(treeCell2);
         }
+    }
+
+    @Override
+    String[] requiredResources()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

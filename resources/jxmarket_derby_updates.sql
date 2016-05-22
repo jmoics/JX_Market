@@ -14,14 +14,14 @@ INSERT INTO T_SEG_ROLE (COMPANYID, AREAID, NAME, DESCRIPTION)
                 (2,4,'Gerente','Encargado del area'),
                 (2,1,'Subgerente','Subgerencia general');
 
-INSERT INTO T_SEG_USER (COMPANYID, PASSWORD, USERNAME, ROLEID)
-          VALUES (1,'62a90ccff3fd73694bf6281bb234b09a','Administrator',1),
-                 (2,'e10adc3949ba59abbe56e057f20f883e','jmoics',3),
-                 (3,'e10adc3949ba59abbe56e057f20f883e','jcueva',1),
-                 (2,'e10adc3949ba59abbe56e057f20f883e','jcueva',1),
-                 (2,'e10adc3949ba59abbe56e057f20f883e','aencalada',2),
-                 (1,'e10adc3949ba59abbe56e057f20f883e','jmoics@gmail.com',2),
-                 (1,'e10adc3949ba59abbe56e057f20f883e','jacky@gmail.com',2);
+INSERT INTO T_SEG_USER (COMPANYID, PASSWORD, USERNAME, ROLEID, LOCALE)
+          VALUES (1,'62a90ccff3fd73694bf6281bb234b09a','Administrator',1, 'es_Mx'),
+                 (2,'e10adc3949ba59abbe56e057f20f883e','jmoics',3, 'es_Mx'),
+                 (3,'e10adc3949ba59abbe56e057f20f883e','jcueva',1, 'es_Mx'),
+                 (2,'e10adc3949ba59abbe56e057f20f883e','jcueva',1, 'es_Mx'),
+                 (2,'e10adc3949ba59abbe56e057f20f883e','aencalada',2, 'es_Mx'),
+                 (1,'e10adc3949ba59abbe56e057f20f883e','jmoics@gmail.com',2, 'es_Mx'),
+                 (1,'e10adc3949ba59abbe56e057f20f883e','jacky@gmail.com',2, 'es_Mx');
 
 INSERT INTO T_SEG_MODULE (COMPANYID, DESCRIPTION, RESOURCE) VALUES
                 (2,'Módulo para visualización de productos','MODULE_PROD_PRODUCT_VIEW'),
